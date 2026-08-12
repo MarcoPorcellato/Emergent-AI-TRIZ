@@ -10,6 +10,8 @@
     "problem",
     "constraints",
     "initial_state",
+    "desired_improvement",
+    "worsening_consequence",
     "transformation",
     "resulting_state",
     "labels",
@@ -25,6 +27,8 @@
       "minItems": 1
     },
     "initial_state": {"type": "string", "minLength": 1},
+    "desired_improvement": {"type": "string", "minLength": 1},
+    "worsening_consequence": {"type": "string", "minLength": 1},
     "transformation": {"type": "string", "minLength": 1},
     "resulting_state": {"type": "string", "minLength": 1},
     "labels": {
