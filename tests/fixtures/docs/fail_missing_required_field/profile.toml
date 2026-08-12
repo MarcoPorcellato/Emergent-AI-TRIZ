@@ -1,0 +1,3 @@
+required_fields = ["type", "title", "description", "status", "last_verified"]
+max_age_days = 180
+entry_points = ["docs/index.md"]

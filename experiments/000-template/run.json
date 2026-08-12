@@ -1,0 +1,68 @@
+{
+  "run_id": "run-triz-000",
+  "study_id": "triz-study-000",
+  "code_revision": "unreleased",
+  "data_revision": "unreleased",
+  "model_revision": "unreleased",
+  "tokenizer": {
+    "name": "placeholder-tokenizer",
+    "revision": "unreleased"
+  },
+  "prompts": [
+    {
+      "phase": "discovery",
+      "template_id": "template-discovery-001",
+      "content_hash": "1a65dea40e3d31c7a3e9b5a2e71c0f146765b25bba108a22f602ffd918fd4410",
+      "value": "Template discovery prompt placeholder text."
+    }
+  ],
+  "seeds": [
+    1234
+  ],
+  "precision": "fp32",
+  "device": {
+    "type": "cpu",
+    "count": 1,
+    "name": "template-device"
+  },
+  "environment": {
+    "container_image": "none",
+    "os": "linux",
+    "python_version": "3.11",
+    "dependencies": [
+      "numpy>=1.26"
+    ],
+    "seed_policy": "fixed-seed-list"
+  },
+  "layer": 0,
+  "token_positions": [
+    0,
+    1
+  ],
+  "intervention": {
+    "type": "steering",
+    "vector_id": "vector-placeholder-000",
+    "alpha": 0.0,
+    "vector_source": "template",
+    "strength_control_id": "control-none"
+  },
+  "output_hashes": {
+    "responses": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "scores": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "logits": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "evaluator_protocol": {
+    "protocol_id": "protocol-template-001",
+    "version": "v0.0.0",
+    "rater_count": 1,
+    "decision_rule": "placeholder-only"
+  },
+  "exclusions": [
+    "placeholder run record; no empirical exclusions applied"
+  ],
+  "analysis_version": "template",
+  "analysis_artifact_uri": "results/TEMPLATE.md",
+  "timestamp": "1970-01-01T00:00:00Z",
+  "randomized_ordering": false,
+  "notes": "Template only. `unreleased` and all placeholder hashes must be replaced with immutable artifacts before live use."
+}
