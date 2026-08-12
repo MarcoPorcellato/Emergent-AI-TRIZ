@@ -1,0 +1,30 @@
+name: validate
+
+permissions:
+  contents: read
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run dependency-free checks
+        env:
+          PYTHONPATH: src
+        run: |
+          make check
+          python -m latent_triz.cli fingerprint schemas/case.schema.json

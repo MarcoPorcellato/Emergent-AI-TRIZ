@@ -1,0 +1,26 @@
+{
+  "case_id": "case_001",
+  "domain": "manufacturing",
+  "problem": "Conveyor belt failure under heat",
+  "constraints": ["low_cost", "fast_turnaround"],
+  "initial_state": "Belt slips under 60C",
+  "desired_improvement": "Improve heat resistance",
+  "worsening_consequence": "Frequent stoppages",
+  "transformation": "Segment hot and cool zones",
+  "resulting_state": "Stable operation",
+  "labels": [
+    {
+      "principle": "segmentation",
+      "annotator_id": "r1",
+      "confidence": 0.91,
+      "rationale": "Split the domain into thermal zones"
+    }
+  ],
+  "provenance": {
+    "source_type": "human_authored",
+    "source_uri": "https://example.org/provenance/1",
+    "license": "CC0",
+    "created_at": "2026-08-01",
+    "notes": "synthetic sample"
+  }
+}

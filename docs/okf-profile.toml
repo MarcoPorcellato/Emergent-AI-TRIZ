@@ -1,0 +1,15 @@
+[okf]
+required_fields = ["type", "title", "description", "status", "last_verified"]
+max_verification_age_days = 180
+entry_points = [
+  "docs/index.md",
+  "docs/README.md",
+  "docs/log.md",
+  "docs/reference/index.md",
+  "docs/decisions/index.md",
+  "docs/decisions/0001-official-lab-foundation.md",
+  "docs/LAB_ARCHITECTURE.md",
+  "docs/ROADMAP.md",
+  "docs/RESEARCH_PROTOCOL.md",
+  "docs/ARTICLE_STATUS.md",
+]

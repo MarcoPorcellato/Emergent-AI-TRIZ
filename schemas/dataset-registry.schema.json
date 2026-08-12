@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ/schemas/dataset-registry.schema.json",
+  "title": "Latent TRIZ dataset registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["registry_version", "generated_at", "datasets"],
+  "properties": {
+    "registry_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "datasets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "dataset_id",
+          "version",
+          "status",
+          "artifact_uri",
+          "sha256",
+          "case_schema_revision",
+          "license",
+          "created_at"
+        ],
+        "properties": {
+          "dataset_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]+$"
+          },
+          "version": {"type": "string", "minLength": 1},
+          "status": {
+            "type": "string",
+            "enum": ["draft", "frozen", "withdrawn", "archived"]
+          },
+          "artifact_uri": {"type": "string", "format": "uri"},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "case_schema_revision": {"type": "string", "minLength": 1},
+          "license": {"type": "string", "minLength": 1},
+          "created_at": {"type": "string", "format": "date-time"},
+          "notes": {"type": "string"}
+        }
+      }
+    }
+  }
+}

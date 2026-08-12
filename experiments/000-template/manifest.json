@@ -1,0 +1,53 @@
+{
+  "study_id": "triz-study-000",
+  "title": "Template study placeholder for track-aligned preregistration",
+  "track": "both",
+  "stage": "stage_1_dataset",
+  "status": "designed",
+  "hypothesis": "Template only: replace this text with a falsifiable, preregistered hypothesis before execution.",
+  "preregistration": {
+    "prereg_id": "prereg-triz-000",
+    "artifact_path": "preregistrations/TEMPLATE.md",
+    "version": "v0.0.0",
+    "registered_at": "1970-01-01T00:00:00Z"
+  },
+  "dataset": {
+    "dataset_id": "project-latent-triz-v0",
+    "snapshot_uri": "data/registry.json#dataset=project-latent-triz-v0",
+    "immutable_revision": "unreleased",
+    "splits": [
+      "discovery",
+      "within_domain_validation",
+      "leave_one_domain_out",
+      "lexical_adversarial",
+      "near_miss_control",
+      "alternative_solution_control",
+      "sealed_novel"
+    ]
+  },
+  "models": [
+    {
+      "name": "gemma-3",
+      "family": "Gemma",
+      "revision": "unreleased",
+      "variant": "base"
+    }
+  ],
+  "primary_metrics": [
+    {
+      "name": "expert_use_rate",
+      "unit": "proportion",
+      "success_criterion": "Above control-corrected baseline",
+      "goal": 0.7
+    }
+  ],
+  "controls": [
+    "random_labels",
+    "lexical_adversarial",
+    "activation_replacement"
+  ],
+  "code_revision": "unreleased",
+  "timestamps": {
+    "created_at": "1970-01-01T00:00:00Z"
+  }
+}

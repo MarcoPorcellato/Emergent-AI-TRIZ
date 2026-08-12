@@ -1,3 +1,11 @@
+---
+type: ArtifactStatus
+title: Source Article Status
+description: Provenance and independent-verification boundary for the motivating research proposal.
+status: active
+last_verified: 2026-08-13
+---
+
 # Source article status
 
 `ARTICLE.md` is the revised research proposal supplied by Marco Porcellato on 2026-08-13. It is the motivating document for this repository. Git history retains the earlier source version.
