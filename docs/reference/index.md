@@ -10,6 +10,7 @@ last_verified: 2026-08-12
 
 ## Core foundation references
 
+- [Commit CI Preflight adoption](commit-ci-preflight.md)
 - [Lab architecture](../LAB_ARCHITECTURE.md)
 - [Research protocol](../RESEARCH_PROTOCOL.md)
 - [Roadmap](../ROADMAP.md)

@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check
+.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify
 
 test:
 	PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -p "test_*.py"
@@ -17,3 +17,12 @@ docs-audit:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli docs-audit --profile docs/okf-profile.toml --root . --as-of-date "$$(python3 -c 'from datetime import date; print(date.today().isoformat())')"
 
 check: test validate docs-audit
+
+preflight-plan:
+	commit-ci-preflight plan --config .commit-ci-preflight.toml
+
+preflight-run:
+	commit-ci-preflight run --config .commit-ci-preflight.toml --repository . --generation 1
+
+preflight-verify:
+	commit-ci-preflight verify --receipt .ccp/receipt.json --policy .commit-ci-policy.toml --expected-commit "$$(git rev-parse HEAD)"

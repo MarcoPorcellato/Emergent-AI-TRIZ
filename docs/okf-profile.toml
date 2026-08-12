@@ -6,6 +6,7 @@ entry_points = [
   "docs/README.md",
   "docs/log.md",
   "docs/reference/index.md",
+  "docs/reference/commit-ci-preflight.md",
   "docs/decisions/index.md",
   "docs/decisions/0001-official-lab-foundation.md",
   "docs/LAB_ARCHITECTURE.md",

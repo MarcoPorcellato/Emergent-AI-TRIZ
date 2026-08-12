@@ -59,6 +59,17 @@ Repository-level changes should remain compatible with the dependency-free check
 make check
 ```
 
+For an exact clean commit, produce and verify the local commit-bound receipt:
+
+```text
+make preflight-plan
+make preflight-run
+make preflight-verify
+```
+
+See the [Commit CI Preflight reference](docs/reference/commit-ci-preflight.md)
+for the evidence publication and GitHub cost boundary.
+
 ## Licensing
 
 By contributing, you agree that your contribution is licensed under the Apache License 2.0. Do not submit material that you do not have the right to redistribute.
