@@ -20,14 +20,19 @@ A neural sequence model can develop representations functionally equivalent to T
 
 The controlled-emergence track is essential because pretrained models may have encountered TRIZ material during training.
 
+## Research tracks
+
+- **Track A — Existing open models:** inspect pretrained base and instruction-tuned checkpoints for cross-domain, causally active TRIZ-like representations.
+- **Track B — Controlled emergence:** train small Transformers on fully inspectable problem-solution corpora that exclude TRIZ terminology, labels, definitions, and canonical examples.
+
 ## Initial research program
 
 1. Build a cross-domain, multi-label dataset for a small set of distinguishable inventive transformations.
-2. Separate recognition in pretrained open models from emergence in models trained on controlled corpora.
+2. Establish surface-level baselines using bag-of-words, embeddings, topic, keyword, output-only model, and random-label controls.
 3. Map candidate representations with probes, similarity analysis, sparse features, and causal tracing.
 4. Test causal specificity through steering, ablation, random-vector controls, and unrelated-principle controls.
 5. Test whether candidate operators compose predictably.
-6. Replicate across domains, model sizes, model families, prompts, cases, and blinded expert evaluators.
+6. Replicate across domains, model sizes, model families, prompts, cases, feature-discovery methods, and blinded expert evaluators.
 
 The proposed starting principles are Segmentation, Taking Out, Local Quality, Inversion, Dynamics, Another Dimension, Feedback, and Intermediary. This list is provisional and must be justified before data collection.
 
@@ -40,6 +45,7 @@ A probe score or visually attractive cluster is not sufficient. Strong evidence 
 - causal specificity;
 - bidirectional control through steering and ablation;
 - generalization to cases created after discovery data are frozen;
+- predictable composition of multiple candidate operators;
 - recurrence across independently trained model families; and
 - controlled emergence without explicit TRIZ material.
 
@@ -47,7 +53,7 @@ The hypothesis is weakened when effects disappear under lexical controls, fail o
 
 ## Repository map
 
-- [`docs/SOURCE_ARTICLE.txt`](docs/SOURCE_ARTICLE.txt) — the source article that motivates the project, preserved as supplied.
+- [`docs/ARTICLE.md`](docs/ARTICLE.md) — the revised research proposal that motivates the project.
 - [`docs/RESEARCH_PROTOCOL.md`](docs/RESEARCH_PROTOCOL.md) — experimental design, controls, metrics, and decision criteria.
 - [`docs/ARTICLE_STATUS.md`](docs/ARTICLE_STATUS.md) — provenance and bibliography-cleanup status for the supplied article.
 - [`data/README.md`](data/README.md) — dataset design and leakage constraints.
@@ -58,7 +64,7 @@ The hypothesis is weakened when effects disappear under lexical controls, fail o
 
 ## Current status
 
-The repository is at **protocol-design stage**. No dataset, model experiment, or empirical result is claimed yet. The source article contains imported citation placeholders; they are preserved for provenance and must be replaced with stable references before the article is treated as publication-ready.
+The repository is at **protocol-design stage**. No dataset, model experiment, or empirical result is claimed yet. The revised article contains 20 numbered bibliographic entries in place of the earlier imported citation tokens; independent reference verification remains a separate editorial step.
 
 ## Contributing
 
@@ -69,4 +75,3 @@ Contributions are welcome from TRIZ practitioners, mechanistic interpretability 
 Copyright 2026 Marco Porcellato ([`MarcoPorcellato`](https://github.com/MarcoPorcellato)).
 
 Licensed under the [Apache License 2.0](LICENSE). Attribution information is recorded in [NOTICE](NOTICE).
-
