@@ -3,7 +3,7 @@ type: decision-record
 title: ADR 0001 — Official Lab Foundation
 description: Define a dependency-free, foundation-only scope for the repository and set evidence boundaries for claims and exports.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-12
 ---
 
 # ADR 0001 — Official Lab Foundation

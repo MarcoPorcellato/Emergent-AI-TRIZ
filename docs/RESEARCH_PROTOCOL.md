@@ -3,7 +3,7 @@ type: ResearchProtocol
 title: Latent TRIZ Research Protocol
 description: Experimental tracks, controls, evidence criteria, and reproducibility requirements for testing the hypothesis.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-12
 ---
 
 # Research protocol

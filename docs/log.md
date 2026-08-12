@@ -3,7 +3,7 @@ type: chronology-log
 title: Documentation Chronology
 description: Time-ordered notes for maintained documentation and governance updates.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-12
 ---
 
 # Documentation Chronology

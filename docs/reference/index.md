@@ -3,7 +3,7 @@ type: reference-collection
 title: Reference Collection
 description: Canonical pointers for artifact flow, schemas, and operational references.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-12
 ---
 
 # Reference Collection

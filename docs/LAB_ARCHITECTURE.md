@@ -3,7 +3,7 @@ type: Architecture
 title: Lab Architecture
 description: Artifact flow, governance boundaries, and structure of the official Project Latent TRIZ laboratory.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-12
 ---
 
 # Lab architecture

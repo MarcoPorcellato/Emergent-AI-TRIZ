@@ -3,7 +3,7 @@ type: Roadmap
 title: Research Laboratory Roadmap
 description: Phase 0 foundation and future experimental stages for Project Latent TRIZ.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-12
 ---
 
 # Roadmap

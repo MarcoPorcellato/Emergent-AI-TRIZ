@@ -3,7 +3,7 @@ type: ArtifactStatus
 title: Source Article Status
 description: Provenance and independent-verification boundary for the motivating research proposal.
 status: active
-last_verified: 2026-08-13
+last_verified: 2026-08-12
 ---
 
 # Source article status

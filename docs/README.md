@@ -3,7 +3,7 @@ type: human-portal
 title: Documentation Human Portal
 description: Curated entry point for contributors and reviewers to navigate maintained repository documentation.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-12
 ---
 
 # Documentation Human Portal
