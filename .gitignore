@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+
+# Notebooks and local experiment output
+.ipynb_checkpoints/
+artifacts/
+checkpoints/
+runs/
+wandb/
+
+# Model and data files must be published deliberately
+*.bin
+*.ckpt
+*.gguf
+*.safetensors
+data/private/
+data/raw/
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+

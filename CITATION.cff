@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it using these metadata."
+title: "Emergent AI TRIZ: Project Latent TRIZ"
+type: software
+authors:
+  - family-names: Porcellato
+    given-names: Marco
+    alias: MarcoPorcellato
+abstract: >-
+  An open research initiative testing whether neural sequence models learn
+  domain-general, causally active representations functionally equivalent to
+  TRIZ inventive principles.
+license: Apache-2.0
+repository-code: "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ"
+url: "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ"
+date-released: 2026-08-13
+
