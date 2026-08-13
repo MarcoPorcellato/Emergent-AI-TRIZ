@@ -39,7 +39,7 @@ Recognition cannot promote selection or causal-control claims.
 
 - acquire no model until current terms, revision availability, disk/memory requirements, and interpretability access are receipted;
 - expand and annotate the development corpus before any freeze-mode audit can pass;
-- freeze two independent raters per response and a preregistered agreement statistic for empirical runs;
+- collect two independent raters per response under the frozen v1.1 ontology and its preregistered raw-agreement, nominal-alpha, abstention, bootstrap, and adjudication policy;
 - keep evaluator packets physically separate from the sealed allocation key;
 - freeze lexical, domain-transfer, random-direction, label-permutation, dose-response, and capability-preservation controls;
 - retain the active protected-`main` ruleset and exact-head Commit CI Preflight receipt gate while the scientific blockers are resolved.

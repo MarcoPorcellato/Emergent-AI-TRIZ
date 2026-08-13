@@ -52,9 +52,14 @@ of dataset cases. It is an operational aid, not evidence. The workbench must:
 - present sanitized case fields only;
 - hide labels, provenance, split metadata, lexical controls, related-case IDs,
   and allocation or outcome details from the rater view;
-- accept only the curated ontology choices for this stage, currently
-  Segmentation and Inversion;
+- accept only the curated ontology choices for this stage:
+  Segmentation, Inversion, Both, Other, and Abstain (Cannot determine);
 - capture a confidence value and rationale for each judgment;
+- capture four ordinal dimensions: `operator_presence`, `operator_essentiality`,
+  `contradiction_resolution`, and `solution_feasibility`;
+- bind each record to `case_payload_sha256`, `dataset_batch_sha256`,
+  `guide_sha256`, and `display_view_version = v1.1.0`;
+- optionally include `alternative_principle` text when helpful.
 - persist abstentions explicitly so undecidable cases remain visible in coverage;
 - append validated records to `artifacts/annotations/dataset-annotations.jsonl`;
 - mark human annotation records with `non_empirical = false` because they are
@@ -69,8 +74,11 @@ make wave1-annotation-audit ANNOTATION_FILES="path/rater1.jsonl path/rater2.json
 ```
 
 The audit checks schema validity, the exact guide revision and digest, full
-case coverage, at least two distinct raters, pairwise exact percent agreement
-greater than or equal to 0.8, and abstention rate less than or equal to 0.2.
+case coverage, at least two distinct raters, pairwise exact percent agreement,
+nominal Krippendorff alpha, and abstention rate against the frozen
+guide-policy thresholds. Deterministic 95% case-bootstrap percentile intervals
+for raw agreement and nominal alpha are reported descriptively using 2,000
+resamples and the preregistered seed; they are not yet a freeze gate.
 It writes the retained summary to `artifacts/annotations/wave1-audit.json` and
 keeps disagreements, consensus results, and digests for later adjudication. The
 result is empirical human judgment metadata, but it remains
@@ -78,8 +86,14 @@ result is empirical human judgment metadata, but it remains
 be true while the freeze remains false. Independence is a procedural control,
 not identity proof.
 Aggregate agreement never overrides a case-level conflict: each freeze-ready
-case requires a unanimous substantive label. Disagreements and unanimous
-abstentions therefore remain explicit adjudication work.
+case requires unanimity on a substantive label. Disagreements and unanimous
+abstentions remain explicit adjudication work. Ordinal Krippendorff alpha is
+reported per dimension as descriptive calibration metadata and is not a freeze
+gate until a threshold is preregistered.
+
+Annotation records created under guide v1.0 are discovery-only and cannot be
+mixed into a v1.1 freeze audit. A definitive Wave 1 audit must use records bound
+to the frozen v1.1 guide, displayed case payload, and dataset batch digests.
 
 Default entry points are `make annotate` for the interactive browser flow and
 `make annotate-serve` for headless or externally controlled use.

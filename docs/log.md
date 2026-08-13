@@ -11,6 +11,13 @@ last_verified: 2026-08-13
 ## 2026-08-13
 
 - Replaced Lab 04 all-layer Holm gating with shared, domain-blocked max-statistic control, nested alpha reselection within every permutation, explicit p-resolution refusal, typed public receipts, and regenerated fail-closed Lab 04–05 fixture artifacts.
+- Updated the v1.1 annotation ontology workflow: four primary ontology labels plus
+  abstain, canonical case and batch hashes in annotation records, v1.1.0 display
+  version, nominal Krippendorff alpha in blinded-audit output, and explicit
+  frozen agreement policy in the stage-1 guide and audit schema.
+- Added deterministic, case-clustered 95% bootstrap intervals for raw agreement
+  and nominal alpha as descriptive calibration metadata under a frozen seed and
+  resample count.
 - Added the Wave 1 retained audit command for per-rater files, including
   exact guide digest checks, full coverage, pairwise agreement and abstention
   thresholds, consensus and disagreement retention, and a non-evidence

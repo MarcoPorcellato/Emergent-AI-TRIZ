@@ -7,7 +7,7 @@
   "required": [
     "artifact_class", "status", "ready_for_adjudication", "ready_for_freeze",
     "empirical", "evidence_eligible", "claim_ids", "policy", "counts",
-    "coverage_by_case", "agreement", "abstention_rate", "consensus_labels",
+    "coverage_by_case", "agreement", "ordinal_agreement", "abstention_rate", "consensus_labels",
     "guide", "artifacts", "issues"
   ],
   "properties": {
@@ -21,11 +21,37 @@
     "policy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["minimum_distinct_raters", "agreement_threshold", "maximum_abstention_rate"],
+      "required": [
+        "minimum_distinct_raters",
+        "raw_agreement_threshold",
+        "nominal_alpha_threshold",
+        "maximum_abstention_rate",
+        "abstain_as_category",
+        "raw_agreement_metric",
+        "ordinal_agreement_metric",
+        "ordinal_gate",
+        "confidence_interval_method",
+        "confidence_level",
+        "confidence_interval_resamples",
+        "confidence_interval_seed",
+        "confidence_interval_gate",
+        "adjudication_rule"
+      ],
       "properties": {
         "minimum_distinct_raters": {"type": "integer", "minimum": 2},
-        "agreement_threshold": {"type": "number", "minimum": 0, "maximum": 1},
-        "maximum_abstention_rate": {"type": "number", "minimum": 0, "maximum": 1}
+        "raw_agreement_threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "nominal_alpha_threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "maximum_abstention_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "abstain_as_category": {"type": "boolean"},
+        "raw_agreement_metric": {"type": "string", "const": "pairwise_exact_percent_agreement"},
+        "ordinal_agreement_metric": {"const": "krippendorff_alpha_ordinal"},
+        "ordinal_gate": {"const": "descriptive_only"},
+        "confidence_interval_method": {"const": "case_bootstrap_percentile"},
+        "confidence_level": {"const": 0.95},
+        "confidence_interval_resamples": {"const": 2000},
+        "confidence_interval_seed": {"const": 1729},
+        "confidence_interval_gate": {"const": "descriptive_only"},
+        "adjudication_rule": {"type": "string", "minLength": 1}
       }
     },
     "counts": {
@@ -43,14 +69,46 @@
     "agreement": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["metric", "overall", "matched_pairs", "total_pairs", "per_case", "disagreement_case_ids"],
+      "required": ["metric", "overall", "matched_pairs", "total_pairs", "per_case", "disagreement_case_ids", "unanimous_abstention_case_ids", "adjudication_case_ids", "nominal_alpha", "confidence_intervals"],
       "properties": {
         "metric": {"type": "string", "const": "pairwise_exact_percent_agreement"},
         "overall": {"type": "number", "minimum": 0, "maximum": 1},
         "matched_pairs": {"type": "integer", "minimum": 0},
         "total_pairs": {"type": "integer", "minimum": 0},
         "per_case": {"type": "object"},
-        "disagreement_case_ids": {"type": "array", "items": {"type": "string"}}
+        "disagreement_case_ids": {"type": "array", "items": {"type": "string"}},
+        "unanimous_abstention_case_ids": {"type": "array", "items": {"type": "string"}},
+        "adjudication_case_ids": {"type": "array", "items": {"type": "string"}},
+        "nominal_alpha": {"type": "number", "minimum": -1, "maximum": 1},
+        "confidence_intervals": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["raw_agreement", "nominal_alpha"],
+          "properties": {
+            "raw_agreement": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number", "minimum": 0, "maximum": 1}},
+            "nominal_alpha": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number", "minimum": -1, "maximum": 1}}
+          }
+        }
+      }
+    },
+    "ordinal_agreement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric", "gate", "by_dimension"],
+      "properties": {
+        "metric": {"const": "krippendorff_alpha_ordinal"},
+        "gate": {"const": "descriptive_only"},
+        "by_dimension": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["operator_presence", "operator_essentiality", "contradiction_resolution", "solution_feasibility"],
+          "properties": {
+            "operator_presence": {"type": "number", "minimum": -1, "maximum": 1},
+            "operator_essentiality": {"type": "number", "minimum": -1, "maximum": 1},
+            "contradiction_resolution": {"type": "number", "minimum": -1, "maximum": 1},
+            "solution_feasibility": {"type": "number", "minimum": -1, "maximum": 1}
+          }
+        }
       }
     },
     "abstention_rate": {"type": "number", "minimum": 0, "maximum": 1},
@@ -67,10 +125,11 @@
     "artifacts": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["cases_sha256", "guide_sha256", "annotation_schema_sha256", "annotation_files"],
+      "required": ["cases_sha256", "guide_sha256", "annotation_schema_sha256", "display_batch_sha256", "annotation_files"],
       "properties": {
         "cases_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
         "guide_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "display_batch_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
         "annotation_schema_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
         "annotation_files": {
           "type": "array",

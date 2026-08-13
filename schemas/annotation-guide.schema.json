@@ -4,24 +4,44 @@
   "title": "Latent TRIZ annotation guide",
   "type": "object",
   "additionalProperties": false,
-  "required": ["guide_id", "revision", "status", "labels", "abstention", "decision_rule", "evidence_eligible"],
+  "required": [
+    "guide_id",
+    "revision",
+    "status",
+    "labels",
+    "abstention",
+    "decision_rule",
+    "ordinal_dimensions",
+    "evidence_eligible",
+    "agreement_policy"
+  ],
   "properties": {
     "guide_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
     "revision": {"type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$"},
     "status": {"type": "string", "enum": ["development", "frozen", "retired"]},
     "labels": {
       "type": "array",
-      "minItems": 2,
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "name", "definition"],
+        "required": ["id", "name", "definition", "positive_examples", "near_misses"],
         "properties": {
-          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+          "id": {"type": "string", "enum": ["segmentation", "inversion", "both", "other"]},
           "name": {"type": "string", "minLength": 1},
-          "definition": {"type": "string", "minLength": 1}
+          "definition": {"type": "string", "minLength": 1},
+          "positive_examples": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "near_misses": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
         }
-      }
+      },
+      "allOf": [
+        {"contains": {"type": "object", "required": ["id"], "properties": {"id": {"const": "segmentation"}}}},
+        {"contains": {"type": "object", "required": ["id"], "properties": {"id": {"const": "inversion"}}}},
+        {"contains": {"type": "object", "required": ["id"], "properties": {"id": {"const": "both"}}}},
+        {"contains": {"type": "object", "required": ["id"], "properties": {"id": {"const": "other"}}}}
+      ]
     },
     "abstention": {
       "type": "object",
@@ -34,6 +54,63 @@
       }
     },
     "decision_rule": {"type": "string", "minLength": 1},
-    "evidence_eligible": {"type": "boolean", "const": false}
+    "ordinal_dimensions": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "definition", "minimum", "maximum", "anchors"],
+        "properties": {
+          "id": {"enum": ["operator_presence", "operator_essentiality", "contradiction_resolution", "solution_feasibility"]},
+          "name": {"type": "string", "minLength": 1},
+          "definition": {"type": "string", "minLength": 1},
+          "minimum": {"const": 0},
+          "maximum": {"type": "integer", "enum": [3, 4]},
+          "anchors": {"type": "object"}
+        }
+      }
+    },
+    "evidence_eligible": {"type": "boolean", "const": false},
+    "agreement_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum_distinct_raters",
+        "raw_agreement_threshold",
+        "nominal_alpha_threshold",
+        "maximum_abstention_rate",
+        "abstain_as_category",
+        "raw_agreement_metric",
+        "ordinal_agreement_metric",
+        "ordinal_gate",
+        "confidence_interval_method",
+        "confidence_level",
+        "confidence_interval_resamples",
+        "confidence_interval_seed",
+        "confidence_interval_gate",
+        "adjudication_rule"
+      ],
+      "properties": {
+        "minimum_distinct_raters": {"const": 2},
+        "raw_agreement_threshold": {"type": "number", "minimum": 0, "maximum": 1, "const": 0.8},
+        "nominal_alpha_threshold": {"type": "number", "minimum": 0, "maximum": 1, "const": 0.8},
+        "maximum_abstention_rate": {"const": 0.2},
+        "abstain_as_category": {"type": "boolean", "const": true},
+        "raw_agreement_metric": {"type": "string", "const": "pairwise_exact_percent_agreement"},
+        "ordinal_agreement_metric": {"const": "krippendorff_alpha_ordinal"},
+        "ordinal_gate": {"const": "descriptive_only"},
+        "confidence_interval_method": {"const": "case_bootstrap_percentile"},
+        "confidence_level": {"const": 0.95},
+        "confidence_interval_resamples": {"const": 2000},
+        "confidence_interval_seed": {"const": 1729},
+        "confidence_interval_gate": {"const": "descriptive_only"},
+        "adjudication_rule": {
+          "type": "string",
+          "const": "Case-level unanimity on a substantive label required for freeze; disagreements and unanimous abstentions remain explicit for adjudication."
+        }
+      }
+    }
   }
 }

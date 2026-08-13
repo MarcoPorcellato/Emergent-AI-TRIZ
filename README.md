@@ -145,6 +145,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Matryca-Knowledge-style maintained documentation bundle: implemented
 - Commit CI Preflight: configured with a dependency-free container runner to reduce unnecessary GitHub Actions usage
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
+- Annotation ontology v1.1: frozen with five judgment states, ordinal quality scores, case/batch cryptographic binding, nominal and ordinal agreement receipts, and explicit adjudication; independent Wave 1 judgments are still pending
 - Lab 00 public visual surface: implemented, infrastructure-only, not claim-attached
 - Lab 01 model anatomy: implemented on an exact-revision didactic model; empirical instrumentation only, not claim-eligible
 - Model-backed representation bridge: implemented for exact-revision Pythia smoke runs; real activations remain exploratory and not claim-eligible

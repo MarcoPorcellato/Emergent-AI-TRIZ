@@ -149,16 +149,42 @@ class DatasetSnapshotTests(unittest.TestCase):
         ]
 
     def _base_annotations(self) -> list[dict]:
-        return [
-            {"annotation_id": "ann_001", "case_id": "case_001", "rater_id": "r1", "label": "A", "non_empirical": True, "annotated_at": "2026-08-13T00:00:00Z"},
-            {"annotation_id": "ann_002", "case_id": "case_001", "rater_id": "r2", "label": "A", "non_empirical": True, "annotated_at": "2026-08-13T00:00:00Z"},
-            {"annotation_id": "ann_003", "case_id": "case_002", "rater_id": "r1", "label": "B", "non_empirical": True, "annotated_at": "2026-08-13T00:00:00Z"},
-            {"annotation_id": "ann_004", "case_id": "case_002", "rater_id": "r2", "label": "B", "non_empirical": True, "annotated_at": "2026-08-13T00:00:00Z"},
-            {"annotation_id": "ann_005", "case_id": "case_003", "rater_id": "r1", "label": "A", "non_empirical": True, "annotated_at": "2026-08-13T00:00:00Z"},
-            {"annotation_id": "ann_006", "case_id": "case_003", "rater_id": "r2", "label": "A", "non_empirical": True, "annotated_at": "2026-08-13T00:00:00Z"},
-            {"annotation_id": "ann_007", "case_id": "case_004", "rater_id": "r1", "label": "C", "non_empirical": True, "annotated_at": "2026-08-13T00:00:00Z"},
-            {"annotation_id": "ann_008", "case_id": "case_004", "rater_id": "r2", "label": "C", "non_empirical": True, "annotated_at": "2026-08-13T00:00:00Z"},
+        records = []
+        labels = {
+            "case_001": "segmentation",
+            "case_002": "inversion",
+            "case_003": "segmentation",
+            "case_004": "other",
+        }
+        pairs = [
+            (f"case_{case_index:03d}", f"r{rater_index}")
+            for case_index in range(1, 5)
+            for rater_index in range(1, 3)
         ]
+        for index, (case_id, rater_id) in enumerate(pairs, start=1):
+            records.append(
+                {
+                    "annotation_id": f"ann_{index:03d}",
+                    "case_id": case_id,
+                    "rater_id": rater_id,
+                    "label": labels[case_id],
+                    "confidence": 0.8,
+                    "rationale": "Synthetic schema fixture.",
+                    "operator_presence": 2,
+                    "operator_essentiality": 2,
+                    "contradiction_resolution": 2,
+                    "solution_feasibility": 2,
+                    "guide_revision": "v1.1.0",
+                    "guide_sha256": "a" * 64,
+                    "case_payload_sha256": "b" * 64,
+                    "dataset_batch_sha256": "c" * 64,
+                    "display_view_version": "v1.1.0",
+                    "session_id": "snapshot-test-session",
+                    "non_empirical": True,
+                    "annotated_at": "2026-08-13T00:00:00Z",
+                }
+            )
+        return records
 
     def _registry_entry(self) -> dict:
         return {
@@ -500,12 +526,5 @@ class DatasetSnapshotTests(unittest.TestCase):
     def test_agreement_and_schema_requirements(self) -> None:
         with tempfile.TemporaryDirectory() as workdir:
             basedir = Path(workdir)
-            ann = {
-                "annotation_id": "ann_001",
-                "case_id": "case_001",
-                "rater_id": "r1",
-                "label": "A",
-                "non_empirical": True,
-                "annotated_at": "2026-08-13T00:00:00Z",
-            }
+            ann = self._base_annotations()[0]
             self.assertEqual(validate(ann, self.annotation_schema), [])
