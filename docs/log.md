@@ -15,6 +15,7 @@ last_verified: 2026-08-13
 - Reframed the public entrance around the runnable Stage 1 process smoke and its non-empirical boundary.
 - Added four contribution lanes and a staged visual/mechanistic-interpretability roadmap.
 - Added the one-command, dependency-free Lab 00 visual smoke, explicitly below E0.
+- Recorded the provisional EXP-001 model roles and synthetic-first dataset strategy in ADR 0003 without promoting claims or freezing a preregistration.
 
 - Initialized the Matryca Knowledge OKF maintained-bundle documentation structure.
 - Added documentation portal pages and ADR 0001 for the dependency-free official-lab foundation.
