@@ -293,6 +293,55 @@ def _run_claims_audit(registry_path: str, root: str) -> int:
         "results",
         "replications",
     )
+    profile_requirements = {
+        "E0": (),
+        "E1": ("behavioral_effect",),
+        "E2": ("behavioral_effect", "lexical_controls", "cross_domain", "decodable"),
+        "E3": (
+            "behavioral_effect",
+            "lexical_controls",
+            "cross_domain",
+            "decodable",
+            "positive_causal_intervention",
+            "dose_response",
+            "capability_preserved",
+        ),
+        "E4": (
+            "behavioral_effect",
+            "lexical_controls",
+            "cross_domain",
+            "decodable",
+            "positive_causal_intervention",
+            "dose_response",
+            "capability_preserved",
+            "negative_causal_intervention",
+        ),
+        "E5": (
+            "behavioral_effect",
+            "lexical_controls",
+            "cross_domain",
+            "decodable",
+            "positive_causal_intervention",
+            "dose_response",
+            "capability_preserved",
+            "negative_causal_intervention",
+            "independent_replication",
+            "cross_model_replication",
+        ),
+        "E6": (
+            "behavioral_effect",
+            "lexical_controls",
+            "cross_domain",
+            "decodable",
+            "positive_causal_intervention",
+            "dose_response",
+            "capability_preserved",
+            "negative_causal_intervention",
+            "independent_replication",
+            "cross_model_replication",
+            "controlled_training",
+        ),
+    }
     ok = True
 
     try:
@@ -338,6 +387,35 @@ def _run_claims_audit(registry_path: str, root: str) -> int:
                         f"{registry_path}:{line_number}:{claim_id}:{field}: evidence file not found: {reference}"
                     )
                     ok = False
+
+        evidence_level = claim.get("evidence_level")
+        evidence_profile = claim.get("evidence_profile")
+
+        if not isinstance(evidence_level, str):
+            _print_error(f"{registry_path}:{line_number}:{claim_id}: evidence_level must be a string")
+            ok = False
+            continue
+
+        required_axes = profile_requirements.get(evidence_level)
+        if required_axes is None:
+            _print_error(f"{registry_path}:{line_number}:{claim_id}: unsupported evidence_level: {evidence_level}")
+            ok = False
+            continue
+
+        if not isinstance(evidence_profile, dict):
+            _print_error(
+                f"{registry_path}:{line_number}:{claim_id}: evidence_profile must be an object for evidence_level {evidence_level}"
+            )
+            ok = False
+            continue
+
+        missing_axis = [axis for axis in required_axes if evidence_profile.get(axis) is not True]
+        if missing_axis:
+            _print_error(
+                f"{registry_path}:{line_number}:{claim_id}: evidence_profile incompatible with evidence_level {evidence_level}; "
+                f"missing true axes: {', '.join(missing_axis)}"
+            )
+            ok = False
 
     return 0 if ok else 1
 

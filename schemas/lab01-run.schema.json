@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/lab01-run.schema.json",
+  "title": "Lab 01 run record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "empirical",
+    "evidence_eligible",
+    "claim_ids",
+    "model",
+    "revision",
+    "backend",
+    "dtype",
+    "structural_artifacts",
+    "byte_identical_structures",
+    "numeric_tolerance_by_backend_dtype",
+    "run_state",
+    "notes"
+  ],
+  "properties": {
+    "artifact_class": { "type": "string", "const": "model-instrumentation" },
+    "empirical": { "type": "boolean", "const": true },
+    "evidence_eligible": { "type": "boolean", "const": false },
+    "claim_ids": { "type": "array", "maxItems": 0, "items": { "type": "string" } },
+    "model": { "type": "string", "const": "EleutherAI/pythia-70m-deduped" },
+    "revision": { "type": "string", "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c" },
+    "license_id": { "type": "string", "const": "Apache-2.0" },
+    "backend": { "type": "string", "minLength": 1 },
+    "dtype": { "type": "string", "minLength": 1 },
+    "run_state": {
+      "type": "string",
+      "enum": [
+        "selection",
+        "acquisition_planned",
+        "acquired",
+        "integrity_verified",
+        "load_verified",
+        "instrumentation_verified",
+        "lab_ready"
+      ]
+    },
+    "structural_artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "sha256"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "byte_identical_structures": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "numeric_tolerance_by_backend_dtype": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": {
+          "type": "object",
+          "required": ["atol", "rtol"],
+          "properties": {
+            "atol": { "type": "number", "minimum": 0 },
+            "rtol": { "type": "number", "minimum": 0 }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

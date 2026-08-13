@@ -15,16 +15,17 @@ The Evidence Ladder prevents infrastructure, exploratory observations, and attra
 | Level | Name | Required evidence |
 |---|---|---|
 | E0 | Hypothesis | A precise statement, model scope, falsification condition, and untested status. |
-| E1 | Behavioral observation | A documented behavioral effect with matched negatives and relevant lexical controls. |
-| E2 | Cross-domain decodability | Frozen train/test domains, label-permutation controls, and out-of-domain decoding above preregistered thresholds. |
-| E3 | Causal steering | A preregistered intervention changes solution behavior while preserving defined capability controls. |
-| E4 | Bidirectional causality | Positive and negative interventions yield predicted opposing effects with dose and specificity checks. |
-| E5 | Cross-model replication | The result reproduces on independent model families or by an independent implementation or team. |
-| E6 | Controlled emergence | A model trained without explicit TRIZ material develops a functionally equivalent, reproducible operator. |
+| E1 | Behavioral observation | `behavioral_effect` |
+| E2 | Cross-domain decodability | `behavioral_effect`, `lexical_controls`, `cross_domain`, `decodable` |
+| E3 | Causal steering | E2 + `positive_causal_intervention`, `dose_response`, `capability_preserved` |
+| E4 | Bidirectional causality | E3 + `negative_causal_intervention` |
+| E5 | Cross-model replication | E4 + `independent_replication`, `cross_model_replication` |
+| E6 | Controlled emergence | E5 + `controlled_training` |
 
 Levels are cumulative proof obligations, not a generic maturity score. E6 does not waive E1-E5 controls.
 Evidence level is a *summary* of satisfied obligations for the claim, and `evidence_profile` axes capture specific capabilities independently.
-The evidence axes are multi-dimensional and are not assumed to be linear or equivalent to one another; a claim may satisfy one axis without satisfying all higher-axis expectations.
+The evidence axes are multi-dimensional and are not assumed to be linear or equivalent to one another; a claim may satisfy additional axes while still not advancing evidence level.
+A claim may declare a level only when all cumulative minimum required axes for that level are true.
 
 ## Promotion rules
 

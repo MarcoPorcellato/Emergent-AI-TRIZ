@@ -1,0 +1,3 @@
+{"prompt_id":"lab01-prompt-001","prompt_kind":"frozen","domain":"everyday","prompt":"A device overheats during regular use. Describe a stepwise troubleshooting plan that stays within the current design and avoids named methodology labels."}
+{"prompt_id":"lab01-prompt-002","prompt_kind":"frozen","domain":"systems","prompt":"A team wants a clearer procedure for handling conflicting requirements. Give a concise explanation of how to structure the discussion without using special terminology."}
+{"prompt_id":"lab01-prompt-003","prompt_kind":"frozen","domain":"software","prompt":"A service is becoming difficult to maintain. List neutral engineering questions that help identify the next design review items."}

@@ -20,14 +20,17 @@ This opens the synthetic Lab 00 report locally. Its data are marked `non_empiric
 PYTHONPATH=src python3 -m latent_triz.cli lab00 --output artifacts/lab00/index.html --open
 ```
 
-Developer validation and the EXP-001 offline readiness report are separate:
+Developer validation and target-specific readiness reports are separate:
 
 ```bash
 make check
-make readiness
+make readiness TARGET=foundation
+make lab01-bootstrap
+make readiness TARGET=lab01
+make readiness TARGET=exp001
 ```
 
-`make readiness` does not download a model and does not claim that EXP-001 is ready to execute. It verifies the candidate decision record and reports the current dataset freeze gaps.
+Readiness is fail-closed and target-specific. `foundation` validates repository integrity, `lab01` verifies the local exact-revision model and instrumentation bundle, and `exp001` evaluates the model-candidate and dataset gates. A selected model is only **model-contract-ready** or **model-preflight-ready** until acquisition, integrity, load, and instrumentation receipts prove otherwise.
 
 ## Lab 00
 
@@ -105,6 +108,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 - [Evidence Ladder](docs/EVIDENCE_LADDER.md) — claim promotion rules E0–E6
 - [Stage 1 blinded pilot](docs/STAGE1_PILOT.md) — runnable packet, response, annotation, and summary contracts
 - [Lab 00 boundary](docs/STAGE1_PILOT.md#evidence-boundary) — presentation-only synthetic smoke view
+- [Lab 01 model anatomy](docs/LAB01.md) — real-model instrumentation, G1-G8, and no-claim boundary
 - [Research protocol](docs/RESEARCH_PROTOCOL.md) — controls, metrics, and decision criteria
 - [Roadmap](docs/ROADMAP.md) — visual labs, EXP-001, and the replication program
 - [EXP-001 readiness gates](docs/EXP001_READINESS.md) — offline model/dataset checks and remaining blockers
@@ -130,7 +134,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Commit CI Preflight: configured with a dependency-free container runner to reduce unnecessary GitHub Actions usage
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
 - Lab 00 public visual surface: implemented, infrastructure-only, not claim-attached
-- First model-backed visual experiment: planned, not yet implemented
+- Lab 01 model anatomy: implemented on an exact-revision didactic model; empirical instrumentation only, not claim-eligible
 - Empirical support for the Latent TRIZ hypothesis: none claimed
 
 ## License and attribution

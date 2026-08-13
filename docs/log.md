@@ -10,6 +10,8 @@ last_verified: 2026-08-13
 
 ## 2026-08-13
 
+- Added Lab 01 as the first exact-revision, real-model instrumentation laboratory with receipt-derived readiness, residual-stream capture, final-logit parity, repeatability, sparse public artifacts, and an explicit no-TRIZ-claim boundary.
+- Added fail-closed evidence-profile obligations to claim-level promotion and target-specific readiness for the foundation, Lab 01, and EXP-001.
 - Added offline model-preflight and dataset-audit gates for EXP-001 readiness, with deterministic JSON reports and no-download enforcement.
 - Renamed the public laboratory to Latent TRIZ and updated repository identity references.
 - Added the canonical E0-E6 Evidence Ladder, strict claim schema, and three explicit E0 hypotheses.

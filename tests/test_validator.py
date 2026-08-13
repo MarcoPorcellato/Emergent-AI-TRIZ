@@ -26,6 +26,14 @@ class ValidatorTests(unittest.TestCase):
         cls.claim_schema = json.loads((cls.repo / "schemas/claim.schema.json").read_text(encoding="utf-8"))
         cls.claim = json.loads((cls.repo / "data/claims.jsonl").read_text(encoding="utf-8").splitlines()[0])
 
+    @staticmethod
+    def _ensure_evidence_files(root: Path, claims: dict) -> None:
+        for field in ("preregistrations", "dataset_snapshots", "experiments", "results", "replications"):
+            for value in claims.get(field, []):
+                path = root / value
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("{}", encoding="utf-8")
+
     def test_valid_nested_case(self) -> None:
         issues = validate(self.valid_case, self.schema)
         self.assertEqual(issues, [])
@@ -36,6 +44,11 @@ class ValidatorTests(unittest.TestCase):
         issues = validate(invalid, self.schema)
         self.assertGreaterEqual(len(issues), 1)
         self.assertTrue(any("below minimum" in issue.message for issue in issues))
+
+    def test_unique_items_rejects_duplicate_objects(self) -> None:
+        schema = {"type": "array", "uniqueItems": True, "items": {"type": "object"}}
+        issues = validate([{"name": "config.json"}, {"name": "config.json"}], schema)
+        self.assertTrue(any("must be unique" in issue.message for issue in issues))
 
     def test_study_manifest_is_valid(self) -> None:
         issues = validate(self.study_manifest, self.study_schema)
@@ -147,6 +160,161 @@ class ValidatorTests(unittest.TestCase):
                     str(self.repo),
                 ]
             )
+        self.assertEqual(code, 0)
+        self.assertEqual(err.getvalue(), "")
+
+    def test_claims_audit_accepts_e0_with_all_false_profile_axes(self) -> None:
+        claim = dict(
+            self.claim,
+            evidence_level="E0",
+            status="untested",
+            non_empirical=True,
+        )
+        with tempfile.TemporaryDirectory() as workdir:
+            registry = Path(workdir) / "claims.jsonl"
+            registry.write_text(json.dumps(claim) + "\n", encoding="utf-8")
+            err = io.StringIO()
+            with redirect_stderr(err):
+                code = main(["claims-audit", "--registry", str(registry), "--root", workdir])
+        self.assertEqual(code, 0)
+        self.assertEqual(err.getvalue(), "")
+
+    def test_claims_audit_rejects_e1_without_behavioral_effect(self) -> None:
+        claim = dict(
+            self.claim,
+            evidence_level="E1",
+            evidence_profile={
+                "behavioral_effect": False,
+                "lexical_controls": False,
+                "cross_domain": False,
+                "decodable": False,
+                "positive_causal_intervention": False,
+                "negative_causal_intervention": False,
+                "dose_response": False,
+                "capability_preserved": False,
+                "independent_replication": False,
+                "cross_model_replication": False,
+                "controlled_training": False,
+            },
+            status="preliminary",
+            non_empirical=False,
+            preregistrations=["preregistrations/CLM-001-v1.md"],
+            dataset_snapshots=["data/snapshots/CLM-001-v1.json"],
+            experiments=["experiments/CLM-001-v1/manifest.json"],
+            results=["results/CLM-001-v1.json"],
+        )
+        with tempfile.TemporaryDirectory() as workdir:
+            registry = Path(workdir) / "claims.jsonl"
+            self._ensure_evidence_files(Path(workdir), claim)
+            registry.write_text(json.dumps(claim) + "\n", encoding="utf-8")
+            err = io.StringIO()
+            with redirect_stderr(err):
+                code = main(["claims-audit", "--registry", str(registry), "--root", workdir])
+        self.assertEqual(code, 1)
+        self.assertIn("missing true axes", err.getvalue())
+        self.assertIn("behavioral_effect", err.getvalue())
+
+    def test_claims_audit_rejects_e2_without_cumulative_requirements(self) -> None:
+        claim = dict(
+            self.claim,
+            evidence_level="E2",
+            evidence_profile={
+                "behavioral_effect": True,
+                "lexical_controls": True,
+                "cross_domain": False,
+                "decodable": True,
+                "positive_causal_intervention": False,
+                "negative_causal_intervention": False,
+                "dose_response": False,
+                "capability_preserved": False,
+                "independent_replication": False,
+                "cross_model_replication": False,
+                "controlled_training": False,
+            },
+            status="preliminary",
+            non_empirical=False,
+            preregistrations=["preregistrations/CLM-001-v1.md"],
+            dataset_snapshots=["data/snapshots/CLM-001-v1.json"],
+            experiments=["experiments/CLM-001-v1/manifest.json"],
+            results=["results/CLM-001-v1.json"],
+        )
+        with tempfile.TemporaryDirectory() as workdir:
+            registry = Path(workdir) / "claims.jsonl"
+            self._ensure_evidence_files(Path(workdir), claim)
+            registry.write_text(json.dumps(claim) + "\n", encoding="utf-8")
+            err = io.StringIO()
+            with redirect_stderr(err):
+                code = main(["claims-audit", "--registry", str(registry), "--root", workdir])
+        self.assertEqual(code, 1)
+        self.assertIn("cross_domain", err.getvalue())
+
+    def test_claims_audit_rejects_e5_without_replication_axes(self) -> None:
+        claim = dict(
+            self.claim,
+            evidence_level="E5",
+            evidence_profile={
+                "behavioral_effect": True,
+                "lexical_controls": True,
+                "cross_domain": True,
+                "decodable": True,
+                "positive_causal_intervention": True,
+                "negative_causal_intervention": True,
+                "dose_response": True,
+                "capability_preserved": True,
+                "independent_replication": True,
+                "cross_model_replication": False,
+                "controlled_training": False,
+            },
+            status="supported",
+            non_empirical=False,
+            preregistrations=["preregistrations/CLM-001-v1.md"],
+            dataset_snapshots=["data/snapshots/CLM-001-v1.json"],
+            experiments=["experiments/CLM-001-v1/manifest.json"],
+            results=["results/CLM-001-v1.json"],
+            replications=["results/CLM-001-v1.json"],
+        )
+        with tempfile.TemporaryDirectory() as workdir:
+            registry = Path(workdir) / "claims.jsonl"
+            self._ensure_evidence_files(Path(workdir), claim)
+            registry.write_text(json.dumps(claim) + "\n", encoding="utf-8")
+            err = io.StringIO()
+            with redirect_stderr(err):
+                code = main(["claims-audit", "--registry", str(registry), "--root", workdir])
+        self.assertEqual(code, 1)
+        self.assertIn("cross_model_replication", err.getvalue())
+
+    def test_claims_audit_allows_e6_with_extra_true_axes(self) -> None:
+        claim = dict(
+            self.claim,
+            evidence_level="E6",
+            evidence_profile={
+                "behavioral_effect": True,
+                "lexical_controls": True,
+                "cross_domain": True,
+                "decodable": True,
+                "positive_causal_intervention": True,
+                "negative_causal_intervention": True,
+                "dose_response": True,
+                "capability_preserved": True,
+                "independent_replication": True,
+                "cross_model_replication": True,
+                "controlled_training": True,
+            },
+            status="supported",
+            non_empirical=False,
+            preregistrations=["preregistrations/CLM-001-v1.md"],
+            dataset_snapshots=["data/snapshots/CLM-001-v1.json"],
+            experiments=["experiments/CLM-001-v1/manifest.json"],
+            results=["results/CLM-001-v1.json"],
+            replications=["results/CLM-001-v1.json"],
+        )
+        with tempfile.TemporaryDirectory() as workdir:
+            registry = Path(workdir) / "claims.jsonl"
+            self._ensure_evidence_files(Path(workdir), claim)
+            registry.write_text(json.dumps(claim) + "\n", encoding="utf-8")
+            err = io.StringIO()
+            with redirect_stderr(err):
+                code = main(["claims-audit", "--registry", str(registry), "--root", workdir])
         self.assertEqual(code, 0)
         self.assertEqual(err.getvalue(), "")
 

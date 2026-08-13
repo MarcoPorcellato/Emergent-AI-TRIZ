@@ -1,0 +1,41 @@
+{
+  "artifact_class": "model-instrumentation",
+  "empirical": true,
+  "evidence_eligible": false,
+  "claim_ids": [],
+  "model": "EleutherAI/pythia-70m-deduped",
+  "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+  "license_id": "Apache-2.0",
+  "contract_state": "selected",
+  "allowed_states": [
+    "unselected",
+    "selected",
+    "acquisition_planned",
+    "acquired",
+    "integrity_verified",
+    "load_verified",
+    "instrumentation_verified",
+    "lab_ready"
+  ],
+  "gates": ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"],
+  "byte_identical_structures": [
+    "prompt.json",
+    "tokens.json",
+    "topk_logits.jsonl"
+  ],
+  "numeric_tolerance_by_backend_dtype": {
+    "torch": {
+      "float32": {"atol": 0.000001, "rtol": 0.00002},
+      "float64": {"atol": 0.00000001, "rtol": 0.00000001},
+      "bfloat16": {"atol": 0.01, "rtol": 0.01},
+      "float16": {"atol": 0.01, "rtol": 0.01},
+      "int": {"atol": 0.0, "rtol": 0.0},
+      "bool": {"atol": 0.0, "rtol": 0.0},
+      "unknown": {"atol": 0.0001, "rtol": 0.0001}
+    },
+    "numpy": {
+      "float32": {"atol": 0.000001, "rtol": 0.00001}
+    }
+  },
+  "notes": "Didactic Lab 01 contract only; no TRIZ probe, steering, causal-tracing, dashboard, or multi-model claims."
+}
