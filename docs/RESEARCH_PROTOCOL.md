@@ -61,6 +61,26 @@ of dataset cases. It is an operational aid, not evidence. The workbench must:
   judgment metadata, not hypothesis evidence;
 - reject any attempt to turn the workbench into an evidence surface.
 
+Wave 1 also has a retained audit path for comparing per-rater files after
+collection:
+
+```text
+make wave1-annotation-audit ANNOTATION_FILES="path/rater1.jsonl path/rater2.jsonl"
+```
+
+The audit checks schema validity, the exact guide revision and digest, full
+case coverage, at least two distinct raters, pairwise exact percent agreement
+greater than or equal to 0.8, and abstention rate less than or equal to 0.2.
+It writes the retained summary to `artifacts/annotations/wave1-audit.json` and
+keeps disagreements, consensus results, and digests for later adjudication. The
+result is empirical human judgment metadata, but it remains
+`evidence_eligible = false` with `claim_ids = []`. `ready_for_adjudication` may
+be true while the freeze remains false. Independence is a procedural control,
+not identity proof.
+Aggregate agreement never overrides a case-level conflict: each freeze-ready
+case requires a unanimous substantive label. Disagreements and unanimous
+abstentions therefore remain explicit adjudication work.
+
 Default entry points are `make annotate` for the interactive browser flow and
 `make annotate-serve` for headless or externally controlled use.
 

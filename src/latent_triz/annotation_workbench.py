@@ -159,7 +159,7 @@ class AnnotationStore:
 
 def build_annotation_record(
     payload: Mapping[str, Any], *, rater_id: str, case_ids: set[str], labels: set[str],
-    guide_revision: str, guide_sha256: str,
+    guide_revision: str, guide_sha256: str, abstention_id: str = "abstain",
 ) -> dict[str, Any]:
     case_id, label = payload.get("case_id"), payload.get("label")
     confidence, rationale = payload.get("confidence"), payload.get("rationale")
@@ -169,15 +169,23 @@ def build_annotation_record(
         raise AnnotationWorkbenchError("label is not permitted by the annotation guide")
     if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not 0 <= confidence <= 1:
         raise AnnotationWorkbenchError("confidence must be a number in [0,1]")
-    if not isinstance(rationale, str) or not rationale.strip():
+    is_abstention = label == abstention_id
+    if is_abstention and confidence != 0:
+        raise AnnotationWorkbenchError("abstention confidence must be 0")
+    if not is_abstention and (not isinstance(rationale, str) or not rationale.strip()):
         raise AnnotationWorkbenchError("rationale is required")
     annotated_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
-    return {
+    record = {
         "annotation_id": f"ann_{secrets.token_hex(12)}", "case_id": case_id,
         "rater_id": rater_id, "label": label, "confidence": float(confidence),
-        "rationale": rationale.strip(), "non_empirical": False, "annotated_at": annotated_at,
+        "non_empirical": False, "annotated_at": annotated_at,
         "guide_revision": guide_revision, "guide_sha256": guide_sha256,
     }
+    if not is_abstention:
+        if not isinstance(rationale, str):
+            raise AnnotationWorkbenchError("rationale is required")
+        record["rationale"] = rationale.strip()
+    return record
 
 
 def render_workbench_html(session: Mapping[str, Any], csrf_token: str) -> str:
@@ -189,7 +197,7 @@ def render_workbench_html(session: Mapping[str, Any], csrf_token: str) -> str:
 <script>const session={data},csrf={token};let i=0;const byId=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>\"']/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}}[c]));
 function show(){{if(i>=session.cases.length){{byId('case').innerHTML='<h2>Queue complete</h2>';byId('form').hidden=true;return}}const c=session.cases[i];byId('progress').textContent=`Case ${{i+1}} of ${{session.cases.length}} · rater ${{session.rater_id}}`;byId('case').innerHTML=`<h2>${{esc(c.case_id)}}</h2><p><b>Domain:</b> ${{esc(c.domain)}}</p><p><b>Problem:</b> ${{esc(c.problem)}}</p><p><b>Constraints:</b> ${{c.constraints.map(esc).join(', ')}}</p><p><b>Initial:</b> ${{esc(c.initial_state)}}</p><p><b>Desired improvement:</b> ${{esc(c.desired_improvement)}}</p><p><b>Worsening consequence:</b> ${{esc(c.worsening_consequence)}}</p><p><b>Transformation:</b> ${{esc(c.transformation)}}</p><p><b>Result:</b> ${{esc(c.resulting_state)}}</p>`;byId('labels').innerHTML=session.guide.labels.map((l,n)=>`<label><input type=\"radio\" name=\"label\" value=\"${{esc(l.id)}}\" ${{n===0?'required':''}}> <b>${{esc(l.name||l.id)}}</b> — ${{esc(l.definition)}}</label>`).join('')}}
 async function save(payload){{const response=await fetch('/api/annotations',{{method:'POST',headers:{{'Content-Type':'application/json','X-CSRF-Token':csrf}},body:JSON.stringify(payload)}}),result=await response.json();byId('status').textContent=result.message||result.error;if(response.ok){{i++;byId('rationale').value='';show()}}}}
-byId('abstain').onclick=()=>save({{case_id:session.cases[i].case_id,label:session.guide.abstention.id,confidence:0,rationale:'Rater abstained: neither operator fit confidently.'}});byId('form').onsubmit=e=>{{e.preventDefault();const selected=document.querySelector('input[name=label]:checked');if(selected)save({{case_id:session.cases[i].case_id,label:selected.value,confidence:Number(byId('confidence').value),rationale:byId('rationale').value}})}};show()</script></main></body></html>"""
+byId('abstain').onclick=()=>save({{case_id:session.cases[i].case_id,label:session.guide.abstention.id,confidence:0}});byId('form').onsubmit=e=>{{e.preventDefault();const selected=document.querySelector('input[name=label]:checked');if(selected)save({{case_id:session.cases[i].case_id,label:selected.value,confidence:Number(byId('confidence').value),rationale:byId('rationale').value}})}};show()</script></main></body></html>"""
 
 
 def create_server(
@@ -235,7 +243,7 @@ def create_server(
             try:
                 payload = json.loads(self.rfile.read(length))
                 if not isinstance(payload, dict): raise AnnotationWorkbenchError("request body must be an object")
-                record = build_annotation_record(payload, rater_id=rater_id, case_ids=case_ids, labels=allowed_labels, guide_revision=guide["revision"], guide_sha256=guide_sha256)
+                record = build_annotation_record(payload, rater_id=rater_id, case_ids=case_ids, labels=allowed_labels, guide_revision=guide["revision"], guide_sha256=guide_sha256, abstention_id=guide["abstention"]["id"])
                 store.append(record)
             except (json.JSONDecodeError, AnnotationWorkbenchError) as exc: self._json(HTTPStatus.BAD_REQUEST, {"error": str(exc)}); return
             self._json(HTTPStatus.CREATED, {"message": f"saved {record['annotation_id']}"})

@@ -18,6 +18,7 @@ from .lab00 import Lab00Error, build_lab00_report
 from .lab_suite import LAB00_REPORT_PATH, LabSuiteError, build_lab_suite_report
 from .annotation_workbench import AnnotationWorkbenchError, serve_annotation_workbench
 from .candidate_batch import CandidateBatchError, audit_candidate_batch
+from .annotation_audit import AnnotationAuditError, audit_annotations
 from .validator import ValidationIssue, validate
 
 
@@ -107,6 +108,19 @@ def main(argv: Optional[List[str]] = None) -> int:
     candidate_audit_parser.add_argument("--cases", required=True, help="Candidate case JSONL")
     candidate_audit_parser.add_argument("--output", default="-", help="Output JSON path, '-' for stdout")
 
+    annotation_audit_parser = subparsers.add_parser(
+        "annotation-audit",
+        help="Audit independent blinded annotation files for coverage, agreement, and abstentions",
+    )
+    annotation_audit_parser.add_argument("--cases", required=True, help="Candidate case JSONL")
+    annotation_audit_parser.add_argument("--guide", required=True, help="Versioned annotation guide JSON")
+    annotation_audit_parser.add_argument("--schema", required=True, help="Dataset annotation schema JSON")
+    annotation_audit_parser.add_argument("--annotations", nargs="+", required=True, help="One JSONL file per rater")
+    annotation_audit_parser.add_argument("--minimum-distinct-raters", type=int, default=2)
+    annotation_audit_parser.add_argument("--agreement-threshold", type=float, default=0.8)
+    annotation_audit_parser.add_argument("--maximum-abstention-rate", type=float, default=0.2)
+    annotation_audit_parser.add_argument("--output", default="-", help="Output JSON path, '-' for stdout")
+
     evaluator_export_parser = subparsers.add_parser(
         "pilot-export-evaluator",
         help="Export evaluator-safe packets and a separate sealed allocation key",
@@ -162,6 +176,12 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _run_dataset_audit(args.plan, args.cases, args.mode, args.output)
     if args.command == "candidate-audit":
         return _run_candidate_audit(args.manifest, args.cases, args.output)
+    if args.command == "annotation-audit":
+        return _run_annotation_audit(
+            args.cases, args.guide, args.schema, args.annotations,
+            args.minimum_distinct_raters, args.agreement_threshold,
+            args.maximum_abstention_rate, args.output,
+        )
     if args.command == "pilot-export-evaluator":
         return _run_pilot_export_evaluator(
             args.packets,
@@ -602,6 +622,35 @@ def _run_candidate_audit(manifest: str, cases: str, output: str) -> int:
     if write_result != 0:
         return write_result
     return 0 if report["ready_for_blinded_review"] is True else 1
+
+
+def _run_annotation_audit(
+    cases: str,
+    guide: str,
+    schema: str,
+    annotations: list[str],
+    minimum_distinct_raters: int,
+    agreement_threshold: float,
+    maximum_abstention_rate: float,
+    output: str,
+) -> int:
+    try:
+        report = audit_annotations(
+            cases_path=cases,
+            guide_path=guide,
+            annotation_schema_path=schema,
+            annotation_paths=annotations,
+            minimum_distinct_raters=minimum_distinct_raters,
+            agreement_threshold=agreement_threshold,
+            maximum_abstention_rate=maximum_abstention_rate,
+        )
+    except AnnotationAuditError as exc:
+        _print_error(str(exc))
+        return 1
+    write_result = _write_json_output(report, output, dataset_stable_json_dumps)
+    if write_result != 0:
+        return write_result
+    return 0 if report["ready_for_freeze"] is True else 1
 
 
 def _run_pilot_export_evaluator(

@@ -31,5 +31,8 @@ Path to acceptance:
 
 Run `make dataset-wave1-audit` before every review session. Start a local
 blinded session with `make annotate-wave1 ANNOTATION_RATER_ID=rater_01`.
+After collecting at least two retained rater files, run
+`make wave1-annotation-audit ANNOTATION_FILES="path/rater1.jsonl path/rater2.jsonl"`
+to produce the retained batch summary at `artifacts/annotations/wave1-audit.json`.
 The batch manifest in this directory defines its exact counts and candidate
 constraints; the final dataset plan remains under `experiments/001-stage1-pilot/`.

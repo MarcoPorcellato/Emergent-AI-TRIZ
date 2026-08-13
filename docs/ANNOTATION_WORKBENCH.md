@@ -35,6 +35,9 @@ Restarting with the same rater and output path resumes at the remaining cases;
 previously saved case/rater pairs are omitted from the queue.
 An annotator who cannot make a defensible forced choice records an explicit
 `abstain` audit state; the case never disappears silently from coverage.
+The interface does not manufacture a rationale for that state: an abstention
+records only the explicit label and zero confidence, while substantive choices
+still require rater-authored rationale text.
 
 The guide at
 `experiments/001-stage1-pilot/annotation-guide.json` is versioned and hashed
@@ -43,3 +46,21 @@ the judgment itself is observed data. It remains `evidence_eligible: false` at
 the workbench boundary: collection alone cannot support or promote a hypothesis
 claim. Dataset freeze, agreement, leakage, preregistration, and claim gates are
 separate steps.
+
+For Wave 1 audit runs, the repository also supports a batched check that reads
+per-rater files, validates the guide revision and digest, and writes a retained
+audit summary at `artifacts/annotations/wave1-audit.json`:
+
+```text
+make wave1-annotation-audit ANNOTATION_FILES="path/rater1.jsonl path/rater2.jsonl"
+```
+
+This audit surface requires one file per pseudonymous rater, at least two
+distinct raters, complete case coverage, exact pairwise percent agreement of at
+least 0.8, and abstention rate at or below 0.2. It preserves disagreements,
+consensus calls, and digests for later adjudication. The resulting audit record
+is empirical human judgment metadata, but it remains `evidence_eligible: false`
+and must keep `claim_ids: []`. `ready_for_adjudication` may be true while the
+freeze remains false.
+Even above the aggregate agreement threshold, any disagreement or unanimous
+abstention prevents freeze readiness until the case is adjudicated.

@@ -78,6 +78,14 @@ judgment, hides labels and provenance from the rater view, and writes validated
 annotations to `artifacts/annotations/dataset-annotations.jsonl`. Default entry
 points are `make annotate` and `make annotate-serve`.
 
+Wave 1 now also has a retained audit command for batch review of per-rater
+files. `make wave1-annotation-audit ANNOTATION_FILES="path/rater1.jsonl
+path/rater2.jsonl"` validates the guide revision and digest, checks exact case
+coverage, enforces the agreement and abstention thresholds, and writes the
+retained summary to `artifacts/annotations/wave1-audit.json`. The audit output
+keeps disagreements and consensus records for later adjudication, but it
+remains non-evidence and cannot advance a claim on its own.
+
 Lab 03 is implemented as the next fail-closed surface-control boundary. It renders deterministic local diagnostics while refusing behavioral interpretation until Lab 02 passes, label/domain support is adequate, every required baseline family is present, and leave-one-domain-out plus random-label controls are complete. Its synthetic fixture output is a readiness result, not E1 evidence.
 
 Lab 04 is now implemented as a deterministic decodability contract run target with strict no-leakage controls and fail-closed readiness:

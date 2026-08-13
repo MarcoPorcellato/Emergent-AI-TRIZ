@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
+.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -25,6 +25,7 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/dataset-annotation.schema.json data/pilot/dataset-annotations.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/annotation-guide.schema.json experiments/001-stage1-pilot/annotation-guide.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/candidate-batch.schema.json data/candidates/wave1-manifest.json
+	python3 -c 'import json; json.load(open("schemas/blinded-annotation-audit.schema.json"))'
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/candidates/wave1-model-generated.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-config.schema.json experiments/lab03-behavioral-baselines/config.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-result.schema.json results/lab03/behavioral-baselines/summary.json
@@ -60,6 +61,17 @@ dataset-wave1-audit:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli candidate-audit \
 	  --manifest data/candidates/wave1-manifest.json \
 	  --cases data/candidates/wave1-model-generated.jsonl
+
+wave1-annotation-audit:
+	@test -n "$(ANNOTATION_FILES)" || (echo "ANNOTATION_FILES requires one JSONL path per independent rater"; exit 2)
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli annotation-audit \
+	  --cases data/candidates/wave1-model-generated.jsonl \
+	  --guide experiments/001-stage1-pilot/annotation-guide.json \
+	  --schema schemas/dataset-annotation.schema.json \
+	  --annotations $(ANNOTATION_FILES) \
+	  --minimum-distinct-raters 2 --agreement-threshold 0.8 \
+	  --maximum-abstention-rate 0.2 \
+	  --output artifacts/annotations/wave1-audit.json
 
 readiness:
 	@if [ "$(TARGET)" = "foundation" ]; then \

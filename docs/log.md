@@ -10,6 +10,10 @@ last_verified: 2026-08-13
 
 ## 2026-08-13
 
+- Added the Wave 1 retained audit command for per-rater files, including
+  exact guide digest checks, full coverage, pairwise agreement and abstention
+  thresholds, consensus and disagreement retention, and a non-evidence
+  boundary for `artifacts/annotations/wave1-audit.json`.
 - Documented the Wave 1 candidate batch as discovery-only: 24 model-generated Segmentation/Inversion cases across four domains, reciprocal opposite-label pairs, lexical-cue exclusions, non-frozen status, and evidence ineligibility.
 - Added the acceptance path for Wave 1 to the protocol: two independent raters, abstentions, agreement checks, provenance expansion, split freeze, and leakage audit before confirmatory use.
 - Added the blinded localhost annotation workbench documentation path, with
