@@ -1,0 +1,51 @@
+{
+  "study_id": "stage1-pilot-001",
+  "title": "Blinded output-only precursor for the Latent TRIZ hypothesis",
+  "track": "track_a_pretrained",
+  "stage": "stage_1_dataset",
+  "status": "designed",
+  "hypothesis": "TRIZ-name-free contradiction-focused elicitation increases blinded contradiction-resolution and principle-use ratings relative to a generic control prompt across domains.",
+  "preregistration": {
+    "prereg_id": "prereg-stage1-pilot-001",
+    "artifact_path": "preregistrations/001-stage1-pilot.md",
+    "version": "0.1.0",
+    "registered_at": "2026-08-12T10:00:00Z",
+    "notes": "Repository design timestamp only; not an external registration receipt."
+  },
+  "dataset": {
+    "dataset_id": "stage1-pilot-smoke-v1",
+    "snapshot_uri": "data/registry.json#dataset=stage1-pilot-smoke-v1",
+    "immutable_revision": "d8147acd50febd6ccdc3e5d0e7b6b9d701bde722666d00185f5a24ce86c8af29",
+    "splits": ["discovery"]
+  },
+  "models": [
+    {
+      "name": "pilot-smoke-model",
+      "family": "synthetic-placeholder",
+      "revision": "non-empirical",
+      "variant": "other"
+    }
+  ],
+  "primary_metrics": [
+    {
+      "name": "paired_contradiction_resolution_delta",
+      "unit": "rating-points",
+      "success_criterion": "Report feasibility and direction only; no confirmatory threshold in the pilot."
+    },
+    {
+      "name": "paired_principle_use_delta",
+      "unit": "rating-points",
+      "success_criterion": "Report feasibility and direction only; no confirmatory threshold in the pilot."
+    }
+  ],
+  "controls": [
+    "generic_control_prompt",
+    "triz_name_free_treatment",
+    "blinded_arm_order",
+    "terminology_only_leakage_rating"
+  ],
+  "code_revision": "unreleased",
+  "timestamps": {
+    "created_at": "2026-08-12T10:00:00Z"
+  }
+}

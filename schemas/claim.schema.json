@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/claim.schema.json",
+  "title": "Latent TRIZ Claim Registry Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "claim_id",
+    "statement",
+    "principle",
+    "track",
+    "model_scope",
+    "status",
+    "evidence_level",
+    "falsification_condition",
+    "preregistrations",
+    "dataset_snapshots",
+    "experiments",
+    "results",
+    "replications",
+    "non_empirical",
+    "last_verified"
+  ],
+  "if": {
+    "required": ["evidence_level"],
+    "properties": {"evidence_level": {"const": "E0"}}
+  },
+  "then": {
+    "properties": {
+      "status": {"const": "untested"},
+      "non_empirical": {"const": true},
+      "preregistrations": {"maxItems": 0},
+      "dataset_snapshots": {"maxItems": 0},
+      "experiments": {"maxItems": 0},
+      "results": {"maxItems": 0},
+      "replications": {"maxItems": 0}
+    }
+  },
+  "else": {
+    "properties": {
+      "non_empirical": {"const": false},
+      "preregistrations": {"minItems": 1},
+      "dataset_snapshots": {"minItems": 1},
+      "experiments": {"minItems": 1},
+      "results": {"minItems": 1}
+    },
+    "if": {
+      "required": ["evidence_level"],
+      "properties": {"evidence_level": {"enum": ["E5", "E6"]}}
+    },
+    "then": {
+      "properties": {"replications": {"minItems": 1}}
+    }
+  },
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "pattern": "^CLM-[0-9]{3,}$"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "principle": {
+      "type": "string",
+      "minLength": 1
+    },
+    "track": {
+      "type": "string",
+      "enum": ["pretrained", "controlled-emergence", "cross-track"]
+    },
+    "model_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "family", "revision"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "family": {"type": "string", "minLength": 1},
+        "revision": {"type": "string", "minLength": 1}
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["untested", "in-progress", "preliminary", "supported", "weakened", "falsified", "retracted"]
+    },
+    "evidence_level": {
+      "type": "string",
+      "enum": ["E0", "E1", "E2", "E3", "E4", "E5", "E6"]
+    },
+    "falsification_condition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "preregistrations": {"type": "array", "items": {"type": "string", "pattern": "^preregistrations/[A-Za-z0-9._/-]+$"}},
+    "dataset_snapshots": {"type": "array", "items": {"type": "string", "pattern": "^data/[A-Za-z0-9._/-]+$"}},
+    "experiments": {"type": "array", "items": {"type": "string", "pattern": "^experiments/[A-Za-z0-9._/-]+$"}},
+    "results": {"type": "array", "items": {"type": "string", "pattern": "^results/[A-Za-z0-9._/-]+$"}},
+    "replications": {"type": "array", "items": {"type": "string", "pattern": "^results/[A-Za-z0-9._/-]+$"}},
+    "non_empirical": {"type": "boolean"},
+    "last_verified": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    }
+  }
+}

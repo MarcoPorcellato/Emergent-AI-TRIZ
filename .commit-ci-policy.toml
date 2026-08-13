@@ -1,6 +1,6 @@
 schema_version = "1.0"
-project = "MarcoPorcellato/Emergent-AI-TRIZ"
-configuration_digest = "sha256:71fa6604a1db17e362484ec8d63ece085b134a6286c87b25bc17f57954c9c63f"
+project = "MarcoPorcellato/Latent-TRIZ"
+configuration_digest = "sha256:714760ce8dbbb273fcf43ac85cb7e7b92c0237fb511d0ac39d0213457f630bc0"
 required_checks = ["repository-check"]
 image_reference = "docker.io/library/python@sha256:399babc8b49529dabfd9c922f2b5eea81d611e4512e3ed250d75bd2e7683f4b0"
 max_age_seconds = 86400

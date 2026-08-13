@@ -1,136 +1,104 @@
-# Emergent AI TRIZ
+# Latent TRIZ
 
-Project Latent TRIZ is an official-lab foundation for studying whether models can represent TRIZ-like inventive transformations in a way that is measurable, reproducible, and falsifiable.
+**Do language models rediscover general operators of invention?**
 
-This repository does not claim that the experiments already exist. It defines the public artifact flow, governance boundaries, and the minimum foundation needed to run them later.
+Latent TRIZ is an open laboratory for testing whether language models learn internal, cross-domain, and causally active transformations that resemble TRIZ Inventive Principles. The project combines reproducible experiments, mechanistic interpretability, blinded evaluation, and explicit falsification criteria.
 
-## Repository status
+> **Current evidence boundary:** the repository contains a functioning, deterministic Stage 1 protocol smoke test and research-governance infrastructure. It does **not** yet contain evidence that a TRIZ-like representation exists in any model. Every scientific claim starts at E0: hypothesis.
 
-- Phase: `0` foundation
-- Claim level: protocol and infrastructure only
-- Evidence state: no dataset, preregistered study, or empirical result is claimed here
-- Runtime: dependency-free Python 3.11+ lab core included in this repository
+## Run the laboratory foundation
 
-## Hypotheses and tracks
+```bash
+git clone https://github.com/MarcoPorcellato/Latent-TRIZ.git
+cd Latent-TRIZ
+make check
+make stage1-pilot-smoke
+```
+
+The smoke command builds a blinded packet allocation, scores fixture annotations, validates every artifact, and compares the result with a frozen expected output. Its data are synthetic and marked `non_empirical`; passing it demonstrates process integrity, not the hypothesis.
+
+## The hypothesis
 
 The **Weak Latent TRIZ Hypothesis** predicts that pretrained language models contain representations corresponding to at least some TRIZ Inventive Principles and that those representations generalize across substantially different domains.
 
 The **Strong Latent TRIZ Hypothesis** predicts that a neural sequence model can develop functionally equivalent representations from unlabelled problem-solution examples without receiving TRIZ terminology, definitions, principle labels, or canonical examples.
 
-- **Track A — Existing open models:** inspect pretrained base and instruction-tuned checkpoints for cross-domain, causally active TRIZ-like representations.
-- **Track B — Controlled emergence:** train small Transformers on fully inspectable corpora that exclude explicit TRIZ material.
+- **Track A — pretrained models:** inspect openly available base and instruction-tuned checkpoints for cross-domain, causally active TRIZ-like representations.
+- **Track B — controlled emergence:** train small Transformers on fully inspectable corpora that exclude explicit TRIZ material.
 
-Strong evidence requires converging lexical-control, cross-domain, causal, bidirectional, novel-case, compositional, cross-model, and controlled-emergence results. A probe score or visual cluster alone is not sufficient.
+A probe score, attractive cluster, or behavioral anecdote is insufficient. Strong evidence must converge across lexical controls, cross-domain transfer, causal intervention, bidirectionality, novel cases, composition, model families, and controlled emergence.
 
-## Public artifact flow
+## Evidence Ladder
 
-The intended research flow is:
+| Level | Meaning | Minimum interpretation |
+|---|---|---|
+| E0 | Hypothesis | Registered, falsifiable, no empirical support claimed |
+| E1 | Behavioral observation | Effect observed under documented behavioral controls |
+| E2 | Cross-domain decodability | Representation decodes beyond lexical and domain shortcuts |
+| E3 | Causal steering | Intervention changes behavior in the predicted direction |
+| E4 | Bidirectional causality | Opposing interventions produce opposing, controlled effects |
+| E5 | Cross-model replication | Result reproduces across independent model families or teams |
+| E6 | Controlled emergence | Equivalent operators emerge in a controlled training setting |
 
-1. hypothesis
-2. preregistration
-3. dataset snapshot
-4. study manifest
-5. run records
-6. blinded evaluation
-7. versioned results
+Promotion is evidence-bound: a claim may advance only when its preregistration, immutable dataset snapshot, run records, results, and replication links satisfy the level's proof obligations. See the [Evidence Ladder](docs/EVIDENCE_LADDER.md) and machine-readable [claim registry](data/claims.jsonl). The initial claims are all E0 and untested.
 
-Each step should be frozen before the next confirmatory step starts. Exploratory work may happen earlier, but it must be labeled and kept separate from confirmatory records.
+## From visible behavior to mechanism
 
-## Governance boundaries
+The planned experimental route deliberately grows in complexity:
 
-- Hypotheses and analytical plans belong in preregistrations, not in results reports.
-- Dataset snapshots must be immutable, versioned, and provenance-backed.
-- Run records must preserve exact code revision, schema revision, model revision, prompt text, seed, environment, and output hashes.
-- Blinded evaluation must be separated from discovery data and from any unblinded analysis.
-- Versioned results must never overwrite earlier reports when the analysis changes.
-
-The repository is a public lab scaffold, not a claim of successful discovery.
-
-## Phase 0 foundation
-
-Phase 0 establishes the working contract for the future lab:
-
-- define the case schema and leakage controls;
-- define preregistration and result file formats;
-- keep the artifact chain explicit from hypothesis to versioned result;
-- keep claims bounded to what the available evidence supports;
-- make validation possible with dependency-free checks.
-
-## Future stages
-
-The intended research program is staged, but only the foundation is present here.
-
-### Stage 1 - Dataset assembly
-
-Build a cross-domain case corpus with provenance, leakage controls, and balanced labels.
-
-### Stage 2 - Surface baselines
-
-Measure what can be learned from lexical and shallow signals before representation analysis.
-
-### Stage 3 - Representation mapping
-
-Inspect candidate internal operators with probes, similarity methods, and readout analyses.
-
-### Stage 4 - Causal intervention
-
-Test whether candidate directions change solution strategy under controlled steering.
-
-### Stage 5 - Composition
-
-Test whether multiple candidate operators combine predictably.
-
-### Stage 6 - Replication
-
-Replicate across domains, model families, and independent evaluation sets.
-
-## Quickstart
-
-Run the repository directly from a checkout:
-
-```bash
-make check
-make preflight-plan
-PYTHONPATH=src python -m latent_triz.cli validate --schema schemas/case.schema.json tests/fixtures/case_valid.json
-PYTHONPATH=src python -m latent_triz.cli fingerprint schemas/case.schema.json
+```mermaid
+flowchart LR
+    A["Behavioral controls"] --> B["Activations"]
+    B --> C["Logit lens"]
+    C --> D["Linear probes"]
+    D --> E["Contrastive directions"]
+    E --> F["Steering"]
+    F --> G["Sparse features"]
+    G --> H["Activation patching"]
+    H --> I["Jacobian analysis"]
 ```
 
-## Repository map
+Each step must earn the next. The near-term target is a local, visual, one-command exploration lab; the current Stage 1 smoke establishes the artifact and evaluation path that this empirical work will use.
 
-- [Documentation portal](docs/index.md) - OKF maintained-bundle entry point and map
-- [Documentation log](docs/log.md) - chronology and updates for the maintained bundle
-- [Documentation reference index](docs/reference/index.md) - schema and artifact references
-- [Commit CI Preflight](docs/reference/commit-ci-preflight.md) - local receipts and lightweight GitHub verification
-- [Decision index](docs/decisions/index.md) - ADR ledger and governance boundaries
-- [Lab architecture](docs/LAB_ARCHITECTURE.md) - artifact flow, governance boundaries, and staged lab structure
-- [Roadmap](docs/ROADMAP.md) - Phase 0 foundation and future Stages 1-6
-- [Article](docs/ARTICLE.md) - research proposal and hypothesis framing
-- [Research protocol](docs/RESEARCH_PROTOCOL.md) - experimental design, controls, metrics, and decision criteria
-- [Article status](docs/ARTICLE_STATUS.md) - provenance and editorial status for the supplied article
-- [Data](data/README.md) - dataset design and leakage constraints
-- [`schemas/case.schema.json`](schemas/case.schema.json) - machine-readable case format
-- [`schemas/dataset-registry.schema.json`](schemas/dataset-registry.schema.json) - dataset snapshot registry contract
-- [`schemas/study.schema.json`](schemas/study.schema.json) - study manifest contract
-- [`schemas/run.schema.json`](schemas/run.schema.json) - immutable run record contract
-- [`src/latent_triz/`](src/latent_triz/) - dependency-free validation and fingerprinting CLI
-- [`experiments/000-template/`](experiments/000-template/) - non-empirical study and run templates
-- [`experiments/README.md`](experiments/README.md) - experiment packaging requirements
-- [`preregistrations/README.md`](preregistrations/README.md) - frozen hypotheses and analysis plans
-- [`results/README.md`](results/README.md) - versioned reporting contract
+## Public artifact chain
 
-## OKF gate
+```text
+hypothesis -> preregistration -> dataset snapshot -> study manifest
+           -> immutable run records -> blinded evaluation -> versioned results
+```
 
-Repository changes to maintained documentation are required to pass the OKF gate:
+Exploratory work may happen earlier, but it remains visibly separate from confirmatory records. Results are versioned rather than overwritten, and model, prompt, seed, environment, schema, and output hashes travel with every run.
 
-- use the maintained bundle index at [`docs/index.md`](docs/index.md)
-- ensure every maintained doc includes `frontmatter` with `type`, `title`, `description`, `status`, and `last_verified`
-- keep `status` canonical on primary maintained entry points and update `last_verified` on edits
+## Start here
 
-## Contributing
+- [Documentation portal](docs/index.md) — maintained documentation map
+- [Evidence Ladder](docs/EVIDENCE_LADDER.md) — claim promotion rules E0–E6
+- [Stage 1 blinded pilot](docs/STAGE1_PILOT.md) — runnable packet, response, annotation, and summary contracts
+- [Research protocol](docs/RESEARCH_PROTOCOL.md) — controls, metrics, and decision criteria
+- [Roadmap](docs/ROADMAP.md) — visual labs, EXP-001, and the replication program
+- [Article](docs/ARTICLE.md) and [article status](docs/ARTICLE_STATUS.md) — hypothesis framing and provenance
+- [Claim registry](data/claims.jsonl) and [claim schema](schemas/claim.schema.json) — falsifiable public claims
+- [Discussions](https://github.com/MarcoPorcellato/Latent-TRIZ/discussions) — research questions and collaboration
 
-Contributions should preserve the foundation contract: separate exploratory from confirmatory work, keep provenance explicit, and avoid claiming empirical success until the supporting artifacts exist.
+## Four contribution lanes
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for submission requirements.
+- **Lane 0 — Learning:** reproduce a tutorial or smoke path; no scientific claim is promoted.
+- **Lane 1 — Exploratory:** add a clearly labeled probe, visualization, dataset audit, or candidate mechanism.
+- **Lane 2 — Confirmatory:** execute a frozen preregistration against a sealed dataset and immutable run contract.
+- **Lane 3 — Independent replication:** reproduce a result with an independent model family, dataset, implementation, or team.
+
+TRIZ practitioners can help operationalize principles and design negative cases. Interpretability researchers can build probes and interventions. Python contributors can improve the lab and visual tooling. Statisticians can review power, multiplicity, and decision rules. Contributors with limited hardware can work on schemas, fixtures, annotation, documentation, or small-model experiments.
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
+
+## Repository status
+
+- Foundation governance and schemas: implemented
+- Matryca-Knowledge-style maintained documentation bundle: implemented
+- Commit CI Preflight: configured with a dependency-free container runner to reduce unnecessary GitHub Actions usage
+- Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
+- First model-backed visual experiment: planned, not yet implemented
+- Empirical support for the Latent TRIZ hypothesis: none claimed
 
 ## License and attribution
 

@@ -1,14 +1,14 @@
 ---
 type: Architecture
 title: Lab Architecture
-description: Artifact flow, governance boundaries, and structure of the official Project Latent TRIZ laboratory.
+description: Artifact flow, governance boundaries, and structure of the Latent TRIZ open laboratory.
 status: canonical
-last_verified: 2026-08-12
+last_verified: 2026-08-13
 ---
 
 # Lab architecture
 
-Project Latent TRIZ is organized as a public laboratory scaffold. The goal is to make future studies auditable before any empirical claim is made.
+Latent TRIZ is organized as a public laboratory. Its current model-facing surface is not yet empirical; the goal is to make future studies auditable before any scientific claim is promoted.
 
 ## Artifact flow
 
@@ -43,11 +43,13 @@ Each artifact should be immutable once it is part of a confirmatory chain. If a 
 
 ## Lab structure
 
-The repository currently supports foundation work only:
+The repository currently supports:
 
 - schema definition
 - protocol writing
 - contribution rules
 - CI validation
+- a deterministic synthetic Stage 1 blinded-pilot smoke
+- an E0-E6 claim registry and promotion policy
 
-The future research stages are described in [`ROADMAP.md`](ROADMAP.md).
+The future model-backed research stages are described in [`ROADMAP.md`](ROADMAP.md).

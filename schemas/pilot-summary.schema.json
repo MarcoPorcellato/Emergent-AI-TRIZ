@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/pilot-summary.schema.json",
+  "title": "Vendor-neutral blinded pilot summary record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "non_empirical",
+    "dimensions",
+    "counts",
+    "per_arm_means",
+    "paired_deltas",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "non_empirical": {
+      "type": "boolean"
+    },
+    "dimensions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "contradiction_resolution",
+          "principle_use",
+          "feasibility",
+          "novelty",
+          "constraint_adherence",
+          "terminology_only"
+        ]
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cases",
+        "packets",
+        "responses",
+        "annotations",
+        "dimensions"
+      ],
+      "properties": {
+        "cases": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "packets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "responses": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "annotations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dimensions": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "per_arm_means": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["control", "treatment"],
+      "properties": {
+        "control": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contradiction_resolution",
+            "principle_use",
+            "feasibility",
+            "novelty",
+            "constraint_adherence",
+            "terminology_only"
+          ],
+          "properties": {
+            "contradiction_resolution": {
+              "type": "number"
+            },
+            "principle_use": {
+              "type": "number"
+            },
+            "feasibility": {
+              "type": "number"
+            },
+            "novelty": {
+              "type": "number"
+            },
+            "constraint_adherence": {
+              "type": "number"
+            },
+            "terminology_only": {
+              "type": "number"
+            }
+          }
+        },
+        "treatment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contradiction_resolution",
+            "principle_use",
+            "feasibility",
+            "novelty",
+            "constraint_adherence",
+            "terminology_only"
+          ],
+          "properties": {
+            "contradiction_resolution": {
+              "type": "number"
+            },
+            "principle_use": {
+              "type": "number"
+            },
+            "feasibility": {
+              "type": "number"
+            },
+            "novelty": {
+              "type": "number"
+            },
+            "constraint_adherence": {
+              "type": "number"
+            },
+            "terminology_only": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "paired_deltas": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["control|treatment"],
+        "properties": {
+          "control|treatment": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "contradiction_resolution",
+              "principle_use",
+              "feasibility",
+              "novelty",
+              "constraint_adherence",
+              "terminology_only"
+            ],
+            "properties": {
+              "contradiction_resolution": {
+                "type": "number"
+              },
+              "principle_use": {
+                "type": "number"
+              },
+              "feasibility": {
+                "type": "number"
+              },
+              "novelty": {
+                "type": "number"
+              },
+              "constraint_adherence": {
+                "type": "number"
+              },
+              "terminology_only": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packets_fingerprint",
+        "responses_fingerprint",
+        "annotations_fingerprint"
+      ],
+      "properties": {
+        "packets_fingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "responses_fingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "annotations_fingerprint": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

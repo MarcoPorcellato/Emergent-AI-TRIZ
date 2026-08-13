@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ/schemas/case.schema.json",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/case.schema.json",
   "title": "Latent TRIZ problem-solution case",
   "type": "object",
   "additionalProperties": false,
