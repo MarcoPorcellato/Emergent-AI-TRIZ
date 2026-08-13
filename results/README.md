@@ -8,3 +8,4 @@ Every report must link to the relevant preregistration, code commit, data snapsh
 
 - [Lab 01 model anatomy](./lab01/model-anatomy/report.html) — exact-revision real-model instrumentation; empirical, not evidence-eligible, and attached to no scientific claim.
 - [Lab 02 dataset anatomy](./lab02/dataset-anatomy/report.html) — synthetic dataset-release readiness; non-empirical, not evidence-eligible, and attached to no scientific claim.
+- [Lab 03 behavioral baselines](./lab03/behavioral-baselines/report.html) — synthetic surface-control readiness; non-empirical, not evidence-eligible, and attached to no scientific claim.

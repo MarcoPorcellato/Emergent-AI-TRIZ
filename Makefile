@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit readiness lab01 lab01-render lab02 lab02-render pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
+.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit readiness lab01 lab01-render lab02 lab02-render lab03 lab03-render pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
 
 test:
 	PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -p "test_*.py"
@@ -14,6 +14,8 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/claim.schema.json data/claims.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab01-manifest.schema.json experiments/lab01-model-anatomy/manifest.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/dataset-annotation.schema.json data/pilot/dataset-annotations.jsonl
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-config.schema.json experiments/lab03-behavioral-baselines/config.json
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-result.schema.json results/lab03/behavioral-baselines/summary.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli claims-audit --registry data/claims.jsonl --root .
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json tests/fixtures/case_valid.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/pilot/cases.jsonl
@@ -48,11 +50,13 @@ readiness:
 	  $(MAKE) lab01-render LAB01_MODEL_ROOT="$(LAB01_MODEL_ROOT)"; \
 	elif [ "$(TARGET)" = "lab02" ]; then \
 	  $(MAKE) lab02-render; \
+	elif [ "$(TARGET)" = "lab03" ]; then \
+	  $(MAKE) lab03-render; \
 	elif [ "$(TARGET)" = "exp001" ]; then \
 	  $(MAKE) model-preflight; \
 	  $(MAKE) dataset-audit; \
 	else \
-	  echo "TARGET must be foundation, lab01, lab02, or exp001"; exit 2; \
+	  echo "TARGET must be foundation, lab01, lab02, lab03, or exp001"; exit 2; \
 	fi
 
 lab01-render:
@@ -76,6 +80,16 @@ lab02-render:
 
 lab02: lab02-render
 	@echo "Lab 02 report: results/lab02/dataset-anatomy/report.html"
+
+lab03-render:
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.lab03_runner \
+	  --cases data/pilot/cases.jsonl \
+	  --snapshot results/lab02/dataset-anatomy/snapshot_manifest.json \
+	  --config experiments/lab03-behavioral-baselines/config.json \
+	  --output-dir results/lab03/behavioral-baselines
+
+lab03: lab03-render
+	@echo "Lab 03 report: results/lab03/behavioral-baselines/report.html"
 
 pilot-export-evaluator:
 	@test -n "$(EVALUATOR_OUTPUT)" || (echo "EVALUATOR_OUTPUT is required"; exit 2)

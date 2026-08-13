@@ -45,6 +45,8 @@ def main() -> int:
         ("schemas/lab01-run.schema.json", "results/lab01/model-anatomy/run.json"),
         ("schemas/dataset-annotation.schema.json", "data/pilot/dataset-annotations.jsonl"),
         ("schemas/dataset-snapshot.schema.json", "results/lab02/dataset-anatomy/snapshot_manifest.json"),
+        ("schemas/lab03-config.schema.json", "experiments/lab03-behavioral-baselines/config.json"),
+        ("schemas/lab03-result.schema.json", "results/lab03/behavioral-baselines/summary.json"),
     )
     for schema, data in validation_pairs:
         validate(schema, data)
@@ -82,6 +84,9 @@ def main() -> int:
         "schemas/lab01-run.schema.json",
         "schemas/dataset-annotation.schema.json",
         "schemas/dataset-snapshot.schema.json",
+        "schemas/lab03-config.schema.json",
+        "schemas/lab03-result.schema.json",
+        "experiments/lab03-behavioral-baselines/config.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -193,6 +198,39 @@ def main() -> int:
         actual = hashlib.sha256((lab02_root / filename).read_bytes()).hexdigest()
         if expected != actual:
             raise RuntimeError(f"Lab 02 artifact hash mismatch: {filename}")
+
+    lab03_root = ROOT / "results/lab03/behavioral-baselines"
+    lab03_summary = json.loads((lab03_root / "summary.json").read_text(encoding="utf-8"))
+    if lab03_summary.get("evidence_eligible") is not False or lab03_summary.get("claim_ids") != []:
+        raise RuntimeError("Lab 03 evidence boundary is invalid")
+    if lab03_summary.get("empirical") is not False or lab03_summary.get("status") != "fail":
+        raise RuntimeError("Lab 03 smoke fixture must remain non-empirical and not ready")
+    if lab03_summary.get("interpretation") != "diagnostic_only_not_scientifically_interpretable":
+        raise RuntimeError("Lab 03 smoke metrics are not clearly marked diagnostic-only")
+    expected_gate_status = {
+        "B1": "fail",
+        "B2": "fail",
+        "B3": "pass",
+        "B4": "fail",
+        "B5": "pass",
+        "B6": "fail",
+        "B7": "fail",
+        "B8": "pass",
+    }
+    observed_gate_status = {row.get("gate"): row.get("status") for row in lab03_summary.get("gates", [])}
+    if observed_gate_status != expected_gate_status:
+        raise RuntimeError(f"Lab 03 gate state changed: {observed_gate_status}")
+    for key, path in {
+        "baseline_jsonl": lab03_root / "baseline_result.json",
+        "report_html": lab03_root / "report.html",
+        "cases_hash": ROOT / "data/pilot/cases.jsonl",
+        "snapshot_hash": ROOT / "results/lab02/dataset-anatomy/snapshot_manifest.json",
+        "config_hash": ROOT / "experiments/lab03-behavioral-baselines/config.json",
+    }.items():
+        expected = lab03_summary.get("hashes", {}).get(key)
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if expected != actual:
+            raise RuntimeError(f"Lab 03 artifact hash mismatch: {path.name}")
 
     run(
         PYTHON,

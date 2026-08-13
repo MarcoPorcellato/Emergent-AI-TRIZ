@@ -23,6 +23,7 @@ This is the **maintained** documentation bundle.
 - [Evidence Ladder](./EVIDENCE_LADDER.md)
 - [Lab 01 model anatomy](./LAB01.md)
 - [Lab 02 dataset anatomy](./LAB02.md)
+- [Lab 03 behavioral baselines](./LAB03.md)
 - [Article status](./ARTICLE_STATUS.md)
 
 ## Policy and status anchors
