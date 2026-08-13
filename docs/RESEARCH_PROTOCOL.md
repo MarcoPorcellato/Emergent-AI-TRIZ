@@ -83,6 +83,30 @@ incorporated into a preregistered and versioned dataset snapshot.
 
 Leakage analysis must cover explicit principle names, synonyms, canonical examples, source duplicates, paraphrases, and recognizable source templates.
 
+### 3.1 Wave 1 candidate batch
+
+Wave 1 is a discovery-only candidate batch for Segmentation and Inversion review.
+
+Current batch facts:
+
+- 24 cases total;
+- 12 Segmentation and 12 Inversion cases;
+- 4 domains: manufacturing, packaging, software operations, and healthcare devices;
+- 3 or more cases per principle per domain;
+- reciprocal opposite-label pairs are required by the manifest;
+- the surface text must not contain the target lexical cues;
+- the batch is fully model-generated, non-empirical, and not frozen;
+- the batch is not evidence-eligible and cannot support confirmatory claims.
+
+Acceptance path before this batch can contribute to a frozen dataset:
+
+1. two independent raters annotate the batch blindly;
+2. abstentions are allowed and must be retained;
+3. agreement is assessed against the versioned guide and annotation policy;
+4. provenance is expanded beyond model-generated material to include human-authored, adapted, and historical sources;
+5. a split freeze is defined and checked for leakage across discovery, validation, held-out-domain, and sealed-novel partitions;
+6. the frozen dataset must satisfy the source-policy cap and the required split counts before confirmatory use.
+
 ## 4. Model tracks
 
 ### Track A: pretrained open models
@@ -195,6 +219,8 @@ Blinded judges should rate:
 - whether the response only repeats principle terminology.
 
 Preregister primary outcomes, exclusion rules, sample sizes, intervention layers, steering strengths or selection rules, statistical tests, multiple-comparison correction, and success thresholds before opening the sealed evaluation set.
+
+For Wave 1 discovery work, the only acceptable use is workflow validation, cue auditing, and guide calibration. It is not acceptable to cite Wave 1 as empirical support for the Latent TRIZ Hypothesis, for operator prevalence, or for downstream model performance.
 
 ## 12. Interpretation rules
 

@@ -2,6 +2,10 @@
 
 This directory will contain redistributable Latent TRIZ datasets. No empirical dataset has been released yet.
 
+## Candidate batches
+
+`data/candidates/` is the staging area for discovery-only candidate material. It may contain model-generated or other pre-freeze artifacts that help establish the annotation workflow, leakage checks, and split design, but it is not itself a released dataset.
+
 [`registry.json`](registry.json) is the machine-readable index of dataset snapshots and must conform to [`../schemas/dataset-registry.schema.json`](../schemas/dataset-registry.schema.json). An empty registry means that no dataset has been released; it is not evidence of a completed data stage.
 
 ## Design requirements

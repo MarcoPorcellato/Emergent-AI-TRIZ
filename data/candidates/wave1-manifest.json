@@ -1,0 +1,18 @@
+{
+  "batch_id": "wave1-model-generated",
+  "status": "draft",
+  "non_empirical": true,
+  "evidence_eligible": false,
+  "expected_count": 24,
+  "required_principles": ["segmentation", "inversion"],
+  "required_domains": ["manufacturing", "packaging", "software operations", "healthcare devices"],
+  "minimum_per_principle_domain": 3,
+  "allowed_source_types": ["model_generated"],
+  "forbidden_label_cues": [
+    "segmentation", "segment", "segmented", "split", "divide", "divided", "division",
+    "inversion", "invert", "inverted", "reverse", "reversed", "reversal", "opposite"
+  ],
+  "require_opposite_label_pairs": true,
+  "require_balanced_transformation_leads": true,
+  "minimum_distinct_transformation_leads": 4
+}

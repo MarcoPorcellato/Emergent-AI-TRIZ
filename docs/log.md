@@ -10,6 +10,8 @@ last_verified: 2026-08-13
 
 ## 2026-08-13
 
+- Documented the Wave 1 candidate batch as discovery-only: 24 model-generated Segmentation/Inversion cases across four domains, reciprocal opposite-label pairs, lexical-cue exclusions, non-frozen status, and evidence ineligibility.
+- Added the acceptance path for Wave 1 to the protocol: two independent raters, abstentions, agreement checks, provenance expansion, split freeze, and leakage audit before confirmatory use.
 - Added the blinded localhost annotation workbench documentation path, with
   sanitized case views, Segmentation/Inversion-only labeling, local append-only
   outputs, and an explicit non-evidence boundary.
