@@ -21,7 +21,26 @@ _REQUIRED_METHODS = (
     "keyword_matching",
     "bag_of_words",
     "char_ngram",
+    "length_punctuation",
 )
+
+_LODO_VIEWS = ("problem_only", "transformation_only", "resulting_state_only", "problem_plus_solution")
+
+_VIEW_TEXT_FIELDS: dict[str, tuple[str, ...]] = {
+    "problem_only": ("problem",),
+    "transformation_only": ("transformation",),
+    "resulting_state_only": ("resulting_state",),
+    "problem_plus_solution": (
+        "problem",
+        "constraints",
+        "initial_state",
+        "desired_improvement",
+        "worsening_consequence",
+        "transformation",
+        "resulting_state",
+        "solution",
+    ),
+}
 
 _UNAVAILABLE_FAMILIES = (
     "conventional_sentence_embeddings",
@@ -80,6 +99,12 @@ def run_behavioral_baselines(cases_path: str | Path, snapshot_path: str | Path, 
         _DEFAULT_MIN_CASES_PER_LABEL,
         minimum=1,
     )
+    minimum_training_cases_per_label = _coerce_int(
+        config,
+        "minimum_training_cases_per_label",
+        minimum_cases_per_label,
+        minimum=1,
+    )
     minimum_cases_per_held_out_domain = _coerce_int(
         config,
         "minimum_cases_per_held_out_domain",
@@ -95,6 +120,9 @@ def run_behavioral_baselines(cases_path: str | Path, snapshot_path: str | Path, 
 
     method_families = _coerce_str_list(config.get("method_families"))
     allow_local = set(_coerce_str_list(config.get("allow_local_diagnostics")))
+    configured_views = _coerce_str_list(config.get("evaluation_views"))
+    if configured_views and tuple(configured_views) != _LODO_VIEWS:
+        raise Lab03Error(f"evaluation_views must be exactly {list(_LODO_VIEWS)!r}")
 
     method_requests = set(method_families) | set(_REQUIRED_METHODS)
     # keep char_ngram active only when explicitly enabled by local diagnostics or explicit request
@@ -108,6 +136,7 @@ def run_behavioral_baselines(cases_path: str | Path, snapshot_path: str | Path, 
         "minimum_labels": minimum_labels,
         "minimum_domains": minimum_domains,
         "minimum_cases_per_label": minimum_cases_per_label,
+        "minimum_training_cases_per_label": minimum_training_cases_per_label,
         "minimum_cases_per_held_out_domain": minimum_cases_per_held_out_domain,
         "minimum_cases_per_label_per_domain": minimum_cases_per_label_per_domain,
         "random_permutations": random_permutations,
@@ -125,16 +154,17 @@ def run_behavioral_baselines(cases_path: str | Path, snapshot_path: str | Path, 
         labels=labels,
         random_seed=random_seed,
         random_permutations=random_permutations,
-        minimum_cases_per_label=minimum_cases_per_label,
+        minimum_training_cases_per_label=minimum_training_cases_per_label,
         minimum_cases_per_held_out_domain=minimum_cases_per_held_out_domain,
         minimum_cases_per_label_per_domain=minimum_cases_per_label_per_domain,
         allow_local=allow_local,
     )
 
     view_texts = {
-        "problem_only": _cases_to_text(canonical_cases, include_solution=False),
-        "problem_plus_solution": _cases_to_text(canonical_cases, include_solution=True),
+        view_name: _cases_to_text(canonical_cases, view_name=view_name)
+        for view_name in _LODO_VIEWS
     }
+    provenance_shortcuts = _provenance_shortcut_diagnostics(canonical_cases, labels)
 
     methods: dict[str, Any] = {}
     for method in requested_methods:
@@ -160,8 +190,10 @@ def run_behavioral_baselines(cases_path: str | Path, snapshot_path: str | Path, 
                     pred = _predict_keyword(train=train, test=test, labels=labels)
                 elif method == "bag_of_words":
                     pred = _predict_bag_of_words(train=train, test=test, labels=labels)
-                else:
+                elif method == "char_ngram":
                     pred = _predict_char_ngram(train=train, test=test, labels=labels)
+                else:
+                    pred = _predict_length_punctuation(train=train, test=test, labels=labels)
                 pred = replace(
                     pred,
                     train_labels=tuple(sorted({row["label"] for row in train})),
@@ -228,8 +260,12 @@ def run_behavioral_baselines(cases_path: str | Path, snapshot_path: str | Path, 
             "non_claim_boundary": config.get("non_claim_boundary", {}),
             "method_families": sorted(method_requests),
             "allow_local_diagnostics": sorted(allow_local),
+            "evaluation_views": list(_LODO_VIEWS),
         },
         "issues": case_issues,
+        "shortcuts": {
+            "provenance": provenance_shortcuts,
+        },
     }
 
     gates = _evaluate_gates(
@@ -311,6 +347,8 @@ def _canonicalize_cases(records: list[Mapping[str, Any]]) -> tuple[list[dict[str
             {
                 "case_id": case_id,
                 "domain": domain,
+                "source_type": _canonical_text(row.get("provenance", {}).get("source_type") if isinstance(row.get("provenance"), Mapping) else None),
+                "template_id": _canonical_text(row.get("provenance", {}).get("template_id") if isinstance(row.get("provenance"), Mapping) else None),
                 "problem": problem,
                 "solution": str(row.get("solution", "")).strip(),
                 "initial_state": str(row.get("initial_state", "")).strip(),
@@ -352,31 +390,25 @@ def _coerce_text_list(values: Any) -> list[str]:
     return out
 
 
-def _cases_to_text(cases: list[dict[str, Any]], *, include_solution: bool) -> list[dict[str, Any]]:
-    output = []
-    for case in cases:
-        problem = case["problem"]
-        if include_solution:
-            extras = []
-            for value in [
-                case.get("constraints", []),
-                case.get("initial_state", ""),
-                case.get("desired_improvement", ""),
-                case.get("worsening_consequence", ""),
-                case.get("transformation", ""),
-                case.get("resulting_state", ""),
-                case.get("solution", ""),
-            ]:
-                if isinstance(value, list):
-                    extras.extend(value)
-                else:
-                    text = str(value).strip()
-                    if text:
-                        extras.append(text)
-            text = " ".join([problem, *(str(item).strip() for item in extras if str(item).strip())]).strip()
-        else:
-            text = problem
+def _canonical_text(value: Any) -> str:
+    return value.strip() if isinstance(value, str) else ""
 
+
+def _cases_to_text(cases: list[dict[str, Any]], *, view_name: str) -> list[dict[str, Any]]:
+    output = []
+    fields = _VIEW_TEXT_FIELDS.get(view_name)
+    if not fields:
+        fields = ("problem",)
+    for case in cases:
+        tokens: list[str] = []
+        for field_name in fields:
+            if field_name == "constraints":
+                tokens.extend(_coerce_text_list(case.get("constraints", [])))
+            else:
+                value = str(case.get(field_name, "")).strip()
+                if value:
+                    tokens.append(value)
+        text = " ".join(tokens).strip()
         output.append({
             "case_id": case["case_id"],
             "domain": case["domain"],
@@ -539,13 +571,67 @@ def _predict_char_ngram(train: list[dict[str, Any]], test: list[dict[str, Any]],
     )
 
 
+def _predict_length_punctuation(
+    train: list[dict[str, Any]],
+    test: list[dict[str, Any]],
+    labels: list[str],
+) -> FoldResult:
+    """Nearest-centroid diagnostic using only length and punctuation shape."""
+    if not train or not test:
+        return FoldResult(
+            test[0]["domain"] if test else "", len(train), len(test), [],
+            _empty_metrics(), "fail", "insufficient data",
+        )
+
+    train_vectors = [_length_punctuation_features(row["text"]) for row in train]
+    dimensions = len(train_vectors[0])
+    means = [sum(vector[index] for vector in train_vectors) / len(train_vectors) for index in range(dimensions)]
+    scales = []
+    for index, mean in enumerate(means):
+        variance = sum((vector[index] - mean) ** 2 for vector in train_vectors) / len(train_vectors)
+        scales.append(max(sqrt(variance), 1.0e-9))
+
+    def standardized(text: str) -> tuple[float, ...]:
+        vector = _length_punctuation_features(text)
+        return tuple((value - mean) / scale for value, mean, scale in zip(vector, means, scales))
+
+    centroids: dict[str, tuple[float, ...]] = {}
+    for label in labels:
+        members = [standardized(row["text"]) for row in train if row["label"] == label]
+        if members:
+            centroids[label] = tuple(
+                sum(vector[index] for vector in members) / len(members)
+                for index in range(dimensions)
+            )
+
+    predictions: list[dict[str, str]] = []
+    for row in test:
+        vector = standardized(row["text"])
+        scores = {
+            label: -sum((value - centroid[index]) ** 2 for index, value in enumerate(vector))
+            for label, centroid in centroids.items()
+        }
+        prediction = _tie_break(scores) if scores else _majority_label(Counter(item["label"] for item in train), labels)
+        predictions.append({"case_id": row["case_id"], "truth": row["label"], "prediction": prediction})
+
+    metrics = _classification_metrics(
+        [row["label"] for row in test],
+        [row["prediction"] for row in predictions],
+        labels,
+    )
+    return FoldResult(
+        domain=test[0]["domain"], train_count=len(train), test_count=len(test),
+        predictions=predictions, metrics=metrics, status="pass",
+    )
+
+
 def _run_random_label_control(
     *,
     canonical_cases: list[dict[str, Any]],
     labels: list[str],
     random_seed: int,
     random_permutations: int,
-    minimum_cases_per_label: int,
+    minimum_training_cases_per_label: int,
     minimum_cases_per_held_out_domain: int,
     minimum_cases_per_label_per_domain: int,
     allow_local: set[str],
@@ -561,8 +647,8 @@ def _run_random_label_control(
 
     rng = Random(random_seed)
     views_data = {
-        "problem_only": _cases_to_text(canonical_cases, include_solution=False),
-        "problem_plus_solution": _cases_to_text(canonical_cases, include_solution=True),
+        view_name: _cases_to_text(canonical_cases, view_name=view_name)
+        for view_name in _LODO_VIEWS
     }
 
     per_view: dict[str, Any] = {}
@@ -589,9 +675,9 @@ def _run_random_label_control(
                 and len(test_labels) > 0
                 and set(test_counts) == set(labels)
                 and all(count >= minimum_cases_per_label_per_domain for count in test_counts.values())
-                and len(train) >= len(labels) * minimum_cases_per_label
+                and len(train) >= len(labels) * minimum_training_cases_per_label
                 and set(train_counts) == set(labels)
-                and all(count >= minimum_cases_per_label for count in train_counts.values())
+                and all(count >= minimum_training_cases_per_label for count in train_counts.values())
             )
             fold_support_ok = fold_support_ok and support_ok
 
@@ -651,7 +737,7 @@ def _run_random_label_control(
             "reason": None if fold_support_ok else "insufficient support for permutation distribution",
             "folds": fold_rows,
             "support_adequate": fold_support_ok,
-            "minimum_cases_per_label": minimum_cases_per_label,
+            "minimum_training_cases_per_label": minimum_training_cases_per_label,
             "minimum_cases_per_held_out_domain": minimum_cases_per_held_out_domain,
         }
 
@@ -660,7 +746,7 @@ def _run_random_label_control(
         "status": "pass" if overall_pass else "invalid",
         "seed": random_seed,
         "permutations": random_permutations,
-        "minimum_cases_per_label": minimum_cases_per_label,
+        "minimum_training_cases_per_label": minimum_training_cases_per_label,
         "minimum_cases_per_held_out_domain": minimum_cases_per_held_out_domain,
         "minimum_cases_per_label_per_domain": minimum_cases_per_label_per_domain,
         "allow_local_diagnostics": sorted(allow_local),
@@ -913,16 +999,16 @@ def _gate_b3(methods: Mapping[str, Any], baseline_gates_input: Mapping[str, Any]
         views = payload.get("views")
         if not isinstance(views, Mapping):
             return False, f"{method} missing views"
-        if set(views.keys()) != {"problem_only", "problem_plus_solution"}:
-            return False, f"{method} must include both views"
-        for view_name in ("problem_only", "problem_plus_solution"):
+        if set(views.keys()) != set(_LODO_VIEWS):
+            return False, f"{method} must include all baseline views"
+        for view_name in _LODO_VIEWS:
             row = views.get(view_name)
             if not isinstance(row, Mapping):
                 return False, f"{method}/{view_name} invalid view payload"
             folds = row.get("folds")
             if not isinstance(folds, list) or not folds:
                 return False, f"{method}/{view_name} has empty folds"
-    return True, "required local methods and both views present"
+    return True, "required local methods and all frozen views present"
 
 
 def _gate_b4(methods: Mapping[str, Any]) -> tuple[bool, str]:
@@ -955,7 +1041,7 @@ def _gate_b5(methods: Mapping[str, Any], baseline_gates_input: Mapping[str, Any]
         if not isinstance(views, Mapping):
             return False, f"{method} missing views"
 
-        for view_name in ("problem_only", "problem_plus_solution"):
+        for view_name in _LODO_VIEWS:
             view = views.get(view_name)
             if not isinstance(view, Mapping):
                 return False, f"{method}/{view_name} missing"
@@ -1001,16 +1087,16 @@ def _gate_b7(
     if not prerequisite_ok:
         return False, "not evaluable: B2/B5 invalid"
 
-    shallow = []
+    shallow: list[tuple[str, str, float, float]] = []
     baseline_view = methods.get("majority", {}).get("views", {}) if isinstance(methods.get("majority"), Mapping) else {}
-    for method in ("keyword_matching", "bag_of_words", "char_ngram"):
+    for method in ("keyword_matching", "bag_of_words", "char_ngram", "length_punctuation"):
         method_payload = methods.get(method)
         if not isinstance(method_payload, Mapping):
             continue
         views = method_payload.get("views")
         if not isinstance(views, Mapping):
             continue
-        for view_name in ("problem_only", "problem_plus_solution"):
+        for view_name in _LODO_VIEWS:
             view = views.get(view_name)
             if not isinstance(view, Mapping):
                 continue
@@ -1020,19 +1106,124 @@ def _gate_b7(
             majority_agg = baseline_view.get(view_name, {}).get("aggregate", {})
             if not isinstance(majority_agg, Mapping):
                 return False, "majority aggregate missing"
-            shallow.append((method, view_name, float(agg.get("macro_f1", 0.0)), float(majority_agg.get("macro_f1", 0.0))))
+            shallow.append(
+                (
+                    method,
+                    view_name,
+                    float(agg.get("macro_f1", 0.0)),
+                    float(majority_agg.get("macro_f1", 0.0)),
+                )
+            )
 
     if not shallow:
         return False, "not evaluable: no shallow aggregates available"
 
-    best = max(shallow, key=lambda item: item[2])
-    _, view, best_shallow, majority = best
-    if best_shallow >= shortcut_threshold and (best_shallow - majority) >= shortcut_margin:
-        return (
-            False,
-            f"shortcut-risk: {view} {best_shallow:.4f} exceeds majority {majority:.4f} by margin >= {shortcut_margin}",
-        )
+    risks: list[str] = []
+    for view_name in _LODO_VIEWS:
+        candidates = [item for item in shallow if item[1] == view_name]
+        if not candidates:
+            continue
+        method, _, score, majority = max(candidates, key=lambda item: (item[2], item[0]))
+        if score >= shortcut_threshold and (score - majority) >= shortcut_margin:
+            risks.append(
+                f"{view_name}:{method}={score:.4f} vs majority={majority:.4f}"
+            )
+    if risks:
+        return False, "shortcut-risk: " + "; ".join(risks)
     return True, "shortcut risk check passed"
+
+
+def _provenance_shortcut_diagnostics(cases: list[dict[str, Any]], labels: Sequence[str]) -> dict[str, Any]:
+    return {
+        "domain": _categorical_shortcut_diagnostic(cases, "domain", labels),
+        "source_type": _categorical_shortcut_diagnostic(cases, "source_type", labels),
+        "template": _categorical_shortcut_diagnostic(cases, "template_id", labels),
+    }
+
+
+def _categorical_shortcut_diagnostic(cases: list[dict[str, Any]], field: str, labels: Sequence[str]) -> dict[str, Any]:
+    field_values = [row.get(field, "") for row in cases]
+    if any(not isinstance(value, str) or not value.strip() for value in field_values):
+        return {
+            "status": "not_evaluable",
+            "reason": f"{field} is not fully populated across cases",
+            "macro_f1": None,
+            "accuracy": None,
+            "shortcut_detected": None,
+            "evaluable": False,
+        }
+    values = [str(value).strip() for value in field_values]
+    value_support = Counter(values)
+    if len(value_support) < 2:
+        return {
+            "status": "not_evaluable",
+            "reason": f"{field} has fewer than two categories",
+            "macro_f1": None,
+            "accuracy": None,
+            "shortcut_detected": None,
+            "evaluable": False,
+        }
+    unsupported = sorted(value for value, count in value_support.items() if count < 2)
+    if unsupported:
+        return {
+            "status": "not_evaluable",
+            "reason": f"{field} categories lack leave-one-out support: {unsupported}",
+            "macro_f1": None,
+            "accuracy": None,
+            "shortcut_detected": None,
+            "evaluable": False,
+        }
+    counts: dict[str, Counter[str]] = {}
+    for value, row in zip(values, cases):
+        counts.setdefault(value, Counter())[_as_safe_label(row.get("label"), labels)] += 1
+
+    predictions: list[str] = []
+    for value, row in zip(values, cases):
+        value_counter = counts.get(value, Counter())
+        value_counter = value_counter.copy()
+        current_label = _as_safe_label(row.get("label"), labels)
+        if current_label:
+            value_counter[current_label] -= 1
+            if value_counter[current_label] <= 0:
+                del value_counter[current_label]
+        if value_counter:
+            prediction = _tie_break(_normalize_counts_to_scores(value_counter))
+        else:
+            prediction = _majority_label(Counter(row.get("label", "") for row in cases), sorted(labels))
+        predictions.append(prediction)
+    y_true = [_as_safe_label(row.get("label"), labels) for row in cases]
+    if not y_true or not predictions:
+        return {
+            "status": "not_evaluable",
+            "reason": "insufficient data for categorical diagnostic",
+            "macro_f1": None,
+            "accuracy": None,
+            "shortcut_detected": None,
+            "evaluable": False,
+        }
+    metrics = _classification_metrics(y_true, predictions, labels)
+    macro_f1 = float(metrics.get("macro_f1", 0.0))
+    accuracy = float(metrics.get("accuracy", 0.0))
+    return {
+        "status": "evaluable",
+        "macro_f1": round(macro_f1, 12),
+        "accuracy": round(accuracy, 12),
+        "shortcut_detected": macro_f1 >= 0.75,
+        "evaluable": True,
+    }
+
+
+def _as_safe_label(value: Any, labels: Sequence[str]) -> str:
+    if isinstance(value, str) and value:
+        return value
+    return labels[0] if labels else ""
+
+
+def _normalize_counts_to_scores(values: Mapping[str, int]) -> dict[str, float]:
+    total = sum(values.values())
+    if total <= 0:
+        return {}
+    return {label: count / total for label, count in values.items()}
 
 
 def _gate_b8(config: Mapping[str, Any]) -> tuple[bool, str]:
@@ -1052,6 +1243,22 @@ def _gate_b8(config: Mapping[str, Any]) -> tuple[bool, str]:
 
 def _tokenize(text: str) -> list[str]:
     return [match.group(0) for match in _TOKEN_RE.finditer(text.lower())]
+
+
+def _length_punctuation_features(text: str) -> tuple[float, ...]:
+    tokens = _tokenize(text)
+    token_characters = sum(len(token) for token in tokens)
+    return (
+        float(len(text)),
+        float(len(tokens)),
+        float(token_characters) / max(1, len(tokens)),
+        float(sum(text.count(mark) for mark in ".,;:!?")),
+        float(text.count(",")),
+        float(text.count(";")),
+        float(text.count(":")),
+        float(text.count("-")),
+        float(text.count("(") + text.count(")")),
+    )
 
 
 def _normalize_text(text: str) -> str:

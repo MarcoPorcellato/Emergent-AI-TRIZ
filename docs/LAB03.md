@@ -37,7 +37,20 @@ The public contract names the baseline families that future implementations must
 - output_only_llm;
 - random_label.
 
-Local diagnostic methods may include `char_ngram`, but only as a diagnostic baseline. It must not be mislabeled as conventional embeddings.
+Lab 03 uses four frozen textual views for LODO baselines:
+
+- `problem_only`
+- `transformation_only`
+- `resulting_state_only`
+- `problem_plus_solution` (problem plus constraints/initial state/desired improvement/worsening/transformation/resulting-state/solution)
+
+Local diagnostic methods include `char_ngram` and a length/punctuation-only
+nearest-centroid classifier. They are diagnostic baselines and must not be
+mislabeled as conventional embeddings.
+
+`minimum_cases_per_label` applies to the complete dataset, while
+`minimum_training_cases_per_label` is the explicit support floor inside each
+leave-one-domain-out training fold.
 
 ## Readiness gates
 
@@ -45,7 +58,7 @@ Lab 03 uses fail-closed readiness rules:
 
 - B1 snapshot status and integrity are valid;
 - B2 at least 2 labels, at least 4 domains, and declared minimum cases per label and domain;
-- B3 problem-only and problem-plus-solution text views are complete;
+- B3 required LODO views are complete;
 - B4 required-family coverage is present, with hash-backed adapter receipts for external methods;
 - B5 leave-one-domain-out coverage is complete;
 - B6 random-label calibration is deterministic and uses declared permutations;
@@ -100,3 +113,17 @@ The lab contract is valid only when:
 ## Public interpretation
 
 Lab 03 is the first controlled bridge between the repository's didactic infrastructure and the behavioral evaluation surface. It is intentionally narrow: it formalizes how the repository will later support lexical controls, cross-domain checks, and random-label calibration without misrepresenting undersized data.
+
+## Provenance shortcut diagnostics
+
+Lab 03 adds provenance-only categorical shortcut diagnostics for:
+
+- domain,
+- provenance `source_type`,
+- provenance `template_id`.
+
+Each block reports whether evaluation is possible (`evaluable`) and includes
+`macro_f1` / `accuracy` only when all required structured values are present,
+at least two categories exist, and every category has leave-one-out support.
+A single source family or one unique template per case is `not_evaluable`; no
+synthetic template identifiers are emitted.

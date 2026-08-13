@@ -16,6 +16,7 @@
     "gates",
     "methods",
     "random_label_control",
+    "shortcuts",
     "issues",
     "hashes",
     "summary_artifacts"
@@ -56,6 +57,11 @@
     },
     "methods": {"type": "object"},
     "random_label_control": {"type": "object"},
+    "shortcuts": {
+      "type": "object",
+      "required": ["provenance"],
+      "properties": {"provenance": {"type": "object"}}
+    },
     "issues": {"type": "array"},
     "hashes": {
       "type": "object",

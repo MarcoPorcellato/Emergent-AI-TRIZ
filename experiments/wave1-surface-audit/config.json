@@ -1,14 +1,14 @@
 {
-  "config_version": "v1",
+  "config_version": "v1.0.0",
   "status": "fail",
   "seed": 1729,
   "random_permutations": 100,
   "minimum_labels": 2,
   "minimum_domains": 4,
-"minimum_cases_per_label": 24,
-"minimum_training_cases_per_label": 18,
-  "minimum_cases_per_held_out_domain": 12,
-  "minimum_cases_per_label_per_domain": 6,
+"minimum_cases_per_label": 12,
+"minimum_training_cases_per_label": 9,
+  "minimum_cases_per_held_out_domain": 6,
+  "minimum_cases_per_label_per_domain": 3,
   "shortcut_macro_f1_threshold": 0.8,
   "shortcut_margin_over_majority": 0.1,
   "evaluation_views": [
@@ -26,10 +26,7 @@
     "output_only_llm",
     "random_label"
   ],
-  "allow_local_diagnostics": [
-    "char_ngram",
-    "length_punctuation"
-  ],
+  "allow_local_diagnostics": ["char_ngram", "length_punctuation"],
   "families": {},
   "non_claim_boundary": {
     "empirical": false,

@@ -4,7 +4,7 @@
   "title": "Latent TRIZ Lab 03 configuration",
   "type": "object",
   "additionalProperties": false,
-  "required": ["config_version", "status", "seed", "random_permutations", "minimum_labels", "minimum_domains", "minimum_cases_per_label", "minimum_cases_per_held_out_domain", "minimum_cases_per_label_per_domain", "shortcut_macro_f1_threshold", "shortcut_margin_over_majority", "method_families", "allow_local_diagnostics", "families", "non_claim_boundary"],
+  "required": ["config_version", "status", "seed", "random_permutations", "minimum_labels", "minimum_domains", "minimum_cases_per_label", "minimum_training_cases_per_label", "minimum_cases_per_held_out_domain", "minimum_cases_per_label_per_domain", "shortcut_macro_f1_threshold", "shortcut_margin_over_majority", "evaluation_views", "method_families", "allow_local_diagnostics", "families", "non_claim_boundary"],
   "properties": {
     "config_version": {"type": "string", "pattern": "^v[0-9]+(?:\\.[0-9]+){0,2}$"},
     "status": {"type": "string", "enum": ["draft", "ready", "fail"]},
@@ -13,12 +13,22 @@
     "minimum_labels": {"type": "integer", "minimum": 2},
     "minimum_domains": {"type": "integer", "minimum": 4},
     "minimum_cases_per_label": {"type": "integer", "minimum": 1},
+    "minimum_training_cases_per_label": {"type": "integer", "minimum": 1},
     "minimum_cases_per_held_out_domain": {"type": "integer", "minimum": 1},
     "minimum_cases_per_label_per_domain": {"type": "integer", "minimum": 1},
     "shortcut_macro_f1_threshold": {"type": "number", "minimum": 0, "maximum": 1},
     "shortcut_margin_over_majority": {"type": "number", "minimum": 0},
+    "evaluation_views": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["problem_only", "transformation_only", "resulting_state_only", "problem_plus_solution"]
+      }
+    },
     "method_families": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["majority", "keyword_matching", "bag_of_words", "conventional_sentence_embeddings", "topic_classification", "output_only_llm", "random_label"]}},
-    "allow_local_diagnostics": {"type": "array", "uniqueItems": true, "items": {"type": "string", "enum": ["char_ngram"]}},
+    "allow_local_diagnostics": {"type": "array", "uniqueItems": true, "items": {"type": "string", "enum": ["char_ngram", "length_punctuation"]}},
     "families": {
       "type": "object",
       "additionalProperties": false,

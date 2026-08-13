@@ -36,6 +36,8 @@ Path to acceptance:
 
 Run `make dataset-wave1-audit` before every review session. Start a local
 blinded session with `make annotate-wave1 ANNOTATION_RATER_ID=rater_01`.
+Run `make wave1-surface-audit` to regenerate the exploratory field-only LODO
+classifier report. A high score is a shortcut warning, not evidence for TRIZ.
 After collecting at least two retained rater files, run
 `make wave1-annotation-audit ANNOTATION_FILES="path/rater1.jsonl path/rater2.jsonl"`
 to produce the retained batch summary at `artifacts/annotations/wave1-audit.json`.
