@@ -139,8 +139,8 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 
 ### Immediate sequence
 
-1. Close the integrity hotfix: enforce every JSON Schema keyword used by the repository, cross-check tracked artifacts against Draft 2020-12 `jsonschema`, and make case-level disagreement incompatible with freeze readiness.
-2. Replace changing branch-policy exceptions with one stable, path- and risk-aware merge gate; restore pre-merge Python 3.11 coverage for code and require CCP plus scientific artifact checks where appropriate.
+1. **Delivered:** close the integrity hotfix by enforcing every JSON Schema keyword used by the repository, cross-checking tracked artifacts against Draft 2020-12 `jsonschema`, and making case-level disagreement incompatible with freeze readiness.
+2. **In delivery:** replace changing branch-policy exceptions with one stable, path- and risk-aware merge gate; restore pre-merge Python 3.11 coverage for code and require CCP plus scientific artifact checks where appropriate.
 3. Amend the unused annotation ontology to v1.2 before real collection: score Segmentation and Inversion separately, require an identified alternative for `Other`, permit null operator scores for `Cannot determine`, expose guide examples, and reset every form field after submission.
 4. Preserve Wave 1 unchanged as a `calibration_only`, known-leaky corpus. Its negative audit becomes a permanent regression fixture; it is not iteratively optimized into an EXP-001 dataset.
 5. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
