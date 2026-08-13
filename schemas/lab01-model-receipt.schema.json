@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/lab01-model-receipt.schema.json",
+  "title": "Lab 01 model receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "empirical",
+    "evidence_eligible",
+    "claim_ids",
+    "receipt_type",
+    "state_before",
+    "state_after",
+    "model",
+    "revision",
+    "receipt_time",
+    "source_url",
+    "terms_url",
+    "runtime_files",
+    "notes"
+  ],
+  "properties": {
+    "artifact_class": { "type": "string", "const": "model-instrumentation" },
+    "empirical": { "type": "boolean", "const": true },
+    "evidence_eligible": { "type": "boolean", "const": false },
+    "claim_ids": { "type": "array", "maxItems": 0, "items": { "type": "string" } },
+    "receipt_type": {
+      "type": "string",
+      "enum": [
+        "selection",
+        "acquisition",
+        "integrity",
+        "load",
+        "instrumentation",
+        "lab_ready"
+      ]
+    },
+    "state_before": { "type": "string", "minLength": 1 },
+    "state_after": {
+      "type": "string",
+      "enum": [
+        "selected",
+        "acquisition_planned",
+        "acquired",
+        "integrity_verified",
+        "load_verified",
+        "instrumentation_verified",
+        "lab_ready"
+      ]
+    },
+    "model": { "type": "string", "minLength": 1 },
+    "revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "receipt_time": { "type": "string", "format": "date-time" },
+    "source_url": { "type": "string", "format": "uri" },
+    "terms_url": { "type": "string", "format": "uri" },
+    "runtime_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "sha256", "size"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "size": { "type": "integer", "minimum": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}

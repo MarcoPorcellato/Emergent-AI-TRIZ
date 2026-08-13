@@ -21,6 +21,7 @@ This is the **maintained** documentation bundle.
 - [Roadmap](./ROADMAP.md)
 - [Research protocol](./RESEARCH_PROTOCOL.md)
 - [Evidence Ladder](./EVIDENCE_LADDER.md)
+- [Lab 01 model anatomy](./LAB01.md)
 - [Article status](./ARTICLE_STATUS.md)
 
 ## Policy and status anchors

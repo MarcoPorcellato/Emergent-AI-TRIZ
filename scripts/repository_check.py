@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import subprocess
 import sys
@@ -39,6 +40,9 @@ def main() -> int:
         ("schemas/case.schema.json", "data/pilot/cases.jsonl"),
         ("schemas/dataset-plan.schema.json", "experiments/001-stage1-pilot/dataset-plan.json"),
         ("schemas/model-candidate.schema.json", "experiments/001-stage1-pilot/model-candidates.jsonl"),
+        ("schemas/lab01-manifest.schema.json", "experiments/lab01-model-anatomy/manifest.json"),
+        ("schemas/lab01-model-receipt.schema.json", "results/lab01/model-anatomy/model_receipt.json"),
+        ("schemas/lab01-run.schema.json", "results/lab01/model-anatomy/run.json"),
     )
     for schema, data in validation_pairs:
         validate(schema, data)
@@ -71,6 +75,9 @@ def main() -> int:
         "schemas/model-candidate.schema.json",
         "schemas/evaluator-packet.schema.json",
         "schemas/allocation-key.schema.json",
+        "schemas/lab01-manifest.schema.json",
+        "schemas/lab01-model-receipt.schema.json",
+        "schemas/lab01-run.schema.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -147,6 +154,26 @@ def main() -> int:
     )
     for schema, data in pilot_pairs:
         validate(schema, data)
+
+    lab01_root = ROOT / "results/lab01/model-anatomy"
+    parity = json.loads((lab01_root / "parity_report.json").read_text(encoding="utf-8"))
+    if parity.get("status") != "pass":
+        raise RuntimeError("Lab 01 parity report is not PASS")
+    artifact_names = {
+        "model_receipt": "model_receipt.json",
+        "environment": "environment.json",
+        "run": "run.json",
+        "prompt": "prompt.json",
+        "tokens": "tokens.json",
+        "layer_summary": "layer_summary.jsonl",
+        "topk_logits": "topk_logits.jsonl",
+        "report_html": "report.html",
+    }
+    for key, filename in artifact_names.items():
+        expected = parity.get("artifact_hashes", {}).get(key)
+        actual = hashlib.sha256((lab01_root / filename).read_bytes()).hexdigest()
+        if expected != actual:
+            raise RuntimeError(f"Lab 01 artifact hash mismatch: {filename}")
 
     run(
         PYTHON,

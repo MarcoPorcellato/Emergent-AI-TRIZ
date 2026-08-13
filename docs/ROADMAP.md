@@ -8,7 +8,7 @@ last_verified: 2026-08-13
 
 # Roadmap
 
-The laboratory foundation is operational. The present runnable surface is a deterministic, synthetic Stage 1 protocol smoke; the first model-backed visual experiment remains future work. No empirical support for the hypothesis is claimed.
+The laboratory foundation is operational. Lab 00 is a deterministic synthetic process smoke. Lab 01 is the first real-model instrumentation result and remains explicitly ineligible as evidence for the hypothesis.
 
 ## Foundation — delivered
 
@@ -50,19 +50,18 @@ Delivered, infrastructure-only, and not attached to any scientific claim:
 
 `make lab` now reproduces the frozen smoke, renders a responsive local HTML report, and opens it through the operating system. `make lab-render` provides the same deterministic output for headless environments.
 
-## Near-term public laboratory
+## Model-backed laboratory sequence
 
-The next milestone is a one-command local and visual lab that lets a contributor inspect the same frozen artifacts used by the research protocol. The planned sequence is:
+Lab 01 establishes the trustworthy measurement substrate. Later labs may add scientific complexity only after their predecessor gates pass:
 
-1. dataset and token inspection;
-2. activation capture;
-3. logit-lens views;
-4. linear probes with lexical and label-permutation controls;
-5. contrastive directions;
-6. controlled steering and capability-preservation checks;
-7. sparse features where independently verified tooling exists;
-8. activation patching and causal tracing;
-9. Jacobian analysis only after simpler causal tests justify it.
+1. **Lab 01 — Model anatomy:** exact identity, offline load, tokens, masks, positions, residual stream, norms, logit lens, final-logit parity, repeat stability, and artifact integrity.
+2. **Lab 02 — Dataset anatomy:** provenance, leakage, balance, frozen splits, and annotation reliability.
+3. **Lab 03 — Behavioral baselines:** lexical and shallow controls before representation claims.
+4. **Lab 04 — Decodability:** linear probes with label permutation and cross-domain transfer.
+5. **Lab 05 — Candidate directions:** contrastive directions with norm-matched controls.
+6. **Lab 06 — Causal intervention:** steering, ablation, dose response, and capability preservation.
+7. **Lab 07 — Mechanism localization:** sparse features and activation patching where justified.
+8. **Lab 08 — Replication:** independent model families, datasets, implementations, or teams.
 
 The interface should remain optional so that the dependency-free validation core stays lightweight. A concrete model, revision, interpretability library, and sparse-feature resource will be selected only after their current availability, license, and hardware requirements are independently verified.
 
@@ -98,7 +97,7 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 
 1. Finish evidence-integrity and readiness gates, including evaluator-safe exports and rater coverage.
 2. Apply a ruleset to `main` with pull-request and verified-check requirements.
-3. Publish Lab 01 with a didactic model role distinct from the primary and replication roles.
+3. Publish and preserve Lab 01 with a didactic model role distinct from the primary and replication roles.
 4. Define the Segmentation/Inversion annotation ontology and freeze criteria.
 5. Execute recognition, selection, and causal-control experiments as separate claim paths.
 
