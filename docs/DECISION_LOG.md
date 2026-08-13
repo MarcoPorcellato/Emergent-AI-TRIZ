@@ -1,5 +1,7 @@
 ---
+type: decision-log
 title: Decision Log
+description: Stable pointer to the canonical Latent TRIZ architectural decision inventory.
 status: canonical
 last_verified: 2026-08-13
 ---

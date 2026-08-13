@@ -1,5 +1,7 @@
 ---
+type: project-index
 title: OKF Project README
+description: Compact index of the maintained Matryca-Knowledge documentation bundle for Latent TRIZ.
 status: canonical
 last_verified: 2026-08-13
 ---

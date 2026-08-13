@@ -1,6 +1,8 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit readiness lab01 lab01-render lab02 lab02-render lab03 lab03-render lab04 lab04-render pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
+.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit readiness lab00 lab00-render lab01 lab01-render lab02 lab02-render lab03 lab03-render lab04 lab04-render pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
+
+LAB_SUITE_OUTPUT ?= artifacts/lab/index.html
 
 test:
 	PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -p "test_*.py"
@@ -179,10 +181,16 @@ stage1-pilot-smoke:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/pilot-annotation.schema.json "$$annotations"; \
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/pilot-summary.schema.json "$$expected_summary"
 
-lab:
+lab00:
 	$(MAKE) stage1-pilot-smoke
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli lab00 --output artifacts/lab00/index.html --open
 
-lab-render:
+lab00-render:
 	$(MAKE) stage1-pilot-smoke
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli lab00 --output artifacts/lab00/index.html
+
+lab:
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli lab-suite --root . --output $(LAB_SUITE_OUTPUT) --open
+
+lab-render:
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli lab-suite --root . --output $(LAB_SUITE_OUTPUT)

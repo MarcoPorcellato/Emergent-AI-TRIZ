@@ -276,6 +276,31 @@ def main() -> int:
             if expected and expected != actual:
                 raise RuntimeError(f"Lab 04 artifact hash mismatch: {path.name}")
 
+    lab_suite_output = ROOT / "artifacts/lab/index.html"
+    run(
+        PYTHON,
+        "-m",
+        "latent_triz.cli",
+        "lab-suite",
+        "--root",
+        ".",
+        "--output",
+        "artifacts/lab/index.html",
+    )
+    first_lab_suite = lab_suite_output.read_bytes()
+    run(
+        PYTHON,
+        "-m",
+        "latent_triz.cli",
+        "lab-suite",
+        "--root",
+        ".",
+        "--output",
+        "artifacts/lab/index.html",
+    )
+    if lab_suite_output.read_bytes() != first_lab_suite:
+        raise RuntimeError("Lab Suite dashboard is not byte-stable")
+
     run(
         PYTHON,
         "-m",

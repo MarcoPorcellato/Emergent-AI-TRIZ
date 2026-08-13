@@ -39,6 +39,7 @@ Use this navigation when preparing proposals, reviews, or PRs.
 - [Roadmap](./ROADMAP.md)
 - [Research protocol](./RESEARCH_PROTOCOL.md)
 - [Evidence Ladder](./EVIDENCE_LADDER.md)
+- [Local visual laboratory suite](./LAB_SUITE.md)
 - [Results contract](../results/README.md)
 - [Lab 04 decodability contract](./LAB04.md)
 - [OKF project index](./OKF_PROJECT.md)

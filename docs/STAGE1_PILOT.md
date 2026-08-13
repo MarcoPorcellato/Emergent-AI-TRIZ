@@ -104,10 +104,10 @@ It does not infer discovery claims and does not add inferential evidence.
 ## Lab 00 visual smoke
 
 ```text
-make lab
+make lab00
 ```
 
-The command first runs the deterministic smoke gate, then renders the tracked bundle to `artifacts/lab00/index.html` and asks the operating system to open it. Use `make lab-render` on a headless system. The report exposes case inputs, blind allocation, paired placeholder responses, all six rubric dimensions, summary deltas, and artifact hashes. It performs no inference and downloads nothing.
+The command first runs the deterministic smoke gate, then renders the tracked bundle to `artifacts/lab00/index.html` and asks the operating system to open it. Use `make lab00-render` on a headless system. The report exposes case inputs, blind allocation, paired placeholder responses, all six rubric dimensions, summary deltas, and artifact hashes. It performs no inference and downloads nothing. Use `make lab` for the combined Lab 00–04 visual entrance.
 
 ## Evidence boundary
 
