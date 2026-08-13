@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import math
 import sys
 import tempfile
@@ -284,6 +285,89 @@ class Lab04Tests(unittest.TestCase):
             case_label,
         )
         self.assertIn("forbidden label field", " ".join(issues))
+
+    def test_external_safetensors_index_is_hash_verified_without_inline_vectors(self) -> None:
+        class FakeDType:
+            byteorder = "<"
+
+            def __str__(self) -> str:
+                return "float32"
+
+        class FakeArray:
+            dtype = FakeDType()
+            shape = (2,)
+
+            def reshape(self, *_shape: int) -> "FakeArray":
+                return self
+
+            def tobytes(self, *, order: str) -> bytes:
+                self_order = order
+                if self_order != "C":
+                    raise AssertionError("unexpected byte order")
+                return b"canonical-float32-vector"
+
+            def tolist(self) -> list[float]:
+                return [0.25, -0.5]
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            artifact = root / "activations.safetensors"
+            artifact.write_bytes(b"fake-safetensors-container")
+            artifact_sha = hashlib.sha256(artifact.read_bytes()).hexdigest()
+            metadata = lab04.stable_json_dumps(
+                {"byte_order": "<", "dtype": "float32", "shape": [2]}
+            ).encode("utf-8")
+            vector_sha = hashlib.sha256(
+                metadata + b"|" + b"canonical-float32-vector"
+            ).hexdigest()
+            record = {
+                "case_id": "pilot_case_001",
+                "layer_index": 0,
+                "vector_dim": 2,
+                "artifact_uri": artifact.name,
+                "artifact_sha256": artifact_sha,
+                "tensor_key": "pilot_case_001::layer_0000",
+                "dtype": "float32",
+                "shape": [2],
+                "vector_sha256": vector_sha,
+                "provenance": {"synthetic": False},
+                "non_claim_boundary": {
+                    "empirical": True,
+                    "evidence_eligible": False,
+                    "claim_ids": [],
+                },
+            }
+            fake_module = type(
+                "FakeSafetensorsNumpy",
+                (),
+                {"load_file": staticmethod(lambda _path: {record["tensor_key"]: FakeArray()})},
+            )
+            with patch.object(lab04.importlib, "import_module", return_value=fake_module):
+                layers, issues = lab04._collect_representations(
+                    [record],
+                    {"pilot_case_001": "segmentation"},
+                    representation_root=root,
+                )
+
+            self.assertEqual(issues, [])
+            self.assertEqual(layers, {0: {"pilot_case_001": [0.25, -0.5]}})
+
+            tampered = dict(record, vector_sha256="0" * 64)
+            with patch.object(lab04.importlib, "import_module", return_value=fake_module):
+                with self.assertRaisesRegex(lab04.Lab04Error, "vector hash mismatch"):
+                    lab04._collect_representations(
+                        [tampered],
+                        {"pilot_case_001": "segmentation"},
+                        representation_root=root,
+                    )
+
+            unsafe = dict(record, artifact_uri="../escape.safetensors")
+            with self.assertRaisesRegex(lab04.Lab04Error, "unsafe representation artifact_uri"):
+                lab04._collect_representations(
+                    [unsafe],
+                    {"pilot_case_001": "segmentation"},
+                    representation_root=root,
+                )
 
     def test_helper_layer_parsing_and_alpha_tie_break(self) -> None:
         self.assertEqual(lab04._parse_layer("resid_post_layer_7"), 7)

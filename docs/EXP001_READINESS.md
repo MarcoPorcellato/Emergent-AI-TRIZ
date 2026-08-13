@@ -42,6 +42,6 @@ Recognition cannot promote selection or causal-control claims.
 - freeze two independent raters per response and a preregistered agreement statistic for empirical runs;
 - keep evaluator packets physically separate from the sealed allocation key;
 - freeze lexical, domain-transfer, random-direction, label-permutation, dose-response, and capability-preservation controls;
-- protect `main` with a commit-pinned ruleset after the required check names are verified.
+- retain the active protected-`main` ruleset and exact-head Commit CI Preflight receipt gate while the scientific blockers are resolved.
 
-Lab 00 remains infrastructure-only. Lab 01 will use a separate didactic model role and will not by itself promote a TRIZ claim.
+Lab 00 remains infrastructure-only. Lab 01 uses a separate didactic model role and now provides a hash-verified representation-extraction bridge; neither result can by itself promote a TRIZ claim.

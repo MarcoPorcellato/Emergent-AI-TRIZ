@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model-backed representation extraction summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "artifact_format",
+    "status",
+    "empirical",
+    "evidence_eligible",
+    "run_timestamp_utc",
+    "claim_ids",
+    "record_count",
+    "case_count",
+    "created_at",
+    "cases_sha256",
+    "cases_path",
+    "config_version",
+    "model",
+    "tokenizer",
+    "output_artifacts",
+    "prompt_stats",
+    "non_claim_boundary",
+    "index_uri",
+    "activations_uri"
+  ],
+  "properties": {
+    "artifact_class": {"const": "model-backed-representation"},
+    "artifact_format": {"const": "safetensors"},
+    "status": {"enum": ["pass", "fail"]},
+    "empirical": {"const": true},
+    "evidence_eligible": {"const": false},
+    "run_timestamp_utc": {"type": "string", "format": "date-time"},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "record_count": {"type": "integer", "minimum": 1},
+    "case_count": {"type": "integer", "minimum": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "cases_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "cases_path": {"type": "string", "pattern": "^[^/].*\\.jsonl$"},
+    "config_version": {"type": "string", "const": "v1"},
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "license"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "license": {"type": "string", "minLength": 1}
+      }
+    },
+    "tokenizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tokenizer_class", "name_or_path", "fingerprint", "files"],
+      "properties": {
+        "tokenizer_class": {"type": "string", "minLength": 1},
+        "name_or_path": {"type": "string", "minLength": 1},
+        "fingerprint": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "files": {
+          "type": "object",
+          "required": ["tokenizer.json", "tokenizer_config.json", "special_tokens_map.json"],
+          "properties": {
+            "tokenizer.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "tokenizer_config.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "special_tokens_map.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "output_artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tensors", "index"],
+      "properties": {
+        "tensors": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256", "records"],
+          "properties": {
+            "path": {"type": "string", "pattern": "^[^/].*\\.safetensors$"},
+            "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "records": {"type": "integer", "minimum": 1}
+          }
+        },
+        "index": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256", "records"],
+          "properties": {
+            "path": {"type": "string", "pattern": "^[^/].*\\.jsonl$"},
+            "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "records": {"type": "integer", "minimum": 1}
+          }
+        }
+      }
+    },
+    "prompt_stats": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["template_hash", "prompt_count", "case_records_hash"],
+      "properties": {
+        "template_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "prompt_count": {"type": "integer", "minimum": 1},
+        "case_records_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "non_claim_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empirical", "evidence_eligible", "claim_ids"],
+      "properties": {
+        "empirical": {"const": true},
+        "evidence_eligible": {"const": false},
+        "claim_ids": {"type": "array", "maxItems": 0}
+      }
+    },
+    "index_uri": {"type": "string", "pattern": "^[^/].*\\.jsonl$"},
+    "activations_uri": {"type": "string", "pattern": "^[^/].*\\.safetensors$"}
+  }
+}

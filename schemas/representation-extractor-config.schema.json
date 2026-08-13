@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model-backed representation extraction configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "config_version",
+    "cases_path",
+    "model_root",
+    "model",
+    "output_dir",
+    "run_timestamp_utc",
+    "prompt_template",
+    "activation_site",
+    "token_policy",
+    "non_claim_boundary"
+  ],
+  "properties": {
+    "config_version": {"const": "v1"},
+    "cases_path": {"type": "string", "minLength": 1},
+    "model_root": {"type": "string", "minLength": 1},
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"const": "EleutherAI/pythia-70m-deduped"},
+        "revision": {"const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"}
+      }
+    },
+    "output_dir": {"type": "string", "minLength": 1},
+    "run_timestamp_utc": {"type": "string", "format": "date-time"},
+    "prompt_template": {"type": "string", "minLength": 1},
+    "activation_site": {"const": "resid_post"},
+    "token_policy": {"const": "last_non_special_token"},
+    "non_claim_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empirical", "evidence_eligible", "claim_ids"],
+      "properties": {
+        "empirical": {"const": true},
+        "evidence_eligible": {"const": false},
+        "claim_ids": {"type": "array", "maxItems": 0}
+      }
+    }
+  },
+  "minProperties": 6
+}

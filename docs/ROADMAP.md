@@ -8,7 +8,7 @@ last_verified: 2026-08-13
 
 # Roadmap
 
-The laboratory foundation is operational. Lab 00 is a deterministic synthetic process smoke. Lab 01 is the first real-model instrumentation result and remains explicitly ineligible as evidence for the hypothesis.
+The laboratory foundation is operational. Lab 00 is a deterministic synthetic process smoke. Lab 01 is the first real-model instrumentation result and remains explicitly ineligible as evidence for the hypothesis. Its model-backed representation extractor now provides the hash-verified bridge from frozen cases and real residual-stream activations to Lab 04.
 
 The maintained Lab 00 through Lab 05 artifacts now have a single local visual entrance. `make lab` opens the dashboard and `make lab-render` produces the same deterministic page for headless use. The dashboard is a navigation and integrity surface; it does not recompute experiments or promote scientific claims.
 
@@ -93,8 +93,11 @@ Lab 04 is now implemented as a deterministic decodability contract run target wi
 - one-vs-rest ridge probes on the frozen unanimous label field,
 - train-only standardization,
 - outer leave-one-domain-out and inner domain-aware model selection,
-- deterministic training-label permutation control with Holm-corrected layer adjustment,
+- shared domain-blocked permutations with inner alpha reselection and max-statistic family-wise control across layers,
+- a pure-Python reference solver plus a pinned NumPy augmented-least-squares backend for empirical-scale runs,
 - strict non-claim boundary in the report output.
+
+Lab 01 representation extraction now writes one externally stored Safetensors vector per case-layer, indexed by model, tokenizer, prompt, token-position and vector receipts. Lab 04 consumes that index directly and rejects unsafe paths or any container, tensor-key, metadata or vector-hash mismatch. The first two-case Pythia smoke is an engineering qualification only; it is not a scientific recognition result.
 
 Lab 05 is implemented as deterministic, fail-closed candidate-direction instrumentation. It computes `mean(segmentation) - mean(inversion)` per layer, compares it with norm-matched seeded random controls and unrelated-label controls, and publishes only hashes, norms, and projections. The current fixture intentionally remains `fail`: Lab 04 is not scientifically ready and the dataset has insufficient label/domain support. No dense direction, intervention, steering claim, or causal claim is published.
 
@@ -130,12 +133,12 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 
 ### Immediate sequence
 
-1. Finish evidence-integrity and readiness gates, including evaluator-safe exports and rater coverage.
-2. Apply a ruleset to `main` with pull-request and verified-check requirements.
-3. Publish and preserve Lab 01 with a didactic model role distinct from the primary and replication roles.
-4. Complete Wave 1 discovery assembly, blinded review, and leakage checks before any freeze.
-5. Define the Segmentation/Inversion annotation ontology, abstention handling, and split freeze criteria.
-6. Execute recognition, selection, and causal-control experiments as separate claim paths.
+1. Preserve the completed foundation: protected `main`, exact-head Commit CI Preflight, Lab 01 receipts, calibrated Lab 04 statistics, and the model-backed representation bridge.
+2. Freeze annotation ontology v1.1, case-payload binding, abstention handling, agreement statistics, and adjudication rules.
+3. Complete blinded Wave 1 review and semantic leakage baselines; replace nominal matched controls with defensible minimal or closely matched pairs.
+4. Assemble a consensus recognition dataset with at least six usable cases per label/domain cell, then freeze its split and exclusion ledger.
+5. Run the first empirical exploratory recognition analysis with a preregistered permutation budget capable of resolving its decision threshold; keep `evidence_eligible: false` and every claim at E0.
+6. Only after recognition survives lexical, field-specific and domain-transfer controls, build pre-output selection and causal-control datasets as separate claim paths.
 
 ## Stage 2 - Surface baselines
 
