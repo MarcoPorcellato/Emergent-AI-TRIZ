@@ -4,12 +4,14 @@ import argparse
 import hashlib
 import json
 import sys
+import webbrowser
 from datetime import date
 from pathlib import Path
 from typing import Iterable, List, Optional
 
 from .docs import load_profile, audit_docs
 from .pilot import PilotError, prepare_packets, score_annotations, stable_json_dumps, write_jsonl
+from .lab00 import Lab00Error, build_lab00_report
 from .validator import ValidationIssue, validate
 
 
@@ -52,6 +54,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     pilot_score_parser.add_argument("--dimensions", nargs="+", default=list(), help="Optional custom dimensions")
     pilot_score_parser.add_argument("--output", default="-", help="Output JSON path, '-' for stdout")
 
+    lab00_parser = subparsers.add_parser("lab00", help="Build deterministic Stage-1 non-evidence HTML report")
+    lab00_parser.add_argument("--output", required=True, help="Output HTML path")
+    lab00_parser.add_argument("--open", action="store_true", help="Open the report in a browser")
+
     fingerprint_parser = subparsers.add_parser("fingerprint", help="Compute SHA-256 of a file")
     fingerprint_parser.add_argument("path", help="Path to file")
 
@@ -68,6 +74,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _run_pilot_prepare(args.cases, args.arms, args.seed, args.output, args.format)
     if args.command == "pilot-score":
         return _run_pilot_score(args.packets, args.responses, args.annotations, args.dimensions, args.output)
+    if args.command == "lab00":
+        return _run_lab00(args.output, args.open)
     parser.error("Unknown command")
     return 1
 
@@ -329,6 +337,19 @@ def _run_pilot_score(
     except OSError as exc:
         _print_error(f"unable to write summary: {exc}")
         return 1
+    return 0
+
+
+def _run_lab00(output: str, open_report: bool) -> int:
+    try:
+        report_path = build_lab00_report(output_path=Path(output))
+    except Lab00Error as exc:
+        _print_error(f"lab00: {exc}")
+        return 1
+    resolved = Path(report_path).resolve()
+    print(f"lab00: rendered {resolved}")
+    if open_report:
+        webbrowser.open(resolved.as_uri())
     return 0
 
 

@@ -3,7 +3,7 @@ type: stage1-pilot
 title: Stage 1 Blinded Pilot
 description: Vendor-neutral two-arm pilot packet, response, annotation, and summary records.
 status: active
-last_verified: 2026-08-12
+last_verified: 2026-08-13
 ---
 
 # Stage 1 blinded pilot
@@ -101,6 +101,14 @@ The smoke command performs deterministic comparison against tracked artifacts:
 
 It does not infer discovery claims and does not add inferential evidence.
 
+## Lab 00 visual smoke
+
+```text
+make lab
+```
+
+The command first runs the deterministic smoke gate, then renders the tracked bundle to `artifacts/lab00/index.html` and asks the operating system to open it. Use `make lab-render` on a headless system. The report exposes case inputs, blind allocation, paired placeholder responses, all six rubric dimensions, summary deltas, and artifact hashes. It performs no inference and downloads nothing.
+
 ## Evidence boundary
 
 - The tracked two-case bundle is process smoke for reproducible protocol checks.
@@ -109,3 +117,4 @@ It does not infer discovery claims and does not add inferential evidence.
 - A real Stage 1 pilot remains non-confirmatory and must follow the frozen
   preregistration, minimum sample, blinding, exclusion, and provenance rules.
 - Confirmatory evidence requires dedicated later-stage instrumentation and governance gates.
+- Lab 00 remains presentation-only, below E0, and synthetic.

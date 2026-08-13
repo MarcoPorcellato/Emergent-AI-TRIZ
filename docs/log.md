@@ -14,6 +14,7 @@ last_verified: 2026-08-13
 - Added the canonical E0-E6 Evidence Ladder, strict claim schema, and three explicit E0 hypotheses.
 - Reframed the public entrance around the runnable Stage 1 process smoke and its non-empirical boundary.
 - Added four contribution lanes and a staged visual/mechanistic-interpretability roadmap.
+- Added the one-command, dependency-free Lab 00 visual smoke, explicitly below E0.
 
 - Initialized the Matryca Knowledge OKF maintained-bundle documentation structure.
 - Added documentation portal pages and ADR 0001 for the dependency-free official-lab foundation.

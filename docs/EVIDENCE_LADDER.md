@@ -36,6 +36,8 @@ Levels are cumulative proof obligations, not a generic maturity score. E6 does n
 
 An E0 entry must be `untested`, have empty evidence links, and set `non_empirical` to `true`. Passing repository tests or the Stage 1 synthetic smoke does not promote a claim.
 
+Lab 00 presentation surfaces are below E0 and must not be represented as claims or evidence.
+
 ## Claim lifecycle
 
 Claims can be `untested`, `in-progress`, `preliminary`, `supported`, `weakened`, `falsified`, or `retracted`. Status and evidence level answer different questions: status records the present interpretation, while the level records the strongest completed evidence class.
