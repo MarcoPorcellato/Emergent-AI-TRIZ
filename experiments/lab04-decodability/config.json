@@ -22,6 +22,9 @@
     "alpha": "smallest_value",
     "layer": "lowest_index"
   },
+  "max_statistic": "outer_fold_macro_f1_max",
+  "permutation_blocks": "outer_training_domain",
+  "reselect_within_each_permutation": true,
   "non_claim_boundary": {
     "empirical": false,
     "evidence_eligible": false,

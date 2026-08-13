@@ -84,6 +84,46 @@ class Lab04Tests(unittest.TestCase):
             },
         ]
 
+    def _four_domain_two_label_cases(self) -> list[dict]:
+        return [
+            {"case_id": "d0_a", "domain": "d0", "label": "alpha", "labels": [{"principle": "alpha"}]},
+            {"case_id": "d0_b", "domain": "d0", "label": "beta", "labels": [{"principle": "beta"}]},
+            {"case_id": "d1_a", "domain": "d1", "label": "alpha", "labels": [{"principle": "alpha"}]},
+            {"case_id": "d1_b", "domain": "d1", "label": "beta", "labels": [{"principle": "beta"}]},
+            {"case_id": "d2_a", "domain": "d2", "label": "alpha", "labels": [{"principle": "alpha"}]},
+            {"case_id": "d2_b", "domain": "d2", "label": "beta", "labels": [{"principle": "beta"}]},
+            {"case_id": "d3_a", "domain": "d3", "label": "alpha", "labels": [{"principle": "alpha"}]},
+            {"case_id": "d3_b", "domain": "d3", "label": "beta", "labels": [{"principle": "beta"}]},
+        ]
+
+    def _four_domain_two_label_representations(self, layer_scores: tuple[list[float], list[float]]) -> list[dict]:
+        layer0 = layer_scores[0]
+        layer1 = layer_scores[1]
+        records: list[dict] = []
+        for case_id in ["d0_a", "d0_b", "d1_a", "d1_b", "d2_a", "d2_b", "d3_a", "d3_b"]:
+            label = "alpha" if case_id.endswith("_a") else "beta"
+            records.append(
+                {
+                    "case_id": case_id,
+                    "layer_index": 0,
+                    "vector": layer0 if label == "alpha" else list(layer0),
+                    "vector_dim": 2,
+                    "provenance": {"synthetic": True},
+                    "non_claim_boundary": {"empirical": False, "evidence_eligible": False, "claim_ids": []},
+                }
+            )
+            records.append(
+                {
+                    "case_id": case_id,
+                    "layer_index": 1,
+                    "vector": layer1 if label == "alpha" else [layer1[0] + 1.0, layer1[1]],
+                    "vector_dim": 2,
+                    "provenance": {"synthetic": True},
+                    "non_claim_boundary": {"empirical": False, "evidence_eligible": False, "claim_ids": []},
+                }
+            )
+        return records
+
     def test_current_fixture_is_fail_closed_and_non_claim(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -249,6 +289,156 @@ class Lab04Tests(unittest.TestCase):
 
         selected = lab04._holm_adjust([0.01, 0.01, 0.1])
         self.assertEqual(selected, [0.03, 0.03, 0.1])
+
+    def test_max_statistic_selected_layer_uses_tie_break_to_lower_index(self) -> None:
+        records = [
+            {"layer": 0, "observed_layer_macro": 0.40, "permutation_null": [0.1, 0.2], "permutation_count": 2},
+            {"layer": 1, "observed_layer_macro": 0.40, "permutation_null": [0.3, 0.4], "permutation_count": 2},
+            {"layer": 2, "observed_layer_macro": 0.60, "permutation_null": [0.2, 0.1], "permutation_count": 2},
+        ]
+        self.assertEqual(lab04._select_max_stat_layer(records), 2)
+
+        records[0]["observed_layer_macro"] = 0.60
+        self.assertEqual(lab04._select_max_stat_layer(records), 0)
+
+    def test_max_statistic_family_wise_p_is_computed_from_max_of_layer_nulls(self) -> None:
+        records = [
+            {"layer": 0, "observed_layer_macro": 0.2, "permutation_null": [0.2, 0.9], "permutation_count": 2},
+            {"layer": 1, "observed_layer_macro": 0.8, "permutation_null": [0.8, 0.7], "permutation_count": 2},
+        ]
+        self.assertEqual(lab04._select_max_stat_layer(records), 1)
+        self.assertEqual(lab04._compute_max_stat_p(records, 1), (1.0, 2))
+
+    def test_alpha_reselection_receipts_are_deterministic_and_recorded_for_each_fold(self) -> None:
+        labels = ["alpha", "beta"]
+        case_label: dict[str, str] = {}
+        case_domain: dict[str, str] = {}
+        vectors: dict[str, list[float]] = {}
+        for domain_index in range(4):
+            for label_index, label in enumerate(labels):
+                case_id = f"case_d{domain_index}_{label}"
+                case_label[case_id] = label
+                case_domain[case_id] = f"domain_{domain_index}"
+                vectors[case_id] = [float(label_index * 4 + domain_index), 1.0]
+
+        config = {
+            "permutations": 5,
+            "seed": 1729,
+            "reselect_within_each_permutation": True,
+        }
+        result_a, _ = lab04._run_layer(
+            layer=0,
+            vectors=vectors,
+            case_domain=case_domain,
+            case_label=case_label,
+            labels=labels,
+            config=config,
+        )
+        result_b, _ = lab04._run_layer(
+            layer=0,
+            vectors=vectors,
+            case_domain=case_domain,
+            case_label=case_label,
+            labels=labels,
+            config=config,
+        )
+        receipts_a = [
+            fold["permutation_receipt"]["alpha_reselection_sha256"]
+            for fold in result_a["folds"]
+        ]
+        receipts_b = [
+            fold["permutation_receipt"]["alpha_reselection_sha256"]
+            for fold in result_b["folds"]
+        ]
+        self.assertEqual(receipts_a, receipts_b)
+        for fold in result_a["folds"]:
+            receipt = fold["permutation_receipt"]
+            self.assertEqual(receipt["alpha_reselection_count"], 5)
+            self.assertEqual(receipt["alpha_reselection_failures"], 0)
+            self.assertEqual(receipt["block"], "outer_training_domain")
+            self.assertTrue(receipt["block_label_counts_preserved"])
+
+    def test_max_statistic_selected_layer_is_published_and_follows_outer_macro_tiebreak(self) -> None:
+        cases = self._four_domain_two_label_cases()
+        representations = [
+            {
+                "case_id": case["case_id"],
+                "layer_index": 0,
+                "vector": [0.0, 0.0],
+                "vector_dim": 2,
+                "provenance": {"synthetic": True},
+                "non_claim_boundary": {"empirical": False, "evidence_eligible": False, "claim_ids": []},
+            }
+            for case in cases
+        ]
+        representations.extend(
+            [
+                {
+                    "case_id": case["case_id"],
+                    "layer_index": 1,
+                    "vector": [0.0, 0.0] if case["case_id"].endswith("_a") else [1.0, 0.0],
+                    "vector_dim": 2,
+                    "provenance": {"synthetic": True},
+                    "non_claim_boundary": {"empirical": False, "evidence_eligible": False, "claim_ids": []},
+                }
+                for case in cases
+            ]
+        )
+
+        config = self._config()
+        config["minimum_labels"] = 2
+        config["readiness_thresholds"]["minimum_domains"] = 4
+        config["readiness_thresholds"]["minimum_cases_per_label_domain_cell"] = 1
+        config["readiness_thresholds"]["corrected_p_max"] = 1.0
+        config["permutations"] = 3
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._write_jsonl(root / "cases.jsonl", cases)
+            self._write_jsonl(root / "representations.jsonl", representations)
+            self._write_json(root / "config.json", config)
+            self._write_json(root / "lab01.json", self._predecessor())
+            self._write_json(root / "lab02.json", self._predecessor())
+            self._write_json(root / "lab03.json", self._predecessor())
+
+            result = lab04.run_lab04_analysis(
+                cases_path=root / "cases.jsonl",
+                representations_path=root / "representations.jsonl",
+                config_path=root / "config.json",
+                predecessor_lab01_summary=root / "lab01.json",
+                predecessor_lab02_summary=root / "lab02.json",
+                predecessor_lab03_summary=root / "lab03.json",
+            )
+            self.assertEqual(result["random_control"]["max_statistic"]["selected_layer"], 1)
+
+    def test_insufficient_permutations_cannot_resolve_significance_alpha(self) -> None:
+        cases = self._four_domain_two_label_cases()
+        representations = self._four_domain_two_label_representations(([0.0, 0.0], [0.0, 0.0]))
+        config = self._config()
+        config["minimum_labels"] = 2
+        config["readiness_thresholds"]["minimum_domains"] = 4
+        config["readiness_thresholds"]["minimum_cases_per_label_domain_cell"] = 1
+        config["readiness_thresholds"]["corrected_p_max"] = 0.1
+        config["permutations"] = 2
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._write_jsonl(root / "cases.jsonl", cases)
+            self._write_jsonl(root / "representations.jsonl", representations)
+            self._write_json(root / "config.json", config)
+            self._write_json(root / "lab01.json", self._predecessor())
+            self._write_json(root / "lab02.json", self._predecessor())
+            self._write_json(root / "lab03.json", self._predecessor())
+            result = lab04.run_lab04_analysis(
+                cases_path=root / "cases.jsonl",
+                representations_path=root / "representations.jsonl",
+                config_path=root / "config.json",
+                predecessor_lab01_summary=root / "lab01.json",
+                predecessor_lab02_summary=root / "lab02.json",
+                predecessor_lab03_summary=root / "lab03.json",
+            )
+            self.assertEqual(result["status"], "fail")
+            self.assertIn("below minimum resolvable p", "\n".join(result["issues"]))
 
     def test_nested_lodo_receipts_are_leakage_free_and_train_only(self) -> None:
         labels = ["alpha", "beta"]

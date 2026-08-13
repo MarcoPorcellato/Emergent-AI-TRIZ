@@ -49,6 +49,7 @@ def _render_html(payload: Mapping[str, Any]) -> str:
     layers = payload.get("layers", [])
     case_summary = payload.get("case_summary", {})
     random_control = payload.get("random_control", {})
+    max_statistic = random_control.get("max_statistic", {})
 
     gate_rows: list[str] = []
     for item in gates:
@@ -64,7 +65,6 @@ def _render_html(payload: Mapping[str, Any]) -> str:
         layer_id = escape(str(layer.get("layer", "")))
         selected_alpha = _format_float(layer.get("selected_alpha", 0.0))
         p_raw = _format_float(layer.get("p_value_raw", 1.0))
-        p_holm = _format_float(layer.get("p_value_holm", 1.0))
         agg = layer.get("aggregate", {})
 
         fold_rows: list[str] = []
@@ -90,7 +90,7 @@ def _render_html(payload: Mapping[str, Any]) -> str:
         layer_rows.append(
             "<section class='card'>"
             f"<h3>Layer {layer_id}</h3>"
-            f"<p>selected_alpha={selected_alpha} p_raw={p_raw} p_holm={p_holm} "+
+            f"<p>selected_alpha={selected_alpha} p_layer_uncorrected={p_raw} "+
             f"permutations={escape(str(layer.get('permutation_count', 0)))}"+"</p>"
             f"<p>accuracy={_format_float(agg.get('accuracy', 0.0))}, macro_f1={_format_float(agg.get('macro_f1', 0.0))}, balanced_accuracy={_format_float(agg.get('balanced_accuracy', 0.0))}</p>"
             "<table><thead><tr><th>Domain</th><th>Train</th><th>Test</th><th>Status</th><th>Accuracy</th><th>Macro-F1</th><th>Balanced Acc</th><th>Majority Margin</th><th>Permutation p</th><th>Details</th></tr></thead><tbody>"
@@ -118,6 +118,9 @@ def _render_html(payload: Mapping[str, Any]) -> str:
         "<p>permutations=" + escape(str(random_control.get("permutations", ""))) + "</p>"
         "<p>method=" + escape(str(random_control.get("method", ""))) + "</p>"
         "<p>formula=" + escape(str(random_control.get("formula", ""))) + "</p>"
+        "<p>selected_layer=" + escape(str(max_statistic.get("selected_layer", ""))) + "</p>"
+        "<p>family_wise_p=" + _format_float(max_statistic.get("max_statistic_p", 1.0)) + "</p>"
+        "<p>null_count=" + escape(str(max_statistic.get("null_count", ""))) + "</p>"
         "</section>",
         "<section class='card'><h2>Gate checks</h2><ul>" + "".join(gate_rows) + "</ul></section>",
     ]

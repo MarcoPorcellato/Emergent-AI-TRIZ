@@ -91,6 +91,37 @@ def _coerce_float(value: Any, default: float) -> float:
         return default
 
 
+def _coerce_bool(value: Any, default: bool) -> bool:
+    if isinstance(value, bool):
+        return value
+    return default
+
+
+def _build_permutation_labels(
+    sorted_case_ids: list[str],
+    case_labels: list[str],
+    blocks: list[str],
+    permutations: int,
+    base_seed: int,
+) -> list[list[str]]:
+    if len(sorted_case_ids) != len(case_labels) or len(blocks) != len(case_labels):
+        raise Lab04Error("case ids, labels, and permutation blocks must align")
+    if permutations <= 0:
+        return []
+    sequence: list[list[str]] = []
+    for permutation_index in range(permutations):
+        rng = Random(base_seed + permutation_index + 1)
+        shuffled = case_labels[:]
+        for block in sorted(set(blocks)):
+            indices = [index for index, value in enumerate(blocks) if value == block]
+            values = [case_labels[index] for index in indices]
+            rng.shuffle(values)
+            for index, value in zip(indices, values):
+                shuffled[index] = value
+        sequence.append(shuffled)
+    return sequence
+
+
 def _to_float_vector(raw: Any, *, label: str) -> list[float]:
     if not isinstance(raw, (list, tuple)):
         raise Lab04Error(f"{label} vector must be a list")
@@ -521,6 +552,8 @@ def _run_outer_fold(
     permutations: int,
     seed: int,
     alpha_cache: dict[str, float],
+    permutation_sequences: list[list[str]] | None = None,
+    reselect_alpha_within_permutation: bool = True,
 ) -> FoldResult:
     train = [
         item
@@ -610,23 +643,100 @@ def _run_outer_fold(
     baseline_metrics, _ = _macro_and_balanced(test_labels, baseline_pred, labels)
     majority_margin = observed["macro_f1"] - baseline_metrics["macro_f1"]
 
-    stable_domain_seed = int(_sha256_text(held_domain)[:16], 16)
-    rng = Random(seed + stable_domain_seed)
     null_hits = 0
     null_scores: list[float] = []
     original_counts = {label: train_labels.count(label) for label in labels}
     permutation_counts_preserved = True
+    sorted_train = sorted(train, key=lambda item: item[0])
+    sorted_train_ids = [case_id for case_id, _, _ in sorted_train]
+    sorted_train_labels = [label for _, label, _ in sorted_train]
+    sorted_train_blocks = [domain_lookup[case_id] for case_id in sorted_train_ids]
+    if permutation_sequences is None:
+        permutation_sequences = _build_permutation_labels(
+            sorted_case_ids=sorted_train_ids,
+            case_labels=sorted_train_labels,
+            blocks=sorted_train_blocks,
+            permutations=permutations,
+            base_seed=seed + int(_sha256_text(held_domain)[:8], 16),
+        )
+    elif len(permutation_sequences) < permutations:
+        raise Lab04Error("insufficient permutation_sequences for requested permutations")
+
+    permutation_alpha_reselection: list[dict[str, Any]] = []
+    permuted_alpha_errors: list[str] = []
+    original_block_counts = {
+        block: {
+            label: sum(
+                1
+                for candidate_block, candidate_label in zip(
+                    sorted_train_blocks, sorted_train_labels
+                )
+                if candidate_block == block and candidate_label == label
+            )
+            for label in labels
+        }
+        for block in sorted(set(sorted_train_blocks))
+    }
+    permutation_block_counts_preserved = True
     for _ in range(permutations):
-        shuffled = train_labels[:]
-        rng.shuffle(shuffled)
+        shuffled = permutation_sequences[_]
         if {label: shuffled.count(label) for label in labels} != original_counts:
             permutation_counts_preserved = False
+        for block, expected in original_block_counts.items():
+            observed_block_counts = {
+                label: sum(
+                    1
+                    for candidate_block, candidate_label in zip(
+                        sorted_train_blocks, shuffled
+                    )
+                    if candidate_block == block and candidate_label == label
+                )
+                for label in labels
+            }
+            if observed_block_counts != expected:
+                permutation_block_counts_preserved = False
+        perm_alpha = selected_alpha
+        if reselect_alpha_within_permutation:
+            perm_train = [
+                (case_id, shuffled[index], vector)
+                for index, (case_id, _, vector) in enumerate(sorted_train)
+            ]
+            perm_alpha_candidate, _perm_alpha_scores, perm_alpha_errors, perm_inner_receipts = _inner_alpha_search(
+                perm_train, labels, domain_lookup
+            )
+            status = "pass"
+            details: list[str] = []
+            if perm_alpha_candidate is None:
+                perm_alpha_candidate = selected_alpha
+                status = "fail"
+                details = perm_alpha_errors or ["inner alpha search failed"]
+                permuted_alpha_errors.extend(perm_alpha_errors)
+            permutation_alpha_reselection.append(
+                {
+                    "permutation_index": _,
+                    "status": status,
+                    "selected_alpha": perm_alpha_candidate,
+                    "inner_split_receipts": perm_inner_receipts,
+                    "details": "; ".join(details),
+                }
+            )
+            perm_alpha = perm_alpha_candidate
+        else:
+            permutation_alpha_reselection.append(
+                {
+                    "permutation_index": _,
+                    "status": "pass",
+                    "selected_alpha": perm_alpha,
+                    "inner_split_receipts": [],
+                    "details": "",
+                }
+            )
         shuffled_train = [
             (case_id, shuffled[index], vector)
-            for index, (case_id, _, vector) in enumerate(train)
+            for index, (case_id, _, vector) in enumerate(sorted_train)
         ]
         p_models = _fit_one_vs_rest(
-            shuffled_train, labels, selected_alpha, mean, std
+            shuffled_train, labels, perm_alpha, mean, std
         )
         p_pred = _predict_one_vs_rest(p_models, test_vectors, mean, std)
         p_metrics, _ = _macro_and_balanced(test_labels, p_pred, labels)
@@ -657,8 +767,20 @@ def _run_outer_fold(
             "seed": seed,
             "domain_seed_sha256": _sha256_text(held_domain),
             "label_counts_preserved": permutation_counts_preserved,
+            "block": "outer_training_domain",
+            "block_label_counts_preserved": permutation_block_counts_preserved,
+            "case_order_sha256": _sha256_text(stable_json_dumps(sorted_train_ids)),
             "null_hits": null_hits,
             "formula": "p=(1+null>=observed)/(1+n)",
+            "alpha_reselected_within_each_permutation": reselect_alpha_within_permutation,
+            "alpha_reselection_count": len(permutation_alpha_reselection),
+            "alpha_reselection_failures": sum(
+                item.get("status") != "pass" for item in permutation_alpha_reselection
+            ),
+            "alpha_reselection_sha256": _sha256_text(
+                stable_json_dumps(permutation_alpha_reselection)
+            ),
+            "permutation_alpha_errors": bool(permuted_alpha_errors),
         },
         permutation_null_scores=null_scores,
     )
@@ -671,10 +793,14 @@ def _run_layer(
     case_label: Mapping[str, str],
     labels: list[str],
     config: Mapping[str, Any],
+    max_statistic_permutation_states: list[dict[str, Any]] | None = None,
 ) -> tuple[dict[str, Any], list[str]]:
     issues: list[str] = []
     permutations = _coerce_int(config.get("permutations", _DEFAULT_PERMUTATIONS), _DEFAULT_PERMUTATIONS)
     seed = _coerce_int(config.get("seed", _DEFAULT_SEED), _DEFAULT_SEED)
+    reselect_within_each_permutation = _coerce_bool(
+        config.get("reselect_within_each_permutation", True), True
+    )
     if permutations <= 0:
         permutations = _DEFAULT_PERMUTATIONS
 
@@ -696,7 +822,6 @@ def _run_layer(
             "mean_inner_scores": {},
             "permutation_count": permutations,
             "p_value_raw": 1.0,
-            "p_value_holm": 1.0,
             "aggregate": {"accuracy": 0.0, "macro_f1": 0.0, "balanced_accuracy": 0.0},
             "folds": [],
             "issues": ["no cases for layer"],
@@ -706,6 +831,22 @@ def _run_layer(
     fold_results: list[FoldResult] = []
     alpha_by_fold: dict[str, float] = {}
     for domain in domains:
+        sorted_train = sorted(
+            [
+                item
+                for domain_name in sorted(by_domain)
+                if domain_name != domain
+                for item in by_domain[domain_name]
+            ],
+            key=lambda item: item[0],
+        )
+        permutation_labels = _build_permutation_labels(
+            sorted_case_ids=[case_id for case_id, _, _ in sorted_train],
+            case_labels=[label for _, label, _ in sorted_train],
+            blocks=[case_domain[case_id] for case_id, _, _ in sorted_train],
+            permutations=permutations,
+            base_seed=seed + int(_sha256_text(domain)[:8], 16),
+        )
         fold = _run_outer_fold(
             held_domain=domain,
             by_domain=by_domain,
@@ -713,6 +854,8 @@ def _run_layer(
             permutations=permutations,
             seed=seed,
             alpha_cache=alpha_by_fold,
+            permutation_sequences=permutation_labels,
+            reselect_alpha_within_permutation=reselect_within_each_permutation,
         )
         fold_results.append(fold)
 
@@ -732,6 +875,16 @@ def _run_layer(
     else:
         aggregate_null = []
         layer_p = 1.0
+
+    if max_statistic_permutation_states is not None:
+        max_statistic_permutation_states.append(
+            {
+                "layer": layer,
+                "observed_layer_macro": observed_macro,
+                "permutation_null": aggregate_null,
+                "permutation_count": len(aggregate_null),
+            }
+        )
 
     mean_inner_scores: dict[float, float] = {}
     for alpha in _ALPHA_GRID:
@@ -756,7 +909,6 @@ def _run_layer(
         "mean_inner_scores": mean_inner_scores,
         "permutation_count": permutations,
         "p_value_raw": layer_p,
-        "p_value_holm": 1.0,
         "permutation_aggregate_receipt": {
             "statistic": "mean_outer_fold_macro_f1",
             "null_count": len(aggregate_null),
@@ -816,6 +968,43 @@ def _holm_adjust(p_values: list[float]) -> list[float]:
     return adjusted
 
 
+def _select_max_stat_layer(records: list[dict[str, Any]]) -> int | None:
+    if not records:
+        return None
+    selected = min(records, key=lambda item: (-item.get("observed_layer_macro", 0.0), item.get("layer", 0)))
+    return selected.get("layer")
+
+
+def _compute_max_stat_p(
+    records: list[dict[str, Any]],
+    selected_layer: int | None,
+) -> tuple[float, int]:
+    if not records or selected_layer is None:
+        return 1.0, 0
+    selected = next(
+        (item for item in records if item.get("layer") == selected_layer),
+        None,
+    )
+    if selected is None:
+        return 1.0, 0
+    selected_observed = selected.get("observed_layer_macro", 0.0)
+    null_count = min(item.get("permutation_count", 0) for item in records)
+    if null_count == 0:
+        return 1.0, 0
+    max_null: list[float] = []
+    for permutation_index in range(null_count):
+        per_layer = [
+            item.get("permutation_null", [])[permutation_index]
+            for item in records
+            if len(item.get("permutation_null", [])) > permutation_index
+        ]
+        if not per_layer:
+            return 1.0, 0
+        max_null.append(max(per_layer))
+    hits = sum(value >= selected_observed for value in max_null)
+    return (1 + hits) / (1 + null_count), null_count
+
+
 def _evaluate_gates(
     predecessor_ok: bool,
     predecessor_issues: list[str],
@@ -829,6 +1018,10 @@ def _evaluate_gates(
     config_min_domains: int,
     config_min_cases_per_label: int,
     config_min_cases_per_domain: int,
+    selected_layer: int | None,
+    max_statistic_p: float,
+    max_statistic_permutations: int,
+    max_statistic_error: str | None,
 ) -> list[dict[str, Any]]:
     gates: list[dict[str, Any]] = []
 
@@ -905,6 +1098,8 @@ def _evaluate_gates(
         and all(
             fold.get("selected_alpha") in _ALPHA_GRID
             and fold.get("permutation_receipt", {}).get("label_counts_preserved") is True
+            and fold.get("permutation_receipt", {}).get("block") == "outer_training_domain"
+            and fold.get("permutation_receipt", {}).get("block_label_counts_preserved") is True
             and fold.get("permutation_receipt", {}).get("scope") == "training_labels_only"
             for fold in layer.get("folds", [])
         )
@@ -916,32 +1111,78 @@ def _evaluate_gates(
         "details": "Permutation protocol executed." if p5 else "Permutation protocol invalid.",
     })
 
-    corrected: list[float] = _holm_adjust([layer.get("p_value_raw", 1.0) for layer in results])
-    significance_alpha = _coerce_float(config.get("significance_alpha", 0.05), 0.05)
-    for layer, value in zip(results, corrected):
-        layer["p_value_holm"] = value
-
-    p6 = p5 and all(
-        0.0 <= layer.get("p_value_raw", -1.0) <= 1.0
-        and 0.0 <= layer.get("p_value_holm", -1.0) <= 1.0
-        for layer in results
+    readiness_thresholds = config.get("readiness_thresholds", {})
+    if not isinstance(readiness_thresholds, Mapping):
+        readiness_thresholds = {}
+    significance_alpha = _coerce_float(
+        readiness_thresholds.get("corrected_p_max", 0.05), 0.05
     )
+    margin_min = _coerce_float(
+        readiness_thresholds.get("macro_f1_margin_over_majority_min", 0.10),
+        0.10,
+    )
+    selected_payload = next(
+        (layer for layer in results if layer.get("layer") == selected_layer),
+        None,
+    )
+    method_ok = config.get("max_statistic") == "outer_fold_macro_f1_max"
+    block_ok = config.get("permutation_blocks") == "outer_training_domain"
+    reselection_ok = config.get("reselect_within_each_permutation") is True
+    fold_reselection_ok = bool(results) and all(
+        fold.get("permutation_receipt", {}).get(
+            "alpha_reselected_within_each_permutation"
+        ) is True
+        and fold.get("permutation_receipt", {}).get("permutation_alpha_errors") is False
+        for layer in results
+        for fold in layer.get("folds", [])
+    )
+    p6 = (
+        p5
+        and method_ok
+        and block_ok
+        and reselection_ok
+        and fold_reselection_ok
+        and max_statistic_error is None
+        and selected_payload is not None
+        and max_statistic_permutations > 0
+        and 0.0 <= max_statistic_p <= 1.0
+    )
+    p7_ok = p6 and max_statistic_p <= significance_alpha and selected_payload is not None
+    details: list[str] = []
+    if not p6 and max_statistic_error is not None:
+        details.append(max_statistic_error)
+    if max_statistic_p > significance_alpha:
+        p7_ok = False
+        details.append(
+            f"max-statistic p {max_statistic_p} exceeds configured alpha {significance_alpha}"
+        )
+    if selected_payload is None:
+        p7_ok = False
+        details.append("no selected layer for max-statistic control")
+    else:
+        for fold in selected_payload.get("folds", []):
+            if fold.get("majority_margin", 0.0) < margin_min:
+                p7_ok = False
+                details.append(
+                    f"selected layer {selected_layer} fold {fold.get('domain')} margin below {margin_min}"
+                )
+            if fold.get("permutation_receipt", {}).get(
+                "alpha_reselected_within_each_permutation"
+            ) is not True:
+                p7_ok = False
+                details.append(
+                    f"selected layer {selected_layer} fold {fold.get('domain')} did not reselect alpha per permutation"
+                )
+            if fold.get("permutation_receipt", {}).get("permutation_alpha_errors") is True:
+                p7_ok = False
+                details.append(
+                    f"selected layer {selected_layer} fold {fold.get('domain')} permutation alpha reselection failed"
+                )
     gates.append({
         "gate": "P6",
         "status": "pass" if p6 else "fail",
-        "details": "Permutation p-values are valid and Holm correction is recorded." if p6 else "Permutation or Holm correction receipt is invalid.",
+        "details": "Permutation controls and max-statistic summary are available." if p6 else "Permutation protocol or max-statistic control is invalid.",
     })
-
-    p7_ok = True
-    details: list[str] = []
-    for layer in results:
-        if layer.get("p_value_holm", 1.0) > significance_alpha:
-            p7_ok = False
-            details.append(f"layer {layer.get('layer')} not Holm-significant")
-        for fold in layer.get("folds", []):
-            if fold.get("majority_margin", 0.0) < 0.10:
-                p7_ok = False
-                details.append(f"layer {layer.get('layer')} fold {fold.get('domain')} margin below 0.10")
     gates.append({
         "gate": "P7",
         "status": "pass" if p7_ok else "fail",
@@ -1055,6 +1296,7 @@ def run_lab04_analysis(
             case_counts_issue.append(f"label-domain cell {cell} below minimum")
 
     layer_results: list[dict[str, Any]] = []
+    max_statistic_records: list[dict[str, Any]] = []
     for layer in sorted(layers_data):
         layer_payload, issues = _run_layer(
             layer=layer,
@@ -1063,10 +1305,60 @@ def run_lab04_analysis(
             case_label=case_label,
             labels=labels,
             config=config,
+            max_statistic_permutation_states=max_statistic_records,
         )
         layer_results.append(layer_payload)
         layer_issue.extend(issues)
 
+    permutations = _coerce_int(config.get("permutations", _DEFAULT_PERMUTATIONS), _DEFAULT_PERMUTATIONS)
+    if permutations <= 0:
+        permutations = _DEFAULT_PERMUTATIONS
+    readiness_thresholds = config.get("readiness_thresholds", {})
+    if not isinstance(readiness_thresholds, Mapping):
+        readiness_thresholds = {}
+    significance_alpha = _coerce_float(
+        readiness_thresholds.get("corrected_p_max", 0.05), 0.05
+    )
+    max_statistic_error: str | None = None
+    selected_layer: int | None = None
+    max_statistic_p = 1.0
+    max_statistic_null_count = 0
+    max_statistic_null: list[float] = []
+
+    if permutations > 0 and 1.0 / (permutations + 1) > significance_alpha:
+        max_statistic_error = (
+            f"configured significance_alpha {significance_alpha} is below minimum resolvable p={1.0/(permutations+1):.6f}"
+        )
+
+    if max_statistic_records:
+        selected_layer = _select_max_stat_layer(max_statistic_records)
+        max_statistic_p, max_statistic_null_count = _compute_max_stat_p(
+            records=max_statistic_records, selected_layer=selected_layer
+        )
+        if max_statistic_null_count == 0 and max_statistic_error is None:
+            max_statistic_error = "no valid max-statistic null draws"
+
+    if max_statistic_error is None and max_statistic_null_count > 0:
+        selected_record = next(
+            (item for item in max_statistic_records if item.get("layer") == selected_layer),
+            None,
+        )
+        if selected_record is not None:
+            max_statistic_null = selected_record.get("permutation_null", [])[:max_statistic_null_count]
+            max_statistic_null = [
+                max(
+                    item.get("permutation_null", [])[index]
+                    for item in max_statistic_records
+                    if len(item.get("permutation_null", [])) > index
+                )
+                for index in range(max_statistic_null_count)
+            ]
+        if not max_statistic_null:
+            max_statistic_error = "no valid max-statistic null draws"
+
+    if max_statistic_error is None and max_statistic_null_count == 0 and max_statistic_records:
+        max_statistic_error = "no valid max-statistic null draws"
+    statistical_issues = [max_statistic_error] if max_statistic_error else []
     gates = _evaluate_gates(
         predecessor_ok=predecessor_ok,
         predecessor_issues=predecessor_issues,
@@ -1086,6 +1378,10 @@ def run_lab04_analysis(
         config_min_domains=config_min_domains,
         config_min_cases_per_label=config_min_cell,
         config_min_cases_per_domain=config_min_cell,
+        selected_layer=selected_layer,
+        max_statistic_p=max_statistic_p,
+        max_statistic_permutations=max_statistic_null_count,
+        max_statistic_error=max_statistic_error,
     )
 
     status = "pass" if all(item["status"] == "pass" for item in gates) and predecessor_ok else "fail"
@@ -1096,6 +1392,7 @@ def run_lab04_analysis(
         *case_counts_issue,
         *predecessor_issues,
         *layer_issue,
+        *statistical_issues,
     ]
 
     return {
@@ -1134,17 +1431,33 @@ def run_lab04_analysis(
         "random_control": {
             "seed": _coerce_int(config.get("seed", _DEFAULT_SEED), _DEFAULT_SEED),
             "permutations": _coerce_int(config.get("permutations", _DEFAULT_PERMUTATIONS), _DEFAULT_PERMUTATIONS),
-            "method": "training-label permutation only; test labels unchanged",
+            "method": (
+                "training labels permuted with deterministic shared draws across layers; "
+                "inner alpha selection repeated inside every draw; test labels unchanged"
+            ),
             "formula": "p=(1+null>=observed)/(1+n)",
+            "max_statistic": {
+                "selected_layer": selected_layer,
+                "max_statistic_p": max_statistic_p,
+                "null_count": max_statistic_null_count,
+                "null_sha256": _sha256_text(stable_json_dumps(max_statistic_null)),
+                "signature": "max_statistic_family_wise",
+                "configured_alpha": significance_alpha,
+            },
         },
         "config": {
             "minimum_labels": config_min_labels,
             "minimum_domains": config_min_domains,
             "minimum_cases_per_label_domain_cell": config_min_cell,
             "alphas": list(_ALPHA_GRID),
+            "max_statistic": config.get("max_statistic", "outer_fold_macro_f1_max"),
+            "permutation_blocks": config.get("permutation_blocks", "outer_training_domain"),
+            "reselect_within_each_permutation": _coerce_bool(
+                config.get("reselect_within_each_permutation", True), True
+            ),
             "permutations": _coerce_int(config.get("permutations", _DEFAULT_PERMUTATIONS), _DEFAULT_PERMUTATIONS),
             "seed": _coerce_int(config.get("seed", _DEFAULT_SEED), _DEFAULT_SEED),
-            "significance_alpha": _coerce_float(config.get("significance_alpha", 0.05), 0.05),
+            "significance_alpha": significance_alpha,
         },
         "layers": layer_results,
         "gates": gates,
