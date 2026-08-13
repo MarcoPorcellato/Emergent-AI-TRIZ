@@ -1,0 +1,29 @@
+{
+  "artifact_class": "annotation-cognitive-pilot-protocol",
+  "protocol_id": "annotation-ontology-v1-2-cognitive-pilot",
+  "ontology_revision": "v1.2.0",
+  "status": "ready_for_human_pilot",
+  "target_experts": 3,
+  "case_ids": ["wave1_mg_001", "wave1_mg_003", "wave1_mg_009", "wave1_mg_011", "wave1_mg_013", "wave1_mg_015"],
+  "blinding": {
+    "hide_generator_targets": true,
+    "hide_provenance": true,
+    "hide_related_cases": true
+  },
+  "questions": [
+    "Explain which transformation evidence supports the primary label.",
+    "Score Segmentation and Inversion independently before comparing them.",
+    "Identify any wording in the guide that remains ambiguous.",
+    "Name the alternative principle whenever Other is selected.",
+    "Explain what information is missing whenever Cannot determine is selected.",
+    "Flag any positive example, near miss, or adjacent-principle warning that anchors the judgment."
+  ],
+  "completion_gate": {
+    "independent_experts_per_case": 3,
+    "qualitative_ambiguity_synthesis": true,
+    "ontology_amendment_decision": true,
+    "required_before_wave2_collection": true
+  },
+  "evidence_eligible": false,
+  "claim_ids": []
+}

@@ -10,6 +10,7 @@ last_verified: 2026-08-13
 
 ## 2026-08-13
 
+- Amended the unused annotation contract to development ontology v1.2 with operator-specific scores, explicit Other and Cannot-determine semantics, carry-over-resistant controls, and a six-case cognitive-pilot gate before Wave 2 collection.
 - Added the stable path- and risk-aware merge policy contract: lightweight docs qualification, dual-version Python checks for code, exact-head CCP plus artifact auditing for scientific changes, and scheduled live ruleset drift detection.
 - Reordered the research program after the retained Wave 1 negative surface result: integrity hotfixes and stable governance now precede annotation v1.2, immutable calibration-only Wave 1, label-free counterfactual Wave 2, canonical human labels, and the first empirical recognition run. Empirical direction and causal work remain deferred until held-out-domain generalization is demonstrated.
 - Replaced Lab 04 all-layer Holm gating with shared, domain-blocked max-statistic control, nested alpha reselection within every permutation, explicit p-resolution refusal, typed public receipts, and regenerated fail-closed Lab 04–05 fixture artifacts.

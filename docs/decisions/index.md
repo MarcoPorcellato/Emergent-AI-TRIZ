@@ -17,3 +17,4 @@ last_verified: 2026-08-13
 - [ADR 0007 — Lab 04 decodability](./0007-lab04-decodability.md)
 - [ADR 0008 — Local visual laboratory suite](./0008-local-visual-laboratory-suite.md)
 - [ADR 0009 — Lab 05 candidate directions](./0009-lab05-candidate-directions.md)
+- [ADR 0010 — Annotation ontology v1.2](./0010-annotation-ontology-v1-2.md)
