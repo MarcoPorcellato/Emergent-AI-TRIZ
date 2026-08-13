@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/lab04-result.schema.json",
+  "title": "Latent TRIZ Lab 04 decodability result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "status", "empirical", "evidence_eligible", "claim_ids",
+    "interpretation", "non_claim_boundary", "hashes", "predecessors",
+    "case_summary", "random_control", "config", "layers", "gates", "issues",
+    "summary_artifacts"
+  ],
+  "properties": {
+    "artifact_class": {"const": "representation-decodability-instrumentation"},
+    "status": {"enum": ["pass", "fail"]},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "interpretation": {"const": "diagnostic_only_not_scientifically_interpretable"},
+    "non_claim_boundary": {
+      "type": "string",
+      "pattern": "No Latent TRIZ claim.*Decodability is correlational, not causal"
+    },
+    "hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cases_jsonl", "representations_jsonl", "config_json", "probe_result_json", "report_html", "summary_json"],
+      "properties": {
+        "cases_jsonl": {"$ref": "#/$defs/sha256"},
+        "representations_jsonl": {"$ref": "#/$defs/sha256"},
+        "config_json": {"$ref": "#/$defs/sha256"},
+        "probe_result_json": {"$ref": "#/$defs/sha256"},
+        "report_html": {"$ref": "#/$defs/sha256"},
+        "summary_json": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "predecessors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lab01", "lab02", "lab03"],
+      "properties": {
+        "lab01": {"$ref": "#/$defs/predecessor"},
+        "lab02": {"$ref": "#/$defs/predecessor"},
+        "lab03": {"$ref": "#/$defs/predecessor"}
+      }
+    },
+    "case_summary": {"type": "object"},
+    "random_control": {"type": "object"},
+    "config": {"type": "object"},
+    "layers": {"type": "array", "items": {"type": "object"}},
+    "gates": {
+      "type": "array", "minItems": 8, "maxItems": 8,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["gate", "status", "details"],
+        "properties": {
+          "gate": {"enum": ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8"]},
+          "status": {"enum": ["pass", "fail"]},
+          "details": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "issues": {"type": "array"},
+    "summary_artifacts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generated_by", "readiness_statement", "probe_result", "html", "summary"],
+      "properties": {
+        "generated_by": {"const": "lab04_report_renderer"},
+        "readiness_statement": {"type": "string", "minLength": 1},
+        "probe_result": {"const": "probe_result.json"},
+        "html": {"const": "report.html"},
+        "summary": {"const": "summary.json"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "predecessor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "summary_sha256"],
+      "properties": {
+        "status": {"enum": ["pass", "fail"]},
+        "summary_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

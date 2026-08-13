@@ -29,10 +29,11 @@ make lab01-bootstrap
 make readiness TARGET=lab01
 make readiness TARGET=lab02
 make readiness TARGET=lab03
+make readiness TARGET=lab04
 make readiness TARGET=exp001
 ```
 
-Readiness is fail-closed and target-specific. `foundation` validates repository integrity, `lab01` verifies the local exact-revision model and instrumentation bundle, `lab02` renders dataset-release readiness, `lab03` renders surface-baseline readiness, and `exp001` evaluates the model-candidate and dataset gates. A selected model is only **model-contract-ready** or **model-preflight-ready** until acquisition, integrity, load, and instrumentation receipts prove otherwise.
+Readiness is fail-closed and target-specific. `foundation` validates repository integrity, `lab01` verifies the local exact-revision model and instrumentation bundle, `lab02` renders dataset-release readiness, `lab03` renders surface-baseline readiness, `lab04` renders representation decodability readiness under strict controls, and `exp001` evaluates the model-candidate and dataset gates. A selected model is only **model-contract-ready** or **model-preflight-ready** until acquisition, integrity, load, and instrumentation receipts prove otherwise.
 
 ## Lab 00
 
@@ -113,6 +114,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 - [Lab 01 model anatomy](docs/LAB01.md) — real-model instrumentation, G1-G8, and no-claim boundary
 - [Lab 02 dataset anatomy](docs/LAB02.md) — snapshot integrity, leakage, balance, annotation reliability, and no-claim boundary
 - [Lab 03 behavioral baselines](docs/LAB03.md) — lexical and shallow controls before any representation claim
+- [Lab 04 decodability](docs/LAB04.md) — deterministic probe and control contract before any representational claim
 - [Research protocol](docs/RESEARCH_PROTOCOL.md) — controls, metrics, and decision criteria
 - [Roadmap](docs/ROADMAP.md) — visual labs, EXP-001, and the replication program
 - [EXP-001 readiness gates](docs/EXP001_READINESS.md) — offline model/dataset checks and remaining blockers
@@ -141,6 +143,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Lab 01 model anatomy: implemented on an exact-revision didactic model; empirical instrumentation only, not claim-eligible
 - Lab 02 dataset anatomy: implemented as a synthetic, hash-backed dataset-readiness report; not claim-eligible
 - Lab 03 behavioral baselines: implemented as a synthetic, fail-closed shortcut-risk report; not claim-eligible
+- Lab 04 decodability: implemented as a deterministic, synthetic pass/fail probe boundary with explicit non-claim interpretation; not claim-eligible
 - Empirical support for the Latent TRIZ hypothesis: none claimed
 
 ## License and attribution

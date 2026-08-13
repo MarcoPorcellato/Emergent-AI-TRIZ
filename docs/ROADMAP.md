@@ -67,6 +67,14 @@ Lab 02 is now implemented against the synthetic Stage 1 fixture. Its first repor
 
 Lab 03 is implemented as the next fail-closed surface-control boundary. It renders deterministic local diagnostics while refusing behavioral interpretation until Lab 02 passes, label/domain support is adequate, every required baseline family is present, and leave-one-domain-out plus random-label controls are complete. Its synthetic fixture output is a readiness result, not E1 evidence.
 
+Lab 04 is now implemented as a deterministic decodability contract run target with strict no-leakage controls and fail-closed readiness:
+
+- one-vs-rest ridge probes on the frozen unanimous label field,
+- train-only standardization,
+- outer leave-one-domain-out and inner domain-aware model selection,
+- deterministic training-label permutation control with Holm-corrected layer adjustment,
+- strict non-claim boundary in the report output.
+
 The interface should remain optional so that the dependency-free validation core stays lightweight. A concrete model, revision, interpretability library, and sparse-feature resource will be selected only after their current availability, license, and hardware requirements are independently verified.
 
 ## EXP-001 — proposed Segmentation pilot

@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit readiness lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab02 lab02-render lab03 lab03-render pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
+.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit readiness lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab02 lab02-render lab03 lab03-render lab04 lab04-render pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -55,11 +55,13 @@ readiness:
 	  $(MAKE) lab02-render; \
 	elif [ "$(TARGET)" = "lab03" ]; then \
 	  $(MAKE) lab03-render; \
+	elif [ "$(TARGET)" = "lab04" ]; then \
+	  $(MAKE) lab04-render; \
 	elif [ "$(TARGET)" = "exp001" ]; then \
 	  $(MAKE) model-preflight; \
 	  $(MAKE) dataset-audit; \
 	else \
-	  echo "TARGET must be foundation, lab01, lab02, lab03, or exp001"; exit 2; \
+	  echo "TARGET must be foundation, lab01, lab02, lab03, lab04, or exp001"; exit 2; \
 	fi
 
 lab01-setup:
@@ -108,6 +110,19 @@ lab03-render:
 
 lab03: lab03-render
 	@echo "Lab 03 report: results/lab03/behavioral-baselines/report.html"
+
+lab04-render:
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.lab04_runner \
+	  --cases data/pilot/cases.jsonl \
+	  --representations data/pilot/representations.jsonl \
+	  --config experiments/lab04-decodability/config.json \
+	  --predecessor-lab01-summary results/lab01/model-anatomy/parity_report.json \
+	  --predecessor-lab02-summary results/lab02/dataset-anatomy/summary.json \
+	  --predecessor-lab03-summary results/lab03/behavioral-baselines/summary.json \
+	  --output-dir results/lab04/decodability
+
+lab04: lab04-render
+	@echo "Lab 04 report: results/lab04/decodability/report.html"
 
 pilot-export-evaluator:
 	@test -n "$(EVALUATOR_OUTPUT)" || (echo "EVALUATOR_OUTPUT is required"; exit 2)
