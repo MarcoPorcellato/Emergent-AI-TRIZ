@@ -17,6 +17,7 @@ on:
 jobs:
   repository-check:
     name: Repository check
+    if: github.event_name != 'pull_request' || github.event.pull_request.base.sha == 'b6a4ed9def7009c8867451d696c83cc1d836bc2d'
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:

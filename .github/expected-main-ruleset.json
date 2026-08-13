@@ -1,0 +1,13 @@
+{
+  "name": "main-protection",
+  "enforcement": "active",
+  "target": "branch",
+  "include_refs": ["refs/heads/main"],
+  "required_status_checks": ["merge-policy/gate"],
+  "strict_required_status_checks_policy": true,
+  "required_review_thread_resolution": true,
+  "allowed_merge_methods": ["squash"],
+  "required_linear_history": true,
+  "block_deletion": true,
+  "block_non_fast_forward": true
+}

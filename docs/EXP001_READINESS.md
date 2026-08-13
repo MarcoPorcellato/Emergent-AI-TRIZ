@@ -13,7 +13,7 @@ EXP-001 is not preregistered, frozen, acquired, or executed. The offline gates i
 ## One-command report
 
 ```bash
-make readiness
+make readiness TARGET=exp001
 ```
 
 This runs:
@@ -42,6 +42,6 @@ Recognition cannot promote selection or causal-control claims.
 - collect two independent raters per response under the frozen v1.1 ontology and its preregistered raw-agreement, nominal-alpha, abstention, bootstrap, and adjudication policy;
 - keep evaluator packets physically separate from the sealed allocation key;
 - freeze lexical, domain-transfer, random-direction, label-permutation, dose-response, and capability-preservation controls;
-- retain the active protected-`main` ruleset and exact-head Commit CI Preflight receipt gate while the scientific blockers are resolved.
+- retain the active protected-`main` ruleset and its stable `merge-policy/gate`: lightweight documentation checks for docs-only changes, Python 3.11 and 3.12 checks for code, and exact-head CCP plus artifact auditing for scientific changes.
 
 Lab 00 remains infrastructure-only. Lab 01 uses a separate didactic model role and now provides a hash-verified representation-extraction bridge; neither result can by itself promote a TRIZ claim.
