@@ -10,6 +10,9 @@ from pathlib import Path
 from typing import Iterable, List, Optional
 
 from .docs import load_profile, audit_docs
+from .dataset_audit import DatasetAuditError, run_dataset_audit, stable_json_dumps as dataset_stable_json_dumps
+from .model_preflight import ModelPreflightError, run_model_preflight, stable_json_dumps as model_stable_json_dumps
+from .blinding import BlindingError, build_evaluator_bundle, write_evaluator_bundle
 from .pilot import PilotError, prepare_packets, score_annotations, stable_json_dumps, write_jsonl
 from .lab00 import Lab00Error, build_lab00_report
 from .validator import ValidationIssue, validate
@@ -52,11 +55,47 @@ def main(argv: Optional[List[str]] = None) -> int:
     pilot_score_parser.add_argument("--responses", required=True, help="Response JSON/JSONL file")
     pilot_score_parser.add_argument("--annotations", required=True, help="Annotation JSON/JSONL file")
     pilot_score_parser.add_argument("--dimensions", nargs="+", default=list(), help="Optional custom dimensions")
+    pilot_score_parser.add_argument(
+        "--minimum-distinct-raters",
+        type=int,
+        default=1,
+        help="Minimum distinct raters required per response (confirmatory runs should use 2 or more)",
+    )
     pilot_score_parser.add_argument("--output", default="-", help="Output JSON path, '-' for stdout")
 
     lab00_parser = subparsers.add_parser("lab00", help="Build deterministic Stage-1 non-evidence HTML report")
     lab00_parser.add_argument("--output", required=True, help="Output HTML path")
     lab00_parser.add_argument("--open", action="store_true", help="Open the report in a browser")
+
+    model_preflight_parser = subparsers.add_parser(
+        "model-preflight",
+        help="Check the offline EXP-001 model candidate manifest",
+    )
+    model_preflight_parser.add_argument("--manifest", required=True, help="Path to the model candidate manifest")
+    model_preflight_parser.add_argument("--output", default="-", help="Output JSON path, '-' for stdout")
+
+    dataset_audit_parser = subparsers.add_parser(
+        "dataset-audit",
+        help="Audit the EXP-001 dataset plan against cases",
+    )
+    dataset_audit_parser.add_argument("--plan", required=True, help="Path to the dataset plan")
+    dataset_audit_parser.add_argument("--cases", required=True, help="Path to the JSONL case corpus")
+    dataset_audit_parser.add_argument(
+        "--mode",
+        choices=["development", "freeze"],
+        default="development",
+        help="Development reports gaps; freeze enforces all targets",
+    )
+    dataset_audit_parser.add_argument("--output", default="-", help="Output JSON path, '-' for stdout")
+
+    evaluator_export_parser = subparsers.add_parser(
+        "pilot-export-evaluator",
+        help="Export evaluator-safe packets and a separate sealed allocation key",
+    )
+    evaluator_export_parser.add_argument("--packets", required=True, help="Administrative packet JSONL")
+    evaluator_export_parser.add_argument("--responses", required=True, help="Blinded response JSONL")
+    evaluator_export_parser.add_argument("--evaluator-output", required=True, help="Evaluator-safe JSONL output")
+    evaluator_export_parser.add_argument("--key-output", required=True, help="Separate sealed allocation key output")
 
     fingerprint_parser = subparsers.add_parser("fingerprint", help="Compute SHA-256 of a file")
     fingerprint_parser.add_argument("path", help="Path to file")
@@ -73,9 +112,27 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.command == "pilot-prepare":
         return _run_pilot_prepare(args.cases, args.arms, args.seed, args.output, args.format)
     if args.command == "pilot-score":
-        return _run_pilot_score(args.packets, args.responses, args.annotations, args.dimensions, args.output)
+        return _run_pilot_score(
+            args.packets,
+            args.responses,
+            args.annotations,
+            args.dimensions,
+            args.minimum_distinct_raters,
+            args.output,
+        )
     if args.command == "lab00":
         return _run_lab00(args.output, args.open)
+    if args.command == "model-preflight":
+        return _run_model_preflight(args.manifest, args.output)
+    if args.command == "dataset-audit":
+        return _run_dataset_audit(args.plan, args.cases, args.mode, args.output)
+    if args.command == "pilot-export-evaluator":
+        return _run_pilot_export_evaluator(
+            args.packets,
+            args.responses,
+            args.evaluator_output,
+            args.key_output,
+        )
     parser.error("Unknown command")
     return 1
 
@@ -320,10 +377,17 @@ def _run_pilot_score(
     responses: str,
     annotations: str,
     dimensions: List[str],
+    minimum_distinct_raters: int,
     output: str,
 ) -> int:
     try:
-        summary = score_annotations(packets, responses, annotations, dimensions or None)
+        summary = score_annotations(
+            packets,
+            responses,
+            annotations,
+            dimensions or None,
+            minimum_distinct_raters=minimum_distinct_raters,
+        )
     except PilotError as exc:
         _print_error(f"invalid pilot scoring: {exc}")
         return 1
@@ -350,6 +414,64 @@ def _run_lab00(output: str, open_report: bool) -> int:
     print(f"lab00: rendered {resolved}")
     if open_report:
         webbrowser.open(resolved.as_uri())
+    return 0
+
+
+def _run_model_preflight(manifest: str, output: str) -> int:
+    try:
+        report = run_model_preflight(manifest)
+    except ModelPreflightError as exc:
+        _print_error(str(exc))
+        return 1
+    write_result = _write_json_output(report, output, model_stable_json_dumps)
+    if write_result != 0:
+        return write_result
+    return 0 if report.get("manifest_valid") is True else 1
+
+
+def _run_dataset_audit(plan: str, cases: str, mode: str, output: str) -> int:
+    try:
+        report = run_dataset_audit(plan, cases, mode=mode)
+    except DatasetAuditError as exc:
+        _print_error(str(exc))
+        return 1
+    write_result = _write_json_output(report, output, dataset_stable_json_dumps)
+    if write_result != 0:
+        return write_result
+    if report.get("structural_ok") is not True:
+        return 1
+    if mode == "freeze" and report.get("freeze_ready") is not True:
+        return 1
+    return 0
+
+
+def _run_pilot_export_evaluator(
+    packets: str,
+    responses: str,
+    evaluator_output: str,
+    key_output: str,
+) -> int:
+    try:
+        evaluator_packets, allocation_key = build_evaluator_bundle(packets, responses)
+        write_evaluator_bundle(evaluator_packets, allocation_key, evaluator_output, key_output)
+    except (BlindingError, OSError) as exc:
+        _print_error(str(exc))
+        return 1
+    print(f"evaluator packets: {evaluator_output}")
+    print(f"sealed allocation key: {key_output}")
+    return 0
+
+
+def _write_json_output(payload: dict, output: str, dumper) -> int:
+    rendered = dumper(payload)
+    if output == "-":
+        print(rendered, end="")
+        return 0
+    try:
+        Path(output).write_text(rendered, encoding="utf-8")
+    except OSError as exc:
+        _print_error(f"cannot write {output}: {exc}")
+        return 1
     return 0
 
 

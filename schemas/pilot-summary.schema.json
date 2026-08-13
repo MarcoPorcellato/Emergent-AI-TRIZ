@@ -11,6 +11,10 @@
     "counts",
     "per_arm_means",
     "paired_deltas",
+    "paired_deltas_normalized",
+    "metric_directions",
+    "rater_coverage",
+    "agreement_diagnostics",
     "provenance"
   ],
   "properties": {
@@ -179,6 +183,142 @@
               }
             }
           }
+        }
+      }
+    },
+    "paired_deltas_normalized": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["control|treatment"],
+        "properties": {
+          "control|treatment": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "contradiction_resolution",
+              "principle_use",
+              "feasibility",
+              "novelty",
+              "constraint_adherence",
+              "terminology_only"
+            ],
+            "properties": {
+              "contradiction_resolution": {
+                "type": "number"
+              },
+              "principle_use": {
+                "type": "number"
+              },
+              "feasibility": {
+                "type": "number"
+              },
+              "novelty": {
+                "type": "number"
+              },
+              "constraint_adherence": {
+                "type": "number"
+              },
+              "terminology_only": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "metric_directions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contradiction_resolution",
+        "principle_use",
+        "feasibility",
+        "novelty",
+        "constraint_adherence",
+        "terminology_only"
+      ],
+      "properties": {
+        "contradiction_resolution": {
+          "enum": ["maximize", "minimize"]
+        },
+        "principle_use": {
+          "enum": ["maximize", "minimize"]
+        },
+        "feasibility": {
+          "enum": ["maximize", "minimize"]
+        },
+        "novelty": {
+          "enum": ["maximize", "minimize"]
+        },
+        "constraint_adherence": {
+          "enum": ["maximize", "minimize"]
+        },
+        "terminology_only": {
+          "enum": ["maximize", "minimize"]
+        }
+      }
+    },
+    "rater_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum_distinct_raters",
+        "responses_with_minimum_raters",
+        "responses_total",
+        "distinct_raters"
+      ],
+      "properties": {
+        "minimum_distinct_raters": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "responses_with_minimum_raters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "responses_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "distinct_raters": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "response_rater_counts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "agreement_diagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mean_pairwise_absolute_difference_by_dimension"
+      ],
+      "properties": {
+        "mean_pairwise_absolute_difference_by_dimension": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+          ,
+          "required": [
+            "contradiction_resolution",
+            "principle_use",
+            "feasibility",
+            "novelty",
+            "constraint_adherence",
+            "terminology_only"
+          ]
         }
       }
     },

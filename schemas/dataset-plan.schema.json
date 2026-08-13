@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/dataset-plan.schema.json",
+  "title": "Latent TRIZ dataset plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "plan_version",
+    "status",
+    "non_empirical",
+    "target_size",
+    "min_domains",
+    "splits",
+    "forbidden_lexical_terms",
+    "required_case_types",
+    "source_type_policy"
+  ],
+  "properties": {
+    "plan_version": {
+      "type": "string",
+      "pattern": "^v[0-9]+(?:\\.[0-9]+){0,2}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["design", "development", "freeze", "active"]
+    },
+    "non_empirical": {
+      "type": "boolean"
+    },
+    "target_size": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "min_domains": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "splits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["discovery", "validation", "held_out_domain", "sealed_novel"],
+      "properties": {
+        "discovery": {
+          "$ref": "#/$defs/split-plan"
+        },
+        "validation": {
+          "$ref": "#/$defs/split-plan"
+        },
+        "held_out_domain": {
+          "$ref": "#/$defs/split-plan"
+        },
+        "sealed_novel": {
+          "$ref": "#/$defs/split-plan"
+        }
+      }
+    },
+    "forbidden_lexical_terms": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "required_case_types": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["positive", "control", "matched_negative", "near_miss", "alternative_principle"]
+      }
+    },
+    "source_type_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allowed_source_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": ["human_authored", "model_generated", "adapted", "historical"]
+          }
+        },
+        "max_model_generated_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": ["allowed_source_types"]
+    },
+    "reference_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enforce_matched_case_id_symmetry": {
+          "type": "boolean"
+        }
+      }
+    },
+    "enforce_targets": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "split-plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "target_min": { "type": "integer", "minimum": 0 },
+        "target_exact": { "type": "integer", "minimum": 0 },
+        "required": { "type": "boolean" }
+      },
+      "required": ["target_min"]
+    }
+  }
+}

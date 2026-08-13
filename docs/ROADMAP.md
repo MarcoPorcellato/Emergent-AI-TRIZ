@@ -40,7 +40,7 @@ These artifacts are not confirmatory evidence.
 
 ### Lab 00 - public smoke view
 
-Delivered, presentation-only, and below E0:
+Delivered, infrastructure-only, and not attached to any scientific claim:
 
 - render the tracked synthetic Stage 1 smoke artifacts as a one-command visual report;
 - reuse the frozen packet, response, annotation, and summary files;
@@ -68,7 +68,15 @@ The interface should remain optional so that the dependency-free validation core
 
 ## EXP-001 — proposed Segmentation pilot
 
-The first model-backed experiment is proposed, not preregistered or executed:
+The first model-backed experiment is proposed, not preregistered or executed. It is now explicitly separated into three non-interchangeable questions:
+
+1. **Recognition** - whether operator labels are cross-domain decodable from problem-plus-solution representations.
+2. **Pre-output selection** - whether problem-only activations predict the operator expressed by a later generation.
+3. **Causal control** - whether steering and ablation change operator-consistent generation while preserving general capability.
+
+Recognition alone cannot promote a claim about operator selection or causal use.
+
+The proposed design includes:
 
 - primary operator: TRIZ Segmentation;
 - negative/operator control: Inversion;
@@ -79,6 +87,20 @@ The first model-backed experiment is proposed, not preregistered or executed:
 - explicit model and dataset commitments sealed before confirmatory runs.
 
 The provisional model roles are now recorded in [ADR 0003](./decisions/0003-exp-001-model-selection.md): Gemma 3 270M pretrained is the primary mechanistic candidate because an official Gemma Scope 2 suite covers it, while SmolLM2 360M pretrained is the independent architecture replication candidate under Apache 2.0. This selects the study design, not permission to download models or freeze the preregistration. Exact feasibility and licensing must be rechecked at acquisition time.
+
+The repository now exposes two offline readiness gates for that decision: `make model-preflight` checks the exact candidate manifest and `make dataset-audit` checks the development corpus against the current plan. Both are deterministic, no-download gates. The freeze step remains separate and must still be backed by operator receipts, local hashes, and an immutable run record.
+
+### Evidence profiles
+
+The public E0-E6 ladder remains the concise communication layer. Before claim promotion, each result will also carry a machine-readable evidence profile covering behavioral effect, lexical controls, cross-domain transfer, decodability, positive and negative interventions, dose response, capability preservation, independent/cross-model replication, and controlled training. The ladder level will be derived from satisfied profile fields rather than used as the sole description of evidence.
+
+### Immediate sequence
+
+1. Finish evidence-integrity and readiness gates, including evaluator-safe exports and rater coverage.
+2. Apply a ruleset to `main` with pull-request and verified-check requirements.
+3. Publish Lab 01 with a didactic model role distinct from the primary and replication roles.
+4. Define the Segmentation/Inversion annotation ontology and freeze criteria.
+5. Execute recognition, selection, and causal-control experiments as separate claim paths.
 
 ## Stage 2 - Surface baselines
 

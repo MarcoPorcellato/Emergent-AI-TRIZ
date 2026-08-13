@@ -45,7 +45,7 @@ def build_lab00_report(
         )
     except PilotError as exc:
         raise Lab00Error(f"invalid Stage 1 artifact chain: {exc}") from None
-    if regenerated_summary != summary:
+    if _trimmed_summary(regenerated_summary) != _trimmed_summary(summary):
         raise Lab00Error("summary does not match the deterministic score of its source artifacts")
 
     _validate_inputs_non_empirical(packets, responses, annotations, summary)
@@ -159,11 +159,18 @@ def _render_html(
     counts = summary.get("counts", {})
     per_arm_means = summary.get("per_arm_means", {})
     paired_deltas = summary.get("paired_deltas", {})
+    metric_directions = _metric_directions(summary.get("metric_directions", {}), dimensions=STANDARD_DIMENSIONS)
+    normalized_pair_deltas = _normalized_paired_deltas(
+        paired_deltas,
+        metric_directions,
+    )
     dimensions = [
         dim
         for dim in STANDARD_DIMENSIONS
         if dim in summary.get("dimensions", STANDARD_DIMENSIONS)
     ]
+    if not dimensions:
+        dimensions = list(STANDARD_DIMENSIONS)
 
     packets_by_id = {str(packet.get("packet_id", "")): packet for packet in packets}
     packet_rows = []
@@ -270,6 +277,8 @@ def _render_html(
         "<h1>Latent TRIZ Lab 00 — Non-Evidence Stage-1 Smoke Report</h1><p>"
         "This report renders synthetic process artifacts only and does not infer empirical support.</p>"
         "<p><strong>Boundary:</strong> non_empirical gate must remain true for packets, responses, annotations, and summary.</p>"
+        "<p><strong>Unblinded administrative audit view — never use this page for annotation.</strong></p>"
+        "<p><strong>Infrastructure-only. Not attached to any scientific claim.</strong></p>"
         "</header>"
     )
 
@@ -346,7 +355,9 @@ def _render_html(
     lines.append("<section><h2>Summary</h2><div class='grid'>")
     lines.append(f"<div><strong>counts</strong><span class='mono'><br>{escape(json.dumps(counts, sort_keys=True))}</span></div>")
     lines.append(f"<div><strong>per-arm means</strong><span class='mono'><br>{escape(json.dumps(per_arm_means, sort_keys=True))}</span></div>")
-    lines.append(f"<div><strong>paired deltas</strong><span class='mono'><br>{escape(json.dumps(paired_deltas, sort_keys=True))}</span></div>")
+    lines.append(f"<div><strong>paired deltas (raw treatment-control)</strong><span class='mono'><br>{escape(json.dumps(paired_deltas, sort_keys=True))}</span></div>")
+    lines.append(f"<div><strong>paired deltas (normalized treatment-control)</strong><span class='mono'><br>{escape(json.dumps(normalized_pair_deltas, sort_keys=True))}</span></div>")
+    lines.append(f"<div><strong>metric directions</strong><span class='mono'><br>{escape(json.dumps(metric_directions, sort_keys=True))}</span></div>")
     lines.append("</div></section>")
 
     # inline score bars for every dimension on summary means
@@ -356,7 +367,11 @@ def _render_html(
         lines.append(f"<div><strong>{escape(str(arm))}</strong>")
         for dim in dimensions:
             value = float(per_arm_means.get(arm, {}).get(dim, 0.0))
-            lines.append(f"<div>{escape(dim)}: {value:.2f} {render_score_bar(value)}</div>")
+            direction = metric_directions.get(dim, "maximize")
+            direction_label = "↑" if direction == "maximize" else "↓"
+            lines.append(
+                f"<div>{escape(dim)} ({direction_label}): {value:.2f} {render_score_bar(value)}</div>"
+            )
         lines.append("</div>")
     lines.append("</div></section>")
 
@@ -375,6 +390,63 @@ def _coerce_annotation_scores(raw: object) -> dict[str, float]:
         except (TypeError, ValueError):
             values[dim] = 0.0
     return values
+
+
+def _trimmed_summary(summary: dict) -> dict:
+    trimmed = dict(summary)
+    for field in ("metric_directions", "paired_deltas_normalized"):
+        trimmed.pop(field, None)
+    return trimmed
+
+
+def _metric_directions(raw_directions: object, dimensions: Sequence[str]) -> dict[str, str]:
+    directions: dict[str, str] = {
+        dim: ("minimize" if dim == "terminology_only" else "maximize")
+        for dim in dimensions
+    }
+    if not isinstance(raw_directions, dict):
+        return directions
+
+    for dim in dimensions:
+        direction = raw_directions.get(dim)
+        if direction in {"maximize", "minimize"}:
+            directions[dim] = direction
+    return directions
+
+
+def _normalized_paired_deltas(
+    paired_deltas: object,
+    metric_directions: dict[str, str],
+) -> dict[str, dict[str, dict[str, float]]]:
+    normalized: dict[str, dict[str, dict[str, float]]] = {}
+    if not isinstance(paired_deltas, dict):
+        return normalized
+
+    for pair_id, pair_values in paired_deltas.items():
+        if not isinstance(pair_values, dict):
+            continue
+        normalized_pair: dict[str, dict[str, float]] = {}
+        for relation, values in pair_values.items():
+            if not isinstance(values, dict):
+                continue
+            normalized_values: dict[str, float] = {}
+            for dim in values:
+                raw_value = _coerce_float(values.get(dim, 0.0))
+                direction = metric_directions.get(dim, "maximize")
+                normalized_values[dim] = -raw_value if direction == "minimize" else raw_value
+            for dim in metric_directions:
+                normalized_values.setdefault(dim, 0.0)
+            normalized_pair[str(relation)] = normalized_values
+        if normalized_pair:
+            normalized[str(pair_id)] = normalized_pair
+    return normalized
+
+
+def _coerce_float(value: object) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
 
 
 def render_score_bar(value: object) -> str:

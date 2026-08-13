@@ -6,25 +6,36 @@ Latent TRIZ is an open laboratory for testing whether language models learn inte
 
 > **Current evidence boundary:** the repository contains a functioning, deterministic Stage 1 protocol smoke test and research-governance infrastructure. It does **not** yet contain evidence that a TRIZ-like representation exists in any model. Every scientific claim starts at E0: hypothesis.
 
-## Run the laboratory foundation
+## Run the laboratory
 
 ```bash
 git clone https://github.com/MarcoPorcellato/Latent-TRIZ.git
 cd Latent-TRIZ
-make check
-make stage1-pilot-smoke
+make lab
 ```
 
-The smoke command builds a blinded packet allocation, scores fixture annotations, validates every artifact, and compares the result with a frozen expected output. Its data are synthetic and marked `non_empirical`; passing it demonstrates process integrity, not the hypothesis.
+This opens the synthetic Lab 00 report locally. Its data are marked `non_empirical`; passing it demonstrates process integrity, not the hypothesis. The cross-platform canonical command, which does not require Make, is:
+
+```bash
+PYTHONPATH=src python3 -m latent_triz.cli lab00 --output artifacts/lab00/index.html --open
+```
+
+Developer validation and the EXP-001 offline readiness report are separate:
+
+```bash
+make check
+make readiness
+```
+
+`make readiness` does not download a model and does not claim that EXP-001 is ready to execute. It verifies the candidate decision record and reports the current dataset freeze gaps.
 
 ## Lab 00
 
-Lab 00 is the one-command public visual surface for the synthetic Stage 1 smoke bundle. It is presentation-only, sits below E0, and does not add empirical evidence.
+Lab 00 is the one-command public visual surface for the synthetic Stage 1 smoke bundle. It is infrastructure-only, is not attached to any scientific claim, and does not add empirical evidence.
 
-Run it locally with no model, API key, service, or package installation:
+Run the headless variant with no model, API key, service, or package installation:
 
 ```bash
-make lab
 make lab-render
 ```
 
@@ -96,6 +107,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 - [Lab 00 boundary](docs/STAGE1_PILOT.md#evidence-boundary) — presentation-only synthetic smoke view
 - [Research protocol](docs/RESEARCH_PROTOCOL.md) — controls, metrics, and decision criteria
 - [Roadmap](docs/ROADMAP.md) — visual labs, EXP-001, and the replication program
+- [EXP-001 readiness gates](docs/EXP001_READINESS.md) — offline model/dataset checks and remaining blockers
 - [Article](docs/ARTICLE.md) and [article status](docs/ARTICLE_STATUS.md) — hypothesis framing and provenance
 - [Claim registry](data/claims.jsonl) and [claim schema](schemas/claim.schema.json) — falsifiable public claims
 - [Discussions](https://github.com/MarcoPorcellato/Latent-TRIZ/discussions) — research questions and collaboration
@@ -117,7 +129,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Matryca-Knowledge-style maintained documentation bundle: implemented
 - Commit CI Preflight: configured with a dependency-free container runner to reduce unnecessary GitHub Actions usage
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
-- Lab 00 public visual surface: implemented, presentation-only, below E0
+- Lab 00 public visual surface: implemented, infrastructure-only, not claim-attached
 - First model-backed visual experiment: planned, not yet implemented
 - Empirical support for the Latent TRIZ hypothesis: none claimed
 

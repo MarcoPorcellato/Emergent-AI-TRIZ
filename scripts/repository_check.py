@@ -37,6 +37,8 @@ def main() -> int:
         ("schemas/claim.schema.json", "data/claims.jsonl"),
         ("schemas/case.schema.json", "tests/fixtures/case_valid.jsonl"),
         ("schemas/case.schema.json", "data/pilot/cases.jsonl"),
+        ("schemas/dataset-plan.schema.json", "experiments/001-stage1-pilot/dataset-plan.json"),
+        ("schemas/model-candidate.schema.json", "experiments/001-stage1-pilot/model-candidates.jsonl"),
     )
     for schema, data in validation_pairs:
         validate(schema, data)
@@ -65,6 +67,10 @@ def main() -> int:
         "schemas/pilot-response.schema.json",
         "schemas/pilot-annotation.schema.json",
         "schemas/pilot-summary.schema.json",
+        "schemas/dataset-plan.schema.json",
+        "schemas/model-candidate.schema.json",
+        "schemas/evaluator-packet.schema.json",
+        "schemas/allocation-key.schema.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -73,6 +79,8 @@ def main() -> int:
         temporary = Path(directory)
         packets = temporary / "packets.jsonl"
         summary = temporary / "summary.json"
+        evaluator_packets = temporary / "evaluator-packets.jsonl"
+        allocation_key = temporary / "sealed-allocation-key.json"
         run(
             PYTHON,
             "-m",
@@ -110,6 +118,27 @@ def main() -> int:
         if summary.read_bytes() != (ROOT / "data/pilot/summary.json").read_bytes():
             raise RuntimeError("Stage 1 summary differs from the frozen expected artifact")
 
+        run(
+            PYTHON,
+            "-m",
+            "latent_triz.cli",
+            "pilot-export-evaluator",
+            "--packets",
+            "data/pilot/packets.jsonl",
+            "--responses",
+            "data/pilot/responses.jsonl",
+            "--evaluator-output",
+            str(evaluator_packets),
+            "--key-output",
+            str(allocation_key),
+        )
+        evaluator_text = evaluator_packets.read_text(encoding="utf-8")
+        for forbidden in ('"arms_by_blind"', '"control"', '"treatment"'):
+            if forbidden in evaluator_text:
+                raise RuntimeError(f"Evaluator export leaks allocation marker: {forbidden}")
+        validate("schemas/evaluator-packet.schema.json", str(evaluator_packets))
+        validate("schemas/allocation-key.schema.json", str(allocation_key))
+
     pilot_pairs = (
         ("schemas/pilot-packet.schema.json", "data/pilot/packets.jsonl"),
         ("schemas/pilot-response.schema.json", "data/pilot/responses.jsonl"),
@@ -118,6 +147,27 @@ def main() -> int:
     )
     for schema, data in pilot_pairs:
         validate(schema, data)
+
+    run(
+        PYTHON,
+        "-m",
+        "latent_triz.cli",
+        "model-preflight",
+        "--manifest",
+        "experiments/001-stage1-pilot/model-candidates.jsonl",
+    )
+    run(
+        PYTHON,
+        "-m",
+        "latent_triz.cli",
+        "dataset-audit",
+        "--plan",
+        "experiments/001-stage1-pilot/dataset-plan.json",
+        "--cases",
+        "data/pilot/cases.jsonl",
+        "--mode",
+        "development",
+    )
 
     print("repository-check: PASS")
     return 0

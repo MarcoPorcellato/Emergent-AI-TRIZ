@@ -8,11 +8,14 @@ from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+import latent_triz.lab00 as lab00
 from latent_triz.lab00 import Lab00Error, build_lab00_report
 from latent_triz.cli import main
+from latent_triz.pilot import STANDARD_DIMENSIONS
 
 
 class Lab00Tests(unittest.TestCase):
@@ -62,7 +65,7 @@ class Lab00Tests(unittest.TestCase):
             report2 = Path(html2).read_text(encoding="utf-8")
             self.assertEqual(report1, report2)
 
-    def test_lab00_report_content_includes_banner_sources_scores(self) -> None:
+    def test_lab00_report_content_includes_audit_banner_and_metrics(self) -> None:
         with tempfile.TemporaryDirectory() as workdir:
             workdir_path = Path(workdir)
             packets, responses, annotations, summary = self._copy_smoke_artifacts(workdir_path)
@@ -73,13 +76,65 @@ class Lab00Tests(unittest.TestCase):
                 summary_path=summary,
             )
             self.assertIn("Non-Evidence Stage-1 Smoke Report", html)
+            self.assertIn("Unblinded administrative audit view — never use this page for annotation.", html)
+            self.assertIn("Infrastructure-only. Not attached to any scientific claim.", html)
             self.assertIn("Boundary", html)
             self.assertIn("problem", html)
             self.assertIn("constraints", html)
             self.assertIn("Per-arm score bars (0-4)", html)
+            self.assertIn("metric directions", html)
+            self.assertIn("paired deltas (normalized treatment-control)", html)
             self.assertIn("<strong>Summary</strong>", html)
             self.assertIn("[", html)
             self.assertIn("█", html)
+
+    def test_lab00_normalizes_direction_only_for_display_without_losing_raw(self) -> None:
+        with tempfile.TemporaryDirectory() as workdir:
+            workdir_path = Path(workdir)
+            packets, responses, annotations, summary = self._copy_smoke_artifacts(workdir_path)
+            generated_summary = summary
+            payload = json.loads(generated_summary.read_text(encoding="utf-8"))
+            payload["metric_directions"] = {
+                dim: ("minimize" if dim == "terminology_only" else "maximize")
+                for dim in STANDARD_DIMENSIONS
+            }
+            payload["paired_deltas"] = {
+                "pilot_case_001": {
+                    "control|treatment": {
+                        "contradiction_resolution": 0.25,
+                        "principle_use": 0.5,
+                        "feasibility": -0.5,
+                        "novelty": 0.5,
+                        "constraint_adherence": 0.0,
+                        "terminology_only": -1.5,
+                    }
+                }
+            }
+            payload["paired_deltas_normalized"] = {
+                "pilot_case_001": {
+                    "control|treatment": {
+                        "contradiction_resolution": 0.25,
+                        "principle_use": 0.5,
+                        "feasibility": -0.5,
+                        "novelty": 0.5,
+                        "constraint_adherence": 0.0,
+                        "terminology_only": 1.5,
+                    }
+                }
+            }
+
+            with patch.object(lab00, "score_annotations", return_value=payload):
+                generated_summary.write_text(json.dumps(payload), encoding="utf-8")
+                html = build_lab00_report(
+                    packets_path=packets,
+                    responses_path=responses,
+                    annotations_path=annotations,
+                    summary_path=generated_summary,
+                )
+
+            self.assertIn("pilot_case_001", html)
+            self.assertIn("paired deltas (normalized treatment-control)", html)
+            self.assertIn("terminology_only", html)
 
     def test_lab00_fails_if_summary_marked_empirical(self) -> None:
         with tempfile.TemporaryDirectory() as workdir:

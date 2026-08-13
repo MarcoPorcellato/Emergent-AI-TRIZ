@@ -23,6 +23,8 @@ The Evidence Ladder prevents infrastructure, exploratory observations, and attra
 | E6 | Controlled emergence | A model trained without explicit TRIZ material develops a functionally equivalent, reproducible operator. |
 
 Levels are cumulative proof obligations, not a generic maturity score. E6 does not waive E1-E5 controls.
+Evidence level is a *summary* of satisfied obligations for the claim, and `evidence_profile` axes capture specific capabilities independently.
+The evidence axes are multi-dimensional and are not assumed to be linear or equivalent to one another; a claim may satisfy one axis without satisfying all higher-axis expectations.
 
 ## Promotion rules
 
@@ -36,7 +38,7 @@ Levels are cumulative proof obligations, not a generic maturity score. E6 does n
 
 An E0 entry must be `untested`, have empty evidence links, and set `non_empirical` to `true`. Passing repository tests or the Stage 1 synthetic smoke does not promote a claim.
 
-Lab 00 presentation surfaces are below E0 and must not be represented as claims or evidence.
+Lab 00 presentation surfaces are infrastructure-only, are not attached to scientific claims, and must not be represented as evidence.
 
 ## Claim lifecycle
 

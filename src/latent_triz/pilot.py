@@ -19,6 +19,15 @@ STANDARD_DIMENSIONS = (
     "terminology_only",
 )
 
+DIMENSION_DIRECTIONS = {
+    "contradiction_resolution": "maximize",
+    "principle_use": "maximize",
+    "feasibility": "maximize",
+    "novelty": "maximize",
+    "constraint_adherence": "maximize",
+    "terminology_only": "minimize",
+}
+
 
 class PilotError(RuntimeError):
     pass
@@ -57,6 +66,7 @@ def _prepare_packet(index: int, case: Dict[str, Any], arms: Sequence[str], seed:
         "packet_id": packet_id,
         "case_id": case_id,
         "pair_id": pair_id,
+        "non_empirical": True,
         "arms_by_blind": arms_by_blind,
         "blind_order": blind_labels,
         "seed": seed,
@@ -88,6 +98,7 @@ def score_annotations(
     responses_path: str,
     annotations_path: str,
     dimensions: Sequence[str] | None = None,
+    minimum_distinct_raters: int = 1,
 ) -> dict[str, Any]:
     packets = _read_input_records(packets_path)
     if not packets:
@@ -111,14 +122,17 @@ def score_annotations(
     dim_list = list(dimensions or STANDARD_DIMENSIONS)
     if dim_list != list(STANDARD_DIMENSIONS):
         raise PilotError("dimensions must match the standard Stage 1 rubric")
+    if minimum_distinct_raters < 1:
+        raise PilotError("minimum_distinct_raters must be >= 1")
 
-    aggregates: dict[str, dict[str, list[float]]] = defaultdict(lambda: {dim: [] for dim in dim_list})
+    response_rater_scores: dict[str, dict[str, dict[str, int]]] = defaultdict(dict)
+    response_distinct_raters: dict[str, set[str]] = defaultdict(set)
     pair_aggregates: dict[str, dict[str, dict[str, list[float]]]] = defaultdict(
         lambda: defaultdict(lambda: {dim: [] for dim in dim_list})
     )
     seen_annotation_ids: set[str] = set()
+    seen_response_rater_pairs: set[tuple[str, str]] = set()
     seen_response_annotations: set[str] = set()
-    packet_annotations: dict[str, set[str]] = defaultdict(set)
     annotation_count = 0
     non_empirical = True
 
@@ -137,17 +151,21 @@ def score_annotations(
         if annotation_id in seen_annotation_ids:
             raise PilotError(f"duplicate annotation_id: {annotation_id}")
         seen_annotation_ids.add(annotation_id)
-        _require_nonempty_string(annotation, "rater_id", f"annotation {annotation_id}")
-        _validate_utc_timestamp(annotation.get("annotated_at"), f"annotation {annotation_id} annotated_at")
-        if not isinstance(annotation.get("non_empirical"), bool):
-            raise PilotError(f"annotation {annotation_id} has invalid non_empirical")
-
         response_id = annotation.get("response_id")
         if not isinstance(response_id, str) or response_id == "":
             raise PilotError("each annotation must include response_id")
         response = response_by_id.get(response_id)
         if response is None:
             raise PilotError(f"annotation for unknown response: {response_id}")
+        rater_id = _require_nonempty_string(annotation, "rater_id", f"annotation {annotation_id}")
+        response_rater_key = (response_id, rater_id)
+        if response_rater_key in seen_response_rater_pairs:
+            raise PilotError(f"duplicate annotation for response {response_id} by rater {rater_id}")
+        seen_response_rater_pairs.add(response_rater_key)
+        response_distinct_raters[response_id].add(rater_id)
+        _validate_utc_timestamp(annotation.get("annotated_at"), f"annotation {annotation_id} annotated_at")
+        if not isinstance(annotation.get("non_empirical"), bool):
+            raise PilotError(f"annotation {annotation_id} has invalid non_empirical")
 
         packet_id = annotation.get("packet_id")
         if not isinstance(packet_id, str) or not packet_id:
@@ -177,31 +195,62 @@ def score_annotations(
             raise PilotError(f"annotation {annotation_id} scores must contain exactly the configured dimensions")
 
         for dim in dim_list:
-            if dim not in score_payload:
-                raise PilotError(f"missing dimension '{dim}' for annotation {annotation_id}")
             value = score_payload[dim]
             if not isinstance(value, int) or isinstance(value, bool) or value < 0 or value > 4:
                 raise PilotError(f"invalid score for {dim} in annotation {annotation_id}")
-            aggregates[arm_label][dim].append(value)
-            pair_key = str(packet.get("pair_id", ""))
-            pair_aggregates[pair_key][arm_label][dim].append(value)
+            response_rater_scores[response_id].setdefault(rater_id, {})[dim] = value
 
         seen_response_annotations.add(response_id)
-        packet_annotations[packet_id].add(arm_label)
 
         if annotation.get("non_empirical") is not True:
             non_empirical = False
 
     _validate_coverage(packet_by_id, response_pair_map, response_by_id, seen_response_annotations)
+    _validate_response_rater_coverage(response_rater_scores, response_distinct_raters, response_pair_map, minimum_distinct_raters)
+
+    arm_aggregates: dict[str, dict[str, list[float]]] = defaultdict(lambda: {dim: [] for dim in dim_list})
+    for response_id, rater_scores in response_rater_scores.items():
+        response = response_by_id[response_id]
+        packet = packet_by_id[response["packet_id"]]
+        packet_id = response["packet_id"]
+        blind = response["blinded_arm"]
+        arm_label = packet["arms_by_blind"][blind]
+
+        for dim in dim_list:
+            values = [scores[dim] for scores in rater_scores.values() if dim in scores]
+            if not values:
+                raise PilotError(f"response {response_id} has no scores for {dim}")
+            response_mean = sum(values) / len(values)
+            arm_aggregates[arm_label][dim].append(response_mean)
+            pair_key = str(packet_by_id[packet_id].get("pair_id", ""))
+            pair_aggregates[pair_key][arm_label][dim].append(response_mean)
+
+    agreement = _mean_pairwise_abs_diff_by_dimension(response_rater_scores, dim_list)
 
     per_arm_means: dict[str, dict[str, float]] = {}
-    for arm, dim_values in sorted(aggregates.items(), key=lambda item: item[0]):
+    for arm, dim_values in sorted(arm_aggregates.items(), key=lambda item: item[0]):
         per_arm_means[arm] = {}
         for dim in dim_list:
             values = dim_values.get(dim, [])
             per_arm_means[arm][dim] = sum(values) / len(values) if values else 0.0
 
     pair_deltas = _compute_paired_deltas_from_aggregates(pair_aggregates, dim_list)
+    normalized_pair_deltas = {
+        pair_id: {
+            comparison: {
+                dimension: (
+                    0.0
+                    if value == 0
+                    else -value
+                    if DIMENSION_DIRECTIONS[dimension] == "minimize"
+                    else value
+                )
+                for dimension, value in values.items()
+            }
+            for comparison, values in comparisons.items()
+        }
+        for pair_id, comparisons in pair_deltas.items()
+    }
 
     return {
         "schema_version": "1.0",
@@ -213,8 +262,20 @@ def score_annotations(
             "dimensions": len(dim_list),
         },
         "dimensions": dim_list,
+        "metric_directions": {dimension: DIMENSION_DIRECTIONS[dimension] for dimension in dim_list},
         "per_arm_means": per_arm_means,
         "paired_deltas": pair_deltas,
+        "paired_deltas_normalized": normalized_pair_deltas,
+        "rater_coverage": {
+            "minimum_distinct_raters": minimum_distinct_raters,
+            "responses_with_minimum_raters": len([response_id for response_id, raters in response_distinct_raters.items() if len(raters) >= minimum_distinct_raters]),
+            "responses_total": len(response_by_id),
+            "distinct_raters": sorted({rater for raters in response_distinct_raters.values() for rater in raters}),
+            "response_rater_counts": {str(response_id): len(raters) for response_id, raters in response_distinct_raters.items()},
+        },
+        "agreement_diagnostics": {
+            "mean_pairwise_absolute_difference_by_dimension": agreement
+        },
         "non_empirical": non_empirical,
         "provenance": {
             "packets_fingerprint": _prefixed_fingerprint(fingerprint_packets),
@@ -257,12 +318,52 @@ def _validate_coverage(
             raise PilotError(f"extra annotations for unknown responses: {extra_annotations}")
 
 
+def _validate_response_rater_coverage(
+    response_rater_scores: dict[str, dict[str, dict[str, int]]],
+    response_distinct_raters: dict[str, set[str]],
+    response_pair_map: Dict[tuple[str, str], str],
+    minimum_distinct_raters: int,
+) -> None:
+    missing_response_raters = [
+        str(response_id)
+        for response_id in response_pair_map.values()
+        if len(response_distinct_raters.get(response_id, set())) < minimum_distinct_raters
+    ]
+    if missing_response_raters:
+        raise PilotError(
+            "responses with fewer distinct raters than required: "
+            f"{missing_response_raters}"
+        )
+
+
+def _mean_pairwise_abs_diff_by_dimension(
+    response_rater_scores: dict[str, dict[str, dict[str, int]]],
+    dimensions: Sequence[str],
+) -> dict[str, float]:
+    pairwise_sums: dict[str, float] = {dim: 0.0 for dim in dimensions}
+    pairwise_counts: dict[str, int] = {dim: 0 for dim in dimensions}
+    for scores_by_rater in response_rater_scores.values():
+        for dim in dimensions:
+            values = [scores_by_rater[rater_id][dim] for rater_id in scores_by_rater if dim in scores_by_rater[rater_id]]
+            if len(values) < 2:
+                continue
+            for left in range(len(values)):
+                for right in range(left + 1, len(values)):
+                    pairwise_sums[dim] += abs(values[left] - values[right])
+                    pairwise_counts[dim] += 1
+
+    return {
+        dim: pairwise_sums[dim] / pairwise_counts[dim] if pairwise_counts[dim] else 0.0
+        for dim in dimensions
+    }
+
+
 def _index_packets(packets: Sequence[Dict[str, Any]]) -> dict[str, Dict[str, Any]]:
     packet_by_id: dict[str, Dict[str, Any]] = {}
     for packet in packets:
         _reject_extra_fields(
             packet,
-            {"packet_id", "case_id", "pair_id", "arms_by_blind", "blind_order", "seed", "source"},
+            {"packet_id", "case_id", "pair_id", "arms_by_blind", "blind_order", "seed", "source", "non_empirical"},
             "packet",
         )
         packet_id = packet.get("packet_id")
@@ -293,6 +394,8 @@ def _index_packets(packets: Sequence[Dict[str, Any]]) -> dict[str, Dict[str, Any
         pair_id = packet.get("pair_id")
         if not isinstance(pair_id, str) or not pair_id:
             raise PilotError(f"packet {packet_id} has invalid pair_id")
+        if packet.get("non_empirical") is not True:
+            raise PilotError(f"packet {packet_id} has invalid non_empirical")
 
         seed = packet.get("seed")
         if not isinstance(seed, int) or isinstance(seed, bool) or seed < 0:
