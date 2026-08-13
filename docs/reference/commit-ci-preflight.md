@@ -3,7 +3,7 @@ type: Reference
 title: Commit CI Preflight adoption
 description: Local preflight, receipt, and lightweight GitHub verification contract.
 status: active
-last_verified: 2026-08-12
+last_verified: 2026-08-13
 ---
 
 # Commit CI Preflight adoption
@@ -39,7 +39,15 @@ The receipt gate builds only the verifier pinned to CCP commit
 trusted base policy and the exact `ccp-evidence/<source-sha>` branch. It never
 builds or imports pull request code.
 
-The existing Python validation workflow remains active during bootstrap. It
-may be removed only after the receipt workflow has been merged into the trusted
-base and one exact-head end-to-end trial is green. Review, protected secrets,
-deployment, and native-platform evidence remain separate concerns.
+The commit-bound receipt is the required pull-request status. This transition
+was made only after exact-head end-to-end receipt verification succeeded for
+Labs 01 through 05 and the local Lab Suite milestone. The Python 3.11/3.12
+matrix remains active after pushes to `main` and through manual
+`workflow_dispatch`, but no longer repeats repository code execution for every
+pull request. Review, protected secrets, deployment, and native-platform
+evidence remain separate concerns.
+
+The active `main-protection` ruleset requires pull requests, linear squash
+history, resolved review threads, and `commit-ci-preflight/receipt`. A receipt
+never substitutes for release signing, external-service integration tests, or
+platform evidence not covered by the declared CCP policy.
