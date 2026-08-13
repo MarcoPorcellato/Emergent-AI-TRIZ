@@ -15,6 +15,7 @@ from .model_preflight import ModelPreflightError, run_model_preflight, stable_js
 from .blinding import BlindingError, build_evaluator_bundle, write_evaluator_bundle
 from .pilot import PilotError, prepare_packets, score_annotations, stable_json_dumps, write_jsonl
 from .lab00 import Lab00Error, build_lab00_report
+from .lab_suite import LAB00_REPORT_PATH, LabSuiteError, build_lab_suite_report
 from .validator import ValidationIssue, validate
 
 
@@ -66,6 +67,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     lab00_parser = subparsers.add_parser("lab00", help="Build deterministic Stage-1 non-evidence HTML report")
     lab00_parser.add_argument("--output", required=True, help="Output HTML path")
     lab00_parser.add_argument("--open", action="store_true", help="Open the report in a browser")
+
+    lab_suite_parser = subparsers.add_parser(
+        "lab-suite",
+        help="Build the deterministic Lab 00-04 visual index",
+    )
+    lab_suite_parser.add_argument("--root", default=".", help="Repository root")
+    lab_suite_parser.add_argument("--output", required=True, help="Output HTML path relative to the repository")
+    lab_suite_parser.add_argument("--open", action="store_true", help="Open the dashboard in a browser")
 
     model_preflight_parser = subparsers.add_parser(
         "model-preflight",
@@ -122,6 +131,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         )
     if args.command == "lab00":
         return _run_lab00(args.output, args.open)
+    if args.command == "lab-suite":
+        return _run_lab_suite(args.root, args.output, args.open)
     if args.command == "model-preflight":
         return _run_model_preflight(args.manifest, args.output)
     if args.command == "dataset-audit":
@@ -492,6 +503,23 @@ def _run_lab00(output: str, open_report: bool) -> int:
     print(f"lab00: rendered {resolved}")
     if open_report:
         webbrowser.open(resolved.as_uri())
+    return 0
+
+
+def _run_lab_suite(root: str, output: str, open_report: bool) -> int:
+    repo_root = Path(root).resolve()
+    output_path = Path(output)
+    if not output_path.is_absolute():
+        output_path = repo_root / output_path
+    try:
+        build_lab00_report(output_path=repo_root / LAB00_REPORT_PATH)
+        report_path = build_lab_suite_report(repo_root=repo_root, output_path=output_path)
+    except (Lab00Error, LabSuiteError, OSError) as exc:
+        _print_error(f"lab-suite: {exc}")
+        return 1
+    print(f"lab-suite: rendered {report_path}")
+    if open_report:
+        webbrowser.open(report_path.as_uri())
     return 0
 
 

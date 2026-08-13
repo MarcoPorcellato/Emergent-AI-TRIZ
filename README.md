@@ -4,7 +4,7 @@
 
 Latent TRIZ is an open laboratory for testing whether language models learn internal, cross-domain, and causally active transformations that resemble TRIZ Inventive Principles. The project combines reproducible experiments, mechanistic interpretability, blinded evaluation, and explicit falsification criteria.
 
-> **Current evidence boundary:** the repository contains a functioning, deterministic Stage 1 protocol smoke test and research-governance infrastructure. It does **not** yet contain evidence that a TRIZ-like representation exists in any model. Every scientific claim starts at E0: hypothesis.
+> **Current evidence boundary:** the repository contains deterministic Lab 00–04 artifacts and exact-revision Lab 01 model instrumentation. None is evidence that a TRIZ-like representation exists in a model. Every scientific claim remains at E0: hypothesis.
 
 ## Run the laboratory
 
@@ -14,11 +14,13 @@ cd Latent-TRIZ
 make lab
 ```
 
-This opens the synthetic Lab 00 report locally. Its data are marked `non_empirical`; passing it demonstrates process integrity, not the hypothesis. The cross-platform canonical command, which does not require Make, is:
+This opens the local Lab Suite dashboard for the maintained Lab 00–04 artifacts. It requires only Python 3.11 or newer, downloads nothing, and makes every readiness and evidence boundary visible. The cross-platform canonical command, which does not require Make, is:
 
 ```bash
-PYTHONPATH=src python3 -m latent_triz.cli lab00 --output artifacts/lab00/index.html --open
+PYTHONPATH=src python3 -m latent_triz.cli lab-suite --root . --output artifacts/lab/index.html --open
 ```
+
+The dashboard does not rerun models or experiments. It verifies and links the tracked reports so a fresh user can inspect the current laboratory immediately. Red readiness cards are documented scientific gaps, not dashboard failures.
 
 Developer validation and target-specific readiness reports are separate:
 
@@ -35,9 +37,9 @@ make readiness TARGET=exp001
 
 Readiness is fail-closed and target-specific. `foundation` validates repository integrity, `lab01` verifies the local exact-revision model and instrumentation bundle, `lab02` renders dataset-release readiness, `lab03` renders surface-baseline readiness, `lab04` renders representation decodability readiness under strict controls, and `exp001` evaluates the model-candidate and dataset gates. A selected model is only **model-contract-ready** or **model-preflight-ready** until acquisition, integrity, load, and instrumentation receipts prove otherwise.
 
-## Lab 00
+## Local visual laboratory
 
-Lab 00 is the one-command public visual surface for the synthetic Stage 1 smoke bundle. It is infrastructure-only, is not attached to any scientific claim, and does not add empirical evidence.
+The Lab Suite is the one-command public visual surface for Lab 00 through Lab 04. It shows status, empirical classification, claim eligibility, source fingerprints, and links to every detailed report without recomputing scientifically incomparable results.
 
 Run the headless variant with no model, API key, service, or package installation:
 
@@ -45,13 +47,13 @@ Run the headless variant with no model, API key, service, or package installatio
 make lab-render
 ```
 
-`make lab` first reproduces and validates the frozen smoke artifacts, renders the report, and asks the operating system to open it. For headless environments, `make lab-render` writes `artifacts/lab00/index.html` without opening a browser. The underlying command is:
+`make lab` renders Lab 00 from its deterministic smoke chain, verifies all maintained classifications, writes `artifacts/lab/index.html`, and opens it. For headless environments, `make lab-render` writes the same byte-stable dashboard without opening a browser. The underlying command is:
 
 ```bash
-PYTHONPATH=src python3 -m latent_triz.cli lab00 --output artifacts/lab00/index.html --open
+PYTHONPATH=src python3 -m latent_triz.cli lab-suite --root . --output artifacts/lab/index.html --open
 ```
 
-The Lab 00 view reuses only tracked synthetic artifacts in `data/pilot/`, displays the cases, blind allocation, response pairing, six score dimensions, summary deltas, and provenance hashes, and keeps the non-empirical boundary visible in the UI.
+Use `make lab00` for the standalone synthetic Stage 1 smoke view. See the [Lab Suite runbook](docs/LAB_SUITE.md) for the aggregation and no-claim contract.
 
 ## The hypothesis
 
@@ -109,6 +111,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 
 - [Documentation portal](docs/index.md) — maintained documentation map
 - [Evidence Ladder](docs/EVIDENCE_LADDER.md) — claim promotion rules E0–E6
+- [Local visual laboratory suite](docs/LAB_SUITE.md) — one-command Lab 00–04 dashboard and scientific boundary
 - [Stage 1 blinded pilot](docs/STAGE1_PILOT.md) — runnable packet, response, annotation, and summary contracts
 - [Lab 00 boundary](docs/STAGE1_PILOT.md#evidence-boundary) — presentation-only synthetic smoke view
 - [Lab 01 model anatomy](docs/LAB01.md) — real-model instrumentation, G1-G8, and no-claim boundary

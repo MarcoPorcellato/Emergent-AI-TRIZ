@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import hashlib
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -275,6 +276,33 @@ def main() -> int:
             actual = hashlib.sha256(path.read_bytes()).hexdigest()
             if expected and expected != actual:
                 raise RuntimeError(f"Lab 04 artifact hash mismatch: {path.name}")
+
+    with tempfile.TemporaryDirectory() as directory:
+        suite_root = Path(directory) / "repository"
+        suite_inputs = (
+            "results/lab01/model-anatomy/parity_report.json",
+            "results/lab01/model-anatomy/report.html",
+            "results/lab02/dataset-anatomy/summary.json",
+            "results/lab02/dataset-anatomy/report.html",
+            "results/lab03/behavioral-baselines/summary.json",
+            "results/lab03/behavioral-baselines/report.html",
+            "results/lab04/decodability/summary.json",
+            "results/lab04/decodability/report.html",
+        )
+        for relative in suite_inputs:
+            destination = suite_root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ROOT / relative, destination)
+        lab_suite_output = suite_root / "artifacts/lab/index.html"
+        command = (
+            PYTHON, "-m", "latent_triz.cli", "lab-suite",
+            "--root", str(suite_root), "--output", "artifacts/lab/index.html",
+        )
+        run(*command)
+        first_lab_suite = lab_suite_output.read_bytes()
+        run(*command)
+        if lab_suite_output.read_bytes() != first_lab_suite:
+            raise RuntimeError("Lab Suite dashboard is not byte-stable")
 
     run(
         PYTHON,
