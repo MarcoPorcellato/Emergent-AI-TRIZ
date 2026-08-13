@@ -17,6 +17,7 @@ last_verified: 2026-08-13
 - [Roadmap](../ROADMAP.md)
 - [Evidence Ladder](../EVIDENCE_LADDER.md)
 - [Article status](../ARTICLE_STATUS.md)
+- [Lab 04 decodability](../LAB04.md)
 
 ## Experiment and evidence references
 

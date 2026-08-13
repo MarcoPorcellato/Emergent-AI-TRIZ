@@ -24,6 +24,9 @@ This is the **maintained** documentation bundle.
 - [Lab 01 model anatomy](./LAB01.md)
 - [Lab 02 dataset anatomy](./LAB02.md)
 - [Lab 03 behavioral baselines](./LAB03.md)
+- [Lab 04 decodability](./LAB04.md)
+- [OKF project index](./OKF_PROJECT.md)
+- [Decision log](./DECISION_LOG.md)
 - [Article status](./ARTICLE_STATUS.md)
 
 ## Policy and status anchors

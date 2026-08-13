@@ -14,3 +14,4 @@ last_verified: 2026-08-13
 - [ADR 0004 — Lab 01 model anatomy](./0004-lab01-model-anatomy.md)
 - [ADR 0005 — Lab 02 dataset anatomy](./0005-lab02-dataset-anatomy.md)
 - [ADR 0006 — Lab 03 behavioral baselines](./0006-lab03-behavioral-baselines.md)
+- [ADR 0007 — Lab 04 decodability](./0007-lab04-decodability.md)

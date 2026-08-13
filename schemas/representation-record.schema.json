@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/representation-record.schema.json",
+  "title": "Latent TRIZ representation record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "case_id",
+    "layer_index",
+    "representation_type",
+    "source",
+    "vector",
+    "vector_dim",
+    "provenance",
+    "non_claim_boundary"
+  ],
+  "properties": {
+    "record_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+    "case_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+    "layer_index": {"type": "integer", "minimum": 0},
+    "representation_type": {"enum": ["synthetic_process_vector", "model_activation"]},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path"],
+      "properties": {
+        "kind": {"enum": ["synthetic_process_fixture", "instrumented_model_run"]},
+        "path": {"type": "string", "minLength": 1}
+      }
+    },
+    "vector": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 65536,
+      "items": {"type": "number"}
+    },
+    "vector_dim": {"type": "integer", "minimum": 1},
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain", "split", "process_only", "synthetic", "notes"],
+      "properties": {
+        "domain": {"type": "string", "minLength": 1},
+        "split": {"type": "string", "minLength": 1},
+        "process_only": {"type": "boolean"},
+        "synthetic": {"type": "boolean"},
+        "notes": {"type": "string", "minLength": 1}
+      }
+    },
+    "non_claim_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empirical", "evidence_eligible", "claim_ids"],
+      "properties": {
+        "empirical": {"type": "boolean"},
+        "evidence_eligible": {"const": false},
+        "claim_ids": {"type": "array", "maxItems": 0}
+      }
+    }
+  }
+}
