@@ -297,7 +297,7 @@ def build_dataset_snapshot_manifest(
 
     manifest: Dict[str, Any] = {
         "artifact_class": "dataset-instrumentation",
-        "empirical": False,
+        "empirical": any(annotation.get("non_empirical") is False for annotation in annotation_records),
         "evidence_eligible": False,
         "claim_ids": [],
         "dataset_id": dataset_id,
@@ -494,8 +494,8 @@ def _evaluate_annotations(
         if not isinstance(case_id, str) or case_id not in case_by_id:
             raise DatasetSnapshotError(f"annotation {annotation_id}: unknown case_id {case_id!r}")
 
-        if annotation.get("non_empirical") is not True:
-            raise DatasetSnapshotError(f"annotation {annotation_id}: non_empirical must be true")
+        if not isinstance(annotation.get("non_empirical"), bool):
+            raise DatasetSnapshotError(f"annotation {annotation_id}: non_empirical must be boolean")
 
         rater_id = annotation.get("rater_id")
         if not isinstance(rater_id, str) or not rater_id:

@@ -43,6 +43,27 @@ The canonical field names are defined by [`../schemas/case.schema.json`](../sche
 
 The `labels` array preserves multiple expert assignments, annotator identifiers, rationales, and per-label confidence instead of forcing a single class.
 
+## 2.1 Blinded annotation workbench
+
+The repository includes a local annotation workbench for blinded human labeling
+of dataset cases. It is an operational aid, not evidence. The workbench must:
+
+- run only on localhost;
+- present sanitized case fields only;
+- hide labels, provenance, split metadata, lexical controls, related-case IDs,
+  and allocation or outcome details from the rater view;
+- accept only the curated ontology choices for this stage, currently
+  Segmentation and Inversion;
+- capture a confidence value and rationale for each judgment;
+- persist abstentions explicitly so undecidable cases remain visible in coverage;
+- append validated records to `artifacts/annotations/dataset-annotations.jsonl`;
+- mark human annotation records with `non_empirical = false` because they are
+  judgment metadata, not hypothesis evidence;
+- reject any attempt to turn the workbench into an evidence surface.
+
+Default entry points are `make annotate` for the interactive browser flow and
+`make annotate-serve` for headless or externally controlled use.
+
 ## 3. Dataset design
 
 The initial study should use a preregistered subset of relatively distinguishable principles. Each principle must appear across multiple domains, while surface words, templates, authorship, and source collections are balanced or controlled.
@@ -55,6 +76,10 @@ Required splits:
 - lexical adversarial controls;
 - near-miss and alternative-principle controls; and
 - a sealed novel-case set written after the discovery set is frozen.
+
+The annotation workbench supports this freeze path by collecting blinded human
+labels before any confirmatory use. The output remains non-evidence until it is
+incorporated into a preregistered and versioned dataset snapshot.
 
 Leakage analysis must cover explicit principle names, synonyms, canonical examples, source duplicates, paraphrases, and recognizable source templates.
 

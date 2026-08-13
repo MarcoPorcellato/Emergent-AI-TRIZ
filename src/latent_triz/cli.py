@@ -16,6 +16,7 @@ from .blinding import BlindingError, build_evaluator_bundle, write_evaluator_bun
 from .pilot import PilotError, prepare_packets, score_annotations, stable_json_dumps, write_jsonl
 from .lab00 import Lab00Error, build_lab00_report
 from .lab_suite import LAB00_REPORT_PATH, LabSuiteError, build_lab_suite_report
+from .annotation_workbench import AnnotationWorkbenchError, serve_annotation_workbench
 from .validator import ValidationIssue, validate
 
 
@@ -106,6 +107,19 @@ def main(argv: Optional[List[str]] = None) -> int:
     evaluator_export_parser.add_argument("--evaluator-output", required=True, help="Evaluator-safe JSONL output")
     evaluator_export_parser.add_argument("--key-output", required=True, help="Separate sealed allocation key output")
 
+    annotation_parser = subparsers.add_parser(
+        "annotation-workbench",
+        help="Run the loopback-only blinded dataset annotation workbench",
+    )
+    annotation_parser.add_argument("--cases", required=True, help="Case JSONL path")
+    annotation_parser.add_argument("--guide", required=True, help="Versioned annotation guide JSON path")
+    annotation_parser.add_argument("--schema", required=True, help="Dataset annotation schema path")
+    annotation_parser.add_argument("--output", required=True, help="Append-only annotation JSONL output")
+    annotation_parser.add_argument("--rater-id", required=True, help="Pseudonymous rater identifier")
+    annotation_parser.add_argument("--host", default="127.0.0.1", help="Loopback address only")
+    annotation_parser.add_argument("--port", type=int, default=8765, help="Local TCP port")
+    annotation_parser.add_argument("--open", action="store_true", help="Open the workbench in a browser")
+
     fingerprint_parser = subparsers.add_parser("fingerprint", help="Compute SHA-256 of a file")
     fingerprint_parser.add_argument("path", help="Path to file")
 
@@ -144,6 +158,22 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.evaluator_output,
             args.key_output,
         )
+    if args.command == "annotation-workbench":
+        try:
+            serve_annotation_workbench(
+                cases_path=args.cases,
+                guide_path=args.guide,
+                output_path=args.output,
+                schema_path=args.schema,
+                rater_id=args.rater_id,
+                host=args.host,
+                port=args.port,
+                open_browser=args.open,
+            )
+        except (AnnotationWorkbenchError, OSError) as exc:
+            _print_error(str(exc))
+            return 1
+        return 0
     parser.error("Unknown command")
     return 1
 
