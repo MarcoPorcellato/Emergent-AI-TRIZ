@@ -67,6 +67,14 @@ make preflight-run
 make preflight-verify
 ```
 
+For Stage 1 dry-runs and schema checks:
+
+```text
+make stage1-pilot-validate
+make stage1-pilot-smoke
+```
+`make stage1-pilot-smoke` prepares Stage 1 packets from `data/pilot/cases.jsonl` with fixed seed `20260812`, compares byte-for-byte against tracked `data/pilot/packets.jsonl`, regenerates `data/pilot/summary.json`, and validates all tracked pilot artifacts against Stage 1 schemas. This is a deterministic process boundary check, not a confirmation step.
+
 See the [Commit CI Preflight reference](docs/reference/commit-ci-preflight.md)
 for the evidence publication and GitHub cost boundary.
 

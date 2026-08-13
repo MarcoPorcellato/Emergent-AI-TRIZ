@@ -24,12 +24,19 @@ Completed or maintained in this repository:
 
 ## Stage 1 - Dataset assembly
 
-Future work:
+In progress:
 
 - collect or synthesize cross-domain cases;
 - assign multi-label principle annotations;
 - document provenance and licensing;
 - freeze a dataset snapshot before confirmatory evaluation.
+
+Stage 1 now includes a blinded two-arm pilot contract for reproducible process smoke.
+These artifacts are not confirmatory evidence.
+
+- define pilot packet, response, annotation (0-4 dimensions), and summary contracts;
+- add schema-level and optional smoke validation for Stage 1 artifacts;
+- add explicit documentation gates that Stage 1 smoke artifacts are not evidence.
 
 ## Stage 2 - Surface baselines
 

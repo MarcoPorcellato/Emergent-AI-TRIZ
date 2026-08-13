@@ -90,6 +90,8 @@ Run the repository directly from a checkout:
 
 ```bash
 make check
+make stage1-pilot-validate
+make stage1-pilot-smoke
 make preflight-plan
 PYTHONPATH=src python -m latent_triz.cli validate --schema schemas/case.schema.json tests/fixtures/case_valid.json
 PYTHONPATH=src python -m latent_triz.cli fingerprint schemas/case.schema.json
@@ -101,6 +103,7 @@ PYTHONPATH=src python -m latent_triz.cli fingerprint schemas/case.schema.json
 - [Documentation log](docs/log.md) - chronology and updates for the maintained bundle
 - [Documentation reference index](docs/reference/index.md) - schema and artifact references
 - [Commit CI Preflight](docs/reference/commit-ci-preflight.md) - local receipts and lightweight GitHub verification
+- [Stage 1 blinded pilot](docs/STAGE1_PILOT.md) - pilot packet/response/annotation/summary contracts
 - [Decision index](docs/decisions/index.md) - ADR ledger and governance boundaries
 - [Lab architecture](docs/LAB_ARCHITECTURE.md) - artifact flow, governance boundaries, and staged lab structure
 - [Roadmap](docs/ROADMAP.md) - Phase 0 foundation and future Stages 1-6

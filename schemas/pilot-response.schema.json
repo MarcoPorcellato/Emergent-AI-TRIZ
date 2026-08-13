@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ/schemas/pilot-response.schema.json",
+  "title": "Vendor-neutral blinded pilot response record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "response_id",
+    "packet_id",
+    "blinded_arm",
+    "model",
+    "response_text",
+    "generated_at",
+    "non_empirical"
+  ],
+  "properties": {
+    "response_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "blinded_arm": {
+      "type": "string",
+      "enum": ["A", "B"]
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["name", "family", "revision"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "response_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "non_empirical": {
+      "type": "boolean"
+    }
+  }
+}

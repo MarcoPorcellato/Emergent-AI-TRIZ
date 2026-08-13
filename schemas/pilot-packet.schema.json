@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ/schemas/pilot-packet.schema.json",
+  "title": "Vendor-neutral blinded two-arm pilot packet record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packet_id",
+    "case_id",
+    "pair_id",
+    "arms_by_blind",
+    "blind_order",
+    "seed",
+    "source"
+  ],
+  "properties": {
+    "packet_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "pair_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "arms_by_blind": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["A", "B"],
+      "properties": {
+        "A": {
+          "type": "string",
+          "enum": ["control", "treatment"]
+        },
+        "B": {
+          "type": "string",
+          "enum": ["control", "treatment"]
+        }
+      }
+    },
+    "blind_order": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["A", "B"]
+      }
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["case_id"],
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

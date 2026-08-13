@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ/schemas/pilot-annotation.schema.json",
+  "title": "Vendor-neutral blinded pilot annotation record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "annotation_id",
+    "response_id",
+    "packet_id",
+    "blinded_arm",
+    "rater_id",
+    "scores",
+    "annotated_at",
+    "non_empirical"
+  ],
+  "properties": {
+    "annotation_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "response_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "blinded_arm": {
+      "type": "string",
+      "enum": ["A", "B"]
+    },
+    "rater_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contradiction_resolution",
+        "principle_use",
+        "feasibility",
+        "novelty",
+        "constraint_adherence",
+        "terminology_only"
+      ],
+      "properties": {
+        "contradiction_resolution": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "principle_use": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "feasibility": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "novelty": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "constraint_adherence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "terminology_only": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        }
+      }
+    },
+    "annotated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "non_empirical": {
+      "type": "boolean"
+    }
+  }
+}
