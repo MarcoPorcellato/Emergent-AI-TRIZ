@@ -46,6 +46,8 @@ def main() -> int:
         ("schemas/lab01-run.schema.json", "results/lab01/model-anatomy/run.json"),
         ("schemas/dataset-annotation.schema.json", "data/pilot/dataset-annotations.jsonl"),
         ("schemas/annotation-guide.schema.json", "experiments/001-stage1-pilot/annotation-guide.json"),
+        ("schemas/candidate-batch.schema.json", "data/candidates/wave1-manifest.json"),
+        ("schemas/case.schema.json", "data/candidates/wave1-model-generated.jsonl"),
         ("schemas/dataset-snapshot.schema.json", "results/lab02/dataset-anatomy/snapshot_manifest.json"),
         ("schemas/lab03-config.schema.json", "experiments/lab03-behavioral-baselines/config.json"),
         ("schemas/lab03-result.schema.json", "results/lab03/behavioral-baselines/summary.json"),
@@ -90,6 +92,7 @@ def main() -> int:
         "schemas/lab01-run.schema.json",
         "schemas/dataset-annotation.schema.json",
         "schemas/annotation-guide.schema.json",
+        "schemas/candidate-batch.schema.json",
         "schemas/dataset-snapshot.schema.json",
         "schemas/lab03-config.schema.json",
         "schemas/lab03-result.schema.json",
@@ -104,6 +107,12 @@ def main() -> int:
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))
+
+    run(
+        PYTHON, "-m", "latent_triz.cli", "candidate-audit",
+        "--manifest", "data/candidates/wave1-manifest.json",
+        "--cases", "data/candidates/wave1-model-generated.jsonl",
+    )
 
     with tempfile.TemporaryDirectory() as directory:
         temporary = Path(directory)

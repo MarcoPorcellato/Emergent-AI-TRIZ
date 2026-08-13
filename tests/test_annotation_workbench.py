@@ -14,6 +14,7 @@ from latent_triz.annotation_workbench import (
     AnnotationWorkbenchError,
     build_annotation_record,
     create_server,
+    order_cases_for_rater,
     sanitize_cases,
 )
 from latent_triz.validator import validate
@@ -35,6 +36,14 @@ class AnnotationWorkbenchTests(unittest.TestCase):
         ):
             self.assertNotIn(hidden, sanitized[0])
 
+    def test_case_order_is_stable_and_rater_specific(self) -> None:
+        cases = [{"case_id": f"case_{index:03d}"} for index in range(20)]
+        first = order_cases_for_rater(cases, "rater_1", "a" * 64)
+        repeated = order_cases_for_rater(cases, "rater_1", "a" * 64)
+        second = order_cases_for_rater(cases, "rater_2", "a" * 64)
+        self.assertEqual(first, repeated)
+        self.assertNotEqual(first, second)
+
     def test_human_record_is_schema_valid_but_not_evidence(self) -> None:
         record = build_annotation_record(
             {"case_id": "pilot_case_001", "label": "segmentation", "confidence": 0.75, "rationale": "The transformation creates separately managed zones."},
@@ -55,6 +64,7 @@ class AnnotationWorkbenchTests(unittest.TestCase):
                 guide_revision="v1.0.0", guide_sha256="b" * 64,
             )
             store.append(record)
+            self.assertTrue(store.contains("pilot_case_001", "rater_1"))
             with self.assertRaisesRegex(AnnotationWorkbenchError, "already annotated"):
                 store.append({**record, "annotation_id": "ann_duplicate"})
 

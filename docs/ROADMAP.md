@@ -125,8 +125,9 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 1. Finish evidence-integrity and readiness gates, including evaluator-safe exports and rater coverage.
 2. Apply a ruleset to `main` with pull-request and verified-check requirements.
 3. Publish and preserve Lab 01 with a didactic model role distinct from the primary and replication roles.
-4. Run the blinded annotation workbench and freeze the Segmentation/Inversion ontology together with its confidence and rationale fields.
-5. Execute recognition, selection, and causal-control experiments as separate claim paths.
+4. Complete Wave 1 discovery assembly, blinded review, and leakage checks before any freeze.
+5. Define the Segmentation/Inversion annotation ontology, abstention handling, and split freeze criteria.
+6. Execute recognition, selection, and causal-control experiments as separate claim paths.
 
 ## Stage 2 - Surface baselines
 

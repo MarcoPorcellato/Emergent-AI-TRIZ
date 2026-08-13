@@ -93,6 +93,21 @@ def sanitize_cases(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]
     return sanitized
 
 
+def order_cases_for_rater(
+    cases: Sequence[Mapping[str, Any]], rater_id: str, guide_sha256: str
+) -> list[dict[str, Any]]:
+    """Return a stable rater-specific order without using embedded labels."""
+    return [
+        dict(case)
+        for case in sorted(
+            cases,
+            key=lambda case: hashlib.sha256(
+                f"{rater_id}|{guide_sha256}|{case['case_id']}".encode("utf-8")
+            ).digest(),
+        )
+    ]
+
+
 class AnnotationStore:
     def __init__(self, output_path: str | Path, schema_path: str | Path) -> None:
         self.output_path = Path(output_path)
@@ -104,10 +119,17 @@ class AnnotationStore:
         self._pairs: set[tuple[str, str]] = set()
         if self.output_path.exists():
             for record in load_jsonl(self.output_path):
+                issues = validate(record, self.schema)
+                if issues:
+                    details = "; ".join(f"{issue.path}: {issue.message}" for issue in issues)
+                    raise AnnotationWorkbenchError(f"existing annotation does not match schema: {details}")
                 pair = (str(record.get("case_id", "")), str(record.get("rater_id", "")))
                 if pair in self._pairs:
                     raise AnnotationWorkbenchError(f"duplicate existing annotation pair: {pair[0]}/{pair[1]}")
                 self._pairs.add(pair)
+
+    def contains(self, case_id: str, rater_id: str) -> bool:
+        return (case_id, rater_id) in self._pairs
 
     def append(self, record: dict[str, Any]) -> None:
         issues = validate(record, self.schema)
@@ -180,7 +202,9 @@ def create_server(
         raise AnnotationWorkbenchError("rater_id must be non-empty and contain no whitespace")
     cases, guide = sanitize_cases(load_jsonl(cases_path)), load_guide(guide_path)
     guide_sha256 = hashlib.sha256(Path(guide_path).read_bytes()).hexdigest()
+    cases = order_cases_for_rater(cases, rater_id, guide_sha256)
     store, csrf_token = AnnotationStore(output_path, schema_path), secrets.token_urlsafe(32)
+    cases = [case for case in cases if not store.contains(case["case_id"], rater_id)]
     case_ids = {case["case_id"] for case in cases}
     allowed_labels = {item["id"] for item in guide["labels"]} | {guide["abstention"]["id"]}
     session = {"rater_id": rater_id, "cases": cases, "guide": guide, "guide_sha256": guide_sha256, "evidence_eligible": False}

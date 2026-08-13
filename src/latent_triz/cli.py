@@ -17,6 +17,7 @@ from .pilot import PilotError, prepare_packets, score_annotations, stable_json_d
 from .lab00 import Lab00Error, build_lab00_report
 from .lab_suite import LAB00_REPORT_PATH, LabSuiteError, build_lab_suite_report
 from .annotation_workbench import AnnotationWorkbenchError, serve_annotation_workbench
+from .candidate_batch import CandidateBatchError, audit_candidate_batch
 from .validator import ValidationIssue, validate
 
 
@@ -98,6 +99,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     dataset_audit_parser.add_argument("--output", default="-", help="Output JSON path, '-' for stdout")
 
+    candidate_audit_parser = subparsers.add_parser(
+        "candidate-audit",
+        help="Fail closed on leakage, imbalance, provenance, or pairing defects in a candidate batch",
+    )
+    candidate_audit_parser.add_argument("--manifest", required=True, help="Candidate batch manifest JSON")
+    candidate_audit_parser.add_argument("--cases", required=True, help="Candidate case JSONL")
+    candidate_audit_parser.add_argument("--output", default="-", help="Output JSON path, '-' for stdout")
+
     evaluator_export_parser = subparsers.add_parser(
         "pilot-export-evaluator",
         help="Export evaluator-safe packets and a separate sealed allocation key",
@@ -151,6 +160,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _run_model_preflight(args.manifest, args.output)
     if args.command == "dataset-audit":
         return _run_dataset_audit(args.plan, args.cases, args.mode, args.output)
+    if args.command == "candidate-audit":
+        return _run_candidate_audit(args.manifest, args.cases, args.output)
     if args.command == "pilot-export-evaluator":
         return _run_pilot_export_evaluator(
             args.packets,
@@ -579,6 +590,18 @@ def _run_dataset_audit(plan: str, cases: str, mode: str, output: str) -> int:
     if mode == "freeze" and report.get("freeze_ready") is not True:
         return 1
     return 0
+
+
+def _run_candidate_audit(manifest: str, cases: str, output: str) -> int:
+    try:
+        report = audit_candidate_batch(manifest, cases)
+    except CandidateBatchError as exc:
+        _print_error(str(exc))
+        return 1
+    write_result = _write_json_output(report, output, dataset_stable_json_dumps)
+    if write_result != 0:
+        return write_result
+    return 0 if report["ready_for_blinded_review"] is True else 1
 
 
 def _run_pilot_export_evaluator(

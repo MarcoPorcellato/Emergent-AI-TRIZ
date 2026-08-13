@@ -25,6 +25,7 @@ last_verified: 2026-08-13
 - [Preregistration guidance](../../preregistrations/README.md)
 - [Results protocol](../../results/README.md)
 - [Data contract](../../data/README.md)
+- [Wave 1 candidate batch](../../data/candidates/README.md)
 - [Machine-readable claim registry](../../data/claims.jsonl)
 - [Stage 1 blinded pilot](../STAGE1_PILOT.md)
 - [Research protocol](../RESEARCH_PROTOCOL.md)

@@ -28,6 +28,11 @@ provenance, split assignments, lexical controls, related-case identifiers,
 allocation keys, and results are excluded. Submissions require the page's
 session token, match the dataset annotation schema, and are appended with an
 `fsync` before success is reported. Duplicate case/rater pairs are rejected.
+Case order is deterministically randomized from the pseudonymous rater ID and
+guide digest, preventing tracked-file order from becoming a label cue while
+keeping each session reproducible.
+Restarting with the same rater and output path resumes at the remaining cases;
+previously saved case/rater pairs are omitted from the queue.
 An annotator who cannot make a defensible forced choice records an explicit
 `abstain` audit state; the case never disappears silently from coverage.
 
