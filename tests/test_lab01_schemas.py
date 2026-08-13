@@ -32,7 +32,7 @@ class Lab01SchemaTests(unittest.TestCase):
         self.assertTrue(manifest["empirical"])
         self.assertFalse(manifest["evidence_eligible"])
         self.assertEqual(manifest["claim_ids"], [])
-        self.assertEqual(manifest["state"], "acquisition_planned")
+        self.assertEqual(manifest["contract_state"], "selected")
         self.assertEqual(
             manifest["allowed_states"],
             [
@@ -56,7 +56,7 @@ class Lab01SchemaTests(unittest.TestCase):
             "model": "EleutherAI/pythia-70m-deduped",
             "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
             "license_id": "Apache-2.0",
-            "state": "selected",
+            "contract_state": "selected",
             "allowed_states": [
                 "unselected",
                 "selected",
@@ -87,9 +87,20 @@ class Lab01SchemaTests(unittest.TestCase):
             "model": "EleutherAI/pythia-70m-deduped",
             "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
             "receipt_time": "2026-08-13T10:00:00Z",
-            "source_url": "https://huggingface.co/EleutherAI/pythia-70m-deduped",
-            "terms_url": "https://huggingface.co/EleutherAI/pythia-70m-deduped/blob/main/LICENSE",
-            "runtime_files": [],
+            "source_url": "https://huggingface.co/EleutherAI/pythia-70m-deduped/tree/e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+            "terms_url": "https://huggingface.co/EleutherAI/pythia-70m-deduped/blob/e93a9faa9c77e5d09219f6c868bfc7a1bd65593c/README.md",
+            "license_id": "Apache-2.0",
+            "runtime_files": [
+                {"name": name, "sha256": "0" * 64, "size": 1}
+                for name in (
+                    "README.md",
+                    "config.json",
+                    "model.safetensors",
+                    "special_tokens_map.json",
+                    "tokenizer.json",
+                    "tokenizer_config.json",
+                )
+            ],
             "notes": "selection receipt only",
         }
         self.assertEqual(validate(receipt, self.schemas["receipt"]), [])
@@ -115,6 +126,13 @@ class Lab01SchemaTests(unittest.TestCase):
         self.assertTrue(any(issue.path.endswith("claim_ids") for issue in issues))
         self.assertTrue(any("runtime_files" in issue.message for issue in issues))
 
+    def test_manifest_rejects_a_different_model_identity(self) -> None:
+        manifest_path = self.repo_root / "experiments/lab01-model-anatomy/manifest.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest["revision"] = "0" * 40
+        issues = validate(manifest, self.schemas["manifest"])
+        self.assertTrue(any(issue.path.endswith("revision") and "constant" in issue.message for issue in issues))
+
     def test_run_validates_and_distinguishes_structural_from_numeric_tolerance(self) -> None:
         run = {
             "artifact_class": "model-instrumentation",
@@ -123,6 +141,7 @@ class Lab01SchemaTests(unittest.TestCase):
             "claim_ids": [],
             "model": "EleutherAI/pythia-70m-deduped",
             "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+            "license_id": "Apache-2.0",
             "backend": "torch",
             "dtype": "float32",
             "run_state": "instrumentation_verified",

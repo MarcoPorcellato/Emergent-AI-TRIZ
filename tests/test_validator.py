@@ -45,6 +45,11 @@ class ValidatorTests(unittest.TestCase):
         self.assertGreaterEqual(len(issues), 1)
         self.assertTrue(any("below minimum" in issue.message for issue in issues))
 
+    def test_unique_items_rejects_duplicate_objects(self) -> None:
+        schema = {"type": "array", "uniqueItems": True, "items": {"type": "object"}}
+        issues = validate([{"name": "config.json"}, {"name": "config.json"}], schema)
+        self.assertTrue(any("must be unique" in issue.message for issue in issues))
+
     def test_study_manifest_is_valid(self) -> None:
         issues = validate(self.study_manifest, self.study_schema)
         self.assertEqual(issues, [])

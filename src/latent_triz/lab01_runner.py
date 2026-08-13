@@ -30,6 +30,18 @@ TOLERANCE_BY_BACKEND: dict[str, dict[str, dict[str, float]]] = {
     },
 }
 
+# Tensor comparison reports device backends (for example ``cpu``), while the
+# public run contract reports the library backend (``torch``). Bind both to the
+# same frozen tolerance table so the executed policy and published policy agree.
+COMPARISON_TOLERANCE_BY_DEVICE = {
+    "default": TOLERANCE_BY_BACKEND["torch"],
+    "cpu": TOLERANCE_BY_BACKEND["torch"],
+    "cuda": TOLERANCE_BY_BACKEND["torch"],
+    "mps": TOLERANCE_BY_BACKEND["torch"],
+    "pytorch": TOLERANCE_BY_BACKEND["torch"],
+    "numpy": TOLERANCE_BY_BACKEND["numpy"],
+}
+
 
 @dataclass(frozen=True)
 class RunArtifacts:
@@ -201,7 +213,12 @@ def run_lab01_bundle(
         baseline_payload = adapter.run_prompt(prompt=prompt, instrumented=True)
         topk_rows.extend(_extract_topk(baseline_payload, prompt_id))
 
-        artifact = lab01.run_lab01(adapter, prompt, repeats=repeats)
+        artifact = lab01.run_lab01(
+            adapter,
+            prompt,
+            repeats=repeats,
+            tolerance_by_backend=COMPARISON_TOLERANCE_BY_DEVICE,
+        )
 
         tokenization_gate = (
             tokenization_gate
@@ -268,6 +285,7 @@ def run_lab01_bundle(
         {
             "model": lab01_acquisition.LAB01_MODEL_ID,
             "revision": lab01_acquisition.LAB01_MODEL_REVISION,
+            "license_id": lab01_acquisition.LAB01_LICENSE_ID,
             "backend": "torch",
             "dtype": "float32",
             "run_state": "instrumentation_verified",
@@ -302,6 +320,7 @@ def run_lab01_bundle(
             "state_after": "load_verified",
             "model": lab01_acquisition.LAB01_MODEL_ID,
             "revision": lab01_acquisition.LAB01_MODEL_REVISION,
+            "license_id": lab01_acquisition.LAB01_LICENSE_ID,
             "receipt_time": datetime.now(tz=timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
             "source_url": lab01_acquisition.LAB01_SOURCE_URL,
             "terms_url": lab01_acquisition.LAB01_TERMS_URL,
@@ -323,6 +342,8 @@ def run_lab01_bundle(
         }
     )
 
+    # G8 starts fail-closed and is replaced only after every public,
+    # non-self-referential artifact has been written and hashed below.
     gates = [
         _gate(identity_gate, "G1", "identity and local-file receipts match", "identity mismatch or receipt missing"),
         _gate(offline_gate, "G2", "offline local adapter initialised with CPU float32", "offline local adapter failed"),

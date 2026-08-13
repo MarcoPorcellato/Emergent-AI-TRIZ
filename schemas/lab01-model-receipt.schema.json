@@ -49,18 +49,38 @@
         "lab_ready"
       ]
     },
-    "model": { "type": "string", "minLength": 1 },
-    "revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "model": { "type": "string", "const": "EleutherAI/pythia-70m-deduped" },
+    "revision": { "type": "string", "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c" },
     "receipt_time": { "type": "string", "format": "date-time" },
-    "source_url": { "type": "string", "format": "uri" },
-    "terms_url": { "type": "string", "format": "uri" },
+    "source_url": {
+      "type": "string",
+      "const": "https://huggingface.co/EleutherAI/pythia-70m-deduped/tree/e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+    },
+    "terms_url": {
+      "type": "string",
+      "const": "https://huggingface.co/EleutherAI/pythia-70m-deduped/blob/e93a9faa9c77e5d09219f6c868bfc7a1bd65593c/README.md"
+    },
+    "license_id": { "type": "string", "const": "Apache-2.0" },
     "runtime_files": {
       "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
       "items": {
         "type": "object",
         "required": ["name", "sha256", "size"],
         "properties": {
-          "name": { "type": "string", "minLength": 1 },
+          "name": {
+            "type": "string",
+            "enum": [
+              "README.md",
+              "config.json",
+              "model.safetensors",
+              "special_tokens_map.json",
+              "tokenizer.json",
+              "tokenizer_config.json"
+            ]
+          },
           "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
           "size": { "type": "integer", "minimum": 1 }
         },

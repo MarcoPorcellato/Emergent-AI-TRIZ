@@ -14,6 +14,7 @@ from typing import Final
 
 LAB01_MODEL_ID: Final[str] = "EleutherAI/pythia-70m-deduped"
 LAB01_MODEL_REVISION: Final[str] = "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+LAB01_LICENSE_ID: Final[str] = "Apache-2.0"
 LAB01_SOURCE_URL: Final[str] = f"https://huggingface.co/{LAB01_MODEL_ID}/tree/{LAB01_MODEL_REVISION}"
 LAB01_TERMS_URL: Final[str] = f"https://huggingface.co/{LAB01_MODEL_ID}/blob/{LAB01_MODEL_REVISION}/README.md"
 LAB01_REQUIRED_FILES: Final[tuple[str, ...]] = (
@@ -174,6 +175,7 @@ def build_integrity_receipt(
         "state_after": "integrity_verified",
         "model": LAB01_MODEL_ID,
         "revision": LAB01_MODEL_REVISION,
+        "license_id": LAB01_LICENSE_ID,
         "receipt_time": datetime.now(tz=timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "source_url": LAB01_SOURCE_URL,
         "terms_url": LAB01_TERMS_URL,

@@ -144,6 +144,15 @@ class Lab01RunnerTests(unittest.TestCase):
             self.assertEqual([item["gate"] for item in parity["gates"]], ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"])
             self.assertTrue(all(item["status"] == "pass" for item in parity["gates"]))
 
+            receipt = _load_json(outputs.model_receipt)
+            run_record = _load_json(outputs.run_record)
+            self.assertEqual(receipt["license_id"], "Apache-2.0")
+            self.assertEqual(run_record["license_id"], "Apache-2.0")
+            self.assertEqual(
+                run_record["numeric_tolerance_by_backend_dtype"],
+                runner.TOLERANCE_BY_BACKEND,
+            )
+
             topk_rows = list(_load_jsonl(outputs.topk_logits))
             self.assertEqual(topk_rows[0]["layer"], "resid_post_layer_0_topk")
             tokens = _load_json(outputs.tokens)[0]

@@ -25,7 +25,8 @@ Developer validation and target-specific readiness reports are separate:
 ```bash
 make check
 make readiness TARGET=foundation
-make readiness TARGET=lab01 LAB01_MODEL_ROOT=/path/to/model
+make lab01-bootstrap
+make readiness TARGET=lab01
 make readiness TARGET=exp001
 ```
 

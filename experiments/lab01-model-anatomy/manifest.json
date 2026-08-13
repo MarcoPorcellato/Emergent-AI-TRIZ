@@ -6,7 +6,7 @@
   "model": "EleutherAI/pythia-70m-deduped",
   "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
   "license_id": "Apache-2.0",
-  "state": "acquisition_planned",
+  "contract_state": "selected",
   "allowed_states": [
     "unselected",
     "selected",
@@ -25,12 +25,16 @@
   ],
   "numeric_tolerance_by_backend_dtype": {
     "torch": {
-      "float32": {"atol": 0.000002, "rtol": 0.00002},
+      "float32": {"atol": 0.000001, "rtol": 0.00002},
+      "float64": {"atol": 0.00000001, "rtol": 0.00000001},
       "bfloat16": {"atol": 0.01, "rtol": 0.01},
-      "float16": {"atol": 0.01, "rtol": 0.01}
+      "float16": {"atol": 0.01, "rtol": 0.01},
+      "int": {"atol": 0.0, "rtol": 0.0},
+      "bool": {"atol": 0.0, "rtol": 0.0},
+      "unknown": {"atol": 0.0001, "rtol": 0.0001}
     },
     "numpy": {
-      "float32": {"atol": 0.000002, "rtol": 0.00002}
+      "float32": {"atol": 0.000001, "rtol": 0.00001}
     }
   },
   "notes": "Didactic Lab 01 contract only; no TRIZ probe, steering, causal-tracing, dashboard, or multi-model claims."

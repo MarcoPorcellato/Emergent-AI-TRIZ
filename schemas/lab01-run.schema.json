@@ -24,8 +24,9 @@
     "empirical": { "type": "boolean", "const": true },
     "evidence_eligible": { "type": "boolean", "const": false },
     "claim_ids": { "type": "array", "maxItems": 0, "items": { "type": "string" } },
-    "model": { "type": "string", "minLength": 1 },
-    "revision": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "model": { "type": "string", "const": "EleutherAI/pythia-70m-deduped" },
+    "revision": { "type": "string", "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c" },
+    "license_id": { "type": "string", "const": "Apache-2.0" },
     "backend": { "type": "string", "minLength": 1 },
     "dtype": { "type": "string", "minLength": 1 },
     "run_state": {

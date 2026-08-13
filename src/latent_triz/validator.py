@@ -147,6 +147,10 @@ def _validate_arrays(instance: Any, schema: Dict[str, Any], path: str, issues: L
         issues.append(ValidationIssue(path, f"Array has fewer than minItems {schema['minItems']}"))
     if "maxItems" in schema and len(instance) > schema["maxItems"]:
         issues.append(ValidationIssue(path, f"Array has more than maxItems {schema['maxItems']}"))
+    if schema.get("uniqueItems") is True:
+        for index, item in enumerate(instance):
+            if any(item == previous for previous in instance[:index]):
+                issues.append(ValidationIssue(f"{path}[{index}]", "Array items must be unique"))
 
     if "items" in schema:
         for index, item in enumerate(instance):

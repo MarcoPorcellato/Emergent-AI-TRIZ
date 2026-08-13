@@ -29,7 +29,7 @@ The lab needs a single didactic model contract that can be verified offline befo
 2. Record the model as Apache-2.0 licensed, with its model-card and source URLs preserved in the manifest and receipt chain.
 3. Use the following receipt-derived state machine:
    `unselected -> selected -> acquisition_planned -> acquired -> integrity_verified -> load_verified -> instrumentation_verified -> lab_ready`.
-4. Allow state transitions only when the expected receipt for that step is present and the payload is internally consistent.
+4. Treat the manifest state as a contract fact only; the operational state is computed from the validated receipt chain.
 5. Require every Lab 01 manifest and receipt to classify itself as empirical, but not evidence-eligible.
 6. Keep `claim_ids` empty for the Lab 01 contracts in this repository.
 7. Keep the observable scope didactic and frozen: no TRIZ naming, no probes, no steering, no SAE/Jacobian analysis, no dashboard semantics, and no quantization or multi-model branching in this contract.
@@ -38,14 +38,14 @@ The lab needs a single didactic model contract that can be verified offline befo
 
 The contract exposes the following gate sequence:
 
-- G1: model selected;
-- G2: acquisition planned;
-- G3: acquired receipt recorded;
-- G4: integrity verified;
-- G5: load verified;
-- G6: instrumentation verified;
-- G7: structural artifacts match their frozen references;
-- G8: lab is ready for a didactic run.
+- G1: model identity is fixed, including repo, revision, config, weights, tokenizer, checksums, and license;
+- G2: offline execution is verified;
+- G3: tokenization capture is verified;
+- G4: instrumentation invariance is verified;
+- G5: numerical health is verified;
+- G6: final lens parity is verified;
+- G7: repeated-run stability is verified;
+- G8: artifact integrity is verified.
 
 G1 through G8 are contract gates. They are not scientific claims.
 
@@ -54,3 +54,6 @@ G1 through G8 are contract gates. They are not scientific claims.
 - The repository can now express a single-model, receipt-gated Lab 01 path without conflating it with EXP-001.
 - Future operational receipts can promote the state machine without rewriting the contract.
 - If a later lab needs probes, steering, causal tracing, or replication, it must define those as separate contracts.
+- Availability and license were re-verified on 2026-08-13 at the exact pinned
+  Hugging Face revision. The model card identifies Apache-2.0 and the local
+  snapshot matches the six frozen file hashes.
