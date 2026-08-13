@@ -10,6 +10,8 @@ last_verified: 2026-08-13
 
 The laboratory foundation is operational. Lab 00 is a deterministic synthetic process smoke. Lab 01 is the first real-model instrumentation result and remains explicitly ineligible as evidence for the hypothesis.
 
+The maintained Lab 00 through Lab 04 artifacts now have a single local visual entrance. `make lab` opens the dashboard and `make lab-render` produces the same deterministic page for headless use. The dashboard is a navigation and integrity surface; it does not recompute experiments or promote scientific claims.
+
 ## Foundation — delivered
 
 Completed or maintained in this repository:
@@ -48,7 +50,7 @@ Delivered, infrastructure-only, and not attached to any scientific claim:
 - avoid any model, representation, or empirical claim;
 - keep the dependency-free validation core separate from the optional visual surface.
 
-`make lab` now reproduces the frozen smoke, renders a responsive local HTML report, and opens it through the operating system. `make lab-render` provides the same deterministic output for headless environments.
+`make lab00` reproduces the frozen smoke, renders its responsive local HTML report, and opens it through the operating system. `make lab00-render` provides the same deterministic Lab 00 output for headless environments; `make lab` opens the combined Lab 00–04 dashboard.
 
 ## Model-backed laboratory sequence
 

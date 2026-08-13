@@ -21,6 +21,7 @@ This is the **maintained** documentation bundle.
 - [Roadmap](./ROADMAP.md)
 - [Research protocol](./RESEARCH_PROTOCOL.md)
 - [Evidence Ladder](./EVIDENCE_LADDER.md)
+- [Local visual laboratory suite](./LAB_SUITE.md)
 - [Lab 01 model anatomy](./LAB01.md)
 - [Lab 02 dataset anatomy](./LAB02.md)
 - [Lab 03 behavioral baselines](./LAB03.md)
