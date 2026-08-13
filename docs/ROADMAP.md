@@ -65,6 +65,8 @@ Lab 01 establishes the trustworthy measurement substrate. Later labs may add sci
 
 Lab 02 is now implemented against the synthetic Stage 1 fixture. Its first report intentionally records the corpus as not release-ready because split/domain/principle targets and independent-rater coverage remain open. This is a readiness result, not evidence for or against the hypothesis.
 
+Lab 03 is implemented as the next fail-closed surface-control boundary. It renders deterministic local diagnostics while refusing behavioral interpretation until Lab 02 passes, label/domain support is adequate, every required baseline family is present, and leave-one-domain-out plus random-label controls are complete. Its synthetic fixture output is a readiness result, not E1 evidence.
+
 The interface should remain optional so that the dependency-free validation core stays lightweight. A concrete model, revision, interpretability library, and sparse-feature resource will be selected only after their current availability, license, and hardware requirements are independently verified.
 
 ## EXP-001 — proposed Segmentation pilot
