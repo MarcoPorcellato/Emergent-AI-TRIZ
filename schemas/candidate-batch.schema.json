@@ -21,9 +21,72 @@
     "minimum_per_principle_domain": {"type": "integer", "minimum": 1},
     "allowed_source_types": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
     "forbidden_label_cues": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
-    "require_opposite_label_pairs": {"type": "boolean", "const": true}
-    ,
+    "require_opposite_label_pairs": {"type": "boolean", "const": true},
     "require_balanced_transformation_leads": {"type": "boolean", "const": true},
-    "minimum_distinct_transformation_leads": {"type": "integer", "minimum": 2}
+    "minimum_distinct_transformation_leads": {"type": "integer", "minimum": 2},
+    "semantic_leakage_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pair_similarity_threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "lodo_similarity_threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "word_ngrams": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1},
+          "minItems": 1
+        },
+        "char_ngrams": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1},
+          "minItems": 1
+        },
+        "require_pair_semantic_review": {"type": "boolean"},
+        "freeze_only_with_pair_review": {"type": "boolean"},
+        "require_domain_shortcut_evaluation": {"type": "boolean"},
+        "require_source_shortcut_evaluation": {"type": "boolean"},
+        "require_template_shortcut_evaluation": {"type": "boolean"}
+      }
+    },
+    "pair_semantic_review": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pair_id", "status", "reviewer_id", "reviewed_at", "pair_class", "checks", "rationale"],
+        "additionalProperties": false,
+        "properties": {
+          "pair_id": {"type": "string", "minLength": 3},
+          "status": {"type": "string", "enum": ["reviewed", "rejected", "pending"]},
+          "reviewer_id": {"type": "string", "minLength": 1},
+          "reviewed_at": {"type": "string", "minLength": 1},
+          "pair_class": {"type": "string", "enum": ["minimal_pair", "closely_matched_pair", "not_matched"]},
+          "checks": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "same_problem",
+              "same_constraints",
+              "same_desired_improvement",
+              "same_worsening_consequence",
+              "comparable_length",
+              "comparable_syntax",
+              "comparable_feasibility",
+              "only_dominant_operator_differs"
+            ],
+            "properties": {
+              "same_problem": {"type": "boolean"},
+              "same_constraints": {"type": "boolean"},
+              "same_desired_improvement": {"type": "boolean"},
+              "same_worsening_consequence": {"type": "boolean"},
+              "comparable_length": {"type": "boolean"},
+              "comparable_syntax": {"type": "boolean"},
+              "comparable_feasibility": {"type": "boolean"},
+              "only_dominant_operator_differs": {"type": "boolean"}
+            }
+          },
+          "rationale": {"type": "string", "minLength": 1},
+          "notes": {"type": "string", "minLength": 1}
+        }
+      }
+    }
   }
 }

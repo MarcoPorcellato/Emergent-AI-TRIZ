@@ -143,14 +143,14 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 
 - Foundation governance and schemas: implemented
 - Matryca-Knowledge-style maintained documentation bundle: implemented
-- Commit CI Preflight: configured with a dependency-free container runner to reduce unnecessary GitHub Actions usage
+- CI cost boundary: one read-only, dependency-free Python 3.12 job per small pull request; Python 3.11 compatibility runs after merge, while Commit CI Preflight remains available for larger local qualifications
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
 - Annotation ontology v1.1: frozen with five judgment states, ordinal quality scores, case/batch cryptographic binding, nominal and ordinal agreement receipts, and explicit adjudication; independent Wave 1 judgments are still pending
 - Lab 00 public visual surface: implemented, infrastructure-only, not claim-attached
 - Lab 01 model anatomy: implemented on an exact-revision didactic model; empirical instrumentation only, not claim-eligible
 - Model-backed representation bridge: implemented for exact-revision Pythia smoke runs; real activations remain exploratory and not claim-eligible
 - Lab 02 dataset anatomy: implemented as a synthetic, hash-backed dataset-readiness report; not claim-eligible
-- Lab 03 behavioral baselines: implemented as a synthetic, fail-closed shortcut-risk report; not claim-eligible
+- Lab 03 behavioral baselines: implemented with field-specific and provenance shortcut diagnostics; the current Wave 1 batch is rejected for freeze and is not claim-eligible
 - Lab 04 decodability: implemented as a deterministic, synthetic pass/fail probe boundary with explicit non-claim interpretation; not claim-eligible
 - Lab 05 candidate directions: implemented as deterministic descriptive instrumentation; current fixture is not ready and no dense vectors or claims are published
 - Empirical support for the Latent TRIZ hypothesis: none claimed

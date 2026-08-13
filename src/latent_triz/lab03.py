@@ -47,6 +47,7 @@ def build_lab03_report(
         "gates": gates,
         "methods": payload.get("methods", {}),
         "random_label_control": payload.get("random_label_control", {}),
+        "shortcuts": payload.get("shortcuts", {}),
         "issues": payload.get("issues", []),
         "interpretation": (
             "diagnostic_only_not_scientifically_interpretable"
@@ -106,6 +107,8 @@ def _render_html(payload: Mapping[str, Any]) -> str:
     cases = payload.get("cases", {})
     methods = payload.get("methods", {})
     random_control = payload.get("random_label_control", {})
+    shortcut_payload = payload.get("shortcuts", {})
+    provenance_shortcuts = shortcut_payload.get("provenance", {}) if isinstance(shortcut_payload, Mapping) else {}
     visible_hashes = {
         key: value
         for key, value in payload.get("hashes", {}).items()
@@ -210,6 +213,8 @@ def _render_html(payload: Mapping[str, Any]) -> str:
         "<section><h2>Issues</h2><ul>" + "".join(issue_items) + "</ul></section>",
         "<section><h2>Method and fold results</h2>" + "".join(method_cards) + "</section>",
         "<section><h2>Random-label control</h2>" + "".join(random_rows) + "</section>",
+        "<section><h2>Provenance shortcut diagnostics</h2><pre class='mono'>"
+        + escape(stable_json_dumps(provenance_shortcuts)) + "</pre></section>",
         "<section><h2>Input and baseline hashes</h2><pre class='mono'>" + escape(stable_json_dumps(visible_hashes)) + "</pre>"
         "<p>The canonical summary records the report and summary digests without creating a self-hash cycle.</p></section>",
         "</main></body></html>",

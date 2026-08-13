@@ -1,17 +1,17 @@
 ---
 type: Reference
 title: Commit CI Preflight adoption
-description: Local preflight, receipt, and lightweight GitHub verification contract.
+description: Optional local qualification and bounded direct GitHub validation contract.
 status: active
 last_verified: 2026-08-13
 ---
 
 # Commit CI Preflight adoption
 
-The laboratory uses Commit CI Preflight (CCP) to execute repository checks on
-reviewed local hardware and to publish a commit-bound receipt. GitHub retains a
-small trusted gate that verifies the receipt as data; it does not execute pull
-request code.
+The laboratory retains Commit CI Preflight (CCP) as an optional local
+qualification path for larger or resource-sensitive changes. Small pull
+requests run the dependency-free repository check directly on GitHub-hosted
+runners so contributors do not need Docker or OrbStack.
 
 ## Local contract
 
@@ -30,24 +30,20 @@ make preflight-verify
 
 The acceptance policy pins the project identity, configuration digest,
 required check, image digest, Apple Silicon macOS host, Docker-compatible
-runtime, and a maximum receipt age of 24 hours.
+runtime, and a maximum receipt age of 24 hours. The receipt remains useful as
+local qualification evidence, but it is not published or required for the
+small-pull-request path.
 
 ## Remote cost boundary
 
-The receipt gate builds only the verifier pinned to CCP commit
-`17737e002a079124d9ce1cb458bd64ab229aa9d8`. It reads the target repository's
-trusted base policy and the exact `ccp-evidence/<source-sha>` branch. It never
-builds or imports pull request code.
-
-The commit-bound receipt is the required pull-request status. This transition
-was made only after exact-head end-to-end receipt verification succeeded for
-Labs 01 through 05 and the local Lab Suite milestone. The Python 3.11/3.12
-matrix remains active after pushes to `main` and through manual
-`workflow_dispatch`, but no longer repeats repository code execution for every
-pull request. Review, protected secrets, deployment, and native-platform
-evidence remain separate concerns.
+Pull requests run one `Repository check` job on Python 3.12 with
+`contents: read`, no repository secrets, and a three-minute timeout. The job
+runs `make check` and the dependency-free schema fingerprint command. Python
+3.11 compatibility runs only after a push to `main` or a manual dispatch, so a
+small pull request consumes one bounded job rather than a two-version matrix.
 
 The active `main-protection` ruleset requires pull requests, linear squash
-history, resolved review threads, and `commit-ci-preflight/receipt`. A receipt
-never substitutes for release signing, external-service integration tests, or
-platform evidence not covered by the declared CCP policy.
+history, resolved review threads, and `Repository check`. The automatic CCP
+receipt workflow is retired. Review, protected secrets, deployment, release
+signing, external-service integration tests, and native-platform evidence
+remain separate concerns.

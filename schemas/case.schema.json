@@ -66,7 +66,9 @@
       "required": ["source_type", "license", "created_at"],
       "properties": {
         "source_type": {"type": "string", "enum": ["human_authored", "model_generated", "adapted", "historical"]},
+        "generator_id": {"type": "string", "minLength": 1},
         "source_uri": {"type": "string", "format": "uri"},
+        "template_id": {"type": "string", "minLength": 1},
         "license": {"type": "string", "minLength": 1},
         "created_at": {"type": "string", "format": "date"},
         "notes": {"type": "string"}

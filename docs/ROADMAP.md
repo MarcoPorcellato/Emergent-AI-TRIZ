@@ -86,7 +86,13 @@ retained summary to `artifacts/annotations/wave1-audit.json`. The audit output
 keeps disagreements and consensus records for later adjudication, but it
 remains non-evidence and cannot advance a claim on its own.
 
-Lab 03 is implemented as the next fail-closed surface-control boundary. It renders deterministic local diagnostics while refusing behavioral interpretation until Lab 02 passes, label/domain support is adequate, every required baseline family is present, and leave-one-domain-out plus random-label controls are complete. Its synthetic fixture output is a readiness result, not E1 evidence.
+Lab 03 is implemented as the next fail-closed surface-control boundary. Its
+Wave 1 audit now covers four field-specific views, bag-of-words, character
+n-gram, length/punctuation, leave-one-domain-out evaluation, and provenance
+metadata classifiers. The current batch is rejected for freeze: several
+surface classifiers exceed the shortcut threshold, provenance diversity is not
+evaluable, and conventional sentence embeddings remain `not_run`. This is a
+negative readiness result, not E1 evidence.
 
 Lab 04 is now implemented as a deterministic decodability contract run target with strict no-leakage controls and fail-closed readiness:
 
@@ -135,10 +141,11 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 
 1. Preserve the completed foundation: protected `main`, exact-head Commit CI Preflight, Lab 01 receipts, calibrated Lab 04 statistics, and the model-backed representation bridge.
 2. Preserve the frozen annotation ontology v1.1, case-payload binding, abstention handling, agreement statistics, bootstrap calibration metadata, and adjudication rules.
-3. Collect two independent Wave 1 annotation files, complete their blinded audit and semantic leakage baselines, and replace nominal matched controls with defensible minimal or closely matched pairs.
-4. Assemble a consensus recognition dataset with at least six usable cases per label/domain cell, then freeze its split and exclusion ledger.
-5. Run the first empirical exploratory recognition analysis with a preregistered permutation budget capable of resolving its decision threshold; keep `evidence_eligible: false` and every claim at E0.
-6. Only after recognition survives lexical, field-specific and domain-transfer controls, build pre-output selection and causal-control datasets as separate claim paths.
+3. Replace or revise Wave 1 cases until the field-specific surface baselines fall below the frozen shortcut threshold; add explicit source/generator/template diversity and complete the conventional sentence-embedding adapter.
+4. Collect two independent Wave 1 annotation files, complete their blinded audit, and accept only minimal or closely matched pairs that satisfy every frozen pair-review criterion.
+5. Assemble a consensus recognition dataset with at least six usable cases per label/domain cell, then freeze its split and exclusion ledger.
+6. Run the first empirical exploratory recognition analysis with a preregistered permutation budget capable of resolving its decision threshold; keep `evidence_eligible: false` and every claim at E0.
+7. Only after recognition survives lexical, field-specific and domain-transfer controls, build pre-output selection and causal-control datasets as separate claim paths.
 
 ## Stage 2 - Surface baselines
 
