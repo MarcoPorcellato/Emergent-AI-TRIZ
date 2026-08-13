@@ -1,0 +1,31 @@
+{
+  "config_version": "v1",
+  "status": "fail",
+  "seed": 1729,
+  "random_permutations": 100,
+  "minimum_labels": 2,
+  "minimum_domains": 4,
+  "minimum_cases_per_label": 24,
+  "minimum_cases_per_held_out_domain": 12,
+  "minimum_cases_per_label_per_domain": 6,
+  "shortcut_macro_f1_threshold": 0.8,
+  "shortcut_margin_over_majority": 0.1,
+  "method_families": [
+    "majority",
+    "keyword_matching",
+    "bag_of_words",
+    "conventional_sentence_embeddings",
+    "topic_classification",
+    "output_only_llm",
+    "random_label"
+  ],
+  "allow_local_diagnostics": [
+    "char_ngram"
+  ],
+  "families": {},
+  "non_claim_boundary": {
+    "empirical": false,
+    "evidence_eligible": false,
+    "claim_ids": []
+  }
+}
