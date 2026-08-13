@@ -191,6 +191,73 @@ def _parse_layer(raw: Any) -> int:
         raise Lab04Error("layer must be numeric") from exc
 
 
+def _load_external_vector(
+    item: Mapping[str, Any],
+    *,
+    representation_root: Path,
+    artifact_cache: dict[Path, tuple[str, Mapping[str, Any]]],
+) -> list[float]:
+    artifact_uri = str(item.get("artifact_uri", "")).strip()
+    tensor_key = str(item.get("tensor_key", "")).strip()
+    if not artifact_uri or not tensor_key:
+        raise Lab04Error("external representation requires artifact_uri and tensor_key")
+
+    relative = Path(artifact_uri)
+    if relative.is_absolute() or ".." in relative.parts or relative.suffix != ".safetensors":
+        raise Lab04Error(f"unsafe representation artifact_uri {artifact_uri!r}")
+    root = representation_root.resolve()
+    artifact_path = (root / relative).resolve()
+    if not artifact_path.is_relative_to(root):
+        raise Lab04Error(f"representation artifact escapes its index directory: {artifact_uri!r}")
+
+    declared_artifact_hash = str(item.get("artifact_sha256", ""))
+    cached = artifact_cache.get(artifact_path)
+    if cached is None:
+        if not artifact_path.is_file():
+            raise Lab04Error(f"representation artifact not found: {artifact_uri}")
+        actual_artifact_hash = _sha256_file(artifact_path)
+        if declared_artifact_hash != actual_artifact_hash:
+            raise Lab04Error(f"representation artifact hash mismatch: {artifact_uri}")
+        try:
+            safetensors_numpy = importlib.import_module("safetensors.numpy")
+            tensors = safetensors_numpy.load_file(str(artifact_path))
+        except Exception as exc:
+            raise Lab04Error(f"cannot load representation artifact {artifact_uri}: {exc}") from exc
+        if not isinstance(tensors, Mapping):
+            raise Lab04Error(f"invalid safetensors payload: {artifact_uri}")
+        cached = (actual_artifact_hash, tensors)
+        artifact_cache[artifact_path] = cached
+    elif declared_artifact_hash != cached[0]:
+        raise Lab04Error(f"inconsistent representation artifact hash: {artifact_uri}")
+
+    tensor = cached[1].get(tensor_key)
+    if tensor is None:
+        raise Lab04Error(f"tensor key {tensor_key!r} not found in {artifact_uri}")
+    try:
+        array = tensor.reshape(-1)
+        dtype = str(array.dtype)
+        byte_order = array.dtype.byteorder or "little"
+        if byte_order not in ("<", "|"):
+            array = array.astype(array.dtype.newbyteorder("<"), copy=False)
+            byte_order = "<"
+        shape = list(array.shape)
+        metadata = stable_json_dumps(
+            {"byte_order": byte_order, "dtype": dtype, "shape": shape}
+        ).encode("utf-8")
+        vector_hash = hashlib.sha256(metadata + b"|" + array.tobytes(order="C")).hexdigest()
+        values = array.tolist()
+    except Exception as exc:
+        raise Lab04Error(f"invalid tensor {tensor_key!r} in {artifact_uri}: {exc}") from exc
+
+    if item.get("dtype") != dtype or item.get("shape") != shape:
+        raise Lab04Error(f"tensor metadata mismatch for {tensor_key!r}")
+    if item.get("vector_dim") != len(values):
+        raise Lab04Error(f"vector_dim mismatch for {tensor_key!r}")
+    if item.get("vector_sha256") != vector_hash:
+        raise Lab04Error(f"vector hash mismatch for {tensor_key!r}")
+    return _to_float_vector(values, label=f"tensor {tensor_key}")
+
+
 def _majority_label(labels: list[str]) -> str:
     if not labels:
         raise Lab04Error("majority label requires at least one label")
@@ -262,11 +329,13 @@ def _collect_cases(
 def _collect_representations(
     raw_representations: list[dict[str, Any]],
     case_label: Mapping[str, str],
+    representation_root: Path | None = None,
 ) -> tuple[dict[int, dict[str, list[float]]], list[str]]:
     layers: dict[int, dict[str, list[float]]] = {}
     issues: list[str] = []
     seen_pairs: set[tuple[int, str]] = set()
     case_ids = set(case_label)
+    artifact_cache: dict[Path, tuple[str, Mapping[str, Any]]] = {}
 
     for index, item in enumerate(raw_representations, start=1):
         case_id = str(item.get("case_id", "")).strip()
@@ -302,10 +371,17 @@ def _collect_representations(
             continue
 
         key = str(layer)
-        if "vector" not in item:
+        if "vector" in item:
+            vector = _to_float_vector(item["vector"], label=f"case {case_id} layer {key}")
+        elif representation_root is not None:
+            vector = _load_external_vector(
+                item,
+                representation_root=representation_root,
+                artifact_cache=artifact_cache,
+            )
+        else:
             issues.append(f"representation line {index} has no vector field")
             continue
-        vector = _to_float_vector(item["vector"], label=f"case {case_id} layer {key}")
         if item.get("vector_dim") != len(vector):
             issues.append(f"representation line {index} vector_dim mismatch for case {case_id}")
             continue
@@ -1305,7 +1381,11 @@ def run_lab04_analysis(
     case_label, case_domain, case_issues = _collect_cases(raw_cases, config_min_labels)
 
     raw_repr = _read_jsonl(repr_file, "representations")
-    layers_data, representation_issues = _collect_representations(raw_repr, case_label)
+    layers_data, representation_issues = _collect_representations(
+        raw_repr,
+        case_label,
+        representation_root=repr_file.parent,
+    )
 
     source = config.get("representation_source", {})
     declared_hashes = source.get("hashes", {}) if isinstance(source, Mapping) else {}

@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
+.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -29,6 +29,7 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/candidates/wave1-model-generated.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-config.schema.json experiments/lab03-behavioral-baselines/config.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-result.schema.json results/lab03/behavioral-baselines/summary.json
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/representation-extractor-config.schema.json experiments/lab01-model-representations/config.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab05-config.schema.json experiments/lab05-candidate-directions/config.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab05-result.schema.json results/lab05/candidate-directions/summary.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli claims-audit --registry data/claims.jsonl --root .
@@ -114,6 +115,15 @@ lab01-render:
 
 lab01: lab01-render
 	@echo "Lab 01 report: results/lab01/model-anatomy/report.html"
+
+lab01-representations:
+	@test -x "$(LAB01_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
+	PYTHONPATH=$(PYTHONPATH) commit-ci-preflight guard exec \
+	  --admission-timeout-seconds "$(LAB01_ADMISSION_TIMEOUT)" \
+	  --timeout-seconds 900 -- \
+	  "$(LAB01_PYTHON)" -m latent_triz.representation_extractor \
+	  --config experiments/lab01-model-representations/config.json
+	@echo "Lab 01 representation extraction: results/lab01/model-representations"
 
 lab01-bootstrap: lab01-acquire
 	@$(MAKE) lab01 LAB01_MODEL_ROOT="$(LAB01_MODEL_ROOT)" LAB01_PYTHON="$(LAB01_PYTHON)"

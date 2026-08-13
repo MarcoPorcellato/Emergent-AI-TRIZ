@@ -116,6 +116,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 - [Stage 1 blinded pilot](docs/STAGE1_PILOT.md) — runnable packet, response, annotation, and summary contracts
 - [Lab 00 boundary](docs/STAGE1_PILOT.md#evidence-boundary) — presentation-only synthetic smoke view
 - [Lab 01 model anatomy](docs/LAB01.md) — real-model instrumentation, G1-G8, and no-claim boundary
+- [Lab 01 representation extraction](docs/LAB01_REPRESENTATIONS.md) — offline residual-stream batches, external Safetensors, and the verified Lab 04 bridge
 - [Lab 02 dataset anatomy](docs/LAB02.md) — snapshot integrity, leakage, balance, annotation reliability, and no-claim boundary
 - [Lab 03 behavioral baselines](docs/LAB03.md) — lexical and shallow controls before any representation claim
 - [Lab 04 decodability](docs/LAB04.md) — deterministic probe and control contract before any representational claim
@@ -146,6 +147,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
 - Lab 00 public visual surface: implemented, infrastructure-only, not claim-attached
 - Lab 01 model anatomy: implemented on an exact-revision didactic model; empirical instrumentation only, not claim-eligible
+- Model-backed representation bridge: implemented for exact-revision Pythia smoke runs; real activations remain exploratory and not claim-eligible
 - Lab 02 dataset anatomy: implemented as a synthetic, hash-backed dataset-readiness report; not claim-eligible
 - Lab 03 behavioral baselines: implemented as a synthetic, fail-closed shortcut-risk report; not claim-eligible
 - Lab 04 decodability: implemented as a deterministic, synthetic pass/fail probe boundary with explicit non-claim interpretation; not claim-eligible

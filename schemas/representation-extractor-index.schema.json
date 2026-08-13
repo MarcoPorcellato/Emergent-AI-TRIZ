@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model-backed representation index record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "case_id",
+    "layer_index",
+    "representation_type",
+    "source",
+    "vector_dim",
+    "artifact_uri",
+    "artifact_sha256",
+    "tensor_key",
+    "dtype",
+    "shape",
+    "byte_order",
+    "activation_site",
+    "token_policy",
+    "token_index",
+    "prompt_hash",
+    "prompt_template_hash",
+    "vector_sha256",
+    "tokenizer",
+    "artifact_class",
+    "non_claim_boundary",
+    "provenance"
+  ],
+  "properties": {
+    "record_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+    "case_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+    "layer_index": {"type": "integer", "minimum": 0},
+    "representation_type": {"const": "model_activation"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "path"],
+      "properties": {
+        "kind": {"const": "instrumented_model_run"},
+        "path": {"type": "string", "pattern": "^[^/].*\\.safetensors$"}
+      }
+    },
+    "vector_dim": {"type": "integer", "minimum": 1},
+    "artifact_uri": {"type": "string", "pattern": "^[^/].*\\.safetensors$"},
+    "artifact_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "tensor_key": {"type": "string", "minLength": 1},
+    "dtype": {"type": "string", "minLength": 1},
+    "shape": {
+      "type": "array",
+      "items": {"type": "integer", "minimum": 1},
+      "minItems": 1,
+      "maxItems": 2
+    },
+    "byte_order": {"enum": ["<", "|", "little", ">", "big"]},
+    "vector_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "activation_site": {"const": "resid_post"},
+    "token_policy": {"const": "last_non_special_token"},
+    "token_index": {"type": "integer", "minimum": 0},
+    "prompt_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "prompt_template_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "tokenizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tokenizer_class", "name_or_path", "fingerprint", "files"],
+      "properties": {
+        "tokenizer_class": {"type": "string", "minLength": 1},
+        "name_or_path": {"type": "string", "minLength": 1},
+        "fingerprint": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "files": {
+          "type": "object",
+          "required": ["tokenizer.json", "tokenizer_config.json", "special_tokens_map.json"],
+          "properties": {
+            "tokenizer.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "tokenizer_config.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "special_tokens_map.json": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "artifact_class": {"const": "model-activation-vector"},
+    "non_claim_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empirical", "evidence_eligible", "claim_ids"],
+      "properties": {
+        "empirical": {"const": true},
+        "evidence_eligible": {"const": false},
+        "claim_ids": {"type": "array", "maxItems": 0}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domain",
+        "split",
+        "model",
+        "revision",
+        "license",
+        "notes"
+      ],
+      "properties": {
+        "domain": {"type": "string", "minLength": 1},
+        "split": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "license": {"type": "string", "minLength": 1},
+        "notes": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

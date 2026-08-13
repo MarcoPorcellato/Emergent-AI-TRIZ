@@ -1,0 +1,19 @@
+{
+  "config_version": "v1",
+  "cases_path": "../../data/pilot/cases.jsonl",
+  "model_root": "../../artifacts/models/pythia-70m-deduped-e93a9faa",
+  "model": {
+    "id": "EleutherAI/pythia-70m-deduped",
+    "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+  },
+  "output_dir": "../../results/lab01/model-representations",
+  "run_timestamp_utc": "2026-08-13T00:00:00Z",
+  "prompt_template": "Problem:\n{problem}\n\nConstraints:\n{constraints}\n\nInitial state:\n{initial_state}\n\nDesired improvement:\n{desired_improvement}\n\nWorsening consequence:\n{worsening_consequence}\n\nTransformation:\n{transformation}\n\nResulting state:\n{resulting_state}\n\n{solution_line}",
+  "activation_site": "resid_post",
+  "token_policy": "last_non_special_token",
+  "non_claim_boundary": {
+    "empirical": true,
+    "evidence_eligible": false,
+    "claim_ids": []
+  }
+}
