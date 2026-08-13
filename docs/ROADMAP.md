@@ -78,7 +78,7 @@ The first model-backed experiment is proposed, not preregistered or executed:
 - blinded evaluation with a versioned annotation guide;
 - explicit model and dataset commitments sealed before confirmatory runs.
 
-The model name remains intentionally unselected until the external availability and resource assumptions in the supplied reflection are verified.
+The provisional model roles are now recorded in [ADR 0003](./decisions/0003-exp-001-model-selection.md): Gemma 3 270M pretrained is the primary mechanistic candidate because an official Gemma Scope 2 suite covers it, while SmolLM2 360M pretrained is the independent architecture replication candidate under Apache 2.0. This selects the study design, not permission to download models or freeze the preregistration. Exact feasibility and licensing must be rechecked at acquisition time.
 
 ## Stage 2 - Surface baselines
 
