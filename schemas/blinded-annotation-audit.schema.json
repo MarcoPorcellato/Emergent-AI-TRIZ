@@ -160,5 +160,25 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["ready_for_freeze"],
+        "properties": {"ready_for_freeze": {"const": true}}
+      },
+      "then": {
+        "properties": {
+          "status": {"const": "pass"},
+          "agreement": {
+            "properties": {
+              "disagreement_case_ids": {"maxItems": 0},
+              "unanimous_abstention_case_ids": {"maxItems": 0},
+              "adjudication_case_ids": {"maxItems": 0}
+            }
+          }
+        }
+      }
+    }
+  ]
 }

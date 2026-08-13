@@ -12,6 +12,7 @@ last_verified: 2026-08-13
 
 - [Stage 1 blinded pilot](../STAGE1_PILOT.md)
 - [Commit CI Preflight adoption](commit-ci-preflight.md)
+- [Fail-closed schema validation](schema-validation.md)
 - [Lab architecture](../LAB_ARCHITECTURE.md)
 - [Research protocol](../RESEARCH_PROTOCOL.md)
 - [Roadmap](../ROADMAP.md)

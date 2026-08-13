@@ -11,7 +11,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 
 PARTICIPANT_FIELDS = (
-    "problem", "initial_state", "desired_improvement", "worsening_consequence",
+    "problem", "constraints", "initial_state", "desired_improvement", "worsening_consequence",
     "transformation", "resulting_state",
 )
 SEMANTIC_FIELDS = (

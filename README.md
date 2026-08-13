@@ -142,6 +142,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 ## Repository status
 
 - Foundation governance and schemas: implemented
+- Schema integrity: fail-closed local Draft 2020-12 subset plus pinned `jsonschema` cross-validation and mutation tests
 - Matryca-Knowledge-style maintained documentation bundle: implemented
 - CI cost boundary: one read-only, dependency-free Python 3.12 job per small pull request; Python 3.11 compatibility runs after merge, while Commit CI Preflight remains available for larger local qualifications
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical

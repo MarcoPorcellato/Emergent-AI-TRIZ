@@ -27,11 +27,15 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run dependency-free checks
+      - name: Install pinned schema reference validator
+        run: python -m pip install --disable-pip-version-check -r requirements-schema.lock
+
+      - name: Run repository and schema cross-checks
         env:
           PYTHONPATH: src
         run: |
           make check
+          make schema-cross-validate
           python -m latent_triz.cli fingerprint schemas/case.schema.json
 
   python-311-compatibility:
@@ -47,9 +51,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run dependency-free checks
+      - name: Install pinned schema reference validator
+        run: python -m pip install --disable-pip-version-check -r requirements-schema.lock
+
+      - name: Run repository and schema cross-checks
         env:
           PYTHONPATH: src
         run: |
           make check
+          make schema-cross-validate
           python -m latent_triz.cli fingerprint schemas/case.schema.json

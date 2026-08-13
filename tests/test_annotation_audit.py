@@ -191,6 +191,33 @@ class AnnotationAuditTests(unittest.TestCase):
         self.assertTrue(report["ready_for_adjudication"])
         self.assertIn("agreement_threshold_not_met", {issue["code"] for issue in report["issues"]})
 
+    def test_single_disagreement_blocks_freeze_even_above_global_thresholds(self) -> None:
+        def mutate(paths: list[Path], _digest: str, _case_hashes: dict[str, str], _dataset_batch_sha256: str) -> None:
+            for path in paths:
+                records = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+                for record in records[12:]:
+                    record["label"] = "inversion"
+                self._write_jsonl(path, records)
+            records = [json.loads(line) for line in paths[1].read_text(encoding="utf-8").splitlines()]
+            records[0]["label"] = "inversion"
+            self._write_jsonl(paths[1], records)
+
+        report = self._run(mutate, case_count=24)
+        self.assertGreater(report["agreement"]["overall"], 0.8)
+        self.assertGreater(report["agreement"]["nominal_alpha"], 0.8)
+        self.assertFalse(report["ready_for_freeze"])
+        self.assertEqual(["case_000"], report["agreement"]["disagreement_case_ids"])
+
+    def test_report_schema_rejects_freeze_ready_with_unresolved_cases(self) -> None:
+        report = self._run()
+        report["status"] = "fail"
+        report["agreement"]["disagreement_case_ids"] = ["case_000"]
+        report["agreement"]["adjudication_case_ids"] = ["case_000"]
+        audit_schema = json.loads((ROOT / "schemas/blinded-annotation-audit.schema.json").read_text(encoding="utf-8"))
+        issues = validate(report, audit_schema)
+        self.assertTrue(any("constant" in issue.message for issue in issues))
+        self.assertTrue(any("maxItems" in issue.message for issue in issues))
+
     def test_alpha_threshold_is_enforced(self) -> None:
         def mutate(paths: list[Path], _digest: str, _case_hashes: dict[str, str], _dataset_batch_sha256: str) -> None:
             records = [json.loads(line) for line in paths[1].read_text(encoding="utf-8").splitlines()]

@@ -101,6 +101,11 @@ class CandidateBatchTests(unittest.TestCase):
         self.assertFalse(report["ready_for_blinded_review"])
         self.assertIn("label_cue_leakage", {issue["code"] for issue in report["issues"]})
 
+    def test_label_cue_in_constraints_fails_closed(self) -> None:
+        report = self._audit(lambda cases: cases[0].update(constraints=["Do not split the workload."]))
+        self.assertFalse(report["ready_for_blinded_review"])
+        self.assertIn("label_cue_leakage", {issue["code"] for issue in report["issues"]})
+
     def test_asymmetric_pair_fails_closed(self) -> None:
         def mutate(cases: list[dict]) -> None:
             cases[1]["lexical_controls"]["matched_case_ids"] = ["b1"]

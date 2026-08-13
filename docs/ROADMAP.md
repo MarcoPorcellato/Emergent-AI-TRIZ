@@ -139,13 +139,20 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 
 ### Immediate sequence
 
-1. Preserve the completed foundation: protected `main`, exact-head Commit CI Preflight, Lab 01 receipts, calibrated Lab 04 statistics, and the model-backed representation bridge.
-2. Preserve the frozen annotation ontology v1.1, case-payload binding, abstention handling, agreement statistics, bootstrap calibration metadata, and adjudication rules.
-3. Replace or revise Wave 1 cases until the field-specific surface baselines fall below the frozen shortcut threshold; add explicit source/generator/template diversity and complete the conventional sentence-embedding adapter.
-4. Collect two independent Wave 1 annotation files, complete their blinded audit, and accept only minimal or closely matched pairs that satisfy every frozen pair-review criterion.
-5. Assemble a consensus recognition dataset with at least six usable cases per label/domain cell, then freeze its split and exclusion ledger.
-6. Run the first empirical exploratory recognition analysis with a preregistered permutation budget capable of resolving its decision threshold; keep `evidence_eligible: false` and every claim at E0.
-7. Only after recognition survives lexical, field-specific and domain-transfer controls, build pre-output selection and causal-control datasets as separate claim paths.
+1. Close the integrity hotfix: enforce every JSON Schema keyword used by the repository, cross-check tracked artifacts against Draft 2020-12 `jsonschema`, and make case-level disagreement incompatible with freeze readiness.
+2. Replace changing branch-policy exceptions with one stable, path- and risk-aware merge gate; restore pre-merge Python 3.11 coverage for code and require CCP plus scientific artifact checks where appropriate.
+3. Amend the unused annotation ontology to v1.2 before real collection: score Segmentation and Inversion separately, require an identified alternative for `Other`, permit null operator scores for `Cannot determine`, expose guide examples, and reset every form field after submission.
+4. Preserve Wave 1 unchanged as a `calibration_only`, known-leaky corpus. Its negative audit becomes a permanent regression fixture; it is not iteratively optimized into an EXP-001 dataset.
+5. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
+6. Store independent raw ratings, adjudications, exclusions, and canonical human labels as separate immutable artifacts. Labs 03–05 consume canonical labels, never generator intent.
+7. Add a common empirical envelope without rewriting v1 fixtures, and separate pre-freeze candidate surface auditing from post-freeze Lab 03.
+8. Publish a real model-backed recognition smoke with problem-only and completed-solution views, multiple token sites, versioned index/summary receipts, external Safetensors, and no promoted claim.
+9. Run EXP-001-R only after surface, provenance, annotation, grouped-split, and held-out-domain gates pass. Empirical Lab 05 and Lab 06 remain deferred until an out-of-sample direction is demonstrated.
+
+The target milestone is a complete chain of label-free paired cases, independent
+canonical human labels, no detected surface shortcut, exact model activations,
+and held-out-domain decodability. Wave 2 validates the rules derived from Wave
+1; a later sealed Wave 3 must remain untouched by audit or dataset development.
 
 ## Stage 2 - Surface baselines
 
