@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit readiness lab01 lab01-render pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
+.PHONY: test validate docs-audit check preflight-plan preflight-run preflight-verify model-preflight dataset-audit readiness lab01 lab01-render lab02 lab02-render pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render
 
 test:
 	PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -p "test_*.py"
@@ -13,6 +13,7 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/dataset-registry.schema.json data/registry.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/claim.schema.json data/claims.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab01-manifest.schema.json experiments/lab01-model-anatomy/manifest.json
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/dataset-annotation.schema.json data/pilot/dataset-annotations.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli claims-audit --registry data/claims.jsonl --root .
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json tests/fixtures/case_valid.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/pilot/cases.jsonl
@@ -45,11 +46,13 @@ readiness:
 	elif [ "$(TARGET)" = "lab01" ]; then \
 	  test -n "$(LAB01_MODEL_ROOT)" || (echo "LAB01_MODEL_ROOT is required"; exit 2); \
 	  $(MAKE) lab01-render LAB01_MODEL_ROOT="$(LAB01_MODEL_ROOT)"; \
+	elif [ "$(TARGET)" = "lab02" ]; then \
+	  $(MAKE) lab02-render; \
 	elif [ "$(TARGET)" = "exp001" ]; then \
 	  $(MAKE) model-preflight; \
 	  $(MAKE) dataset-audit; \
 	else \
-	  echo "TARGET must be foundation, lab01, or exp001"; exit 2; \
+	  echo "TARGET must be foundation, lab01, lab02, or exp001"; exit 2; \
 	fi
 
 lab01-render:
@@ -61,6 +64,18 @@ lab01-render:
 
 lab01: lab01-render
 	@echo "Lab 01 report: results/lab01/model-anatomy/report.html"
+
+lab02-render:
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.lab02_runner \
+	  --plan experiments/001-stage1-pilot/dataset-plan.json \
+	  --cases data/pilot/cases.jsonl \
+	  --annotations data/pilot/dataset-annotations.jsonl \
+	  --registry-entry experiments/001-stage1-pilot/dataset-registry-entry.json \
+	  --registry-manifest data/registry.json \
+	  --output-dir results/lab02/dataset-anatomy
+
+lab02: lab02-render
+	@echo "Lab 02 report: results/lab02/dataset-anatomy/report.html"
 
 pilot-export-evaluator:
 	@test -n "$(EVALUATOR_OUTPUT)" || (echo "EVALUATOR_OUTPUT is required"; exit 2)

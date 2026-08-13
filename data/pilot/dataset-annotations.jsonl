@@ -1,0 +1,2 @@
+{"annotation_id":"dataset_ann_001","case_id":"pilot_case_001","rater_id":"smoke_r1","label":"segmentation","non_empirical":true,"annotated_at":"2026-08-12T10:00:00Z","notes":"Synthetic embedded-label projection for process testing only."}
+{"annotation_id":"dataset_ann_002","case_id":"pilot_case_002","rater_id":"smoke_r2","label":"segmentation","non_empirical":true,"annotated_at":"2026-08-12T10:00:00Z","notes":"Synthetic embedded-label projection for process testing only."}

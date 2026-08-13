@@ -26,10 +26,11 @@ Developer validation and target-specific readiness reports are separate:
 make check
 make readiness TARGET=foundation
 make readiness TARGET=lab01 LAB01_MODEL_ROOT=/path/to/model
+make readiness TARGET=lab02
 make readiness TARGET=exp001
 ```
 
-Readiness is fail-closed and target-specific. `foundation` validates repository integrity, `lab01` verifies the local exact-revision model and instrumentation bundle, and `exp001` evaluates the model-candidate and dataset gates. A selected model is only **model-contract-ready** or **model-preflight-ready** until acquisition, integrity, load, and instrumentation receipts prove otherwise.
+Readiness is fail-closed and target-specific. `foundation` validates repository integrity, `lab01` verifies the local exact-revision model and instrumentation bundle, `lab02` renders dataset-release readiness, and `exp001` evaluates the model-candidate and dataset gates. A selected model is only **model-contract-ready** or **model-preflight-ready** until acquisition, integrity, load, and instrumentation receipts prove otherwise.
 
 ## Lab 00
 
@@ -108,6 +109,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 - [Stage 1 blinded pilot](docs/STAGE1_PILOT.md) — runnable packet, response, annotation, and summary contracts
 - [Lab 00 boundary](docs/STAGE1_PILOT.md#evidence-boundary) — presentation-only synthetic smoke view
 - [Lab 01 model anatomy](docs/LAB01.md) — real-model instrumentation, G1-G8, and no-claim boundary
+- [Lab 02 dataset anatomy](docs/LAB02.md) — snapshot integrity, leakage, balance, annotation reliability, and no-claim boundary
 - [Research protocol](docs/RESEARCH_PROTOCOL.md) — controls, metrics, and decision criteria
 - [Roadmap](docs/ROADMAP.md) — visual labs, EXP-001, and the replication program
 - [EXP-001 readiness gates](docs/EXP001_READINESS.md) — offline model/dataset checks and remaining blockers
@@ -134,6 +136,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
 - Lab 00 public visual surface: implemented, infrastructure-only, not claim-attached
 - Lab 01 model anatomy: implemented on an exact-revision didactic model; empirical instrumentation only, not claim-eligible
+- Lab 02 dataset anatomy: implemented as a synthetic, hash-backed dataset-readiness report; not claim-eligible
 - Empirical support for the Latent TRIZ hypothesis: none claimed
 
 ## License and attribution
