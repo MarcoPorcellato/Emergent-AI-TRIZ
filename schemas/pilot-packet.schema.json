@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ/schemas/pilot-packet.schema.json",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/pilot-packet.schema.json",
   "title": "Vendor-neutral blinded two-arm pilot packet record",
   "type": "object",
   "additionalProperties": false,

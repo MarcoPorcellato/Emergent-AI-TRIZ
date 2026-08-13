@@ -1,18 +1,16 @@
 ---
 type: Roadmap
 title: Research Laboratory Roadmap
-description: Phase 0 foundation and future experimental stages for Project Latent TRIZ.
+description: Delivered foundation and staged route to a complete, visual, falsifiable Latent TRIZ laboratory.
 status: canonical
-last_verified: 2026-08-12
+last_verified: 2026-08-13
 ---
 
 # Roadmap
 
-This repository is at **Phase 0 foundation**.
+The laboratory foundation is operational. The present runnable surface is a deterministic, synthetic Stage 1 protocol smoke; the first model-backed visual experiment remains future work. No empirical support for the hypothesis is claimed.
 
-The purpose of Phase 0 is to establish a public lab contract, not to claim experimental success.
-
-## Phase 0 - Foundation
+## Foundation — delivered
 
 Completed or maintained in this repository:
 
@@ -21,8 +19,10 @@ Completed or maintained in this repository:
 - define preregistration and results conventions;
 - define contribution rules for provenance and leakage control;
 - validate repository-owned artifacts with dependency-free CI.
+- maintain an E0-E6 claim registry and promotion policy;
+- use Commit CI Preflight receipts to avoid unnecessary GitHub Actions runs.
 
-## Stage 1 - Dataset assembly
+## Stage 1 — protocol path operational, dataset assembly in progress
 
 In progress:
 
@@ -37,6 +37,36 @@ These artifacts are not confirmatory evidence.
 - define pilot packet, response, annotation (0-4 dimensions), and summary contracts;
 - add schema-level and optional smoke validation for Stage 1 artifacts;
 - add explicit documentation gates that Stage 1 smoke artifacts are not evidence.
+
+## Near-term public laboratory
+
+The next milestone is a one-command local and visual lab that lets a contributor inspect the same frozen artifacts used by the research protocol. The planned sequence is:
+
+1. dataset and token inspection;
+2. activation capture;
+3. logit-lens views;
+4. linear probes with lexical and label-permutation controls;
+5. contrastive directions;
+6. controlled steering and capability-preservation checks;
+7. sparse features where independently verified tooling exists;
+8. activation patching and causal tracing;
+9. Jacobian analysis only after simpler causal tests justify it.
+
+The interface should remain optional so that the dependency-free validation core stays lightweight. A concrete model, revision, interpretability library, and sparse-feature resource will be selected only after their current availability, license, and hardware requirements are independently verified.
+
+## EXP-001 — proposed Segmentation pilot
+
+The first model-backed experiment is proposed, not preregistered or executed:
+
+- primary operator: TRIZ Segmentation;
+- negative/operator control: Inversion;
+- four substantially different domains;
+- approximately 120 exploratory cases before any confirmatory freeze;
+- lexical, matched-negative, random-direction, label-permutation, and domain-transfer controls;
+- blinded evaluation with a versioned annotation guide;
+- explicit model and dataset commitments sealed before confirmatory runs.
+
+The model name remains intentionally unselected until the external availability and resource assumptions in the supplied reflection are verified.
 
 ## Stage 2 - Surface baselines
 

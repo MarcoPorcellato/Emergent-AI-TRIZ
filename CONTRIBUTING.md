@@ -1,6 +1,17 @@
 # Contributing
 
-Project Latent TRIZ is an official-lab foundation. Contributions should strengthen the audit trail from hypothesis to versioned result, not blur the line between planning and evidence.
+Latent TRIZ is an open research laboratory. Contributions should strengthen the audit trail from hypothesis to versioned result, not blur the line between planning and evidence.
+
+## Choose a contribution lane
+
+Every issue and pull request must identify one lane:
+
+1. **Lane 0 — Learning:** reproduce or improve a tutorial, fixture, documentation path, or process smoke. It cannot promote a scientific claim.
+2. **Lane 1 — Exploratory:** add a labeled probe, visualization, dataset audit, candidate direction, or methodological investigation. Outputs remain exploratory.
+3. **Lane 2 — Confirmatory:** execute a frozen preregistration against a sealed dataset snapshot and immutable run contract.
+4. **Lane 3 — Independent replication:** reproduce a prior result with an independent model family, dataset, implementation, or team.
+
+A change to [`data/claims.jsonl`](data/claims.jsonl) must name the `claim_id`, explain any E0-E6 transition, link the required evidence artifacts, and state which falsification condition was evaluated. No claim may advance beyond E0 because repository tests or synthetic smoke fixtures pass.
 
 ## Before contributing
 
@@ -11,6 +22,7 @@ Open an issue that states:
 - whether the work is exploratory or confirmatory;
 - the provenance and licensing of any external material; and
 - the exact files or directories that should change.
+- the contribution lane and any intended Evidence Ladder transition.
 
 ## Required research discipline
 
@@ -24,6 +36,8 @@ Contributions must:
 - keep blinded evaluation separate from discovery analysis;
 - avoid claims that exceed the available evidence; and
 - respect dataset, model, and source licenses.
+
+The canonical promotion rules are in the [Evidence Ladder](docs/EVIDENCE_LADDER.md). New empirical claims start as `E0`, `untested`, and `non_empirical: true`.
 
 ## Documentation maintenance gate (OKF)
 

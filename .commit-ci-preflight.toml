@@ -1,5 +1,5 @@
 schema_version = "1.0"
-project = "MarcoPorcellato/Emergent-AI-TRIZ"
+project = "MarcoPorcellato/Latent-TRIZ"
 
 [runtime]
 kind = "docker_compatible"

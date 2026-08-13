@@ -30,6 +30,7 @@ def _validate(instance: Any, schema: Dict[str, Any], path: str, issues: List[Val
 
     _validate_type(instance, schema.get("type"), path, issues)
 
+    _validate_const(instance, schema, path, issues)
     _validate_enum(instance, schema, path, issues)
     _validate_pattern(instance, schema, path, issues)
     _validate_range(instance, schema, path, issues)
@@ -37,6 +38,12 @@ def _validate(instance: Any, schema: Dict[str, Any], path: str, issues: List[Val
     _validate_strings(instance, schema, path, issues)
     _validate_arrays(instance, schema, path, issues)
     _validate_objects(instance, schema, path, issues)
+    _validate_condition(instance, schema, path, issues)
+
+
+def _validate_const(instance: Any, schema: Dict[str, Any], path: str, issues: List[ValidationIssue]) -> None:
+    if "const" in schema and instance != schema["const"]:
+        issues.append(ValidationIssue(path, f"Value {instance!r} does not equal constant {schema['const']!r}"))
 
 
 def _validate_type(instance: Any, expected_type: Any, path: str, issues: List[ValidationIssue]) -> None:
@@ -138,6 +145,8 @@ def _validate_arrays(instance: Any, schema: Dict[str, Any], path: str, issues: L
         return
     if "minItems" in schema and len(instance) < schema["minItems"]:
         issues.append(ValidationIssue(path, f"Array has fewer than minItems {schema['minItems']}"))
+    if "maxItems" in schema and len(instance) > schema["maxItems"]:
+        issues.append(ValidationIssue(path, f"Array has more than maxItems {schema['maxItems']}"))
 
     if "items" in schema:
         for index, item in enumerate(instance):
@@ -160,3 +169,13 @@ def _validate_objects(instance: Any, schema: Dict[str, Any], path: str, issues: 
             _validate(value, properties[key], sub_path, issues)
         elif schema.get("additionalProperties") is False:
             issues.append(ValidationIssue(sub_path, f"Additional property not allowed: {key!r}"))
+
+
+def _validate_condition(instance: Any, schema: Dict[str, Any], path: str, issues: List[ValidationIssue]) -> None:
+    condition = schema.get("if")
+    if not isinstance(condition, dict):
+        return
+
+    branch = schema.get("then") if not validate(instance, condition) else schema.get("else")
+    if isinstance(branch, dict):
+        _validate(instance, branch, path, issues)

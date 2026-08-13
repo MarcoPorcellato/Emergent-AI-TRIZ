@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ/schemas/pilot-summary.schema.json",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/pilot-summary.schema.json",
   "title": "Vendor-neutral blinded pilot summary record",
   "type": "object",
   "additionalProperties": false,

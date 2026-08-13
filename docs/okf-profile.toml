@@ -8,6 +8,7 @@ entry_points = [
   "docs/reference/index.md",
   "docs/reference/commit-ci-preflight.md",
   "docs/STAGE1_PILOT.md",
+  "docs/EVIDENCE_LADDER.md",
   "docs/decisions/index.md",
   "docs/decisions/0002-stage1-blinded-pilot.md",
   "docs/decisions/0001-official-lab-foundation.md",

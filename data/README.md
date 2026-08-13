@@ -1,6 +1,6 @@
 # Data
 
-This directory will contain redistributable Project Latent TRIZ datasets. No empirical dataset has been released yet.
+This directory will contain redistributable Latent TRIZ datasets. No empirical dataset has been released yet.
 
 [`registry.json`](registry.json) is the machine-readable index of dataset snapshots and must conform to [`../schemas/dataset-registry.schema.json`](../schemas/dataset-registry.schema.json). An empty registry means that no dataset has been released; it is not evidence of a completed data stage.
 

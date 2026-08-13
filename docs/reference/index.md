@@ -3,7 +3,7 @@ type: reference-collection
 title: Reference Collection
 description: Canonical pointers for artifact flow, schemas, and operational references.
 status: canonical
-last_verified: 2026-08-12
+last_verified: 2026-08-13
 ---
 
 # Reference Collection
@@ -15,6 +15,7 @@ last_verified: 2026-08-12
 - [Lab architecture](../LAB_ARCHITECTURE.md)
 - [Research protocol](../RESEARCH_PROTOCOL.md)
 - [Roadmap](../ROADMAP.md)
+- [Evidence Ladder](../EVIDENCE_LADDER.md)
 - [Article status](../ARTICLE_STATUS.md)
 
 ## Experiment and evidence references
@@ -23,6 +24,7 @@ last_verified: 2026-08-12
 - [Preregistration guidance](../../preregistrations/README.md)
 - [Results protocol](../../results/README.md)
 - [Data contract](../../data/README.md)
+- [Machine-readable claim registry](../../data/claims.jsonl)
 
 ## Schema references
 
@@ -34,3 +36,4 @@ last_verified: 2026-08-12
 - [Pilot response schema](../../schemas/pilot-response.schema.json)
 - [Pilot annotation schema](../../schemas/pilot-annotation.schema.json)
 - [Pilot summary schema](../../schemas/pilot-summary.schema.json)
+- [Claim registry schema](../../schemas/claim.schema.json)

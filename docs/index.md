@@ -1,9 +1,9 @@
 ---
 type: documentation-index
 title: Documentation Index
-description: Maintained documentation portal for the OKF lab foundation repository.
+description: Maintained documentation portal for the Latent TRIZ open laboratory.
 status: canonical
-last_verified: 2026-08-12
+last_verified: 2026-08-13
 ---
 
 # Documentation Index
@@ -20,12 +20,13 @@ This is the **maintained** documentation bundle.
 - [LAB Architecture](./LAB_ARCHITECTURE.md)
 - [Roadmap](./ROADMAP.md)
 - [Research protocol](./RESEARCH_PROTOCOL.md)
+- [Evidence Ladder](./EVIDENCE_LADDER.md)
 - [Article status](./ARTICLE_STATUS.md)
 
 ## Policy and status anchors
 
 - [Article (external supplied artifact)](./ARTICLE.md)
-- [Research foundation status and contribution boundaries](../README.md#governance-boundaries)
+- [Research status and evidence boundary](../README.md#repository-status)
 - [Proof obligations and reproducibility notes](../results/README.md)
 
 ## Decision index

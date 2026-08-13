@@ -1,0 +1,43 @@
+---
+type: evidence-policy
+title: Evidence Ladder
+description: Canonical E0-E6 claim levels and promotion requirements for Latent TRIZ.
+status: canonical
+last_verified: 2026-08-13
+---
+
+# Evidence Ladder
+
+The Evidence Ladder prevents infrastructure, exploratory observations, and attractive visualizations from being reported as discoveries. Every public scientific claim has a machine-readable entry in [`data/claims.jsonl`](../data/claims.jsonl), validated by [`schemas/claim.schema.json`](../schemas/claim.schema.json).
+
+## Levels
+
+| Level | Name | Required evidence |
+|---|---|---|
+| E0 | Hypothesis | A precise statement, model scope, falsification condition, and untested status. |
+| E1 | Behavioral observation | A documented behavioral effect with matched negatives and relevant lexical controls. |
+| E2 | Cross-domain decodability | Frozen train/test domains, label-permutation controls, and out-of-domain decoding above preregistered thresholds. |
+| E3 | Causal steering | A preregistered intervention changes solution behavior while preserving defined capability controls. |
+| E4 | Bidirectional causality | Positive and negative interventions yield predicted opposing effects with dose and specificity checks. |
+| E5 | Cross-model replication | The result reproduces on independent model families or by an independent implementation or team. |
+| E6 | Controlled emergence | A model trained without explicit TRIZ material develops a functionally equivalent, reproducible operator. |
+
+Levels are cumulative proof obligations, not a generic maturity score. E6 does not waive E1-E5 controls.
+
+## Promotion rules
+
+1. Register or update the claim before inspecting confirmatory outcomes.
+2. Freeze the preregistration, dataset snapshot, study manifest, code revision, model revision, and seeds.
+3. Keep exploratory artifacts labeled and outside the confirmatory result chain.
+4. Attach immutable run and result references to the claim entry.
+5. Record failures, weakened claims, and null results; never overwrite earlier results.
+6. Require blinded evaluation where the protocol calls for human judgment.
+7. Promote only to the highest level fully supported by the attached artifacts.
+
+An E0 entry must be `untested`, have empty evidence links, and set `non_empirical` to `true`. Passing repository tests or the Stage 1 synthetic smoke does not promote a claim.
+
+## Claim lifecycle
+
+Claims can be `untested`, `in-progress`, `preliminary`, `supported`, `weakened`, `falsified`, or `retracted`. Status and evidence level answer different questions: status records the present interpretation, while the level records the strongest completed evidence class.
+
+Any promotion PR must state the contribution lane, explain the level transition, link every required artifact, and identify the falsification criterion that was evaluated.

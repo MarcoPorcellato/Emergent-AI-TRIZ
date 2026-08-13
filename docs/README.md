@@ -3,7 +3,7 @@ type: human-portal
 title: Documentation Human Portal
 description: Curated entry point for contributors and reviewers to navigate maintained repository documentation.
 status: canonical
-last_verified: 2026-08-12
+last_verified: 2026-08-13
 ---
 
 # Documentation Human Portal
@@ -38,4 +38,5 @@ Use this navigation when preparing proposals, reviews, or PRs.
 - [Lab architecture](./LAB_ARCHITECTURE.md)
 - [Roadmap](./ROADMAP.md)
 - [Research protocol](./RESEARCH_PROTOCOL.md)
+- [Evidence Ladder](./EVIDENCE_LADDER.md)
 - [Results contract](../results/README.md)

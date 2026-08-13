@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ/schemas/dataset-registry.schema.json",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/dataset-registry.schema.json",
   "title": "Latent TRIZ dataset registry",
   "type": "object",
   "additionalProperties": false,

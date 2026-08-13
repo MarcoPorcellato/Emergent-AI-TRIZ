@@ -34,6 +34,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         help="Reference date for stale-date checks (YYYY-MM-DD)",
     )
 
+    claims_parser = subparsers.add_parser("claims-audit", help="Audit claim evidence references")
+    claims_parser.add_argument("--registry", required=True, help="Path to claim registry JSONL")
+    claims_parser.add_argument("--root", default=".", help="Repository root for evidence references")
+
     pilot_prepare_parser = subparsers.add_parser("pilot-prepare", help="Prepare randomized, blinded pilot packets")
     pilot_prepare_parser.add_argument("--seed", type=int, required=True, help="Deterministic seed")
     pilot_prepare_parser.add_argument("--arms", nargs="+", required=True, help="Arm labels")
@@ -58,6 +62,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _run_validate(args.schema, args.data)
     if args.command == "docs-audit":
         return _run_docs_audit(args.profile, args.root, args.as_of_date)
+    if args.command == "claims-audit":
+        return _run_claims_audit(args.registry, args.root)
     if args.command == "pilot-prepare":
         return _run_pilot_prepare(args.cases, args.arms, args.seed, args.output, args.format)
     if args.command == "pilot-score":
@@ -210,6 +216,65 @@ def _run_docs_audit(profile_path: str, root: str, as_of_date: str) -> int:
             print(f"{issue.file}:{issue.line}:{issue.code}: {issue.message}", file=sys.stderr)
         return 1
     return 0
+
+
+def _run_claims_audit(registry_path: str, root: str) -> int:
+    registry = Path(registry_path)
+    repo_root = Path(root).resolve()
+    reference_fields = (
+        "preregistrations",
+        "dataset_snapshots",
+        "experiments",
+        "results",
+        "replications",
+    )
+    ok = True
+
+    try:
+        lines = registry.read_text(encoding="utf-8").splitlines()
+    except OSError as exc:
+        _print_error(f"{registry_path}: cannot read claim registry: {exc}")
+        return 1
+
+    for line_number, raw in enumerate(lines, start=1):
+        if not raw.strip():
+            continue
+        try:
+            claim = json.loads(raw)
+        except json.JSONDecodeError as exc:
+            _print_error(f"{registry_path}:{line_number}: invalid JSON: {exc}")
+            ok = False
+            continue
+
+        claim_id = claim.get("claim_id", "unknown") if isinstance(claim, dict) else "unknown"
+        if not isinstance(claim, dict):
+            _print_error(f"{registry_path}:{line_number}: claim must be an object")
+            ok = False
+            continue
+
+        for field in reference_fields:
+            references = claim.get(field, [])
+            if not isinstance(references, list):
+                continue
+            for reference in references:
+                if not isinstance(reference, str):
+                    continue
+                target = (repo_root / reference).resolve()
+                try:
+                    target.relative_to(repo_root)
+                except ValueError:
+                    _print_error(
+                        f"{registry_path}:{line_number}:{claim_id}:{field}: reference escapes repository: {reference}"
+                    )
+                    ok = False
+                    continue
+                if not target.is_file():
+                    _print_error(
+                        f"{registry_path}:{line_number}:{claim_id}:{field}: evidence file not found: {reference}"
+                    )
+                    ok = False
+
+    return 0 if ok else 1
 
 
 def _run_pilot_prepare(case_files: List[str], arms: List[str], seed: int, output: str, output_format: str) -> int:

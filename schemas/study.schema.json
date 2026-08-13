@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/MarcoPorcellato/Emergent-AI-TRIZ/schemas/study.schema.json",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/study.schema.json",
   "title": "Latent TRIZ study manifest",
   "type": "object",
   "additionalProperties": false,
