@@ -8,6 +8,7 @@
     "packet_id",
     "case_id",
     "pair_id",
+    "non_empirical",
     "arms_by_blind",
     "blind_order",
     "seed",
@@ -46,10 +47,14 @@
       "minItems": 2,
       "maxItems": 2,
       "uniqueItems": true,
-      "items": {
+        "items": {
         "type": "string",
         "enum": ["A", "B"]
       }
+    },
+    "non_empirical": {
+      "type": "boolean",
+      "const": true
     },
     "seed": {
       "type": "integer",

@@ -49,6 +49,35 @@ class ValidatorTests(unittest.TestCase):
         issues = validate(invalid, self.claim_schema)
         self.assertTrue(any("maxItems" in issue.message for issue in issues))
 
+    def test_e0_claim_requires_evidence_profile(self) -> None:
+        invalid = dict(self.claim)
+        invalid.pop("evidence_profile", None)
+        issues = validate(invalid, self.claim_schema)
+        self.assertTrue(any("Missing required property 'evidence_profile'" in issue.message for issue in issues))
+
+    def test_e0_claim_rejects_malformed_evidence_profile(self) -> None:
+        invalid = dict(
+            self.claim,
+            evidence_profile={
+                "behavioral_effect": "no",
+                "lexical_controls": False,
+                "cross_domain": False,
+                "decodable": False,
+                "positive_causal_intervention": False,
+                "negative_causal_intervention": False,
+                "dose_response": False,
+                "capability_preserved": False,
+                "independent_replication": False,
+                "cross_model_replication": False,
+                "controlled_training": False,
+            },
+        )
+        issues = validate(invalid, self.claim_schema)
+        self.assertTrue(any(
+            "Expected type" in issue.message and issue.path == "root.evidence_profile.behavioral_effect"
+            for issue in issues
+        ))
+
     def test_e0_claim_must_remain_untested_and_non_empirical(self) -> None:
         invalid = dict(self.claim, status="supported", non_empirical=False)
         issues = validate(invalid, self.claim_schema)

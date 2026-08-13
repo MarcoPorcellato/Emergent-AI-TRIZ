@@ -12,6 +12,7 @@
     "model_scope",
     "status",
     "evidence_level",
+    "evidence_profile",
     "falsification_condition",
     "preregistrations",
     "dataset_snapshots",
@@ -97,6 +98,36 @@
     "results": {"type": "array", "items": {"type": "string", "pattern": "^results/[A-Za-z0-9._/-]+$"}},
     "replications": {"type": "array", "items": {"type": "string", "pattern": "^results/[A-Za-z0-9._/-]+$"}},
     "non_empirical": {"type": "boolean"},
+    "evidence_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "behavioral_effect",
+        "lexical_controls",
+        "cross_domain",
+        "decodable",
+        "positive_causal_intervention",
+        "negative_causal_intervention",
+        "dose_response",
+        "capability_preserved",
+        "independent_replication",
+        "cross_model_replication",
+        "controlled_training"
+      ],
+      "properties": {
+        "behavioral_effect": {"type": "boolean"},
+        "lexical_controls": {"type": "boolean"},
+        "cross_domain": {"type": "boolean"},
+        "decodable": {"type": "boolean"},
+        "positive_causal_intervention": {"type": "boolean"},
+        "negative_causal_intervention": {"type": "boolean"},
+        "dose_response": {"type": "boolean"},
+        "capability_preserved": {"type": "boolean"},
+        "independent_replication": {"type": "boolean"},
+        "cross_model_replication": {"type": "boolean"},
+        "controlled_training": {"type": "boolean"}
+      }
+    },
     "last_verified": {
       "type": "string",
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"

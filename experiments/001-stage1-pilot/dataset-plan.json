@@ -1,0 +1,56 @@
+{
+  "plan_version": "v0.1.0",
+  "status": "development",
+  "non_empirical": true,
+  "target_size": 120,
+  "min_domains": 4,
+  "splits": {
+    "discovery": {
+      "target_min": 48,
+      "target_exact": 48,
+      "required": true
+    },
+    "validation": {
+      "target_min": 24,
+      "target_exact": 24,
+      "required": true
+    },
+    "held_out_domain": {
+      "target_min": 24,
+      "target_exact": 24,
+      "required": true
+    },
+    "sealed_novel": {
+      "target_min": 24,
+      "target_exact": 24,
+      "required": true
+    }
+  },
+  "forbidden_lexical_terms": [
+    "TRIZ",
+    "Inventive Principle",
+    "Inventive Principles",
+    "contradiction matrix",
+    "40 principles"
+  ],
+  "required_case_types": [
+    "positive",
+    "control",
+    "matched_negative",
+    "near_miss",
+    "alternative_principle"
+  ],
+  "source_type_policy": {
+    "allowed_source_types": [
+      "human_authored",
+      "model_generated",
+      "adapted",
+      "historical"
+    ],
+    "max_model_generated_ratio": 0.35
+  },
+  "reference_controls": {
+    "enforce_matched_case_id_symmetry": true
+  },
+  "enforce_targets": false
+}

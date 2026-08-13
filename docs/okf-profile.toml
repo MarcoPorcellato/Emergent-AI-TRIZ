@@ -15,6 +15,7 @@ entry_points = [
   "docs/decisions/0001-official-lab-foundation.md",
   "docs/LAB_ARCHITECTURE.md",
   "docs/ROADMAP.md",
+  "docs/EXP001_READINESS.md",
   "docs/RESEARCH_PROTOCOL.md",
   "docs/ARTICLE_STATUS.md",
 ]

@@ -117,4 +117,4 @@ The command first runs the deterministic smoke gate, then renders the tracked bu
 - A real Stage 1 pilot remains non-confirmatory and must follow the frozen
   preregistration, minimum sample, blinding, exclusion, and provenance rules.
 - Confirmatory evidence requires dedicated later-stage instrumentation and governance gates.
-- Lab 00 remains presentation-only, below E0, and synthetic.
+- Lab 00 remains infrastructure-only, not claim-attached, and synthetic.

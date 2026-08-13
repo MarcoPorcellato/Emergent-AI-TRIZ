@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/evaluator-packet.schema.json",
+  "title": "Evaluator-safe blinded packet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["packet_id", "case_id", "pair_id", "source", "responses", "non_empirical"],
+  "properties": {
+    "packet_id": {"type": "string", "minLength": 1},
+    "case_id": {"type": "string", "minLength": 1},
+    "pair_id": {"type": "string", "minLength": 1},
+    "source": {"type": "object"},
+    "responses": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["blind_label", "response_id", "response_text"],
+        "properties": {
+          "blind_label": {"type": "string", "enum": ["A", "B"]},
+          "response_id": {"type": "string", "minLength": 1},
+          "response_text": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "non_empirical": {"const": true}
+  }
+}

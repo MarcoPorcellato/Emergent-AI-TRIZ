@@ -23,6 +23,7 @@ class PilotCoreTests(unittest.TestCase):
             "packet_id": packet_id,
             "case_id": case_id,
             "pair_id": pair_id,
+            "non_empirical": True,
             "arms_by_blind": arm_mapping,
             "blind_order": ["A", "B"],
             "seed": 1,
@@ -211,9 +212,15 @@ class PilotCoreTests(unittest.TestCase):
             self.assertEqual(summary["counts"]["responses"], 4)
             self.assertEqual(summary["counts"]["annotations"], 4)
             self.assertEqual(summary["dimensions"], list(STANDARD_DIMENSIONS))
+            self.assertEqual(summary["rater_coverage"]["minimum_distinct_raters"], 1)
+            self.assertEqual(summary["rater_coverage"]["responses_with_minimum_raters"], 4)
+            self.assertEqual(summary["rater_coverage"]["responses_total"], 4)
+            self.assertEqual(summary["rater_coverage"]["response_rater_counts"]["r1"], 1)
+            self.assertEqual(summary["agreement_diagnostics"]["mean_pairwise_absolute_difference_by_dimension"]["contradiction_resolution"], 0.0)
             self.assertAlmostEqual(summary["per_arm_means"]["control"]["novelty"], 2.0)
             self.assertAlmostEqual(summary["per_arm_means"]["treatment"]["novelty"], 2.5)
             self.assertTrue(summary["non_empirical"])
+            self.assertIn("smoke_rater_1", summary["rater_coverage"]["distinct_raters"])
             self.assertEqual(
                 summary["paired_deltas"]["pair-1"]["control|treatment"]["novelty"],
                 0.5,
@@ -303,6 +310,107 @@ class PilotCoreTests(unittest.TestCase):
             )
             with self.assertRaises(PilotError):
                 score_annotations(str(packets_path), str(responses_path), str(annotations_path))
+
+    def test_score_rejects_duplicate_response_rater_pair(self) -> None:
+        with tempfile.TemporaryDirectory() as workdir:
+            packets_path = Path(workdir) / "packets.json"
+            responses_path = Path(workdir) / "responses.jsonl"
+            annotations_path = Path(workdir) / "annotations.jsonl"
+            packets_path.write_text(stable_json_dumps(self.base_packets), encoding="utf-8")
+            self._write_jsonl(
+                responses_path,
+                [
+                    self._response_record("r1", "p1", "A"),
+                    self._response_record("r2", "p1", "B"),
+                    self._response_record("r3", "p2", "A"),
+                    self._response_record("r4", "p2", "B"),
+                ],
+            )
+            score = self._scores(1)
+            self._write_jsonl(
+                annotations_path,
+                [
+                    self._annotation_record("a1", "r1", "p1", "A", score, rater_id="same"),
+                    self._annotation_record("a2", "r1", "p1", "A", score, rater_id="same"),
+                    self._annotation_record("a3", "r2", "p1", "B", score, rater_id="alt"),
+                    self._annotation_record("a4", "r3", "p2", "A", score, rater_id="third"),
+                    self._annotation_record("a5", "r4", "p2", "B", score, rater_id="fourth"),
+                ],
+            )
+            with self.assertRaises(PilotError):
+                score_annotations(str(packets_path), str(responses_path), str(annotations_path))
+
+    def test_score_rejects_insufficient_distinct_raters_per_response(self) -> None:
+        with tempfile.TemporaryDirectory() as workdir:
+            packets_path = Path(workdir) / "packets.json"
+            responses_path = Path(workdir) / "responses.jsonl"
+            annotations_path = Path(workdir) / "annotations.jsonl"
+            packets_path.write_text(stable_json_dumps(self.base_packets), encoding="utf-8")
+            self._write_jsonl(
+                responses_path,
+                [
+                    self._response_record("r1", "p1", "A"),
+                    self._response_record("r2", "p1", "B"),
+                    self._response_record("r3", "p2", "A"),
+                    self._response_record("r4", "p2", "B"),
+                ],
+            )
+            scores = self._base_scores()
+            self._write_jsonl(
+                annotations_path,
+                [
+                    self._annotation_record("a1", "r1", "p1", "A", scores[0], rater_id="r1"),
+                    self._annotation_record("a2", "r2", "p1", "B", scores[1], rater_id="r2"),
+                    self._annotation_record("a3", "r3", "p2", "A", scores[2], rater_id="r1"),
+                    self._annotation_record("a4", "r3", "p2", "A", scores[3], rater_id="r2"),
+                    self._annotation_record("a5", "r4", "p2", "B", scores[3], rater_id="r4"),
+                ],
+            )
+            with self.assertRaises(PilotError):
+                score_annotations(
+                    str(packets_path),
+                    str(responses_path),
+                    str(annotations_path),
+                    minimum_distinct_raters=2,
+                )
+
+    def test_score_aggregates_with_equal_response_weighting(self) -> None:
+        with tempfile.TemporaryDirectory() as workdir:
+            packets_path = Path(workdir) / "packets.json"
+            responses_path = Path(workdir) / "responses.jsonl"
+            annotations_path = Path(workdir) / "annotations.jsonl"
+            packets_path.write_text(
+                stable_json_dumps(
+                    [
+                        self._packet("p1", "case-a", "pair-1", {"A": "control", "B": "treatment"}),
+                        self._packet("p2", "case-b", "pair-1", {"A": "control", "B": "treatment"}),
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            self._write_jsonl(
+                responses_path,
+                [
+                    self._response_record("r1", "p1", "A"),
+                    self._response_record("r2", "p1", "B"),
+                    self._response_record("r3", "p2", "A"),
+                    self._response_record("r4", "p2", "B"),
+                ],
+            )
+            self._write_jsonl(
+                annotations_path,
+                [
+                    self._annotation_record("a1", "r1", "p1", "A", self._scores(0), rater_id="r1"),
+                    self._annotation_record("a2", "r2", "p1", "B", self._scores(0), rater_id="r2"),
+                    self._annotation_record("a3", "r3", "p2", "A", self._scores(4), rater_id="r3"),
+                    self._annotation_record("a4", "r3", "p2", "A", self._scores(4), rater_id="r4"),
+                    self._annotation_record("a5", "r4", "p2", "B", self._scores(0), rater_id="r5"),
+                ],
+            )
+            summary = score_annotations(str(packets_path), str(responses_path), str(annotations_path), minimum_distinct_raters=1)
+            self.assertAlmostEqual(summary["per_arm_means"]["control"]["novelty"], 2.0)
+            self.assertAlmostEqual(summary["per_arm_means"]["treatment"]["novelty"], 0.0)
+            self.assertAlmostEqual(summary["agreement_diagnostics"]["mean_pairwise_absolute_difference_by_dimension"]["novelty"], 0.0)
 
     def test_score_rejects_duplicate_response_id(self) -> None:
         with tempfile.TemporaryDirectory() as workdir:
