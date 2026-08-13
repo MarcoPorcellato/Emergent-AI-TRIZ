@@ -202,6 +202,13 @@ class DatasetSnapshotTests(unittest.TestCase):
         self.assertFalse(manifest["evidence_eligible"])
         self.assertEqual(manifest["claim_ids"], [])
 
+    def test_human_annotations_mark_snapshot_empirical_but_not_evidence_eligible(self) -> None:
+        annotations = [{**record, "non_empirical": False} for record in self._base_annotations()]
+        manifest = self._build_manifest(annotations=annotations)
+        self.assertTrue(manifest["empirical"])
+        self.assertFalse(manifest["evidence_eligible"])
+        self.assertEqual(manifest["claim_ids"], [])
+
     def _build_manifest(
         self,
         generated_at: str | None = None,

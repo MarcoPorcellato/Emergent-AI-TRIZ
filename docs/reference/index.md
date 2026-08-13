@@ -26,6 +26,12 @@ last_verified: 2026-08-13
 - [Results protocol](../../results/README.md)
 - [Data contract](../../data/README.md)
 - [Machine-readable claim registry](../../data/claims.jsonl)
+- [Stage 1 blinded pilot](../STAGE1_PILOT.md)
+- [Research protocol](../RESEARCH_PROTOCOL.md)
+- [Roadmap](../ROADMAP.md)
+- [Annotation workbench notes](../log.md)
+- [Blinded annotation workbench](../ANNOTATION_WORKBENCH.md)
+- [Segmentation/Inversion annotation guide](../../experiments/001-stage1-pilot/annotation-guide.json)
 
 ## Schema references
 
@@ -38,3 +44,5 @@ last_verified: 2026-08-13
 - [Pilot annotation schema](../../schemas/pilot-annotation.schema.json)
 - [Pilot summary schema](../../schemas/pilot-summary.schema.json)
 - [Claim registry schema](../../schemas/claim.schema.json)
+- [Dataset annotation schema](../../schemas/dataset-annotation.schema.json)
+- [Annotation guide schema](../../schemas/annotation-guide.schema.json)

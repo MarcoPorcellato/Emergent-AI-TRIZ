@@ -35,8 +35,13 @@ In progress:
 
 Stage 1 now includes a blinded two-arm pilot contract for reproducible process smoke.
 These artifacts are not confirmatory evidence.
+Stage 1 also includes a dependency-free localhost annotation workbench for
+blinded dataset labeling. It is designed for human judgment capture only and is
+not itself evidence for the hypothesis.
 
 - define pilot packet, response, annotation (0-4 dimensions), and summary contracts;
+- define a blinded annotation workbench with sanitized case views, local-only
+  append targets, and explicit non-evidence output metadata;
 - add schema-level and optional smoke validation for Stage 1 artifacts;
 - add explicit documentation gates that Stage 1 smoke artifacts are not evidence.
 
@@ -66,6 +71,12 @@ Lab 01 establishes the trustworthy measurement substrate. Later labs may add sci
 8. **Lab 08 — Replication:** independent model families, datasets, implementations, or teams.
 
 Lab 02 is now implemented against the synthetic Stage 1 fixture. Its first report intentionally records the corpus as not release-ready because split/domain/principle targets and independent-rater coverage remain open. This is a readiness result, not evidence for or against the hypothesis.
+
+The annotation workbench sits underneath Lab 02 as an operational aid for
+collecting blinded human labels. It exposes only the fields needed for case
+judgment, hides labels and provenance from the rater view, and writes validated
+annotations to `artifacts/annotations/dataset-annotations.jsonl`. Default entry
+points are `make annotate` and `make annotate-serve`.
 
 Lab 03 is implemented as the next fail-closed surface-control boundary. It renders deterministic local diagnostics while refusing behavioral interpretation until Lab 02 passes, label/domain support is adequate, every required baseline family is present, and leave-one-domain-out plus random-label controls are complete. Its synthetic fixture output is a readiness result, not E1 evidence.
 
@@ -114,7 +125,7 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 1. Finish evidence-integrity and readiness gates, including evaluator-safe exports and rater coverage.
 2. Apply a ruleset to `main` with pull-request and verified-check requirements.
 3. Publish and preserve Lab 01 with a didactic model role distinct from the primary and replication roles.
-4. Define the Segmentation/Inversion annotation ontology and freeze criteria.
+4. Run the blinded annotation workbench and freeze the Segmentation/Inversion ontology together with its confidence and rationale fields.
 5. Execute recognition, selection, and causal-control experiments as separate claim paths.
 
 ## Stage 2 - Surface baselines

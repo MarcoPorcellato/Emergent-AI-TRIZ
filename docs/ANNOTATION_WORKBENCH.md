@@ -1,0 +1,40 @@
+---
+type: guide
+title: Blinded Annotation Workbench
+description: Local workflow for blinded Segmentation and Inversion dataset judgments.
+status: active
+last_verified: 2026-08-13
+---
+
+# Blinded annotation workbench
+
+The workbench collects independent human judgments for dataset construction. It
+runs with the Python standard library, binds only to a loopback address, and
+serves no external assets.
+
+Start an interactive session with a pseudonymous rater identifier:
+
+```text
+make annotate ANNOTATION_RATER_ID=rater_01
+```
+
+For a headless session, use `make annotate-serve`. Override
+`ANNOTATION_OUTPUT` or `ANNOTATION_PORT` when separate rater files or ports are
+needed. The default output is ignored by Git and remains under
+`artifacts/annotations/dataset-annotations.jsonl`.
+
+The browser receives only the case fields needed for judgment. Embedded labels,
+provenance, split assignments, lexical controls, related-case identifiers,
+allocation keys, and results are excluded. Submissions require the page's
+session token, match the dataset annotation schema, and are appended with an
+`fsync` before success is reported. Duplicate case/rater pairs are rejected.
+An annotator who cannot make a defensible forced choice records an explicit
+`abstain` audit state; the case never disappears silently from coverage.
+
+The guide at
+`experiments/001-stage1-pilot/annotation-guide.json` is versioned and hashed
+into every saved annotation. A human record uses `non_empirical: false` because
+the judgment itself is observed data. It remains `evidence_eligible: false` at
+the workbench boundary: collection alone cannot support or promote a hypothesis
+claim. Dataset freeze, agreement, leakage, preregistration, and claim gates are
+separate steps.

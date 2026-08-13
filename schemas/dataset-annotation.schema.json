@@ -29,16 +29,15 @@
       "type": "string",
       "minLength": 1
     },
-    "non_empirical": {
-      "type": "boolean",
-      "const": true
-    },
+    "non_empirical": {"type": "boolean"},
     "annotated_at": {
       "type": "string",
       "format": "date-time"
     },
-    "notes": {
-      "type": "string"
-    }
+    "notes": {"type": "string"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "rationale": {"type": "string", "minLength": 1},
+    "guide_revision": {"type": "string", "minLength": 1},
+    "guide_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
   }
 }

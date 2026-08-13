@@ -1,0 +1,16 @@
+{
+  "guide_id": "segmentation-inversion",
+  "revision": "v1.0.0",
+  "status": "development",
+  "labels": [
+    {"id": "segmentation", "name": "Segmentation", "definition": "Divide an object, system, process, or responsibility into independent or differently managed parts so the desired improvement becomes possible."},
+    {"id": "inversion", "name": "Inversion", "definition": "Reverse an action, arrangement, sequence, direction, role, or operating condition so the desired improvement becomes possible."}
+  ],
+  "abstention": {
+    "id": "abstain",
+    "name": "Abstain",
+    "definition": "Neither operator fits the stated transformation confidently enough for a forced choice."
+  },
+  "decision_rule": "Choose the operator that most directly characterizes the stated transformation, not merely the problem domain or vocabulary. Record an abstention when neither definition can be applied confidently.",
+  "evidence_eligible": false
+}
