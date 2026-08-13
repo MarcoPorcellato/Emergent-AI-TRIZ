@@ -76,6 +76,7 @@ class AnnotationWorkbenchTests(unittest.TestCase):
         )
         self.assertEqual("abstain", record["label"])
         self.assertFalse(record["non_empirical"])
+        self.assertNotIn("rationale", record)
 
     def test_loopback_server_hides_labels_and_accepts_csrf_guarded_post(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

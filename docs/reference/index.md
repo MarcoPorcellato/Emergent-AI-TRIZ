@@ -32,6 +32,7 @@ last_verified: 2026-08-13
 - [Roadmap](../ROADMAP.md)
 - [Annotation workbench notes](../log.md)
 - [Blinded annotation workbench](../ANNOTATION_WORKBENCH.md)
+- [Wave 1 annotation audit command](../ANNOTATION_WORKBENCH.md)
 - [Segmentation/Inversion annotation guide](../../experiments/001-stage1-pilot/annotation-guide.json)
 
 ## Schema references

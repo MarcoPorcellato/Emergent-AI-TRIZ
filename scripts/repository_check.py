@@ -93,6 +93,7 @@ def main() -> int:
         "schemas/dataset-annotation.schema.json",
         "schemas/annotation-guide.schema.json",
         "schemas/candidate-batch.schema.json",
+        "schemas/blinded-annotation-audit.schema.json",
         "schemas/dataset-snapshot.schema.json",
         "schemas/lab03-config.schema.json",
         "schemas/lab03-result.schema.json",

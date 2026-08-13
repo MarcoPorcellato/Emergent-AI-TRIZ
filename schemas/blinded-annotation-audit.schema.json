@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/blinded-annotation-audit.schema.json",
+  "title": "Latent TRIZ blinded annotation audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "status", "ready_for_adjudication", "ready_for_freeze",
+    "empirical", "evidence_eligible", "claim_ids", "policy", "counts",
+    "coverage_by_case", "agreement", "abstention_rate", "consensus_labels",
+    "guide", "artifacts", "issues"
+  ],
+  "properties": {
+    "artifact_class": {"type": "string", "const": "blinded-annotation-audit"},
+    "status": {"type": "string", "enum": ["pass", "fail"]},
+    "ready_for_adjudication": {"type": "boolean"},
+    "ready_for_freeze": {"type": "boolean"},
+    "empirical": {"type": "boolean", "const": true},
+    "evidence_eligible": {"type": "boolean", "const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum_distinct_raters", "agreement_threshold", "maximum_abstention_rate"],
+      "properties": {
+        "minimum_distinct_raters": {"type": "integer", "minimum": 2},
+        "agreement_threshold": {"type": "number", "minimum": 0, "maximum": 1},
+        "maximum_abstention_rate": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cases", "raters", "annotations", "abstentions"],
+      "properties": {
+        "cases": {"type": "integer", "minimum": 1},
+        "raters": {"type": "integer", "minimum": 0},
+        "annotations": {"type": "integer", "minimum": 0},
+        "abstentions": {"type": "integer", "minimum": 0}
+      }
+    },
+    "coverage_by_case": {"type": "object"},
+    "agreement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric", "overall", "matched_pairs", "total_pairs", "per_case", "disagreement_case_ids"],
+      "properties": {
+        "metric": {"type": "string", "const": "pairwise_exact_percent_agreement"},
+        "overall": {"type": "number", "minimum": 0, "maximum": 1},
+        "matched_pairs": {"type": "integer", "minimum": 0},
+        "total_pairs": {"type": "integer", "minimum": 0},
+        "per_case": {"type": "object"},
+        "disagreement_case_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "abstention_rate": {"type": "number", "minimum": 0, "maximum": 1},
+    "consensus_labels": {"type": "object"},
+    "guide": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision", "sha256"],
+      "properties": {
+        "revision": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cases_sha256", "guide_sha256", "annotation_schema_sha256", "annotation_files"],
+      "properties": {
+        "cases_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "guide_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "annotation_schema_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "annotation_files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "rater_id", "records"],
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+              "rater_id": {"type": "string", "minLength": 1},
+              "records": {"type": "integer", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": {"type": "string", "minLength": 1},
+          "message": {"type": "string", "minLength": 1},
+          "case_id": {"type": "string"},
+          "path": {"type": "string"}
+        }
+      }
+    }
+  }
+}
