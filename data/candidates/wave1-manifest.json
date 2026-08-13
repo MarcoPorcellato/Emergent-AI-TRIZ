@@ -14,5 +14,17 @@
   ],
   "require_opposite_label_pairs": true,
   "require_balanced_transformation_leads": true,
-  "minimum_distinct_transformation_leads": 4
+  "minimum_distinct_transformation_leads": 4,
+  "semantic_leakage_policy": {
+    "pair_similarity_threshold": 0.72,
+    "lodo_similarity_threshold": 0.64,
+    "word_ngrams": [2, 3],
+    "char_ngrams": [3, 5],
+    "require_pair_semantic_review": true,
+    "freeze_only_with_pair_review": true,
+    "require_domain_shortcut_evaluation": true,
+    "require_source_shortcut_evaluation": true,
+    "require_template_shortcut_evaluation": true
+  },
+  "pair_semantic_review": []
 }
