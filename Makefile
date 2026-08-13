@@ -20,7 +20,8 @@ validate:
 docs-audit:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli docs-audit --profile docs/okf-profile.toml --root . --as-of-date "$$(python3 -c 'from datetime import date; print(date.today().isoformat())')"
 
-check: test validate docs-audit stage1-pilot-smoke
+check:
+	PYTHONPATH=$(PYTHONPATH) python3 scripts/repository_check.py
 
 preflight-plan:
 	commit-ci-preflight plan --config .commit-ci-preflight.toml

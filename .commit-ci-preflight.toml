@@ -16,6 +16,6 @@ freshness_seconds = 86400
 [[checks]]
 id = "repository-check"
 required = true
-argv = ["make", "check"]
+argv = ["python3", "scripts/repository_check.py"]
 working_directory = "."
 timeout_seconds = 120

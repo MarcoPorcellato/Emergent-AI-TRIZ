@@ -1,6 +1,6 @@
 schema_version = "1.0"
 project = "MarcoPorcellato/Latent-TRIZ"
-configuration_digest = "sha256:fa668ff68fa0837bc56ce7e43787ddcd57711b9f61c944ba052f939da4fd15da"
+configuration_digest = "sha256:714760ce8dbbb273fcf43ac85cb7e7b92c0237fb511d0ac39d0213457f630bc0"
 required_checks = ["repository-check"]
 image_reference = "docker.io/library/python@sha256:399babc8b49529dabfd9c922f2b5eea81d611e4512e3ed250d75bd2e7683f4b0"
 max_age_seconds = 86400

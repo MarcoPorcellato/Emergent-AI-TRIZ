@@ -95,7 +95,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 
 - Foundation governance and schemas: implemented
 - Matryca-Knowledge-style maintained documentation bundle: implemented
-- Commit CI Preflight: configured to reduce unnecessary GitHub Actions usage
+- Commit CI Preflight: configured with a dependency-free container runner to reduce unnecessary GitHub Actions usage
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
 - First model-backed visual experiment: planned, not yet implemented
 - Empirical support for the Latent TRIZ hypothesis: none claimed
