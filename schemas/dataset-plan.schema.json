@@ -76,7 +76,7 @@
           "minItems": 1,
           "items": {
             "type": "string",
-            "enum": ["human_authored", "model_generated", "adapted", "historical"]
+            "enum": ["human_authored", "model_generated", "adapted", "historical", "synthetic"]
           }
         },
         "max_model_generated_ratio": {
@@ -86,6 +86,33 @@
         }
       },
       "required": ["allowed_source_types"]
+    },
+    "annotation_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum_distinct_raters", "agreement_threshold"],
+      "properties": {
+        "minimum_distinct_raters": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "agreement_threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "enforce_cross_split_source_fingerprints": {
+          "type": "boolean"
+        }
+      }
+    },
+    "min_cases_per_domain": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "min_cases_per_principle": {
+      "type": "integer",
+      "minimum": 0
     },
     "reference_controls": {
       "type": "object",

@@ -15,7 +15,7 @@
   "dataset": {
     "dataset_id": "stage1-pilot-smoke-v1",
     "snapshot_uri": "data/registry.json#dataset=stage1-pilot-smoke-v1",
-    "immutable_revision": "d8147acd50febd6ccdc3e5d0e7b6b9d701bde722666d00185f5a24ce86c8af29",
+    "immutable_revision": "cdad236772ba01d090c9749eac5522b2295c21d0ed6ab4f9430e80477df08a9c",
     "splits": ["discovery"]
   },
   "models": [

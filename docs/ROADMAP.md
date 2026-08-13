@@ -63,6 +63,8 @@ Lab 01 establishes the trustworthy measurement substrate. Later labs may add sci
 7. **Lab 07 — Mechanism localization:** sparse features and activation patching where justified.
 8. **Lab 08 — Replication:** independent model families, datasets, implementations, or teams.
 
+Lab 02 is now implemented against the synthetic Stage 1 fixture. Its first report intentionally records the corpus as not release-ready because split/domain/principle targets and independent-rater coverage remain open. This is a readiness result, not evidence for or against the hypothesis.
+
 The interface should remain optional so that the dependency-free validation core stays lightweight. A concrete model, revision, interpretability library, and sparse-feature resource will be selected only after their current availability, license, and hardware requirements are independently verified.
 
 ## EXP-001 — proposed Segmentation pilot
