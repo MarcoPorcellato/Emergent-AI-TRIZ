@@ -40,3 +40,6 @@ Use this navigation when preparing proposals, reviews, or PRs.
 - [Research protocol](./RESEARCH_PROTOCOL.md)
 - [Evidence Ladder](./EVIDENCE_LADDER.md)
 - [Results contract](../results/README.md)
+- [Lab 04 decodability contract](./LAB04.md)
+- [OKF project index](./OKF_PROJECT.md)
+- [Decision log](./DECISION_LOG.md)

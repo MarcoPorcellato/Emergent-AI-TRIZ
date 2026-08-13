@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/lab04-config.schema.json",
+  "title": "Latent TRIZ Lab 04 configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "config_version",
+    "status",
+    "seed",
+    "permutations",
+    "probe_family",
+    "alpha_grid",
+    "outer_split",
+    "inner_split",
+    "metrics",
+    "preprocessing",
+    "tie_breaks",
+    "non_claim_boundary",
+    "readiness_thresholds",
+    "representation_source"
+  ],
+  "properties": {
+    "config_version": {"type": "string", "pattern": "^v[0-9]+(?:\\.[0-9]+){0,2}$"},
+    "status": {"type": "string", "enum": ["draft", "ready", "fail"]},
+    "seed": {"type": "integer", "minimum": 0},
+    "permutations": {"type": "integer", "const": 100},
+    "probe_family": {"type": "string", "const": "linear_one_vs_rest_ridge"},
+    "alpha_grid": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {"type": "number", "enum": [0.01, 0.1, 1, 10]}
+    },
+    "outer_split": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "group_field"],
+      "properties": {
+        "strategy": {"const": "leave_one_domain_out"},
+        "group_field": {"const": "domain"}
+      }
+    },
+    "inner_split": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "group_field", "selection_metric"],
+      "properties": {
+        "strategy": {"const": "group_k_fold"},
+        "group_field": {"const": "domain"},
+        "selection_metric": {"enum": ["macro_f1", "balanced_accuracy", "accuracy"]}
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": {"type": "string", "enum": ["accuracy", "macro_f1", "balanced_accuracy"]}
+    },
+    "preprocessing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["standardization"],
+      "properties": {
+        "standardization": {"const": "train_only"}
+      }
+    },
+    "tie_breaks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alpha", "layer"],
+      "properties": {
+        "alpha": {"const": "smallest_value"},
+        "layer": {"const": "lowest_index"}
+      }
+    },
+    "non_claim_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empirical", "evidence_eligible", "claim_ids"],
+      "properties": {
+        "empirical": {"const": false},
+        "evidence_eligible": {"const": false},
+        "claim_ids": {"type": "array", "maxItems": 0}
+      }
+    },
+    "readiness_thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum_labels",
+        "minimum_domains",
+        "minimum_cases_per_label_domain_cell",
+        "corrected_p_max",
+        "macro_f1_margin_over_majority_min"
+      ],
+      "properties": {
+        "minimum_labels": {"type": "integer", "minimum": 2},
+        "minimum_domains": {"type": "integer", "minimum": 4},
+        "minimum_cases_per_label_domain_cell": {"type": "integer", "minimum": 6},
+        "corrected_p_max": {"type": "number", "minimum": 0, "maximum": 1},
+        "macro_f1_margin_over_majority_min": {"type": "number", "minimum": 0}
+      }
+    },
+    "representation_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_path", "record_schema_ref", "cases_source_path", "hashes", "provenance_boundary"],
+      "properties": {
+        "record_path": {"const": "data/pilot/representations.jsonl"},
+        "record_schema_ref": {"const": "schemas/representation-record.schema.json"},
+        "cases_source_path": {"const": "data/pilot/cases.jsonl"},
+        "hashes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["records_sha256", "cases_sha256"],
+          "properties": {
+            "records_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "cases_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+          }
+        },
+        "provenance_boundary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["synthetic_process_only", "not_model_activations", "claim_ineligible"],
+          "properties": {
+            "synthetic_process_only": {"const": true},
+            "not_model_activations": {"const": true},
+            "claim_ineligible": {"const": true}
+          }
+        }
+      }
+    }
+  }
+}

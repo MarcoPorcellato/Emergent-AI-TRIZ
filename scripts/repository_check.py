@@ -47,6 +47,8 @@ def main() -> int:
         ("schemas/dataset-snapshot.schema.json", "results/lab02/dataset-anatomy/snapshot_manifest.json"),
         ("schemas/lab03-config.schema.json", "experiments/lab03-behavioral-baselines/config.json"),
         ("schemas/lab03-result.schema.json", "results/lab03/behavioral-baselines/summary.json"),
+        ("schemas/lab04-config.schema.json", "experiments/lab04-decodability/config.json"),
+        ("schemas/representation-record.schema.json", "data/pilot/representations.jsonl"),
     )
     for schema, data in validation_pairs:
         validate(schema, data)
@@ -86,7 +88,11 @@ def main() -> int:
         "schemas/dataset-snapshot.schema.json",
         "schemas/lab03-config.schema.json",
         "schemas/lab03-result.schema.json",
+        "schemas/lab04-config.schema.json",
+        "schemas/lab04-result.schema.json",
+        "schemas/representation-record.schema.json",
         "experiments/lab03-behavioral-baselines/config.json",
+        "experiments/lab04-decodability/config.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -231,6 +237,44 @@ def main() -> int:
         actual = hashlib.sha256(path.read_bytes()).hexdigest()
         if expected != actual:
             raise RuntimeError(f"Lab 03 artifact hash mismatch: {path.name}")
+
+    lab04_root = ROOT / "results/lab04/decodability"
+    lab04_summary_path = lab04_root / "summary.json"
+    if lab04_summary_path.exists():
+        run(
+            PYTHON,
+            "-m",
+            "latent_triz.cli",
+            "validate",
+            "--schema",
+            "schemas/lab04-result.schema.json",
+            str(lab04_summary_path),
+        )
+        lab04_summary = json.loads(lab04_summary_path.read_text(encoding="utf-8"))
+        if lab04_summary.get("empirical") is not False:
+            raise RuntimeError("Lab 04 fixture is unexpectedly empirical")
+        if lab04_summary.get("evidence_eligible") is not False:
+            raise RuntimeError("Lab 04 evidence eligibility is incorrectly true")
+        if lab04_summary.get("claim_ids") != []:
+            raise RuntimeError("Lab 04 claim ids are not empty")
+        if lab04_summary.get("interpretation") != "diagnostic_only_not_scientifically_interpretable":
+            raise RuntimeError("Lab 04 interpretation is not diagnostic-only")
+        if lab04_summary.get("status") != "fail":
+            raise RuntimeError("Lab 04 smoke fixture must remain non-ready")
+
+        for key, path in {
+            "probe_result_json": lab04_root / "probe_result.json",
+            "report_html": lab04_root / "report.html",
+            "cases_jsonl": ROOT / "data/pilot/cases.jsonl",
+            "representations_jsonl": ROOT / "data/pilot/representations.jsonl",
+            "config_json": ROOT / "experiments/lab04-decodability/config.json",
+        }.items():
+            if not path.exists():
+                continue
+            expected = lab04_summary.get("hashes", {}).get(key)
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+            if expected and expected != actual:
+                raise RuntimeError(f"Lab 04 artifact hash mismatch: {path.name}")
 
     run(
         PYTHON,
