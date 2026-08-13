@@ -819,6 +819,7 @@ def _holm_adjust(p_values: list[float]) -> list[float]:
 def _evaluate_gates(
     predecessor_ok: bool,
     predecessor_issues: list[str],
+    case_issues: list[str],
     config: Mapping[str, Any],
     results: list[dict[str, Any]],
     representation_issues: list[str],
@@ -831,14 +832,19 @@ def _evaluate_gates(
 ) -> list[dict[str, Any]]:
     gates: list[dict[str, Any]] = []
 
-    p1 = predecessor_ok and not predecessor_issues and not representation_issues
+    p1 = (
+        predecessor_ok
+        and not predecessor_issues
+        and not representation_issues
+        and not case_issues
+    )
     gates.append({
         "gate": "P1",
         "status": "pass" if p1 else "fail",
         "details": (
             "Lab01/Lab02/Lab03 summaries pass and declare hashes."
             if p1
-            else "; ".join(predecessor_issues or representation_issues)
+            else "; ".join(predecessor_issues + representation_issues + case_issues)
         ),
     })
 
@@ -1064,6 +1070,7 @@ def run_lab04_analysis(
     gates = _evaluate_gates(
         predecessor_ok=predecessor_ok,
         predecessor_issues=predecessor_issues,
+        case_issues=case_issues,
         config=config,
         results=layer_results,
         representation_issues=representation_issues,

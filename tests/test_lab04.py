@@ -137,6 +137,46 @@ class Lab04Tests(unittest.TestCase):
             self.assertNotIn("/Users/", html)
             self.assertEqual(json.loads((root / "out/summary.json").read_text(encoding="utf-8"))["claim_ids"], [])
 
+    def test_case_issues_force_fail_closed_status(self) -> None:
+        cases = self._minimal_cases()
+        cases.append(
+            {
+                "case_id": "pilot_case_003",
+                "domain": "service",
+                "label": "local_quality",
+                "labels": [{"principle": "local_quality"}, {"principle": "segmentation"}],
+            }
+        )
+        config = self._config()
+        config["minimum_labels"] = 2
+        config["readiness_thresholds"]["minimum_domains"] = 2
+        config["readiness_thresholds"]["minimum_cases_per_label_domain_cell"] = 1
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._write_jsonl(root / "cases.jsonl", cases)
+            self._write_jsonl(root / "representations.jsonl", self._minimal_representations())
+            self._write_json(root / "config.json", config)
+            self._write_json(root / "lab01.json", self._predecessor())
+            self._write_json(root / "lab02.json", self._predecessor())
+            self._write_json(root / "lab03.json", self._predecessor())
+
+            result = lab04.run_lab04_analysis(
+                cases_path=root / "cases.jsonl",
+                representations_path=root / "representations.jsonl",
+                config_path=root / "config.json",
+                predecessor_lab01_summary=root / "lab01.json",
+                predecessor_lab02_summary=root / "lab02.json",
+                predecessor_lab03_summary=root / "lab03.json",
+            )
+
+            self.assertEqual(result["status"], "fail")
+            gates = {item["gate"]: item["status"] for item in result["gates"]}
+            self.assertEqual(gates["P1"], "fail")
+            p1 = next(item for item in result["gates"] if item["gate"] == "P1")
+            self.assertIn("non-unanimous labels", p1["details"])
+            self.assertTrue(any("non-unanimous labels" in issue for issue in result["issues"]))
+
     def test_representation_validation_rejects_nonfinite_dimension_mismatch_and_label_leakage(self) -> None:
         case_label = {"pilot_case_001": "segmentation", "pilot_case_002": "segmentation"}
 
