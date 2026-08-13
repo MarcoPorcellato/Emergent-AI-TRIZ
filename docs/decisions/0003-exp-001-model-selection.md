@@ -59,14 +59,24 @@ Qwen3 Base is retained as a fallback because it is materially larger than the tw
 
 1. Recheck every repository revision and terms page on the acquisition date.
 2. Require explicit operator acceptance for gated Gemma access; never automate acceptance.
-3. Record exact downloaded-file hashes and tokenizer revisions in the run manifest.
-4. Measure memory, latency, hidden-state access, and deterministic inference in a non-empirical feasibility run before freezing EXP-001.
-5. Pin a narrow Gemma Scope artifact rather than acquiring the full collection; the published collection is far larger than the base model.
-6. Keep model-generated cases out of the sealed human-authored dataset unless separately disclosed and controlled.
+3. Preserve a dated, immutable evidence anchor for the applicable model, dataset, and tooling terms. Record source URL, retrieval time, content hash, and the exact accepted terms identifier in the preregistration/run chain without redistributing material that the terms prohibit.
+4. Record exact downloaded-file hashes and tokenizer revisions in the run manifest.
+5. Measure memory, latency, hidden-state access, and deterministic inference in a non-empirical feasibility run before freezing EXP-001.
+6. Pin a narrow Gemma Scope artifact rather than acquiring the full collection; the published collection is far larger than the base model.
+7. Keep model-generated cases out of the sealed human-authored dataset unless separately disclosed and controlled.
 
 ## Dataset decision
 
-Use a synthetic-first, human-authored case corpus with strict provenance. External patents or other materials may be reference-only anchors unless redistribution rights are established per item. This reduces licensing uncertainty and pretrained-corpus contamination risk, but does not eliminate it; lexical and near-duplicate audits remain mandatory.
+Use a synthetic-first, human-authored case corpus with strict provenance. External patents or other materials may be reference-only anchors unless redistribution rights are established per item. This reduces licensing uncertainty and pretrained-corpus contamination risk, but does not eliminate it.
+
+Before preregistration, freeze all of the following in the dataset contract:
+
+- four substantially different domains with balanced operator and source coverage;
+- separate discovery, validation, sealed evaluation, and lexical-adversarial splits;
+- Segmentation positives, Inversion/operator controls, matched negatives, near misses, and alternative-principle cases;
+- forbidden-term, lexical-overlap, exact-duplicate, near-duplicate, and reference-contamination audits;
+- per-item provenance, redistribution status, human authorship, annotator independence, and disagreement-preserving adjudication;
+- immutable snapshot hashes and an amendment-only change policy.
 
 ## Claim boundary
 
