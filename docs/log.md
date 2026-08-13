@@ -10,7 +10,8 @@ last_verified: 2026-08-13
 
 ## 2026-08-13
 
-- Added the one-command local visual laboratory suite for navigating the maintained Lab 00 through Lab 04 artifacts with explicit readiness, provenance, and no-claim boundaries.
+- Added Lab 05 candidate-direction instrumentation with D1-D8 gates, seeded and unrelated-label controls, sparse public artifacts, and an explicit no-steering/no-causality boundary.
+- Added the one-command local visual laboratory suite for navigating the maintained Lab 00 through Lab 05 artifacts with explicit readiness, provenance, and no-claim boundaries.
 - Added Lab 03 behavioral-baseline contracts, deterministic local diagnostics, leave-one-domain-out and random-label gates, and an explicit no-claim visual report.
 - Added Lab 02 dataset anatomy with immutable split membership, provenance/license checks, source/template leakage fingerprints, balance gates, annotation reliability, and a one-command visual readiness report.
 - Added Lab 01 as the first exact-revision, real-model instrumentation laboratory with receipt-derived readiness, residual-stream capture, final-logit parity, repeatability, sparse public artifacts, and an explicit no-TRIZ-claim boundary.

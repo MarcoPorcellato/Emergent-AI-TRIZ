@@ -14,6 +14,7 @@ LAB01_PARITY_PATH = Path("results/lab01/model-anatomy/parity_report.json")
 LAB02_SUMMARY_PATH = Path("results/lab02/dataset-anatomy/summary.json")
 LAB03_SUMMARY_PATH = Path("results/lab03/behavioral-baselines/summary.json")
 LAB04_SUMMARY_PATH = Path("results/lab04/decodability/summary.json")
+LAB05_SUMMARY_PATH = Path("results/lab05/candidate-directions/summary.json")
 
 
 class LabSuiteError(RuntimeError):
@@ -37,7 +38,7 @@ class LabSource:
 
 def build_lab_suite_report(repo_root: Path, output_path: Path) -> Path:
     """
-    Build a deterministic, self-contained HTML dashboard for Lab00-Lab04 summaries.
+    Build a deterministic, self-contained HTML dashboard for Lab00-Lab05 summaries.
 
     This function aggregates:
     - Lab 01 parity report
@@ -78,9 +79,16 @@ def build_lab_suite_report(repo_root: Path, output_path: Path) -> Path:
         expected_artifact_class="representation-decodability-instrumentation",
         expected_empirical=False,
     )
+    lab05 = _load_lab_json(
+        repo_root / LAB05_SUMMARY_PATH,
+        "lab05",
+        repo_root=repo_root,
+        expected_artifact_class="candidate-direction-instrumentation",
+        expected_empirical=False,
+    )
 
     sources = sorted(
-        [lab00_report, lab01, lab02, lab03, lab04],
+        [lab00_report, lab01, lab02, lab03, lab04, lab05],
         key=lambda item: item.name,
     )
     readiness = "ready" if all(item.status == "pass" for item in sources) else "not-ready"
@@ -196,6 +204,7 @@ def _load_lab_json(
         "lab02": Path("results/lab02/dataset-anatomy/report.html"),
         "lab03": Path("results/lab03/behavioral-baselines/report.html"),
         "lab04": Path("results/lab04/decodability/report.html"),
+        "lab05": Path("results/lab05/candidate-directions/report.html"),
     }
     report_path = repo_root / report_paths[name]
     if not report_path.is_file():

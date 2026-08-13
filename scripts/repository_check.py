@@ -50,6 +50,8 @@ def main() -> int:
         ("schemas/lab03-result.schema.json", "results/lab03/behavioral-baselines/summary.json"),
         ("schemas/lab04-config.schema.json", "experiments/lab04-decodability/config.json"),
         ("schemas/representation-record.schema.json", "data/pilot/representations.jsonl"),
+        ("schemas/lab05-config.schema.json", "experiments/lab05-candidate-directions/config.json"),
+        ("schemas/lab05-result.schema.json", "results/lab05/candidate-directions/summary.json"),
     )
     for schema, data in validation_pairs:
         validate(schema, data)
@@ -92,8 +94,11 @@ def main() -> int:
         "schemas/lab04-config.schema.json",
         "schemas/lab04-result.schema.json",
         "schemas/representation-record.schema.json",
+        "schemas/lab05-config.schema.json",
+        "schemas/lab05-result.schema.json",
         "experiments/lab03-behavioral-baselines/config.json",
         "experiments/lab04-decodability/config.json",
+        "experiments/lab05-candidate-directions/config.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -277,6 +282,46 @@ def main() -> int:
             if expected and expected != actual:
                 raise RuntimeError(f"Lab 04 artifact hash mismatch: {path.name}")
 
+    lab05_root = ROOT / "results/lab05/candidate-directions"
+    lab05_summary_path = lab05_root / "summary.json"
+    lab05_summary = json.loads(lab05_summary_path.read_text(encoding="utf-8"))
+    if lab05_summary.get("status") != "fail":
+        raise RuntimeError("Lab 05 current fixture must remain fail-closed")
+    if lab05_summary.get("empirical") is not False or lab05_summary.get("evidence_eligible") is not False:
+        raise RuntimeError("Lab 05 evidence classification boundary is invalid")
+    if lab05_summary.get("claim_ids") != []:
+        raise RuntimeError("Lab 05 claim ids are not empty")
+    boundary = lab05_summary.get("publication_boundary", {})
+    if any(boundary.get(field) is not False for field in (
+        "dense_vectors_published", "interventions_executed", "steering_claim_allowed", "causal_claim_allowed"
+    )):
+        raise RuntimeError("Lab 05 publication boundary is invalid")
+    expected_gates = {
+        "D1": "fail", "D2": "pass", "D3": "fail", "D4": "fail",
+        "D5": "fail", "D6": "fail", "D7": "fail", "D8": "pass",
+    }
+    observed_gates = {row.get("gate"): row.get("status") for row in lab05_summary.get("gates", [])}
+    if observed_gates != expected_gates:
+        raise RuntimeError(f"Lab 05 gate state changed: {observed_gates}")
+    for key, path in {
+        "cases_jsonl": ROOT / "data/pilot/cases.jsonl",
+        "representations_jsonl": ROOT / "data/pilot/representations.jsonl",
+        "config_json": ROOT / "experiments/lab05-candidate-directions/config.json",
+        "predecessor_lab04_summary": ROOT / "results/lab04/decodability/summary.json",
+        "direction_result_json": lab05_root / "direction_result.json",
+        "report_html": lab05_root / "report.html",
+    }.items():
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if lab05_summary.get("hashes", {}).get(key) != actual:
+            raise RuntimeError(f"Lab 05 artifact hash mismatch: {path.name}")
+    canonical_lab05 = dict(lab05_summary)
+    canonical_lab05["hashes"] = dict(lab05_summary["hashes"])
+    declared_summary_hash = canonical_lab05["hashes"]["summary_json"]
+    canonical_lab05["hashes"]["summary_json"] = ""
+    canonical_text = json.dumps(canonical_lab05, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    if hashlib.sha256(canonical_text.encode("utf-8")).hexdigest() != declared_summary_hash:
+        raise RuntimeError("Lab 05 canonical summary hash mismatch")
+
     with tempfile.TemporaryDirectory() as directory:
         suite_root = Path(directory) / "repository"
         suite_inputs = (
@@ -288,6 +333,8 @@ def main() -> int:
             "results/lab03/behavioral-baselines/report.html",
             "results/lab04/decodability/summary.json",
             "results/lab04/decodability/report.html",
+            "results/lab05/candidate-directions/summary.json",
+            "results/lab05/candidate-directions/report.html",
         )
         for relative in suite_inputs:
             destination = suite_root / relative

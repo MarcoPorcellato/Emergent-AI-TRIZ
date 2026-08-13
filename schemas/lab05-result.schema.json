@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/lab05-result.schema.json",
+  "title": "Latent TRIZ Lab 05 candidate-direction summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "empirical", "evidence_eligible", "claim_ids", "status", "interpretation", "target_label", "contrast_label", "unrelated_labels", "seed_policy", "case_summary", "input_hashes", "gates", "issues", "layers", "publication_boundary", "predecessor", "hashes", "summary_artifacts"],
+  "properties": {
+    "artifact_class": {"const": "candidate-direction-instrumentation"},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "status": {"enum": ["pass", "fail"]},
+    "interpretation": {"const": "diagnostic_only_not_scientifically_interpretable"},
+    "target_label": {"type": "string", "minLength": 1},
+    "contrast_label": {"type": "string", "minLength": 1},
+    "unrelated_labels": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "seed_policy": {"type": "array", "minItems": 1, "items": {"type": "integer"}},
+    "case_summary": {"type": "object"},
+    "input_hashes": {"type": "object"},
+    "gates": {"type": "array", "minItems": 8, "maxItems": 8, "items": {"type": "object", "additionalProperties": false, "required": ["gate", "status", "details"], "properties": {"gate": {"enum": ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8"]}, "status": {"enum": ["pass", "fail"]}, "details": {"type": "string", "minLength": 1}}}},
+    "issues": {"type": "array", "items": {"type": "string"}},
+    "layers": {"type": "array", "items": {"type": "object"}},
+    "publication_boundary": {"type": "object", "additionalProperties": false, "required": ["dense_vectors_published", "interventions_executed", "steering_claim_allowed", "causal_claim_allowed"], "properties": {"dense_vectors_published": {"const": false}, "interventions_executed": {"const": false}, "steering_claim_allowed": {"const": false}, "causal_claim_allowed": {"const": false}}},
+    "predecessor": {"type": "object", "additionalProperties": false, "required": ["status", "integrity_verified", "scientifically_ready", "details", "summary_sha256"], "properties": {"status": {"enum": ["pass", "fail"]}, "integrity_verified": {"type": "boolean"}, "scientifically_ready": {"type": "boolean"}, "details": {"type": "string"}, "summary_sha256": {"$ref": "#/$defs/sha256"}}},
+    "hashes": {"type": "object", "additionalProperties": false, "required": ["cases_jsonl", "representations_jsonl", "config_json", "predecessor_lab04_summary", "direction_result_json", "report_html", "summary_json"], "properties": {"cases_jsonl": {"$ref": "#/$defs/sha256"}, "representations_jsonl": {"$ref": "#/$defs/sha256"}, "config_json": {"$ref": "#/$defs/sha256"}, "predecessor_lab04_summary": {"$ref": "#/$defs/sha256"}, "direction_result_json": {"$ref": "#/$defs/sha256"}, "report_html": {"$ref": "#/$defs/sha256"}, "summary_json": {"$ref": "#/$defs/sha256"}}},
+    "summary_artifacts": {"type": "object", "additionalProperties": false, "required": ["generated_by", "readiness_statement", "direction_result", "html", "summary"], "properties": {"generated_by": {"const": "lab05_candidate_direction_runner"}, "readiness_statement": {"type": "string"}, "direction_result": {"const": "direction_result.json"}, "html": {"const": "report.html"}, "summary": {"const": "summary.json"}}}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+}

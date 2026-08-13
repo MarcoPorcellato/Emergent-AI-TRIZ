@@ -26,6 +26,7 @@ This is the **maintained** documentation bundle.
 - [Lab 02 dataset anatomy](./LAB02.md)
 - [Lab 03 behavioral baselines](./LAB03.md)
 - [Lab 04 decodability](./LAB04.md)
+- [Lab 05 candidate directions](./LAB05.md)
 - [OKF project index](./OKF_PROJECT.md)
 - [Decision log](./DECISION_LOG.md)
 - [Article status](./ARTICLE_STATUS.md)
