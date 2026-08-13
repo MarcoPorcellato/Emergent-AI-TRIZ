@@ -9,6 +9,7 @@
     "status",
     "seed",
     "permutations",
+    "numeric_backend",
     "probe_family",
     "alpha_grid",
     "outer_split",
@@ -28,6 +29,7 @@
     "status": {"type": "string", "enum": ["draft", "ready", "fail"]},
     "seed": {"type": "integer", "minimum": 0},
     "permutations": {"type": "integer", "const": 100},
+    "numeric_backend": {"type": "string", "enum": ["pure_python", "numpy"]},
     "probe_family": {"type": "string", "const": "linear_one_vs_rest_ridge"},
     "alpha_grid": {
       "type": "array",

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib
 import json
 import math
 import re
@@ -17,6 +18,8 @@ class Lab04Error(RuntimeError):
 _ALPHA_GRID = (0.01, 0.1, 1.0, 10.0)
 _DEFAULT_SEED = 1729
 _DEFAULT_PERMUTATIONS = 100
+_DEFAULT_NUMERIC_BACKEND = "pure_python"
+_PINNED_NUMPY_VERSION = "2.4.3"
 
 
 def stable_json_dumps(payload: Any) -> str:
@@ -89,6 +92,39 @@ def _coerce_float(value: Any, default: float) -> float:
         return float(value)
     except (TypeError, ValueError):
         return default
+
+
+def _coerce_numeric_backend(value: Any) -> str:
+    if value is None:
+        return _DEFAULT_NUMERIC_BACKEND
+    if value in {"pure_python", "numpy"}:
+        return str(value)
+    raise Lab04Error(
+        f"invalid numeric_backend {value!r}; expected one of 'pure_python', 'numpy'"
+    )
+
+
+def _is_numpy_available() -> bool:
+    try:
+        importlib.import_module("numpy")
+        return True
+    except Exception:
+        return False
+
+
+def _require_numpy_available() -> str:
+    try:
+        module = importlib.import_module("numpy")
+    except Exception as exc:
+        raise Lab04Error(
+            "numeric_backend requested as numpy but NumPy is not available"
+        ) from exc
+    version = str(getattr(module, "__version__", "unknown"))
+    if version != _PINNED_NUMPY_VERSION:
+        raise Lab04Error(
+            f"numeric_backend requires NumPy {_PINNED_NUMPY_VERSION}, found {version}"
+        )
+    return version
 
 
 def _coerce_bool(value: Any, default: bool) -> bool:
@@ -384,8 +420,32 @@ def _solve_linear_system(a: list[list[float]], b: list[float]) -> list[float]:
     return [m[i][n] for i in range(n)]
 
 
-def _ridge_weights(vectors: list[list[float]], y: list[float], alpha: float) -> list[float]:
+def _ridge_weights(
+    vectors: list[list[float]],
+    y: list[float],
+    alpha: float,
+    backend: str = _DEFAULT_NUMERIC_BACKEND,
+) -> list[float]:
     X = [row + [1.0] for row in vectors]
+    if backend == "numpy":
+        import numpy as np
+
+        design = np.asarray(X, dtype=float)
+        feature_count = design.shape[1] - 1
+        penalty = np.zeros((feature_count, feature_count + 1), dtype=float)
+        penalty[:, :feature_count] = np.eye(feature_count, dtype=float) * np.sqrt(alpha)
+        augmented_design = np.vstack((design, penalty))
+        augmented_target = np.concatenate((np.asarray(y, dtype=float), np.zeros(feature_count)))
+        try:
+            weights, _, rank, _ = np.linalg.lstsq(
+                augmented_design, augmented_target, rcond=None
+            )
+        except Exception as exc:
+            raise Lab04Error(f"NumPy ridge least-squares solve failed: {exc}") from exc
+        if rank < feature_count + 1 or not np.isfinite(weights).all():
+            raise Lab04Error("NumPy ridge least-squares solve is rank-deficient or non-finite")
+        return weights.tolist()
+
     xt = [list(row) for row in zip(*X)]
     gram = _gram_matrix(X)
     xTy = _mat_mul(xt, y)
@@ -400,13 +460,14 @@ def _fit_one_vs_rest(
     alpha: float,
     mean: list[float],
     std: list[float],
+    backend: str = _DEFAULT_NUMERIC_BACKEND,
 ) -> dict[str, list[float]]:
     vectors = [row for _, __, row in examples]
     x = _standardize(vectors, mean, std)
     models: dict[str, list[float]] = {}
     for label in labels:
         y = [1.0 if y_label == label else -1.0 for _, y_label, _ in examples]
-        models[label] = _ridge_weights(x, y, alpha)
+        models[label] = _ridge_weights(x, y, alpha, backend)
     return models
 
 
@@ -476,6 +537,7 @@ def _inner_alpha_search(
     outer_train: list[tuple[str, str, list[float]]],
     labels: list[str],
     domain_by_case: dict[str, str],
+    backend: str = _DEFAULT_NUMERIC_BACKEND,
 ) -> tuple[float | None, dict[float, float], list[str], list[dict[str, Any]]]:
     by_domain: dict[str, list[tuple[str, str, list[float]]]] = {}
     for item in outer_train:
@@ -526,7 +588,7 @@ def _inner_alpha_search(
             stable_json_dumps({"mean": mean, "std": std, "fit_case_ids": train_ids})
         )
         for alpha in _ALPHA_GRID:
-            models = _fit_one_vs_rest(inner_train, labels, alpha, mean, std)
+            models = _fit_one_vs_rest(inner_train, labels, alpha, mean, std, backend)
             preds = _predict_one_vs_rest(
                 models, [vector for _, __, vector in inner_test], mean, std
             )
@@ -554,6 +616,7 @@ def _run_outer_fold(
     alpha_cache: dict[str, float],
     permutation_sequences: list[list[str]] | None = None,
     reselect_alpha_within_permutation: bool = True,
+    backend: str = _DEFAULT_NUMERIC_BACKEND,
 ) -> FoldResult:
     train = [
         item
@@ -600,7 +663,7 @@ def _run_outer_fold(
         for case_id, _, _ in rows
     }
     selected_alpha, alpha_scores, errors, inner_receipts = _inner_alpha_search(
-        train, labels, domain_lookup
+        train, labels, domain_lookup, backend
     )
     if selected_alpha is None:
         return FoldResult(
@@ -634,7 +697,7 @@ def _run_outer_fold(
             stable_json_dumps({"mean": mean, "std": std, "fit_case_ids": train_ids})
         ),
     }
-    models = _fit_one_vs_rest(train, labels, selected_alpha, mean, std)
+    models = _fit_one_vs_rest(train, labels, selected_alpha, mean, std, backend)
     pred = _predict_one_vs_rest(models, test_vectors, mean, std)
     observed, _ = _macro_and_balanced(test_labels, pred, labels)
 
@@ -702,7 +765,7 @@ def _run_outer_fold(
                 for index, (case_id, _, vector) in enumerate(sorted_train)
             ]
             perm_alpha_candidate, _perm_alpha_scores, perm_alpha_errors, perm_inner_receipts = _inner_alpha_search(
-                perm_train, labels, domain_lookup
+                perm_train, labels, domain_lookup, backend
             )
             status = "pass"
             details: list[str] = []
@@ -736,7 +799,7 @@ def _run_outer_fold(
             for index, (case_id, _, vector) in enumerate(sorted_train)
         ]
         p_models = _fit_one_vs_rest(
-            shuffled_train, labels, perm_alpha, mean, std
+            shuffled_train, labels, perm_alpha, mean, std, backend
         )
         p_pred = _predict_one_vs_rest(p_models, test_vectors, mean, std)
         p_metrics, _ = _macro_and_balanced(test_labels, p_pred, labels)
@@ -781,6 +844,11 @@ def _run_outer_fold(
                 stable_json_dumps(permutation_alpha_reselection)
             ),
             "permutation_alpha_errors": bool(permuted_alpha_errors),
+            "numeric_backend": backend,
+            "numeric_solver": (
+                "numpy_augmented_lstsq" if backend == "numpy"
+                else "pure_python_normal_equations_reference"
+            ),
         },
         permutation_null_scores=null_scores,
     )
@@ -796,6 +864,7 @@ def _run_layer(
     max_statistic_permutation_states: list[dict[str, Any]] | None = None,
 ) -> tuple[dict[str, Any], list[str]]:
     issues: list[str] = []
+    backend = _coerce_numeric_backend(config.get("numeric_backend"))
     permutations = _coerce_int(config.get("permutations", _DEFAULT_PERMUTATIONS), _DEFAULT_PERMUTATIONS)
     seed = _coerce_int(config.get("seed", _DEFAULT_SEED), _DEFAULT_SEED)
     reselect_within_each_permutation = _coerce_bool(
@@ -856,6 +925,7 @@ def _run_layer(
             alpha_cache=alpha_by_fold,
             permutation_sequences=permutation_labels,
             reselect_alpha_within_permutation=reselect_within_each_permutation,
+            backend=backend,
         )
         fold_results.append(fold)
 
@@ -1217,6 +1287,10 @@ def run_lab04_analysis(
     config_file = Path(config_path).resolve()
 
     config = _read_json(config_file, "config")
+    numeric_backend = _coerce_numeric_backend(config.get("numeric_backend"))
+    numeric_library_version = "none"
+    if numeric_backend == "numpy":
+        numeric_library_version = _require_numpy_available()
 
     thresholds = config.get("readiness_thresholds", {})
     if not isinstance(thresholds, Mapping):
@@ -1446,6 +1520,12 @@ def run_lab04_analysis(
             },
         },
         "config": {
+            "numeric_backend": numeric_backend,
+            "numeric_solver": (
+                "numpy_augmented_lstsq" if numeric_backend == "numpy"
+                else "pure_python_normal_equations_reference"
+            ),
+            "numeric_library_version": numeric_library_version,
             "minimum_labels": config_min_labels,
             "minimum_domains": config_min_domains,
             "minimum_cases_per_label_domain_cell": config_min_cell,

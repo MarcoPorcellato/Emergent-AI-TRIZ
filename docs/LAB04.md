@@ -46,6 +46,10 @@ The public contract is fixed as follows:
 - max-statistic control must be applied across layers;
 - permutation draws must be blocked by outer-training domain and shared across layers;
 - the boundary is non-claim even when numbers look favorable.
+- `pure_python` remains the dependency-free reference solver; the optional
+  `numpy` backend is pinned and uses augmented least squares so it does not
+  form normal equations, and it fails closed if unavailable or numerically
+  invalid; the runtime version must match the recorded `2.4.3` pin;
 
 ## Readiness gates
 

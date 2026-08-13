@@ -8,5 +8,8 @@ version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = []
 
+[project.optional-dependencies]
+numpy = ["numpy==2.4.3"]
+
 [project.scripts]
 latent-triz = "latent_triz.cli:main"

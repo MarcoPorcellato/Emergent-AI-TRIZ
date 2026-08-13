@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import json
+import math
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -491,6 +493,78 @@ class Lab04Tests(unittest.TestCase):
             held_fold["scaler_receipt"]["sha256"],
             changed_fold["scaler_receipt"]["sha256"],
         )
+
+    def test_explicit_numpy_backend_unavailable_is_fail_closed(self) -> None:
+        with patch("importlib.import_module", side_effect=ImportError("numpy unavailable")):
+            with self.assertRaisesRegex(lab04.Lab04Error, "NumPy is not available"):
+                lab04._require_numpy_available()
+
+    def test_invalid_numeric_backend_is_rejected(self) -> None:
+        with self.assertRaisesRegex(lab04.Lab04Error, "invalid numeric_backend"):
+            lab04._coerce_numeric_backend("jit")
+
+    def test_numpy_backend_rejects_unpinned_runtime_version(self) -> None:
+        fake_numpy = type("FakeNumpy", (), {"__version__": "0.0.0"})()
+        with patch("importlib.import_module", return_value=fake_numpy):
+            with self.assertRaisesRegex(lab04.Lab04Error, "requires NumPy 2.4.3"):
+                lab04._require_numpy_available()
+
+    def test_numpy_ridge_is_finite_on_collinear_features(self) -> None:
+        if not lab04._is_numpy_available():
+            self.skipTest("NumPy not installed in this environment")
+        weights = lab04._ridge_weights(
+            [[1.0, 1.0], [1.0, 1.0], [1.0, 1.0]],
+            [1.0, -1.0, 1.0],
+            0.1,
+            "numpy",
+        )
+        self.assertEqual(len(weights), 3)
+        self.assertTrue(all(math.isfinite(value) for value in weights))
+
+    def test_numpy_backend_matches_reference_on_nested_lodo_fixture(self) -> None:
+        if not lab04._is_numpy_available():
+            self.skipTest("NumPy not installed in this environment")
+        labels = ["alpha", "beta"]
+        case_label: dict[str, str] = {}
+        case_domain: dict[str, str] = {}
+        vectors: dict[str, list[float]] = {}
+        for domain_index in range(4):
+            for label_index, label in enumerate(labels):
+                case_id = f"case_d{domain_index}_{label}"
+                case_label[case_id] = label
+                case_domain[case_id] = f"domain_{domain_index}"
+                vectors[case_id] = [
+                    float(label_index * 4 + domain_index),
+                    float(label_index),
+                ]
+        pure, pure_issues = lab04._run_layer(
+            layer=0,
+            vectors=vectors,
+            case_domain=case_domain,
+            case_label=case_label,
+            labels=labels,
+            config={"permutations": 5, "seed": 1729, "numeric_backend": "pure_python"},
+        )
+        numpy_result, numpy_issues = lab04._run_layer(
+            layer=0,
+            vectors=vectors,
+            case_domain=case_domain,
+            case_label=case_label,
+            labels=labels,
+            config={"permutations": 5, "seed": 1729, "numeric_backend": "numpy"},
+        )
+        self.assertEqual(pure_issues, numpy_issues)
+        self.assertEqual(pure["selected_alpha"], numpy_result["selected_alpha"])
+        self.assertAlmostEqual(pure["p_value_raw"], numpy_result["p_value_raw"])
+        for pure_fold, numpy_fold in zip(pure["folds"], numpy_result["folds"]):
+            self.assertEqual(pure_fold["selected_alpha"], numpy_fold["selected_alpha"])
+            self.assertEqual(pure_fold["predictions"], numpy_fold["predictions"])
+            self.assertEqual(pure_fold["metrics"], numpy_fold["metrics"])
+            self.assertAlmostEqual(pure_fold["permutation_p"], numpy_fold["permutation_p"])
+            self.assertEqual(
+                numpy_fold["permutation_receipt"]["numeric_solver"],
+                "numpy_augmented_lstsq",
+            )
 
     def test_runner_outputs_are_deterministic_and_path_clean(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
