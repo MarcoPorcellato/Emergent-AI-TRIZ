@@ -32,7 +32,7 @@ Path to acceptance:
 4. add human-authored, adapted, and historical provenance so the source mix can satisfy the final policy;
 5. freeze discovery and holdout splits separately;
 6. run a leakage audit before any confirmatory use;
-7. populate `pair_semantic_review` in `wave1-manifest.json` (`pair_id`, `status`, `reviewer_id`, `reviewed_at`, optional `notes`) before `ready_for_freeze` can become true.
+7. populate `pair_semantic_review` in `wave1-manifest.json` with the frozen matched-pair rubric before `ready_for_freeze` can become true. A `reviewed` flag alone is insufficient: every accepted pair must be classified as `minimal_pair` or `closely_matched_pair`, pass the eight problem/constraint/structure/feasibility/operator checks, and include a rationale.
 
 Run `make dataset-wave1-audit` before every review session. Start a local
 blinded session with `make annotate-wave1 ANNOTATION_RATER_ID=rater_01`.

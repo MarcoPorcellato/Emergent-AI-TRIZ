@@ -10,7 +10,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from latent_triz.lab03 import build_lab03_report
-from latent_triz.lab03_baselines import Lab03Error, run_behavioral_baselines
+from latent_triz.lab03_baselines import (
+    Lab03Error,
+    _categorical_shortcut_diagnostic,
+    run_behavioral_baselines,
+)
 
 
 class Lab03Tests(unittest.TestCase):
@@ -40,15 +44,31 @@ class Lab03Tests(unittest.TestCase):
                 })
         return rows
 
-    def _cases_with_provenance(self, *, with_template: bool = False) -> list[dict]:
+    def _cases_with_provenance(
+        self,
+        *,
+        with_template: bool = False,
+        with_generator_variants: bool = False,
+    ) -> list[dict]:
         rows = self._cases()
         for idx, row in enumerate(rows):
             row["provenance"] = {
                 "source_type": "model_generated",
+                "generator_id": f"generator_{idx % 2}",
             }
             if with_template:
                 row["provenance"]["template_id"] = f"template_{idx}"
+            if with_generator_variants:
+                row["provenance"]["generator_id"] = (
+                    "generator_a" if idx % 2 else "generator_b"
+                )
         return rows
+
+    def _provenance_classifier(self, result: dict, key: str) -> dict:
+        provenance = result["shortcuts"]["provenance"]
+        if "classifiers" in provenance:
+            return provenance["classifiers"][key]
+        return provenance[key]
 
     def _snapshot(self, status: str = "pass") -> dict:
         return {
@@ -208,8 +228,8 @@ class Lab03Tests(unittest.TestCase):
     def test_provenance_shortcuts_mark_not_evaluable_when_missing(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             result = self._run(Path(directory))
-        source = result["shortcuts"]["provenance"]["source_type"]
-        template = result["shortcuts"]["provenance"]["template"]
+        source = self._provenance_classifier(result, "source_type")
+        template = self._provenance_classifier(result, "template_id")
         self.assertEqual(source["status"], "not_evaluable")
         self.assertFalse(source["evaluable"])
         self.assertEqual(template["status"], "not_evaluable")
@@ -220,8 +240,8 @@ class Lab03Tests(unittest.TestCase):
             root = Path(directory)
             cases = self._cases_with_provenance(with_template=True)
             result = self._run_with_cases(root, cases=cases)
-        source = result["shortcuts"]["provenance"]["source_type"]
-        template = result["shortcuts"]["provenance"]["template"]
+        source = self._provenance_classifier(result, "source_type")
+        template = self._provenance_classifier(result, "template_id")
         self.assertEqual(source["status"], "not_evaluable")
         self.assertFalse(source["evaluable"])
         self.assertEqual(template["status"], "not_evaluable")
@@ -230,13 +250,64 @@ class Lab03Tests(unittest.TestCase):
     def test_repeated_diverse_provenance_categories_are_evaluable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            cases = self._cases_with_provenance(with_template=True)
+            cases = self._cases_with_provenance(
+                with_template=True,
+                with_generator_variants=True,
+            )
             for index, case in enumerate(cases):
                 case["provenance"]["source_type"] = "model_generated" if index % 2 else "human_authored"
                 case["provenance"]["template_id"] = f"template_{index % 2}"
             result = self._run_with_cases(root, cases=cases)
-        self.assertTrue(result["shortcuts"]["provenance"]["source_type"]["evaluable"])
-        self.assertTrue(result["shortcuts"]["provenance"]["template"]["evaluable"])
+        source = self._provenance_classifier(result, "source_type")
+        template = self._provenance_classifier(result, "template_id")
+        generator = self._provenance_classifier(result, "generator_identity")
+        self.assertTrue(source["evaluable"])
+        self.assertTrue(template["evaluable"])
+        self.assertTrue(generator["evaluable"])
+        self.assertIn("folds", source)
+        self.assertEqual(len(source["folds"]), 4)
+        self.assertTrue(source["shortcut_detected"] in (True, False))
+
+    def test_categorical_shortcut_majority_baseline_uses_train_labels(self) -> None:
+        cases = [
+            {"case_id": "1", "domain": "domain_a", "label": "segmentation", "source_type": "alpha"},
+            {"case_id": "2", "domain": "domain_a", "label": "segmentation", "source_type": "beta"},
+            {"case_id": "3", "domain": "domain_b", "label": "inversion", "source_type": "alpha"},
+            {"case_id": "4", "domain": "domain_b", "label": "inversion", "source_type": "beta"},
+            {"case_id": "5", "domain": "domain_c", "label": "inversion", "source_type": "alpha"},
+            {"case_id": "6", "domain": "domain_c", "label": "inversion", "source_type": "beta"},
+        ]
+        result = _categorical_shortcut_diagnostic(
+            cases=cases,
+            labels=("segmentation", "inversion"),
+            field="source_type",
+            shortcut_threshold=0.5,
+            shortcut_margin=0.0,
+            minimum_category_count=1,
+        )
+        self.assertEqual(result["status"], "pass")
+        fold_lookup = {row["domain"]: row for row in result["folds"]}
+        self.assertEqual(len(fold_lookup), 3)
+        self.assertAlmostEqual(fold_lookup["domain_a"]["majority_baseline_metrics"]["accuracy"], 0.0)
+        self.assertAlmostEqual(fold_lookup["domain_a"]["metrics"]["accuracy"], 0.0)
+
+    def test_wave1_fixture_single_source_is_not_evaluable_for_metadata_shortcuts(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        result = run_behavioral_baselines(
+            root / "data/candidates/wave1-model-generated.jsonl",
+            root / "results/lab02/dataset-anatomy/snapshot_manifest.json",
+            root / "experiments/wave1-surface-audit/config.json",
+        )
+        source = self._provenance_classifier(result, "source_type")
+        generator = self._provenance_classifier(result, "generator_identity")
+        template = self._provenance_classifier(result, "template_id")
+        self.assertEqual(source["status"], "not_evaluable")
+        self.assertFalse(source["evaluable"])
+        self.assertEqual(generator["status"], "not_evaluable")
+        self.assertFalse(generator["evaluable"])
+        self.assertEqual(template["status"], "not_evaluable")
+        self.assertFalse(template["evaluable"])
+        self.assertEqual(result["shortcuts"]["provenance"]["predictor_type"], "metadata")
 
     def test_unfrozen_evaluation_view_set_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

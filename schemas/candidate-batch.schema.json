@@ -51,13 +51,39 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["pair_id", "status", "reviewer_id", "reviewed_at"],
+        "required": ["pair_id", "status", "reviewer_id", "reviewed_at", "pair_class", "checks", "rationale"],
         "additionalProperties": false,
         "properties": {
           "pair_id": {"type": "string", "minLength": 3},
           "status": {"type": "string", "enum": ["reviewed", "rejected", "pending"]},
           "reviewer_id": {"type": "string", "minLength": 1},
           "reviewed_at": {"type": "string", "minLength": 1},
+          "pair_class": {"type": "string", "enum": ["minimal_pair", "closely_matched_pair", "not_matched"]},
+          "checks": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "same_problem",
+              "same_constraints",
+              "same_desired_improvement",
+              "same_worsening_consequence",
+              "comparable_length",
+              "comparable_syntax",
+              "comparable_feasibility",
+              "only_dominant_operator_differs"
+            ],
+            "properties": {
+              "same_problem": {"type": "boolean"},
+              "same_constraints": {"type": "boolean"},
+              "same_desired_improvement": {"type": "boolean"},
+              "same_worsening_consequence": {"type": "boolean"},
+              "comparable_length": {"type": "boolean"},
+              "comparable_syntax": {"type": "boolean"},
+              "comparable_feasibility": {"type": "boolean"},
+              "only_dominant_operator_differs": {"type": "boolean"}
+            }
+          },
+          "rationale": {"type": "string", "minLength": 1},
           "notes": {"type": "string", "minLength": 1}
         }
       }

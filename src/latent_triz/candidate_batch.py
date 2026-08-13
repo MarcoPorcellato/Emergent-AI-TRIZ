@@ -22,6 +22,17 @@ SEMANTIC_FIELDS = (
 )
 SEMANTIC_DIAGNOSTIC_FIELDS = SEMANTIC_FIELDS
 PAIRED_SEMANTIC_REVIEW_STATUS = "reviewed"
+ACCEPTED_PAIR_CLASSES = frozenset({"minimal_pair", "closely_matched_pair"})
+PAIR_REVIEW_CHECKS = (
+    "same_problem",
+    "same_constraints",
+    "same_desired_improvement",
+    "same_worsening_consequence",
+    "comparable_length",
+    "comparable_syntax",
+    "comparable_feasibility",
+    "only_dominant_operator_differs",
+)
 
 
 class CandidateBatchError(RuntimeError):
@@ -430,14 +441,26 @@ def audit_candidate_batch(manifest_path: str | Path, cases_path: str | Path) -> 
 
     # Per-pair semantic metadata requirement for scientific freeze.
     semantic_metadata_reviewed: set[str] = set()
+    rejected_pair_reviews: list[str] = []
     if isinstance(semantic_review_records, list):
         for record in semantic_review_records:
             if not isinstance(record, Mapping):
                 continue
             pair_id = record.get("pair_id")
             status = record.get("status")
-            if isinstance(pair_id, str) and status == PAIRED_SEMANTIC_REVIEW_STATUS:
+            pair_class = record.get("pair_class")
+            checks = record.get("checks")
+            rubric_passed = (
+                pair_class in ACCEPTED_PAIR_CLASSES
+                and isinstance(checks, Mapping)
+                and all(checks.get(name) is True for name in PAIR_REVIEW_CHECKS)
+                and isinstance(record.get("rationale"), str)
+                and bool(str(record.get("rationale")).strip())
+            )
+            if isinstance(pair_id, str) and status == PAIRED_SEMANTIC_REVIEW_STATUS and rubric_passed:
                 semantic_metadata_reviewed.add(pair_id)
+            elif isinstance(pair_id, str) and status == PAIRED_SEMANTIC_REVIEW_STATUS:
+                rejected_pair_reviews.append(pair_id)
     unreviewed_pairs: list[str] = []
     checked_pairs = set()
     for case_id, case in sorted(by_id.items()):
@@ -464,6 +487,14 @@ def audit_candidate_batch(manifest_path: str | Path, cases_path: str | Path) -> 
         semantics["pair_semantic_review_required"] = True
 
     if semantics["pair_semantic_review_required"]:
+        if rejected_pair_reviews:
+            semantics["issues"].append(
+                {
+                    "code": "pair_review_rubric_failed",
+                    "message": "reviewed pairs must pass every frozen matched-pair check",
+                    "pairs": sorted(rejected_pair_reviews),
+                }
+            )
         if unreviewed_pairs:
             semantics["issues"].append(
                 {

@@ -164,16 +164,41 @@ class CandidateBatchTests(unittest.TestCase):
                 "char_ngrams": [3],
                 "require_pair_semantic_review": True,
             }
+            checks = {name: True for name in (
+                "same_problem", "same_constraints", "same_desired_improvement",
+                "same_worsening_consequence", "comparable_length", "comparable_syntax",
+                "comparable_feasibility", "only_dominant_operator_differs",
+            )}
             manifest["pair_semantic_review"] = [
-                {"pair_id": "a1|a2", "status": "reviewed", "reviewer_id": "r1", "reviewed_at": "2026-08-13"},
-                {"pair_id": "a2|a1", "status": "reviewed", "reviewer_id": "r1", "reviewed_at": "2026-08-13"},
-                {"pair_id": "b1|b2", "status": "reviewed", "reviewer_id": "r1", "reviewed_at": "2026-08-13"},
-                {"pair_id": "b2|b1", "status": "reviewed", "reviewer_id": "r1", "reviewed_at": "2026-08-13"},
+                {"pair_id": pair_id, "status": "reviewed", "reviewer_id": "r1", "reviewed_at": "2026-08-13", "pair_class": "minimal_pair", "checks": checks, "rationale": "Only the dominant operator differs."}
+                for pair_id in ("a1|a2", "b1|b2")
             ]
 
         report = self._audit(manifest_mutator=with_semantic_policy_and_review)
         self.assertTrue(report["ready_for_blinded_review"])
         self.assertTrue(report["ready_for_freeze"])
+
+    def test_review_status_without_matched_pair_rubric_fails_closed(self) -> None:
+        def with_inadequate_review(manifest: dict) -> None:
+            manifest["semantic_leakage_policy"] = {
+                "pair_similarity_threshold": 0.0,
+                "lodo_similarity_threshold": 0.0,
+                "word_ngrams": [2],
+                "char_ngrams": [3],
+                "require_pair_semantic_review": True,
+            }
+            manifest["pair_semantic_review"] = [
+                {"pair_id": "a1|a2", "status": "reviewed", "reviewer_id": "r1", "reviewed_at": "2026-08-13", "pair_class": "closely_matched_pair", "checks": {name: name != "same_problem" for name in (
+                    "same_problem", "same_constraints", "same_desired_improvement",
+                    "same_worsening_consequence", "comparable_length", "comparable_syntax",
+                    "comparable_feasibility", "only_dominant_operator_differs",
+                )}, "rationale": "The underlying problems are not the same."},
+            ]
+
+        report = self._audit(manifest_mutator=with_inadequate_review)
+        self.assertFalse(report["ready_for_freeze"])
+        codes = {item["code"] for item in report["semantic_leakage"]["issues"]}
+        self.assertIn("pair_review_rubric_failed", codes)
 
     def test_tracked_wave1_is_reviewable_but_shortcut_and_pair_gates_block_freeze(self) -> None:
         root = Path(__file__).resolve().parents[1]

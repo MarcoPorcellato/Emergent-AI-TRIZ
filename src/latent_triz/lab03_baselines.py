@@ -56,6 +56,8 @@ _DEFAULT_RANDOM_PERMUTATIONS = 3
 _DEFAULT_RANDOM_SEED = 13
 _DEFAULT_MIN_CASES_PER_LABEL = 1
 _DEFAULT_MIN_CASES_PER_HELD_OUT_DOMAIN = 1
+_DEFAULT_PROVENANCE_SHORTCUT_FEATURES = ("source_type", "generator_identity", "template_id")
+_DEFAULT_PROVENANCE_SHORTCUT_MIN_CATEGORY_COUNT = 2
 _TOKEN_RE = re.compile(r"[a-z0-9]+")
 
 
@@ -117,6 +119,18 @@ def run_behavioral_baselines(cases_path: str | Path, snapshot_path: str | Path, 
         1,
         minimum=1,
     )
+    provenance_shortcut_features = _coerce_str_list(config.get("provenance_shortcut_features"))
+    if not provenance_shortcut_features:
+        provenance_shortcut_features = list(_DEFAULT_PROVENANCE_SHORTCUT_FEATURES)
+    provenance_shortcut_features = [name for name in provenance_shortcut_features if name in _DEFAULT_PROVENANCE_SHORTCUT_FEATURES]
+    if not provenance_shortcut_features:
+        provenance_shortcut_features = list(_DEFAULT_PROVENANCE_SHORTCUT_FEATURES)
+    provenance_shortcut_min_category_count = _coerce_int(
+        config,
+        "provenance_shortcut_min_category_count",
+        _DEFAULT_PROVENANCE_SHORTCUT_MIN_CATEGORY_COUNT,
+        minimum=1,
+    )
 
     method_families = _coerce_str_list(config.get("method_families"))
     allow_local = set(_coerce_str_list(config.get("allow_local_diagnostics")))
@@ -164,7 +178,24 @@ def run_behavioral_baselines(cases_path: str | Path, snapshot_path: str | Path, 
         view_name: _cases_to_text(canonical_cases, view_name=view_name)
         for view_name in _LODO_VIEWS
     }
-    provenance_shortcuts = _provenance_shortcut_diagnostics(canonical_cases, labels)
+    provenance_shortcut_threshold = _coerce_float(
+        config,
+        "provenance_shortcut_threshold",
+        shortcut_threshold,
+    )
+    provenance_shortcut_margin = _coerce_float(
+        config,
+        "provenance_shortcut_margin_over_majority",
+        shortcut_margin,
+    )
+    provenance_shortcuts = _provenance_shortcut_diagnostics(
+        cases=canonical_cases,
+        labels=labels,
+        features=provenance_shortcut_features,
+        shortcut_threshold=provenance_shortcut_threshold,
+        shortcut_margin=provenance_shortcut_margin,
+        minimum_category_count=provenance_shortcut_min_category_count,
+    )
 
     methods: dict[str, Any] = {}
     for method in requested_methods:
@@ -261,6 +292,10 @@ def run_behavioral_baselines(cases_path: str | Path, snapshot_path: str | Path, 
             "method_families": sorted(method_requests),
             "allow_local_diagnostics": sorted(allow_local),
             "evaluation_views": list(_LODO_VIEWS),
+            "provenance_shortcut_features": provenance_shortcut_features,
+            "provenance_shortcut_threshold": provenance_shortcut_threshold,
+            "provenance_shortcut_margin_over_majority": provenance_shortcut_margin,
+            "provenance_shortcut_min_category_count": provenance_shortcut_min_category_count,
         },
         "issues": case_issues,
         "shortcuts": {
@@ -348,6 +383,7 @@ def _canonicalize_cases(records: list[Mapping[str, Any]]) -> tuple[list[dict[str
                 "case_id": case_id,
                 "domain": domain,
                 "source_type": _canonical_text(row.get("provenance", {}).get("source_type") if isinstance(row.get("provenance"), Mapping) else None),
+                "generator_identity": _canonical_generator_identity(row.get("provenance") if isinstance(row.get("provenance"), Mapping) else {}),
                 "template_id": _canonical_text(row.get("provenance", {}).get("template_id") if isinstance(row.get("provenance"), Mapping) else None),
                 "problem": problem,
                 "solution": str(row.get("solution", "")).strip(),
@@ -388,6 +424,12 @@ def _coerce_text_list(values: Any) -> list[str]:
             if text:
                 out.append(text)
     return out
+
+
+def _canonical_generator_identity(provenance: Mapping[str, Any] | None) -> str:
+    if not isinstance(provenance, Mapping):
+        return ""
+    return _canonical_text(provenance.get("generator_id"))
 
 
 def _canonical_text(value: Any) -> str:
@@ -1133,83 +1175,281 @@ def _gate_b7(
     return True, "shortcut risk check passed"
 
 
-def _provenance_shortcut_diagnostics(cases: list[dict[str, Any]], labels: Sequence[str]) -> dict[str, Any]:
+def _provenance_shortcut_diagnostics(
+    cases: list[dict[str, Any]],
+    labels: Sequence[str],
+    *,
+    features: Sequence[str],
+    shortcut_threshold: float,
+    shortcut_margin: float,
+    minimum_category_count: int,
+) -> dict[str, Any]:
+    diagnostics = {
+        "domain": _categorical_shortcut_diagnostic(
+            cases,
+            labels,
+            field="domain",
+            shortcut_threshold=shortcut_threshold,
+            shortcut_margin=shortcut_margin,
+            minimum_category_count=minimum_category_count,
+        ),
+        "source_type": _categorical_shortcut_diagnostic(
+            cases,
+            labels,
+            field="source_type",
+            shortcut_threshold=shortcut_threshold,
+            shortcut_margin=shortcut_margin,
+            minimum_category_count=minimum_category_count,
+        ),
+        "generator_identity": _categorical_shortcut_diagnostic(
+            cases,
+            labels,
+            field="generator_identity",
+            shortcut_threshold=shortcut_threshold,
+            shortcut_margin=shortcut_margin,
+            minimum_category_count=minimum_category_count,
+        ),
+        "template_id": _categorical_shortcut_diagnostic(
+            cases,
+            labels,
+            field="template_id",
+            shortcut_threshold=shortcut_threshold,
+            shortcut_margin=shortcut_margin,
+            minimum_category_count=minimum_category_count,
+        ),
+    }
+    diagnostics["template"] = diagnostics["template_id"]
     return {
-        "domain": _categorical_shortcut_diagnostic(cases, "domain", labels),
-        "source_type": _categorical_shortcut_diagnostic(cases, "source_type", labels),
-        "template": _categorical_shortcut_diagnostic(cases, "template_id", labels),
+        "predictor_type": "metadata",
+        "features": [
+            feature
+            for feature in features
+            if feature in diagnostics
+        ],
+        "classifiers": {
+            feature: diagnostics[feature]
+            for feature in features
+            if feature in diagnostics
+        },
+        "thresholds": {
+            "macro_f1_threshold": shortcut_threshold,
+            "majority_margin": shortcut_margin,
+            "minimum_category_count": minimum_category_count,
+        },
     }
 
 
-def _categorical_shortcut_diagnostic(cases: list[dict[str, Any]], field: str, labels: Sequence[str]) -> dict[str, Any]:
-    field_values = [row.get(field, "") for row in cases]
-    if any(not isinstance(value, str) or not value.strip() for value in field_values):
-        return {
-            "status": "not_evaluable",
-            "reason": f"{field} is not fully populated across cases",
-            "macro_f1": None,
-            "accuracy": None,
-            "shortcut_detected": None,
-            "evaluable": False,
-        }
-    values = [str(value).strip() for value in field_values]
+def _categorical_shortcut_diagnostic(
+    cases: list[dict[str, Any]],
+    labels: Sequence[str],
+    *,
+    field: str,
+    shortcut_threshold: float,
+    shortcut_margin: float,
+    minimum_category_count: int,
+) -> dict[str, Any]:
+    values = [str(row.get(field, "")) if row.get(field) is not None else "" for row in cases]
+    base_payload = {
+        "predictor_type": "metadata",
+        "input": {
+            "field": field,
+            "total_cases": len(cases),
+            "label_count": len(labels),
+            "minimum_category_count": minimum_category_count,
+        },
+        "thresholds": {
+            "macro_f1_threshold": shortcut_threshold,
+            "majority_margin": shortcut_margin,
+            "minimum_category_count": minimum_category_count,
+        },
+        "folds": [],
+        "aggregate": {"accuracy": None, "macro_f1": None, "balanced_accuracy": None},
+        "majority_baseline": None,
+        "shortcut_detected": None,
+    }
+
+    if not values or not labels:
+        payload = dict(base_payload)
+        payload.update(
+            {
+                "status": "not_evaluable",
+                "reason": "insufficient data for categorical diagnostic",
+                "evaluable": False,
+            }
+        )
+        return payload
+
+    if any(not value.strip() for value in values):
+        payload = dict(base_payload)
+        payload.update(
+            {
+                "status": "not_evaluable",
+                "reason": f"{field} is not fully populated across cases",
+                "evaluable": False,
+            }
+        )
+        payload["input"]["category_support"] = dict(Counter(values))
+        return payload
+
     value_support = Counter(values)
     if len(value_support) < 2:
-        return {
-            "status": "not_evaluable",
-            "reason": f"{field} has fewer than two categories",
-            "macro_f1": None,
-            "accuracy": None,
-            "shortcut_detected": None,
-            "evaluable": False,
-        }
-    unsupported = sorted(value for value, count in value_support.items() if count < 2)
-    if unsupported:
-        return {
-            "status": "not_evaluable",
-            "reason": f"{field} categories lack leave-one-out support: {unsupported}",
-            "macro_f1": None,
-            "accuracy": None,
-            "shortcut_detected": None,
-            "evaluable": False,
-        }
-    counts: dict[str, Counter[str]] = {}
-    for value, row in zip(values, cases):
-        counts.setdefault(value, Counter())[_as_safe_label(row.get("label"), labels)] += 1
+        payload = dict(base_payload)
+        payload["input"]["category_support"] = dict(sorted(value_support.items()))
+        payload.update(
+            {
+                "status": "not_evaluable",
+                "reason": f"{field} has fewer than two categories",
+                "evaluable": False,
+            }
+        )
+        return payload
 
-    predictions: list[str] = []
-    for value, row in zip(values, cases):
-        value_counter = counts.get(value, Counter())
-        value_counter = value_counter.copy()
-        current_label = _as_safe_label(row.get("label"), labels)
-        if current_label:
-            value_counter[current_label] -= 1
-            if value_counter[current_label] <= 0:
-                del value_counter[current_label]
-        if value_counter:
-            prediction = _tie_break(_normalize_counts_to_scores(value_counter))
-        else:
-            prediction = _majority_label(Counter(row.get("label", "") for row in cases), sorted(labels))
-        predictions.append(prediction)
-    y_true = [_as_safe_label(row.get("label"), labels) for row in cases]
-    if not y_true or not predictions:
-        return {
-            "status": "not_evaluable",
-            "reason": "insufficient data for categorical diagnostic",
-            "macro_f1": None,
-            "accuracy": None,
-            "shortcut_detected": None,
-            "evaluable": False,
-        }
-    metrics = _classification_metrics(y_true, predictions, labels)
-    macro_f1 = float(metrics.get("macro_f1", 0.0))
-    accuracy = float(metrics.get("accuracy", 0.0))
+    undersupported = sorted(value for value, count in value_support.items() if count < minimum_category_count)
+    if undersupported:
+        payload = dict(base_payload)
+        payload["input"]["category_support"] = dict(sorted(value_support.items()))
+        payload.update(
+            {
+                "status": "not_evaluable",
+                "reason": (
+                    f"{field} categories lack minimum support for leave-one-out evaluation: "
+                    f"{sorted(undersupported)}"
+                ),
+                "evaluable": False,
+            }
+        )
+        return payload
+
+    table_rows = [
+        {"case_id": row["case_id"], "domain": row["domain"], "label": row["label"], "feature_value": row[field]}
+        for row in cases
+    ]
+    folds = _leave_one_domain_out_folds(table_rows)
+    if not folds:
+        payload = dict(base_payload)
+        payload["input"]["category_support"] = dict(sorted(value_support.items()))
+        payload.update(
+            {
+                "status": "not_evaluable",
+                "reason": f"{field} does not support domain holdout folds",
+                "evaluable": False,
+            }
+        )
+        return payload
+
+    fold_results: list[dict[str, Any]] = []
+    majority_metrics: list[dict[str, float]] = []
+    for domain, (train_rows, test_rows) in folds:
+        train_by_feature: dict[str, Counter[str]] = {}
+        for row in train_rows:
+            train_by_feature.setdefault(row["feature_value"], Counter())[row["label"]] += 1
+
+        train_labels = Counter(row["label"] for row in train_rows)
+        predictions: list[dict[str, str]] = []
+        unsupported: list[str] = []
+        for row in test_rows:
+            feature_value = row["feature_value"]
+            label_counts = train_by_feature.get(feature_value)
+            if not label_counts:
+                unsupported.append(row["case_id"])
+                continue
+            prediction = _tie_break(_normalize_counts_to_scores(label_counts))
+            predictions.append(
+                {
+                    "case_id": row["case_id"],
+                    "truth": row["label"],
+                    "prediction": prediction,
+                    "feature_value": feature_value,
+                }
+            )
+
+        if unsupported:
+            payload = dict(base_payload)
+            payload["input"]["category_support"] = dict(sorted(value_support.items()))
+            payload["folds"] = [{
+                "domain": domain,
+                "train_count": len(train_rows),
+                "test_count": len(test_rows),
+                "status": "not_evaluable",
+                "reason": f"feature value unseen in training split for cases: {', '.join(unsupported[:5])}",
+                "predictions": predictions,
+                "metrics": {"accuracy": None, "macro_f1": None, "balanced_accuracy": None},
+                "train_labels": sorted(set(train_labels)),
+                "test_labels": sorted(set(row["label"] for row in test_rows)),
+            }]
+            payload.update(
+                {
+                    "status": "not_evaluable",
+                    "reason": f"{field} has no leave-one-out support in fold '{domain}'",
+                    "evaluable": False,
+                }
+            )
+            return payload
+
+        y_true = [row["truth"] for row in predictions]
+        y_pred = [row["prediction"] for row in predictions]
+        metrics = _classification_metrics(y_true, y_pred, labels)
+        baseline_pred = _majority_label(train_labels, sorted(labels))
+        majority = _classification_metrics(y_true, [baseline_pred for _ in y_true], labels)
+        majority_metrics.append(majority)
+        fold_results.append(
+            {
+                "domain": domain,
+                "train_count": len(train_rows),
+                "test_count": len(test_rows),
+                "status": "pass",
+                "predictions": predictions,
+                "metrics": metrics,
+                "train_labels": sorted(set(train_labels)),
+                "test_labels": sorted(set(row["label"] for row in test_rows)),
+                "majority_baseline_metrics": majority,
+            }
+        )
+
+    aggregate = _aggregate_folds([FoldResult(**{
+        "domain": row["domain"],
+        "train_count": row["train_count"],
+        "test_count": row["test_count"],
+        "predictions": row["predictions"],
+        "metrics": row["metrics"],
+        "status": "pass",
+    }) for row in fold_results])
+
+    avg_majority = _aggregate_folds([FoldResult(**{
+        "domain": row["domain"],
+        "train_count": row["train_count"],
+        "test_count": row["test_count"],
+        "predictions": [],
+        "metrics": row["majority_baseline_metrics"],
+        "status": "pass",
+    }) for row in fold_results])
+
+    aggregate = {
+        "accuracy": round(float(aggregate.get("accuracy", 0.0)), 12),
+        "macro_f1": round(float(aggregate.get("macro_f1", 0.0)), 12),
+        "balanced_accuracy": round(float(aggregate.get("balanced_accuracy", 0.0)), 12),
+    }
+    avg_majority_dict = {
+        "accuracy": round(float(avg_majority.get("accuracy", 0.0)), 12),
+        "macro_f1": round(float(avg_majority.get("macro_f1", 0.0)), 12),
+        "balanced_accuracy": round(float(avg_majority.get("balanced_accuracy", 0.0)), 12),
+    }
+    macro_gap = aggregate["macro_f1"] - avg_majority_dict["macro_f1"]
     return {
-        "status": "evaluable",
-        "macro_f1": round(macro_f1, 12),
-        "accuracy": round(accuracy, 12),
-        "shortcut_detected": macro_f1 >= 0.75,
+        "status": "pass",
+        "reason": None,
         "evaluable": True,
+        "input": {
+            **base_payload["input"],
+            "category_support": dict(sorted(value_support.items())),
+            "folds_evaluated": len(fold_results),
+        },
+        "thresholds": base_payload["thresholds"],
+        "folds": fold_results,
+        "aggregate": aggregate,
+        "majority_baseline": avg_majority_dict,
+        "shortcut_detected": aggregate["macro_f1"] >= shortcut_threshold and macro_gap >= shortcut_margin,
+        "macro_gap_over_majority": round(float(macro_gap), 12),
     }
 
 

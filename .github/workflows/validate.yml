@@ -8,25 +8,44 @@ concurrency:
   cancel-in-progress: true
 
 on:
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
   workflow_dispatch:
 
 jobs:
-  test:
+  repository-check:
+    name: Repository check
     runs-on: ubuntu-latest
-    timeout-minutes: 2
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.11", "3.12"]
+    timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.12"
+
+      - name: Run dependency-free checks
+        env:
+          PYTHONPATH: src
+        run: |
+          make check
+          python -m latent_triz.cli fingerprint schemas/case.schema.json
+
+  python-311-compatibility:
+    name: Python 3.11 compatibility
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
       - name: Run dependency-free checks
         env:

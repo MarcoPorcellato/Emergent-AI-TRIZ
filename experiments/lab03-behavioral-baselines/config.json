@@ -11,6 +11,10 @@
   "minimum_cases_per_label_per_domain": 6,
   "shortcut_macro_f1_threshold": 0.8,
   "shortcut_margin_over_majority": 0.1,
+  "provenance_shortcut_features": ["source_type", "generator_identity", "template_id"],
+  "provenance_shortcut_threshold": 0.8,
+  "provenance_shortcut_margin_over_majority": 0.1,
+  "provenance_shortcut_min_category_count": 2,
   "evaluation_views": [
     "problem_only",
     "transformation_only",

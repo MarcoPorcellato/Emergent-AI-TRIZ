@@ -80,6 +80,9 @@ An external family counts as complete only when its config entry points to a con
 - minimum cases per label in each domain: `6`
 - shortcut macro-F1 threshold: `0.80`
 - shortcut margin over majority: `0.10`
+- provenance shortcut macro-F1 threshold: `0.80`
+- provenance shortcut margin over majority: `0.10`
+- minimum provenance category count: `2`
 
 ## Current fixture boundary
 
@@ -120,10 +123,31 @@ Lab 03 adds provenance-only categorical shortcut diagnostics for:
 
 - domain,
 - provenance `source_type`,
+- generator identity (read only from explicit provenance `generator_id`),
 - provenance `template_id`.
 
-Each block reports whether evaluation is possible (`evaluable`) and includes
-`macro_f1` / `accuracy` only when all required structured values are present,
-at least two categories exist, and every category has leave-one-out support.
-A single source family or one unique template per case is `not_evaluable`; no
-synthetic template identifiers are emitted.
+Each block reports whether evaluation is possible (`evaluable`) and records:
+
+- `input` metadata (feature, category support, thresholds, and fold counts),
+- per-fold leave-one-domain-out predictions and metrics,
+- aggregate metrics (`accuracy`, `macro_f1`, `balanced_accuracy`) and `majority_baseline`,
+- threshold configuration used for shortcut detection.
+
+Metadata predictors are explicitly flagged as `predictor_type: "metadata"` and are
+distinct from semantic text classifiers. A classifier is `not_evaluable` when feature
+values are missing, have insufficient categorical support, or cannot be evaluated in
+one or more held-out domain folds; these are never treated as pass.
+
+## Current Wave 1 result
+
+The retained Wave 1 surface audit rejects freeze readiness. The strongest
+observed shortcut scores are `1.0000` macro-F1 for the transformation-only
+character n-gram view and `1.0000` for the problem-plus-solution bag-of-words
+view, both above the `0.80` threshold. The problem-only bag-of-words score is
+`0.8714`, and the resulting-state-only score is `0.8310`.
+
+The batch currently has a single `source_type` and does not declare
+`generator_id` or `template_id`, so the provenance-only classifiers are
+correctly `not_evaluable`. Conventional sentence embeddings remain `not_run`
+until a versioned external adapter receipt is added. These are dataset and
+method blockers, not evidence for or against the Latent TRIZ hypothesis.
