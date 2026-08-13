@@ -3,6 +3,7 @@
   "status": "fail",
   "seed": 1729,
   "permutations": 100,
+  "numeric_backend": "pure_python",
   "probe_family": "linear_one_vs_rest_ridge",
   "alpha_grid": [0.01, 0.1, 1, 10],
   "outer_split": {
@@ -22,6 +23,9 @@
     "alpha": "smallest_value",
     "layer": "lowest_index"
   },
+  "max_statistic": "outer_fold_macro_f1_max",
+  "permutation_blocks": "outer_training_domain",
+  "reselect_within_each_permutation": true,
   "non_claim_boundary": {
     "empirical": false,
     "evidence_eligible": false,

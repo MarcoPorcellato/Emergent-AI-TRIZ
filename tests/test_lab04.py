@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import json
+import math
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -84,6 +86,46 @@ class Lab04Tests(unittest.TestCase):
             },
         ]
 
+    def _four_domain_two_label_cases(self) -> list[dict]:
+        return [
+            {"case_id": "d0_a", "domain": "d0", "label": "alpha", "labels": [{"principle": "alpha"}]},
+            {"case_id": "d0_b", "domain": "d0", "label": "beta", "labels": [{"principle": "beta"}]},
+            {"case_id": "d1_a", "domain": "d1", "label": "alpha", "labels": [{"principle": "alpha"}]},
+            {"case_id": "d1_b", "domain": "d1", "label": "beta", "labels": [{"principle": "beta"}]},
+            {"case_id": "d2_a", "domain": "d2", "label": "alpha", "labels": [{"principle": "alpha"}]},
+            {"case_id": "d2_b", "domain": "d2", "label": "beta", "labels": [{"principle": "beta"}]},
+            {"case_id": "d3_a", "domain": "d3", "label": "alpha", "labels": [{"principle": "alpha"}]},
+            {"case_id": "d3_b", "domain": "d3", "label": "beta", "labels": [{"principle": "beta"}]},
+        ]
+
+    def _four_domain_two_label_representations(self, layer_scores: tuple[list[float], list[float]]) -> list[dict]:
+        layer0 = layer_scores[0]
+        layer1 = layer_scores[1]
+        records: list[dict] = []
+        for case_id in ["d0_a", "d0_b", "d1_a", "d1_b", "d2_a", "d2_b", "d3_a", "d3_b"]:
+            label = "alpha" if case_id.endswith("_a") else "beta"
+            records.append(
+                {
+                    "case_id": case_id,
+                    "layer_index": 0,
+                    "vector": layer0 if label == "alpha" else list(layer0),
+                    "vector_dim": 2,
+                    "provenance": {"synthetic": True},
+                    "non_claim_boundary": {"empirical": False, "evidence_eligible": False, "claim_ids": []},
+                }
+            )
+            records.append(
+                {
+                    "case_id": case_id,
+                    "layer_index": 1,
+                    "vector": layer1 if label == "alpha" else [layer1[0] + 1.0, layer1[1]],
+                    "vector_dim": 2,
+                    "provenance": {"synthetic": True},
+                    "non_claim_boundary": {"empirical": False, "evidence_eligible": False, "claim_ids": []},
+                }
+            )
+        return records
+
     def test_current_fixture_is_fail_closed_and_non_claim(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -136,6 +178,46 @@ class Lab04Tests(unittest.TestCase):
             self.assertNotIn("/private/tmp", html)
             self.assertNotIn("/Users/", html)
             self.assertEqual(json.loads((root / "out/summary.json").read_text(encoding="utf-8"))["claim_ids"], [])
+
+    def test_case_issues_force_fail_closed_status(self) -> None:
+        cases = self._minimal_cases()
+        cases.append(
+            {
+                "case_id": "pilot_case_003",
+                "domain": "service",
+                "label": "local_quality",
+                "labels": [{"principle": "local_quality"}, {"principle": "segmentation"}],
+            }
+        )
+        config = self._config()
+        config["minimum_labels"] = 2
+        config["readiness_thresholds"]["minimum_domains"] = 2
+        config["readiness_thresholds"]["minimum_cases_per_label_domain_cell"] = 1
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._write_jsonl(root / "cases.jsonl", cases)
+            self._write_jsonl(root / "representations.jsonl", self._minimal_representations())
+            self._write_json(root / "config.json", config)
+            self._write_json(root / "lab01.json", self._predecessor())
+            self._write_json(root / "lab02.json", self._predecessor())
+            self._write_json(root / "lab03.json", self._predecessor())
+
+            result = lab04.run_lab04_analysis(
+                cases_path=root / "cases.jsonl",
+                representations_path=root / "representations.jsonl",
+                config_path=root / "config.json",
+                predecessor_lab01_summary=root / "lab01.json",
+                predecessor_lab02_summary=root / "lab02.json",
+                predecessor_lab03_summary=root / "lab03.json",
+            )
+
+            self.assertEqual(result["status"], "fail")
+            gates = {item["gate"]: item["status"] for item in result["gates"]}
+            self.assertEqual(gates["P1"], "fail")
+            p1 = next(item for item in result["gates"] if item["gate"] == "P1")
+            self.assertIn("non-unanimous labels", p1["details"])
+            self.assertTrue(any("non-unanimous labels" in issue for issue in result["issues"]))
 
     def test_representation_validation_rejects_nonfinite_dimension_mismatch_and_label_leakage(self) -> None:
         case_label = {"pilot_case_001": "segmentation", "pilot_case_002": "segmentation"}
@@ -210,6 +292,156 @@ class Lab04Tests(unittest.TestCase):
         selected = lab04._holm_adjust([0.01, 0.01, 0.1])
         self.assertEqual(selected, [0.03, 0.03, 0.1])
 
+    def test_max_statistic_selected_layer_uses_tie_break_to_lower_index(self) -> None:
+        records = [
+            {"layer": 0, "observed_layer_macro": 0.40, "permutation_null": [0.1, 0.2], "permutation_count": 2},
+            {"layer": 1, "observed_layer_macro": 0.40, "permutation_null": [0.3, 0.4], "permutation_count": 2},
+            {"layer": 2, "observed_layer_macro": 0.60, "permutation_null": [0.2, 0.1], "permutation_count": 2},
+        ]
+        self.assertEqual(lab04._select_max_stat_layer(records), 2)
+
+        records[0]["observed_layer_macro"] = 0.60
+        self.assertEqual(lab04._select_max_stat_layer(records), 0)
+
+    def test_max_statistic_family_wise_p_is_computed_from_max_of_layer_nulls(self) -> None:
+        records = [
+            {"layer": 0, "observed_layer_macro": 0.2, "permutation_null": [0.2, 0.9], "permutation_count": 2},
+            {"layer": 1, "observed_layer_macro": 0.8, "permutation_null": [0.8, 0.7], "permutation_count": 2},
+        ]
+        self.assertEqual(lab04._select_max_stat_layer(records), 1)
+        self.assertEqual(lab04._compute_max_stat_p(records, 1), (1.0, 2))
+
+    def test_alpha_reselection_receipts_are_deterministic_and_recorded_for_each_fold(self) -> None:
+        labels = ["alpha", "beta"]
+        case_label: dict[str, str] = {}
+        case_domain: dict[str, str] = {}
+        vectors: dict[str, list[float]] = {}
+        for domain_index in range(4):
+            for label_index, label in enumerate(labels):
+                case_id = f"case_d{domain_index}_{label}"
+                case_label[case_id] = label
+                case_domain[case_id] = f"domain_{domain_index}"
+                vectors[case_id] = [float(label_index * 4 + domain_index), 1.0]
+
+        config = {
+            "permutations": 5,
+            "seed": 1729,
+            "reselect_within_each_permutation": True,
+        }
+        result_a, _ = lab04._run_layer(
+            layer=0,
+            vectors=vectors,
+            case_domain=case_domain,
+            case_label=case_label,
+            labels=labels,
+            config=config,
+        )
+        result_b, _ = lab04._run_layer(
+            layer=0,
+            vectors=vectors,
+            case_domain=case_domain,
+            case_label=case_label,
+            labels=labels,
+            config=config,
+        )
+        receipts_a = [
+            fold["permutation_receipt"]["alpha_reselection_sha256"]
+            for fold in result_a["folds"]
+        ]
+        receipts_b = [
+            fold["permutation_receipt"]["alpha_reselection_sha256"]
+            for fold in result_b["folds"]
+        ]
+        self.assertEqual(receipts_a, receipts_b)
+        for fold in result_a["folds"]:
+            receipt = fold["permutation_receipt"]
+            self.assertEqual(receipt["alpha_reselection_count"], 5)
+            self.assertEqual(receipt["alpha_reselection_failures"], 0)
+            self.assertEqual(receipt["block"], "outer_training_domain")
+            self.assertTrue(receipt["block_label_counts_preserved"])
+
+    def test_max_statistic_selected_layer_is_published_and_follows_outer_macro_tiebreak(self) -> None:
+        cases = self._four_domain_two_label_cases()
+        representations = [
+            {
+                "case_id": case["case_id"],
+                "layer_index": 0,
+                "vector": [0.0, 0.0],
+                "vector_dim": 2,
+                "provenance": {"synthetic": True},
+                "non_claim_boundary": {"empirical": False, "evidence_eligible": False, "claim_ids": []},
+            }
+            for case in cases
+        ]
+        representations.extend(
+            [
+                {
+                    "case_id": case["case_id"],
+                    "layer_index": 1,
+                    "vector": [0.0, 0.0] if case["case_id"].endswith("_a") else [1.0, 0.0],
+                    "vector_dim": 2,
+                    "provenance": {"synthetic": True},
+                    "non_claim_boundary": {"empirical": False, "evidence_eligible": False, "claim_ids": []},
+                }
+                for case in cases
+            ]
+        )
+
+        config = self._config()
+        config["minimum_labels"] = 2
+        config["readiness_thresholds"]["minimum_domains"] = 4
+        config["readiness_thresholds"]["minimum_cases_per_label_domain_cell"] = 1
+        config["readiness_thresholds"]["corrected_p_max"] = 1.0
+        config["permutations"] = 3
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._write_jsonl(root / "cases.jsonl", cases)
+            self._write_jsonl(root / "representations.jsonl", representations)
+            self._write_json(root / "config.json", config)
+            self._write_json(root / "lab01.json", self._predecessor())
+            self._write_json(root / "lab02.json", self._predecessor())
+            self._write_json(root / "lab03.json", self._predecessor())
+
+            result = lab04.run_lab04_analysis(
+                cases_path=root / "cases.jsonl",
+                representations_path=root / "representations.jsonl",
+                config_path=root / "config.json",
+                predecessor_lab01_summary=root / "lab01.json",
+                predecessor_lab02_summary=root / "lab02.json",
+                predecessor_lab03_summary=root / "lab03.json",
+            )
+            self.assertEqual(result["random_control"]["max_statistic"]["selected_layer"], 1)
+
+    def test_insufficient_permutations_cannot_resolve_significance_alpha(self) -> None:
+        cases = self._four_domain_two_label_cases()
+        representations = self._four_domain_two_label_representations(([0.0, 0.0], [0.0, 0.0]))
+        config = self._config()
+        config["minimum_labels"] = 2
+        config["readiness_thresholds"]["minimum_domains"] = 4
+        config["readiness_thresholds"]["minimum_cases_per_label_domain_cell"] = 1
+        config["readiness_thresholds"]["corrected_p_max"] = 0.1
+        config["permutations"] = 2
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            self._write_jsonl(root / "cases.jsonl", cases)
+            self._write_jsonl(root / "representations.jsonl", representations)
+            self._write_json(root / "config.json", config)
+            self._write_json(root / "lab01.json", self._predecessor())
+            self._write_json(root / "lab02.json", self._predecessor())
+            self._write_json(root / "lab03.json", self._predecessor())
+            result = lab04.run_lab04_analysis(
+                cases_path=root / "cases.jsonl",
+                representations_path=root / "representations.jsonl",
+                config_path=root / "config.json",
+                predecessor_lab01_summary=root / "lab01.json",
+                predecessor_lab02_summary=root / "lab02.json",
+                predecessor_lab03_summary=root / "lab03.json",
+            )
+            self.assertEqual(result["status"], "fail")
+            self.assertIn("below minimum resolvable p", "\n".join(result["issues"]))
+
     def test_nested_lodo_receipts_are_leakage_free_and_train_only(self) -> None:
         labels = ["alpha", "beta"]
         case_label: dict[str, str] = {}
@@ -261,6 +493,78 @@ class Lab04Tests(unittest.TestCase):
             held_fold["scaler_receipt"]["sha256"],
             changed_fold["scaler_receipt"]["sha256"],
         )
+
+    def test_explicit_numpy_backend_unavailable_is_fail_closed(self) -> None:
+        with patch("importlib.import_module", side_effect=ImportError("numpy unavailable")):
+            with self.assertRaisesRegex(lab04.Lab04Error, "NumPy is not available"):
+                lab04._require_numpy_available()
+
+    def test_invalid_numeric_backend_is_rejected(self) -> None:
+        with self.assertRaisesRegex(lab04.Lab04Error, "invalid numeric_backend"):
+            lab04._coerce_numeric_backend("jit")
+
+    def test_numpy_backend_rejects_unpinned_runtime_version(self) -> None:
+        fake_numpy = type("FakeNumpy", (), {"__version__": "0.0.0"})()
+        with patch("importlib.import_module", return_value=fake_numpy):
+            with self.assertRaisesRegex(lab04.Lab04Error, "requires NumPy 2.4.3"):
+                lab04._require_numpy_available()
+
+    def test_numpy_ridge_is_finite_on_collinear_features(self) -> None:
+        if not lab04._is_numpy_available():
+            self.skipTest("NumPy not installed in this environment")
+        weights = lab04._ridge_weights(
+            [[1.0, 1.0], [1.0, 1.0], [1.0, 1.0]],
+            [1.0, -1.0, 1.0],
+            0.1,
+            "numpy",
+        )
+        self.assertEqual(len(weights), 3)
+        self.assertTrue(all(math.isfinite(value) for value in weights))
+
+    def test_numpy_backend_matches_reference_on_nested_lodo_fixture(self) -> None:
+        if not lab04._is_numpy_available():
+            self.skipTest("NumPy not installed in this environment")
+        labels = ["alpha", "beta"]
+        case_label: dict[str, str] = {}
+        case_domain: dict[str, str] = {}
+        vectors: dict[str, list[float]] = {}
+        for domain_index in range(4):
+            for label_index, label in enumerate(labels):
+                case_id = f"case_d{domain_index}_{label}"
+                case_label[case_id] = label
+                case_domain[case_id] = f"domain_{domain_index}"
+                vectors[case_id] = [
+                    float(label_index * 4 + domain_index),
+                    float(label_index),
+                ]
+        pure, pure_issues = lab04._run_layer(
+            layer=0,
+            vectors=vectors,
+            case_domain=case_domain,
+            case_label=case_label,
+            labels=labels,
+            config={"permutations": 5, "seed": 1729, "numeric_backend": "pure_python"},
+        )
+        numpy_result, numpy_issues = lab04._run_layer(
+            layer=0,
+            vectors=vectors,
+            case_domain=case_domain,
+            case_label=case_label,
+            labels=labels,
+            config={"permutations": 5, "seed": 1729, "numeric_backend": "numpy"},
+        )
+        self.assertEqual(pure_issues, numpy_issues)
+        self.assertEqual(pure["selected_alpha"], numpy_result["selected_alpha"])
+        self.assertAlmostEqual(pure["p_value_raw"], numpy_result["p_value_raw"])
+        for pure_fold, numpy_fold in zip(pure["folds"], numpy_result["folds"]):
+            self.assertEqual(pure_fold["selected_alpha"], numpy_fold["selected_alpha"])
+            self.assertEqual(pure_fold["predictions"], numpy_fold["predictions"])
+            self.assertEqual(pure_fold["metrics"], numpy_fold["metrics"])
+            self.assertAlmostEqual(pure_fold["permutation_p"], numpy_fold["permutation_p"])
+            self.assertEqual(
+                numpy_fold["permutation_receipt"]["numeric_solver"],
+                "numpy_augmented_lstsq",
+            )
 
     def test_runner_outputs_are_deterministic_and_path_clean(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

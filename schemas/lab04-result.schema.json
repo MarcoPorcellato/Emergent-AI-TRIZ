@@ -45,8 +45,57 @@
       }
     },
     "case_summary": {"type": "object"},
-    "random_control": {"type": "object"},
-    "config": {"type": "object"},
+    "random_control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed", "permutations", "method", "formula", "max_statistic"],
+      "properties": {
+        "seed": {"type": "integer", "minimum": 0},
+        "permutations": {"type": "integer", "minimum": 1},
+        "method": {"type": "string", "pattern": "inner alpha selection repeated"},
+        "formula": {"const": "p=(1+null>=observed)/(1+n)"},
+        "max_statistic": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["selected_layer", "max_statistic_p", "null_count", "null_sha256", "signature", "configured_alpha"],
+          "properties": {
+            "selected_layer": {"type": ["integer", "null"], "minimum": 0},
+            "max_statistic_p": {"type": "number", "minimum": 0, "maximum": 1},
+            "null_count": {"type": "integer", "minimum": 0},
+            "null_sha256": {"$ref": "#/$defs/sha256"},
+            "signature": {"const": "max_statistic_family_wise"},
+            "configured_alpha": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+          }
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["numeric_backend", "numeric_solver", "numeric_library_version", "minimum_labels", "minimum_domains", "minimum_cases_per_label_domain_cell", "alphas", "max_statistic", "permutation_blocks", "reselect_within_each_permutation", "permutations", "seed", "significance_alpha"],
+      "properties": {
+        "numeric_backend": {"enum": ["pure_python", "numpy"]},
+        "numeric_solver": {"enum": ["pure_python_normal_equations_reference", "numpy_augmented_lstsq"]},
+        "numeric_library_version": {"enum": ["none", "2.4.3"]},
+        "minimum_labels": {"type": "integer", "minimum": 2},
+        "minimum_domains": {"type": "integer", "minimum": 2},
+        "minimum_cases_per_label_domain_cell": {"type": "integer", "minimum": 1},
+        "alphas": {"type": "array", "minItems": 1, "items": {"type": "number", "exclusiveMinimum": 0}},
+        "max_statistic": {"const": "outer_fold_macro_f1_max"},
+        "permutation_blocks": {"const": "outer_training_domain"},
+        "reselect_within_each_permutation": {"const": true},
+        "permutations": {"type": "integer", "minimum": 1},
+        "seed": {"type": "integer", "minimum": 0},
+        "significance_alpha": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"numeric_backend": {"const": "numpy"}}},
+          "then": {"properties": {"numeric_solver": {"const": "numpy_augmented_lstsq"}, "numeric_library_version": {"const": "2.4.3"}}},
+          "else": {"properties": {"numeric_solver": {"const": "pure_python_normal_equations_reference"}, "numeric_library_version": {"const": "none"}}}
+        }
+      ]
+    },
     "layers": {"type": "array", "items": {"type": "object"}},
     "gates": {
       "type": "array", "minItems": 8, "maxItems": 8,

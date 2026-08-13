@@ -9,6 +9,7 @@
     "status",
     "seed",
     "permutations",
+    "numeric_backend",
     "probe_family",
     "alpha_grid",
     "outer_split",
@@ -16,6 +17,9 @@
     "metrics",
     "preprocessing",
     "tie_breaks",
+    "max_statistic",
+    "permutation_blocks",
+    "reselect_within_each_permutation",
     "non_claim_boundary",
     "readiness_thresholds",
     "representation_source"
@@ -25,6 +29,7 @@
     "status": {"type": "string", "enum": ["draft", "ready", "fail"]},
     "seed": {"type": "integer", "minimum": 0},
     "permutations": {"type": "integer", "const": 100},
+    "numeric_backend": {"type": "string", "enum": ["pure_python", "numpy"]},
     "probe_family": {"type": "string", "const": "linear_one_vs_rest_ridge"},
     "alpha_grid": {
       "type": "array",
@@ -75,6 +80,12 @@
         "layer": {"const": "lowest_index"}
       }
     },
+    "max_statistic": {
+      "type": "string",
+      "const": "outer_fold_macro_f1_max"
+    },
+    "permutation_blocks": {"const": "outer_training_domain"},
+    "reselect_within_each_permutation": {"const": true},
     "non_claim_boundary": {
       "type": "object",
       "additionalProperties": false,

@@ -10,6 +10,7 @@ last_verified: 2026-08-13
 
 ## 2026-08-13
 
+- Replaced Lab 04 all-layer Holm gating with shared, domain-blocked max-statistic control, nested alpha reselection within every permutation, explicit p-resolution refusal, typed public receipts, and regenerated fail-closed Lab 04–05 fixture artifacts.
 - Added the Wave 1 retained audit command for per-rater files, including
   exact guide digest checks, full coverage, pairwise agreement and abstention
   thresholds, consensus and disagreement retention, and a non-evidence

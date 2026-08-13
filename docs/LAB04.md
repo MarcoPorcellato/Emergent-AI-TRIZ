@@ -22,7 +22,7 @@ Lab 04 defines the representation-decoding surface of the repository. It is a bo
 - permutations: `100` deterministic label permutations on training labels
 - metrics: accuracy, macro-F1, balanced accuracy
 - p-value rule: one-sided permutation test with `p = (1 + count(null >= observed)) / (1 + n)`
-- multiple-comparison correction: Holm across layers
+- family-wise control: preregistered max-statistic control over layers with shared permutations
 - current fixture: 2 cases, 2 layers, synthetic process-only vectors
 - status: `fail` / not-ready
 
@@ -40,11 +40,16 @@ The public contract is fixed as follows:
 - outer folds must leave one domain out;
 - inner folds must search only the declared alpha grid;
 - the chosen alpha must break ties toward the smallest value;
-- the chosen layer must break ties toward the lowest layer index;
+- selected layer is the one with highest observed outer-fold mean macro-F1, tie broken to the lowest layer index;
 - the null distribution must use exactly 100 deterministic label permutations on training labels;
 - all layers must be evaluated with the same declared permutation rule;
-- Holm correction must be applied across layers;
+- max-statistic control must be applied across layers;
+- permutation draws must be blocked by outer-training domain and shared across layers;
 - the boundary is non-claim even when numbers look favorable.
+- `pure_python` remains the dependency-free reference solver; the optional
+  `numpy` backend is pinned and uses augmented least squares so it does not
+  form normal equations, and it fails closed if unavailable or numerically
+  invalid; the runtime version must match the recorded `2.4.3` pin;
 
 ## Readiness gates
 
@@ -55,8 +60,8 @@ Lab 04 uses fail-closed gates:
 - P3 the study has at least 2 labels, at least 4 domains, and at least 6 cases per label-domain cell;
 - P4 nested domain splitting is exact and leakage-free;
 - P5 preprocessing and hyperparameter selection are train-only and receipt-backed;
-- P6 permutation calibration is valid and Holm correction is applied correctly;
-- P7 the preregistered threshold is met only if corrected `p <= 0.05` and macro-F1 improves over majority by at least `0.10` in every outer fold;
+- P6 permutation calibration is valid and max-statistic control is recorded;
+- P7 the preregistered threshold is met only if selected-layer max-statistic `p <= 0.05` and macro-F1 improves over majority by at least `0.10` in each outer fold of the selected layer;
 - P8 the non-claim boundary remains enforced.
 
 ## Current fixture boundary
@@ -112,3 +117,6 @@ the Latent TRIZ hypothesis.
 ## Public interpretation
 
 Lab 04 is the first controlled bridge from labeled dataset structure to representation-level analysis. It narrows the question to decodability under preregistered controls and keeps the boundary between observation and claim explicit.
+- `max_statistic` controls the family-wise calibration protocol; the current preregistered value is `outer_fold_macro_f1_max`
+- `permutation_blocks` is fixed to `outer_training_domain` so the null preserves label prevalence within each training domain
+- `reselect_within_each_permutation` requires inner alpha search to be rerun inside every permutation and is fixed to `true`
