@@ -1,0 +1,26 @@
+{
+  "artifact_class": "candidate-direction-contract",
+  "empirical": false,
+  "evidence_eligible": false,
+  "claim_ids": [],
+  "target_label": "segmentation",
+  "contrast_label": "inversion",
+  "unrelated_labels": ["merging", "universality"],
+  "random_control_seeds": [1729, 1730, 1731],
+  "norm_match_tolerance": 0.000000000001,
+  "minimum_cases_per_label": 6,
+  "minimum_domains_per_label": 4,
+  "representation_source": {
+    "cases_path": "data/pilot/cases.jsonl",
+    "representations_path": "data/pilot/representations.jsonl",
+    "predecessor_summary_path": "results/lab04/decodability/summary.json"
+  },
+  "publication_boundary": {
+    "dense_vectors_published": false,
+    "interventions_executed": false,
+    "steering_claim_allowed": false,
+    "causal_claim_allowed": false
+  },
+  "gates": ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8"],
+  "notes": "Synthetic process-only contract fixture. Candidate directions are descriptive hashes, not interventions or Latent TRIZ evidence."
+}

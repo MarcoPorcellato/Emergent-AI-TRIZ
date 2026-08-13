@@ -10,3 +10,4 @@ Every report must link to the relevant preregistration, code commit, data snapsh
 - [Lab 02 dataset anatomy](./lab02/dataset-anatomy/report.html) — synthetic dataset-release readiness; non-empirical, not evidence-eligible, and attached to no scientific claim.
 - [Lab 03 behavioral baselines](./lab03/behavioral-baselines/report.html) — synthetic surface-control readiness; non-empirical, not evidence-eligible, and attached to no scientific claim.
 - [Lab 04 decodability](./lab04/decodability/report.html) — deterministic representation-decoding boundary (fixture is non-empirical and not evidence-eligible).
+- [Lab 05 candidate directions](./lab05/candidate-directions/report.html) — descriptive direction and control diagnostics; no dense vectors, interventions, or claims.

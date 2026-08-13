@@ -18,7 +18,7 @@ Labs 00 through 04 expose separate deterministic reports, but a new contributor 
 
 ## Decision
 
-1. Make `make lab` the one-command visual entrance to all maintained Lab 00 through Lab 04 artifacts.
+1. Make `make lab` the one-command visual entrance to all maintained laboratory artifacts, initially Lab 00 through Lab 04 and extensible under later ADRs.
 2. Keep `make lab-render` as its headless equivalent.
 3. Render a deterministic, dependency-free index from tracked summaries and report paths.
 4. Verify that every maintained result is evidence-ineligible and attached to no claim before rendering it.

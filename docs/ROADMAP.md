@@ -10,7 +10,7 @@ last_verified: 2026-08-13
 
 The laboratory foundation is operational. Lab 00 is a deterministic synthetic process smoke. Lab 01 is the first real-model instrumentation result and remains explicitly ineligible as evidence for the hypothesis.
 
-The maintained Lab 00 through Lab 04 artifacts now have a single local visual entrance. `make lab` opens the dashboard and `make lab-render` produces the same deterministic page for headless use. The dashboard is a navigation and integrity surface; it does not recompute experiments or promote scientific claims.
+The maintained Lab 00 through Lab 05 artifacts now have a single local visual entrance. `make lab` opens the dashboard and `make lab-render` produces the same deterministic page for headless use. The dashboard is a navigation and integrity surface; it does not recompute experiments or promote scientific claims.
 
 ## Foundation — delivered
 
@@ -50,7 +50,7 @@ Delivered, infrastructure-only, and not attached to any scientific claim:
 - avoid any model, representation, or empirical claim;
 - keep the dependency-free validation core separate from the optional visual surface.
 
-`make lab00` reproduces the frozen smoke, renders its responsive local HTML report, and opens it through the operating system. `make lab00-render` provides the same deterministic Lab 00 output for headless environments; `make lab` opens the combined Lab 00–04 dashboard.
+`make lab00` reproduces the frozen smoke, renders its responsive local HTML report, and opens it through the operating system. `make lab00-render` provides the same deterministic Lab 00 output for headless environments; `make lab` opens the combined Lab 00–05 dashboard.
 
 ## Model-backed laboratory sequence
 
@@ -76,6 +76,8 @@ Lab 04 is now implemented as a deterministic decodability contract run target wi
 - outer leave-one-domain-out and inner domain-aware model selection,
 - deterministic training-label permutation control with Holm-corrected layer adjustment,
 - strict non-claim boundary in the report output.
+
+Lab 05 is implemented as deterministic, fail-closed candidate-direction instrumentation. It computes `mean(segmentation) - mean(inversion)` per layer, compares it with norm-matched seeded random controls and unrelated-label controls, and publishes only hashes, norms, and projections. The current fixture intentionally remains `fail`: Lab 04 is not scientifically ready and the dataset has insufficient label/domain support. No dense direction, intervention, steering claim, or causal claim is published.
 
 The interface should remain optional so that the dependency-free validation core stays lightweight. A concrete model, revision, interpretability library, and sparse-feature resource will be selected only after their current availability, license, and hardware requirements are independently verified.
 
