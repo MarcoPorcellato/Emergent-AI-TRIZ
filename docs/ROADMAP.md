@@ -38,6 +38,18 @@ These artifacts are not confirmatory evidence.
 - add schema-level and optional smoke validation for Stage 1 artifacts;
 - add explicit documentation gates that Stage 1 smoke artifacts are not evidence.
 
+### Lab 00 - public smoke view
+
+Delivered, presentation-only, and below E0:
+
+- render the tracked synthetic Stage 1 smoke artifacts as a one-command visual report;
+- reuse the frozen packet, response, annotation, and summary files;
+- show the non-empirical boundary prominently in the output;
+- avoid any model, representation, or empirical claim;
+- keep the dependency-free validation core separate from the optional visual surface.
+
+`make lab` now reproduces the frozen smoke, renders a responsive local HTML report, and opens it through the operating system. `make lab-render` provides the same deterministic output for headless environments.
+
 ## Near-term public laboratory
 
 The next milestone is a one-command local and visual lab that lets a contributor inspect the same frozen artifacts used by the research protocol. The planned sequence is:

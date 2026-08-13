@@ -470,7 +470,12 @@ def _read_input_records(path_or_records: str | Sequence[str]) -> list[Dict[str, 
         with path.open("r", encoding="utf-8") as fp:
             data = json.load(fp)
         if isinstance(data, list):
-            return [dict(item) for item in data]
+            records: list[Dict[str, Any]] = []
+            for index, item in enumerate(data, start=1):
+                if not isinstance(item, dict):
+                    raise PilotError(f"non-object JSON array record in {path}:{index}")
+                records.append(item)
+            return records
         raise PilotError(f"expected JSON array in {path}")
     return _read_jsonl(path)
 

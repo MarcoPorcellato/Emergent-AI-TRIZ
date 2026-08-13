@@ -568,6 +568,30 @@ class PilotCoreTests(unittest.TestCase):
             self.assertIsInstance(payload, list)
             self.assertIn("packet_id", payload[0])
 
+    def test_cli_prepare_rejects_non_object_json_array_record(self) -> None:
+        with tempfile.TemporaryDirectory() as workdir:
+            case_file = Path(workdir) / "cases.json"
+            case_file.write_text("[1]", encoding="utf-8")
+            err = io.StringIO()
+            with redirect_stderr(err):
+                code = main(
+                    [
+                        "pilot-prepare",
+                        "--seed",
+                        "123",
+                        "--arms",
+                        "control",
+                        "treatment",
+                        "--cases",
+                        str(case_file),
+                        "--format",
+                        "json",
+                    ]
+                )
+            self.assertEqual(code, 1)
+            self.assertIn("non-object JSON array record", err.getvalue())
+            self.assertNotIn("Traceback", err.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()

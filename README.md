@@ -17,6 +17,25 @@ make stage1-pilot-smoke
 
 The smoke command builds a blinded packet allocation, scores fixture annotations, validates every artifact, and compares the result with a frozen expected output. Its data are synthetic and marked `non_empirical`; passing it demonstrates process integrity, not the hypothesis.
 
+## Lab 00
+
+Lab 00 is the one-command public visual surface for the synthetic Stage 1 smoke bundle. It is presentation-only, sits below E0, and does not add empirical evidence.
+
+Run it locally with no model, API key, service, or package installation:
+
+```bash
+make lab
+make lab-render
+```
+
+`make lab` first reproduces and validates the frozen smoke artifacts, renders the report, and asks the operating system to open it. For headless environments, `make lab-render` writes `artifacts/lab00/index.html` without opening a browser. The underlying command is:
+
+```bash
+PYTHONPATH=src python3 -m latent_triz.cli lab00 --output artifacts/lab00/index.html --open
+```
+
+The Lab 00 view reuses only tracked synthetic artifacts in `data/pilot/`, displays the cases, blind allocation, response pairing, six score dimensions, summary deltas, and provenance hashes, and keeps the non-empirical boundary visible in the UI.
+
 ## The hypothesis
 
 The **Weak Latent TRIZ Hypothesis** predicts that pretrained language models contain representations corresponding to at least some TRIZ Inventive Principles and that those representations generalize across substantially different domains.
@@ -74,6 +93,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 - [Documentation portal](docs/index.md) — maintained documentation map
 - [Evidence Ladder](docs/EVIDENCE_LADDER.md) — claim promotion rules E0–E6
 - [Stage 1 blinded pilot](docs/STAGE1_PILOT.md) — runnable packet, response, annotation, and summary contracts
+- [Lab 00 boundary](docs/STAGE1_PILOT.md#evidence-boundary) — presentation-only synthetic smoke view
 - [Research protocol](docs/RESEARCH_PROTOCOL.md) — controls, metrics, and decision criteria
 - [Roadmap](docs/ROADMAP.md) — visual labs, EXP-001, and the replication program
 - [Article](docs/ARTICLE.md) and [article status](docs/ARTICLE_STATUS.md) — hypothesis framing and provenance
@@ -97,6 +117,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Matryca-Knowledge-style maintained documentation bundle: implemented
 - Commit CI Preflight: configured with a dependency-free container runner to reduce unnecessary GitHub Actions usage
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
+- Lab 00 public visual surface: implemented, presentation-only, below E0
 - First model-backed visual experiment: planned, not yet implemented
 - Empirical support for the Latent TRIZ hypothesis: none claimed
 
