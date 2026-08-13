@@ -498,6 +498,7 @@ def audit_annotations(
     structurally_ready = not any(issue["code"] in structural_codes for issue in issues)
     ready_for_freeze = (
         structurally_ready
+        and not disagreements
         and overall_agreement >= raw_agreement_threshold
         and nominal_alpha >= nominal_alpha_threshold
         and abstention_rate <= max_abstention

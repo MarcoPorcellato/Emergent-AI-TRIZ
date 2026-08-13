@@ -453,6 +453,73 @@ class ValidatorTests(unittest.TestCase):
         self.assertTrue(any("minItems" in issue.message for issue in validate(too_short, schema)))
         self.assertTrue(any("Expected type" in issue.message for issue in validate(wrong_type, schema)))
 
+    def test_local_ref_and_defs_enforce_referenced_pattern(self) -> None:
+        schema = {
+            "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+            "$ref": "#/$defs/sha256",
+        }
+        self.assertEqual([], validate("a" * 64, schema))
+        self.assertTrue(any("pattern" in issue.message for issue in validate("a" * 63, schema)))
+
+    def test_all_of_exclusive_bounds_contains_and_min_properties(self) -> None:
+        schema = {
+            "allOf": [
+                {"type": "object", "minProperties": 2},
+                {
+                    "properties": {
+                        "alpha": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+                        "labels": {"type": "array", "contains": {"const": "segmentation"}},
+                    },
+                    "required": ["alpha", "labels"],
+                },
+            ]
+        }
+        self.assertEqual([], validate({"alpha": 0.5, "labels": ["inversion", "segmentation"]}, schema))
+        self.assertTrue(any("exclusiveMinimum" in issue.message for issue in validate({"alpha": 0, "labels": ["segmentation"]}, schema)))
+        self.assertTrue(any("exclusiveMaximum" in issue.message for issue in validate({"alpha": 1, "labels": ["segmentation"]}, schema)))
+        self.assertTrue(any("contains" in issue.message for issue in validate({"alpha": 0.5, "labels": ["inversion"]}, schema)))
+        self.assertTrue(any("minProperties" in issue.message for issue in validate({"alpha": 0.5}, schema)))
+
+    def test_additional_properties_schema_is_enforced(self) -> None:
+        schema = {"type": "object", "additionalProperties": {"type": "integer", "minimum": 1}}
+        self.assertEqual([], validate({"fold_a": 2}, schema))
+        self.assertTrue(any(issue.path == "root.fold_a" for issue in validate({"fold_a": 0}, schema)))
+
+    def test_unknown_keyword_unresolvable_and_cyclic_refs_fail_closed(self) -> None:
+        unknown = validate("value", {"type": "string", "mysteryKeyword": True})
+        self.assertTrue(any("Unsupported schema keyword" in issue.message for issue in unknown))
+
+        unresolved = validate("value", {"$ref": "#/$defs/missing", "$defs": {}})
+        self.assertTrue(any("Unresolvable local reference" in issue.message for issue in unresolved))
+
+        cyclic = validate("value", {"$ref": "#/$defs/a", "$defs": {"a": {"$ref": "#/$defs/a"}}})
+        self.assertTrue(any("Cyclic local reference" in issue.message for issue in cyclic))
+
+    def test_lab04_result_mutations_reject_short_hash_missing_predecessor_and_zero_alpha(self) -> None:
+        schema = json.loads((self.repo / "schemas/lab04-result.schema.json").read_text(encoding="utf-8"))
+        result = json.loads((self.repo / "results/lab04/decodability/summary.json").read_text(encoding="utf-8"))
+        self.assertEqual([], validate(result, schema))
+
+        short_hash = json.loads(json.dumps(result))
+        short_hash["hashes"]["cases_jsonl"] = "a" * 63
+        self.assertTrue(validate(short_hash, schema))
+
+        missing_predecessor_hash = json.loads(json.dumps(result))
+        missing_predecessor_hash["predecessors"]["lab01"].pop("summary_sha256")
+        self.assertTrue(validate(missing_predecessor_hash, schema))
+
+        zero_alpha = json.loads(json.dumps(result))
+        zero_alpha["random_control"]["max_statistic"]["configured_alpha"] = 0
+        self.assertTrue(validate(zero_alpha, schema))
+
+        mismatched_solver = json.loads(json.dumps(result))
+        mismatched_solver["config"].update(
+            numeric_backend="numpy",
+            numeric_solver="pure_python_normal_equations_reference",
+            numeric_library_version="2.4.3",
+        )
+        self.assertTrue(validate(mismatched_solver, schema))
+
     def test_fingerprint_matches_known_digest(self) -> None:
         expected = hashlib.sha256(b"lab core\n").hexdigest()
         with tempfile.TemporaryDirectory() as workdir:
