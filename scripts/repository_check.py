@@ -43,6 +43,8 @@ def main() -> int:
         ("schemas/lab01-manifest.schema.json", "experiments/lab01-model-anatomy/manifest.json"),
         ("schemas/lab01-model-receipt.schema.json", "results/lab01/model-anatomy/model_receipt.json"),
         ("schemas/lab01-run.schema.json", "results/lab01/model-anatomy/run.json"),
+        ("schemas/dataset-annotation.schema.json", "data/pilot/dataset-annotations.jsonl"),
+        ("schemas/dataset-snapshot.schema.json", "results/lab02/dataset-anatomy/snapshot_manifest.json"),
     )
     for schema, data in validation_pairs:
         validate(schema, data)
@@ -78,6 +80,8 @@ def main() -> int:
         "schemas/lab01-manifest.schema.json",
         "schemas/lab01-model-receipt.schema.json",
         "schemas/lab01-run.schema.json",
+        "schemas/dataset-annotation.schema.json",
+        "schemas/dataset-snapshot.schema.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))
@@ -174,6 +178,21 @@ def main() -> int:
         actual = hashlib.sha256((lab01_root / filename).read_bytes()).hexdigest()
         if expected != actual:
             raise RuntimeError(f"Lab 01 artifact hash mismatch: {filename}")
+
+    lab02_root = ROOT / "results/lab02/dataset-anatomy"
+    lab02_summary = json.loads((lab02_root / "summary.json").read_text(encoding="utf-8"))
+    if lab02_summary.get("evidence_eligible") is not False or lab02_summary.get("claim_ids") != []:
+        raise RuntimeError("Lab 02 evidence boundary is invalid")
+    if lab02_summary.get("status") != "fail":
+        raise RuntimeError("Lab 02 smoke fixture must preserve the documented not-ready result")
+    for key, filename in {
+        "dataset_audit_report": "dataset_audit.json",
+        "snapshot_verification_report": "snapshot_manifest.json",
+    }.items():
+        expected = lab02_summary.get("hashes", {}).get(key)
+        actual = hashlib.sha256((lab02_root / filename).read_bytes()).hexdigest()
+        if expected != actual:
+            raise RuntimeError(f"Lab 02 artifact hash mismatch: {filename}")
 
     run(
         PYTHON,

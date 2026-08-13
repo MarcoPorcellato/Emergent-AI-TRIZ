@@ -52,5 +52,12 @@
   "reference_controls": {
     "enforce_matched_case_id_symmetry": true
   },
+  "min_cases_per_domain": 12,
+  "min_cases_per_principle": 24,
+  "annotation_policy": {
+    "minimum_distinct_raters": 2,
+    "agreement_threshold": 0.8,
+    "enforce_cross_split_source_fingerprints": true
+  },
   "enforce_targets": false
 }

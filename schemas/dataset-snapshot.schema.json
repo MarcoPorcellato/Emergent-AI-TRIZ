@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/dataset-snapshot.schema.json",
+  "title": "Latent TRIZ dataset snapshot manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "empirical",
+    "evidence_eligible",
+    "claim_ids",
+    "dataset_id",
+    "snapshot_id",
+    "generated_at",
+    "immutable_revision",
+    "artifacts",
+    "counts",
+    "split_membership_digest",
+    "rater_coverage",
+    "agreement",
+    "status"
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "dataset-instrumentation"
+    },
+    "empirical": {
+      "type": "boolean",
+      "const": false
+    },
+    "evidence_eligible": {
+      "type": "boolean",
+      "const": false
+    },
+    "claim_ids": {
+      "type": "array",
+      "maxItems": 0,
+      "items": { "type": "string" }
+    },
+    "dataset_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]+$"
+    },
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^v[0-9]+(?:\\.[0-9]+){0,2}$"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "immutable_revision": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cases_jsonl", "annotations_jsonl", "registry_entry", "registry_manifest"],
+      "properties": {
+        "cases_jsonl": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256", "size"],
+          "properties": {
+            "path": { "type": "string", "pattern": "^[^/\\\\]+$" },
+            "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "size": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "annotations_jsonl": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256", "size"],
+          "properties": {
+            "path": { "type": "string", "pattern": "^[^/\\\\]+$" },
+            "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "size": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "registry_entry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sha256", "size"],
+          "properties": {
+            "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "size": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "registry_manifest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sha256", "size"],
+          "properties": {
+            "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "size": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+        "required": ["total_cases", "by_split", "by_domain", "by_principle", "by_source_type", "by_license"],
+      "properties": {
+        "total_cases": { "type": "integer", "minimum": 0 },
+        "by_split": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "by_domain": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "by_principle": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "by_source_type": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "by_license": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "split_membership_digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "source_fingerprints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "split", "fingerprint"],
+        "properties": {
+          "case_id": { "type": "string", "minLength": 1 },
+          "split": { "type": "string", "minLength": 1 },
+          "fingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "template_fingerprints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "split", "fingerprint"],
+        "properties": {
+          "case_id": { "type": "string", "minLength": 1 },
+          "split": { "type": "string", "minLength": 1 },
+          "fingerprint": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "rater_coverage": {
+      "type": "object",
+        "additionalProperties": false,
+        "required": ["minimum_distinct_raters", "response_counts"],
+        "properties": {
+          "minimum_distinct_raters": { "type": "integer", "minimum": 1 },
+          "response_counts": {
+            "type": "object",
+            "additionalProperties": { "type": "integer", "minimum": 0 }
+          },
+        "distinct_raters": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "agreement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric", "threshold", "overall", "minimum_met", "per_case"],
+      "properties": {
+        "metric": {
+          "type": "string",
+          "enum": ["exact_percent_agreement"]
+        },
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "overall": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "minimum_met": { "type": "boolean" },
+        "per_case": {
+          "type": "object",
+          "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "fail"]
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "field", "message"],
+        "properties": {
+          "code": { "type": "string", "minLength": 1 },
+          "field": { "type": "string", "minLength": 1 },
+          "message": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}
