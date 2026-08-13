@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/lab05-config.schema.json",
+  "title": "Lab 05 candidate-direction configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "empirical", "evidence_eligible", "claim_ids",
+    "target_label", "contrast_label", "unrelated_labels",
+    "random_control_seeds", "norm_match_tolerance",
+    "minimum_cases_per_label", "minimum_domains_per_label",
+    "representation_source", "publication_boundary", "gates", "notes"
+  ],
+  "properties": {
+    "artifact_class": {"const": "candidate-direction-contract"},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "target_label": {"const": "segmentation"},
+    "contrast_label": {"const": "inversion"},
+    "unrelated_labels": {
+      "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true,
+      "items": {"enum": ["merging", "universality"]}
+    },
+    "random_control_seeds": {
+      "type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true,
+      "items": {"type": "integer"}
+    },
+    "norm_match_tolerance": {"type": "number", "minimum": 0, "maximum": 0.000000000001},
+    "minimum_cases_per_label": {"type": "integer", "const": 6},
+    "minimum_domains_per_label": {"type": "integer", "const": 4},
+    "representation_source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["cases_path", "representations_path", "predecessor_summary_path"],
+      "properties": {
+        "cases_path": {"const": "data/pilot/cases.jsonl"},
+        "representations_path": {"const": "data/pilot/representations.jsonl"},
+        "predecessor_summary_path": {"const": "results/lab04/decodability/summary.json"}
+      }
+    },
+    "publication_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["dense_vectors_published", "interventions_executed", "steering_claim_allowed", "causal_claim_allowed"],
+      "properties": {
+        "dense_vectors_published": {"const": false},
+        "interventions_executed": {"const": false},
+        "steering_claim_allowed": {"const": false},
+        "causal_claim_allowed": {"const": false}
+      }
+    },
+    "gates": {
+      "type": "array", "minItems": 8, "maxItems": 8, "uniqueItems": true,
+      "items": {"enum": ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8"]}
+    },
+    "notes": {"type": "string", "minLength": 1}
+  }
+}

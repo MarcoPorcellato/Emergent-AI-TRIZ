@@ -4,7 +4,7 @@
 
 Latent TRIZ is an open laboratory for testing whether language models learn internal, cross-domain, and causally active transformations that resemble TRIZ Inventive Principles. The project combines reproducible experiments, mechanistic interpretability, blinded evaluation, and explicit falsification criteria.
 
-> **Current evidence boundary:** the repository contains deterministic Lab 00–04 artifacts and exact-revision Lab 01 model instrumentation. None is evidence that a TRIZ-like representation exists in a model. Every scientific claim remains at E0: hypothesis.
+> **Current evidence boundary:** the repository contains deterministic Lab 00–05 artifacts and exact-revision Lab 01 model instrumentation. None is evidence that a TRIZ-like representation exists in a model. Every scientific claim remains at E0: hypothesis.
 
 ## Run the laboratory
 
@@ -14,7 +14,7 @@ cd Latent-TRIZ
 make lab
 ```
 
-This opens the local Lab Suite dashboard for the maintained Lab 00–04 artifacts. It requires only Python 3.11 or newer, downloads nothing, and makes every readiness and evidence boundary visible. The cross-platform canonical command, which does not require Make, is:
+This opens the local Lab Suite dashboard for the maintained Lab 00–05 artifacts. It requires only Python 3.11 or newer, downloads nothing, and makes every readiness and evidence boundary visible. The cross-platform canonical command, which does not require Make, is:
 
 ```bash
 PYTHONPATH=src python3 -m latent_triz.cli lab-suite --root . --output artifacts/lab/index.html --open
@@ -32,14 +32,15 @@ make readiness TARGET=lab01
 make readiness TARGET=lab02
 make readiness TARGET=lab03
 make readiness TARGET=lab04
+make readiness TARGET=lab05
 make readiness TARGET=exp001
 ```
 
-Readiness is fail-closed and target-specific. `foundation` validates repository integrity, `lab01` verifies the local exact-revision model and instrumentation bundle, `lab02` renders dataset-release readiness, `lab03` renders surface-baseline readiness, `lab04` renders representation decodability readiness under strict controls, and `exp001` evaluates the model-candidate and dataset gates. A selected model is only **model-contract-ready** or **model-preflight-ready** until acquisition, integrity, load, and instrumentation receipts prove otherwise.
+Readiness is fail-closed and target-specific. `foundation` validates repository integrity, `lab01` verifies the local exact-revision model and instrumentation bundle, `lab02` renders dataset-release readiness, `lab03` renders surface-baseline readiness, `lab04` renders representation decodability readiness, `lab05` renders descriptive candidate-direction readiness without publishing dense vectors, and `exp001` evaluates the model-candidate and dataset gates. A selected model is only **model-contract-ready** or **model-preflight-ready** until acquisition, integrity, load, and instrumentation receipts prove otherwise.
 
 ## Local visual laboratory
 
-The Lab Suite is the one-command public visual surface for Lab 00 through Lab 04. It shows status, empirical classification, claim eligibility, source fingerprints, and links to every detailed report without recomputing scientifically incomparable results.
+The Lab Suite is the one-command public visual surface for Lab 00 through Lab 05. It shows status, empirical classification, claim eligibility, source fingerprints, and links to every detailed report without recomputing scientifically incomparable results.
 
 Run the headless variant with no model, API key, service, or package installation:
 
@@ -111,13 +112,14 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 
 - [Documentation portal](docs/index.md) — maintained documentation map
 - [Evidence Ladder](docs/EVIDENCE_LADDER.md) — claim promotion rules E0–E6
-- [Local visual laboratory suite](docs/LAB_SUITE.md) — one-command Lab 00–04 dashboard and scientific boundary
+- [Local visual laboratory suite](docs/LAB_SUITE.md) — one-command Lab 00–05 dashboard and scientific boundary
 - [Stage 1 blinded pilot](docs/STAGE1_PILOT.md) — runnable packet, response, annotation, and summary contracts
 - [Lab 00 boundary](docs/STAGE1_PILOT.md#evidence-boundary) — presentation-only synthetic smoke view
 - [Lab 01 model anatomy](docs/LAB01.md) — real-model instrumentation, G1-G8, and no-claim boundary
 - [Lab 02 dataset anatomy](docs/LAB02.md) — snapshot integrity, leakage, balance, annotation reliability, and no-claim boundary
 - [Lab 03 behavioral baselines](docs/LAB03.md) — lexical and shallow controls before any representation claim
 - [Lab 04 decodability](docs/LAB04.md) — deterministic probe and control contract before any representational claim
+- [Lab 05 candidate directions](docs/LAB05.md) — descriptive controls with no dense-vector publication, intervention, or causal claim
 - [Research protocol](docs/RESEARCH_PROTOCOL.md) — controls, metrics, and decision criteria
 - [Roadmap](docs/ROADMAP.md) — visual labs, EXP-001, and the replication program
 - [EXP-001 readiness gates](docs/EXP001_READINESS.md) — offline model/dataset checks and remaining blockers
@@ -147,6 +149,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Lab 02 dataset anatomy: implemented as a synthetic, hash-backed dataset-readiness report; not claim-eligible
 - Lab 03 behavioral baselines: implemented as a synthetic, fail-closed shortcut-risk report; not claim-eligible
 - Lab 04 decodability: implemented as a deterministic, synthetic pass/fail probe boundary with explicit non-claim interpretation; not claim-eligible
+- Lab 05 candidate directions: implemented as deterministic descriptive instrumentation; current fixture is not ready and no dense vectors or claims are published
 - Empirical support for the Latent TRIZ hypothesis: none claimed
 
 ## License and attribution

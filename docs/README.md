@@ -42,5 +42,6 @@ Use this navigation when preparing proposals, reviews, or PRs.
 - [Local visual laboratory suite](./LAB_SUITE.md)
 - [Results contract](../results/README.md)
 - [Lab 04 decodability contract](./LAB04.md)
+- [Lab 05 candidate-direction contract](./LAB05.md)
 - [OKF project index](./OKF_PROJECT.md)
 - [Decision log](./DECISION_LOG.md)

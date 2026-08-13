@@ -52,6 +52,7 @@ class LabSuiteTests(unittest.TestCase):
             "results/lab02/dataset-anatomy/report.html",
             "results/lab03/behavioral-baselines/report.html",
             "results/lab04/decodability/report.html",
+            "results/lab05/candidate-directions/report.html",
         ):
             path = self.repo_root / relpath
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -96,6 +97,14 @@ class LabSuiteTests(unittest.TestCase):
                 "claim_ids": [],
             },
         )
+        self._write_json(
+            "results/lab05/candidate-directions/summary.json",
+            {
+                "artifact_class": "candidate-direction-instrumentation",
+                "status": "fail", "empirical": False,
+                "evidence_eligible": False, "claim_ids": [],
+            },
+        )
 
     def _expected_file_hash(self, relpath: str) -> str:
         path = self.repo_root / relpath
@@ -134,6 +143,7 @@ class LabSuiteTests(unittest.TestCase):
         self.assertIn("LAB02 source", html)
         self.assertIn("LAB03 source", html)
         self.assertIn("LAB04 source", html)
+        self.assertIn("LAB05 source", html)
         self.assertIn("LAB00 source", html)
         self.assertIn("Synthetic/process-only", html)
         self.assertIn("Empirical instrumentation (not evidence-eligible)", html)
@@ -149,6 +159,7 @@ class LabSuiteTests(unittest.TestCase):
             self._expected_file_hash("results/lab02/dataset-anatomy/summary.json"),
             self._expected_file_hash("results/lab03/behavioral-baselines/summary.json"),
             self._expected_file_hash("results/lab04/decodability/summary.json"),
+            self._expected_file_hash("results/lab05/candidate-directions/summary.json"),
         ]
         for digest in expected:
             self.assertIn(digest, html)
@@ -157,6 +168,7 @@ class LabSuiteTests(unittest.TestCase):
         self.assertIn("results/lab02/dataset-anatomy/summary.json", html)
         self.assertIn("results/lab03/behavioral-baselines/summary.json", html)
         self.assertIn("results/lab04/decodability/summary.json", html)
+        self.assertIn("results/lab05/candidate-directions/summary.json", html)
         self.assertIn("../../results/lab01/model-anatomy/report.html", html)
         self._assert_no_absolute_paths(html)
 
