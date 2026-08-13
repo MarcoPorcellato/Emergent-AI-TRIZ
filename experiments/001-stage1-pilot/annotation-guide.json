@@ -1,16 +1,64 @@
 {
   "guide_id": "segmentation-inversion",
-  "revision": "v1.0.0",
-  "status": "development",
+  "revision": "v1.1.0",
+  "status": "frozen",
   "labels": [
-    {"id": "segmentation", "name": "Segmentation", "definition": "Divide an object, system, process, or responsibility into independent or differently managed parts so the desired improvement becomes possible."},
-    {"id": "inversion", "name": "Inversion", "definition": "Reverse an action, arrangement, sequence, direction, role, or operating condition so the desired improvement becomes possible."}
+    {
+      "id": "segmentation",
+      "name": "Segmentation",
+      "definition": "Divide an object, system, process, or responsibility into independent or differently managed parts so the desired improvement becomes possible.",
+      "positive_examples": ["Divide one long processing line into independently controlled short zones."],
+      "near_misses": ["Removing one component entirely is Taking Out unless independent parts are central to the solution."]
+    },
+    {
+      "id": "inversion",
+      "name": "Inversion",
+      "definition": "Reverse an action, arrangement, sequence, direction, role, or operating condition so the desired improvement becomes possible.",
+      "positive_examples": ["Reverse the order of two operations so the fragile step occurs after stabilization."],
+      "near_misses": ["Waiting for a sensor signal is Feedback or gating unless the operative order or condition is actually reversed."]
+    },
+    {
+      "id": "both",
+      "name": "Both",
+      "definition": "Use both segmentation and inversion as essential parts of the same stated solution.",
+      "positive_examples": ["Split a workflow into independent stages and reverse the order of two stages to resolve the contradiction."],
+      "near_misses": ["Choose the single dominant operator when the second operator is merely incidental wording."]
+    },
+    {
+      "id": "other",
+      "name": "Other",
+      "definition": "The transformation is clear but its dominant operator is neither Segmentation nor Inversion.",
+      "positive_examples": ["Continuously adapt a component shape to conditions, which is better classified as Dynamics."],
+      "near_misses": ["Use Cannot determine rather than Other when the displayed information is insufficient to identify any operator."]
+    }
   ],
   "abstention": {
     "id": "abstain",
-    "name": "Abstain",
-    "definition": "Neither operator fits the stated transformation confidently enough for a forced choice."
+    "name": "Cannot determine",
+    "definition": "The displayed information is insufficient, ambiguous, or internally inconsistent, so no reliable operator classification can be made."
   },
-  "decision_rule": "Choose the operator that most directly characterizes the stated transformation, not merely the problem domain or vocabulary. Record an abstention when neither definition can be applied confidently.",
-  "evidence_eligible": false
+  "decision_rule": "Classify the dominant operator in the stated transformation, not the domain or isolated vocabulary. Use Both only when both operators are essential. Use Other when another operator is identifiable. Use Cannot determine when the evidence is insufficient. Record a rationale and score operator presence, essentiality, contradiction resolution, and feasibility independently.",
+  "ordinal_dimensions": [
+    {"id": "operator_presence", "name": "Operator presence", "definition": "How clearly the selected operator is present in the stated transformation.", "minimum": 0, "maximum": 3, "anchors": {"0": "absent", "1": "weak or incidental", "2": "clear", "3": "dominant"}},
+    {"id": "operator_essentiality", "name": "Operator essentiality", "definition": "How necessary the selected operator is to the stated solution.", "minimum": 0, "maximum": 3, "anchors": {"0": "not needed", "1": "replaceable detail", "2": "important", "3": "indispensable"}},
+    {"id": "contradiction_resolution", "name": "Contradiction resolution", "definition": "How completely the stated transformation resolves the described contradiction.", "minimum": 0, "maximum": 4, "anchors": {"0": "not addressed", "1": "minimal", "2": "partial", "3": "substantial", "4": "complete"}},
+    {"id": "solution_feasibility", "name": "Solution feasibility", "definition": "How plausible the stated solution is under the displayed constraints.", "minimum": 0, "maximum": 4, "anchors": {"0": "not feasible", "1": "major defects", "2": "uncertain", "3": "plausible", "4": "clearly feasible"}}
+  ],
+  "evidence_eligible": false,
+  "agreement_policy": {
+    "minimum_distinct_raters": 2,
+    "raw_agreement_threshold": 0.8,
+    "nominal_alpha_threshold": 0.8,
+    "maximum_abstention_rate": 0.2,
+    "abstain_as_category": true,
+    "raw_agreement_metric": "pairwise_exact_percent_agreement",
+    "ordinal_agreement_metric": "krippendorff_alpha_ordinal",
+    "ordinal_gate": "descriptive_only",
+    "confidence_interval_method": "case_bootstrap_percentile",
+    "confidence_level": 0.95,
+    "confidence_interval_resamples": 2000,
+    "confidence_interval_seed": 1729,
+    "confidence_interval_gate": "descriptive_only",
+    "adjudication_rule": "Case-level unanimity on a substantive label required for freeze; disagreements and unanimous abstentions remain explicit for adjudication."
+  }
 }

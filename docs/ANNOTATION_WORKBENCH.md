@@ -56,11 +56,20 @@ make wave1-annotation-audit ANNOTATION_FILES="path/rater1.jsonl path/rater2.json
 ```
 
 This audit surface requires one file per pseudonymous rater, at least two
-distinct raters, complete case coverage, exact pairwise percent agreement of at
-least 0.8, and abstention rate at or below 0.2. It preserves disagreements,
+distinct raters, complete case coverage, exact pairwise percent agreement and
+nominal Krippendorff alpha of at least 0.8, and abstention rate at or below 0.2.
+The frozen policy also reports deterministic 95% case-bootstrap percentile
+intervals for raw agreement and nominal alpha using 2,000 resamples and seed
+1729; interval bounds are descriptive until a gate is preregistered.
+Ordinal Krippendorff alpha is retained per score dimension as descriptive
+calibration metadata. The audit preserves disagreements, unanimous abstentions,
 consensus calls, and digests for later adjudication. The resulting audit record
 is empirical human judgment metadata, but it remains `evidence_eligible: false`
 and must keep `claim_ids: []`. `ready_for_adjudication` may be true while the
 freeze remains false.
 Even above the aggregate agreement threshold, any disagreement or unanimous
 abstention prevents freeze readiness until the case is adjudicated.
+
+Guide v1.0 records are discovery-only. They must not be combined with v1.1
+records in a freeze audit; v1.1 binds each judgment to the exact displayed case,
+dataset batch, guide digest, display version, and collection session.

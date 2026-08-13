@@ -18,10 +18,18 @@ from urllib.parse import urlparse
 from .validator import validate
 
 MAX_REQUEST_BYTES = 16 * 1024
+DISPLAY_VIEW_VERSION = "v1.1.0"
 EXPOSED_CASE_FIELDS = (
     "case_id", "domain", "problem", "constraints", "initial_state",
     "desired_improvement", "worsening_consequence", "transformation", "resulting_state",
 )
+REQUIRED_ANNOTATION_LABELS = {"segmentation", "inversion", "both", "other"}
+ORDINAL_DIMENSIONS = {
+    "operator_presence": 3,
+    "operator_essentiality": 3,
+    "contradiction_resolution": 4,
+    "solution_feasibility": 4,
+}
 
 
 class AnnotationWorkbenchError(RuntimeError):
@@ -67,11 +75,25 @@ def load_guide(path: str | Path) -> dict[str, Any]:
         seen.add(item["id"])
         if not isinstance(item.get("definition"), str) or not item["definition"]:
             raise AnnotationWorkbenchError(f"guide label {item['id']} requires a definition")
+    if seen != REQUIRED_ANNOTATION_LABELS:
+        raise AnnotationWorkbenchError("annotation guide labels must be exactly segmentation, inversion, both, other")
     abstention = guide.get("abstention")
     if not isinstance(abstention, dict) or abstention.get("id") != "abstain":
         raise AnnotationWorkbenchError("annotation guide requires the abstain audit state")
+    if abstention.get("name") != "Cannot determine":
+        raise AnnotationWorkbenchError("abstention name must be 'Cannot determine'")
     if not isinstance(guide.get("revision"), str) or not guide["revision"]:
         raise AnnotationWorkbenchError("annotation guide requires revision")
+    dimensions = guide.get("ordinal_dimensions")
+    if not isinstance(dimensions, list):
+        raise AnnotationWorkbenchError("annotation guide requires ordinal_dimensions")
+    observed_dimensions = {
+        item.get("id"): item.get("maximum")
+        for item in dimensions
+        if isinstance(item, dict)
+    }
+    if observed_dimensions != ORDINAL_DIMENSIONS:
+        raise AnnotationWorkbenchError("annotation guide ordinal dimensions or bounds are invalid")
     return guide
 
 
@@ -93,8 +115,19 @@ def sanitize_cases(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]
     return sanitized
 
 
+def case_display_hash(case: Mapping[str, Any]) -> str:
+    return hashlib.sha256(stable_json_dumps(case).encode("utf-8")).hexdigest()
+
+
+def dataset_batch_hash(cases: Sequence[Mapping[str, Any]]) -> str:
+    normalized = [dict(case) for case in cases]
+    normalized = sorted(normalized, key=lambda item: item["case_id"])
+    payload = stable_json_dumps([item["case_payload_sha256"] for item in normalized])
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 def order_cases_for_rater(
-    cases: Sequence[Mapping[str, Any]], rater_id: str, guide_sha256: str
+    cases: Sequence[Mapping[str, Any]], rater_id: str, guide_sha256: str, dataset_batch_sha256: str
 ) -> list[dict[str, Any]]:
     """Return a stable rater-specific order without using embedded labels."""
     return [
@@ -102,7 +135,7 @@ def order_cases_for_rater(
         for case in sorted(
             cases,
             key=lambda case: hashlib.sha256(
-                f"{rater_id}|{guide_sha256}|{case['case_id']}".encode("utf-8")
+                f"{rater_id}|{guide_sha256}|{dataset_batch_sha256}|{case['case_id']}".encode("utf-8")
             ).digest(),
         )
     ]
@@ -159,47 +192,77 @@ class AnnotationStore:
 
 def build_annotation_record(
     payload: Mapping[str, Any], *, rater_id: str, case_ids: set[str], labels: set[str],
-    guide_revision: str, guide_sha256: str, abstention_id: str = "abstain",
+    case_hashes: Mapping[str, str], guide_revision: str, guide_sha256: str, dataset_batch_sha256: str,
+    session_id: str, display_view_version: str = DISPLAY_VIEW_VERSION, abstention_id: str = "abstain",
 ) -> dict[str, Any]:
     case_id, label = payload.get("case_id"), payload.get("label")
     confidence, rationale = payload.get("confidence"), payload.get("rationale")
     if case_id not in case_ids:
         raise AnnotationWorkbenchError("unknown case_id")
+    if payload.get("case_payload_sha256") != case_hashes.get(case_id):
+        raise AnnotationWorkbenchError("invalid case display hash")
+    if payload.get("dataset_batch_sha256") != dataset_batch_sha256:
+        raise AnnotationWorkbenchError("invalid dataset batch hash")
+    if display_view_version != DISPLAY_VIEW_VERSION:
+        raise AnnotationWorkbenchError(f"unsupported display_view_version {display_view_version}")
+    if not isinstance(payload.get("session_id"), str) or not payload["session_id"]:
+        raise AnnotationWorkbenchError("session_id is required")
+    if payload["session_id"] != session_id:
+        raise AnnotationWorkbenchError("session_id does not match")
     if label not in labels:
         raise AnnotationWorkbenchError("label is not permitted by the annotation guide")
     if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not 0 <= confidence <= 1:
         raise AnnotationWorkbenchError("confidence must be a number in [0,1]")
-    is_abstention = label == abstention_id
-    if is_abstention and confidence != 0:
-        raise AnnotationWorkbenchError("abstention confidence must be 0")
-    if not is_abstention and (not isinstance(rationale, str) or not rationale.strip()):
+    for key, max_value in ORDINAL_DIMENSIONS.items():
+        score = payload.get(key)
+        if not isinstance(score, int) or isinstance(score, bool) or not 0 <= score <= max_value:
+            raise AnnotationWorkbenchError(f"{key} must be an integer from 0 to {max_value}")
+    if not isinstance(rationale, str) or not rationale.strip():
         raise AnnotationWorkbenchError("rationale is required")
+    alternative_principle = payload.get("alternative_principle")
+    if alternative_principle is not None and (
+        not isinstance(alternative_principle, str) or not alternative_principle.strip()
+    ):
+        raise AnnotationWorkbenchError("alternative_principle must be omitted or a non-empty string")
     annotated_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     record = {
-        "annotation_id": f"ann_{secrets.token_hex(12)}", "case_id": case_id,
-        "rater_id": rater_id, "label": label, "confidence": float(confidence),
-        "non_empirical": False, "annotated_at": annotated_at,
-        "guide_revision": guide_revision, "guide_sha256": guide_sha256,
+        "annotation_id": f"ann_{secrets.token_hex(12)}",
+        "case_id": case_id,
+        "rater_id": rater_id,
+        "label": label,
+        "confidence": float(confidence),
+        "rationale": rationale.strip(),
+        "non_empirical": False,
+        "annotated_at": annotated_at,
+        "operator_presence": payload["operator_presence"],
+        "operator_essentiality": payload["operator_essentiality"],
+        "contradiction_resolution": payload["contradiction_resolution"],
+        "solution_feasibility": payload["solution_feasibility"],
+        "guide_revision": guide_revision,
+        "guide_sha256": guide_sha256,
+        "case_payload_sha256": payload["case_payload_sha256"],
+        "dataset_batch_sha256": dataset_batch_sha256,
+        "display_view_version": display_view_version,
+        "session_id": session_id,
     }
-    if not is_abstention:
-        if not isinstance(rationale, str):
-            raise AnnotationWorkbenchError("rationale is required")
-        record["rationale"] = rationale.strip()
+    if alternative_principle is not None:
+        record["alternative_principle"] = alternative_principle.strip()
     return record
+
 
 
 def render_workbench_html(session: Mapping[str, Any], csrf_token: str) -> str:
     data = json.dumps(session, ensure_ascii=False).replace("</", "<\\/")
     token = json.dumps(csrf_token)
-    return f"""<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width\"><title>Latent TRIZ annotation workbench</title>
-<style>body{{font:16px system-ui;max-width:880px;margin:2rem auto;padding:0 1rem;color:#18202a;background:#f5f7fa}}main{{background:white;padding:1.5rem;border-radius:12px}}label{{display:block;font-weight:650;margin:.8rem 0}}textarea{{width:100%;min-height:7rem}}button{{padding:.7rem 1rem;margin:.4rem}}.warning{{border-left:4px solid #a65d03;padding:.8rem;background:#fff8e8}}</style></head>
-<body><main><h1>Blinded dataset annotation</h1><p class=\"warning\">Human judgment metadata only. Embedded labels, provenance, split assignments, lexical controls, related-case identifiers, allocations, and experimental results are hidden. An annotation is not evidence for the Latent TRIZ hypothesis.</p><p id=\"progress\"></p><section id=\"case\"></section><form id=\"form\"><div id=\"labels\"></div><label>Confidence (0 to 1)<input id=\"confidence\" type=\"number\" min=\"0\" max=\"1\" step=\"0.05\" value=\"0.5\" required></label><label>Rationale<textarea id=\"rationale\" required></textarea></label><button type=\"submit\">Save and continue</button><button type=\"button\" id=\"abstain\">Record abstention</button></form><pre id=\"status\"></pre>
-<script>const session={data},csrf={token};let i=0;const byId=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>\"']/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}}[c]));
-function show(){{if(i>=session.cases.length){{byId('case').innerHTML='<h2>Queue complete</h2>';byId('form').hidden=true;return}}const c=session.cases[i];byId('progress').textContent=`Case ${{i+1}} of ${{session.cases.length}} · rater ${{session.rater_id}}`;byId('case').innerHTML=`<h2>${{esc(c.case_id)}}</h2><p><b>Domain:</b> ${{esc(c.domain)}}</p><p><b>Problem:</b> ${{esc(c.problem)}}</p><p><b>Constraints:</b> ${{c.constraints.map(esc).join(', ')}}</p><p><b>Initial:</b> ${{esc(c.initial_state)}}</p><p><b>Desired improvement:</b> ${{esc(c.desired_improvement)}}</p><p><b>Worsening consequence:</b> ${{esc(c.worsening_consequence)}}</p><p><b>Transformation:</b> ${{esc(c.transformation)}}</p><p><b>Result:</b> ${{esc(c.resulting_state)}}</p>`;byId('labels').innerHTML=session.guide.labels.map((l,n)=>`<label><input type=\"radio\" name=\"label\" value=\"${{esc(l.id)}}\" ${{n===0?'required':''}}> <b>${{esc(l.name||l.id)}}</b> — ${{esc(l.definition)}}</label>`).join('')}}
-async function save(payload){{const response=await fetch('/api/annotations',{{method:'POST',headers:{{'Content-Type':'application/json','X-CSRF-Token':csrf}},body:JSON.stringify(payload)}}),result=await response.json();byId('status').textContent=result.message||result.error;if(response.ok){{i++;byId('rationale').value='';show()}}}}
-byId('abstain').onclick=()=>save({{case_id:session.cases[i].case_id,label:session.guide.abstention.id,confidence:0}});byId('form').onsubmit=e=>{{e.preventDefault();const selected=document.querySelector('input[name=label]:checked');if(selected)save({{case_id:session.cases[i].case_id,label:selected.value,confidence:Number(byId('confidence').value),rationale:byId('rationale').value}})}};show()</script></main></body></html>"""
-
-
+    template = """<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width\"><title>Latent TRIZ annotation workbench</title>
+<style>body{font:16px system-ui;max-width:920px;margin:2rem auto;padding:0 1rem;color:#18202a;background:#f5f7fa}main{background:white;padding:1.5rem;border-radius:12px}label{display:block;font-weight:650;margin:.8rem 0}textarea{width:100%;min-height:7rem}button{padding:.7rem 1rem;margin:.4rem}.warning{border-left:4px solid #a65d03;padding:.8rem;background:#fff8e8}.grid{display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}</style></head>
+<body><main><h1>Blinded dataset annotation workbench</h1><p class=\"warning\">Human judgment metadata only. Embedded labels, provenance, split assignments, lexical controls, related-case identifiers, allocations, and experimental results are hidden. An annotation is not evidence for the project hypothesis.</p><p id=\"progress\"></p><section id=\"case\"></section><form id=\"form\"><div id=\"labels\"></div><section id=\"dimension_help\"></section><label>Confidence (0 to 1)<input id=\"confidence\" type=\"number\" min=\"0\" max=\"1\" step=\"0.05\" value=\"0.5\" required></label><label>Rationale<textarea id=\"rationale\" required></textarea></label><div class=\"grid\"><label>Operator presence (0-3)<input id=\"operator_presence\" type=\"number\" min=\"0\" max=\"3\" step=\"1\" value=\"2\" required></label><label>Operator essentiality (0-3)<input id=\"operator_essentiality\" type=\"number\" min=\"0\" max=\"3\" step=\"1\" value=\"2\" required></label><label>Contradiction resolution (0-4)<input id=\"contradiction_resolution\" type=\"number\" min=\"0\" max=\"4\" step=\"1\" value=\"2\" required></label><label>Solution feasibility (0-4)<input id=\"solution_feasibility\" type=\"number\" min=\"0\" max=\"4\" step=\"1\" value=\"2\" required></label><label>Alternative principle (optional)<input id=\"alternative_principle\" type=\"text\" maxlength=\"80\"></label></div><button type=\"submit\">Save and continue</button><button type=\"button\" id=\"abstain\">Record abstention</button></form><pre id=\"status\"></pre>
+<script>const session=__DATA__,csrf=__TOKEN__;let i=0;const byId=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"\'":'&#39;'}[c]));
+function show(){if(i>=session.cases.length){byId('case').innerHTML='<h2>Queue complete</h2>';byId('form').hidden=true;return}const c=session.cases[i];byId('progress').textContent=`Case ${i+1} of ${session.cases.length} · rater ${session.rater_id}`;byId('case').innerHTML=`<h2>${esc(c.case_id)}</h2><p><b>Domain:</b> ${esc(c.domain)}</p><p><b>Problem:</b> ${esc(c.problem)}</p><p><b>Constraints:</b> ${c.constraints.map(esc).join(', ')}</p><p><b>Initial:</b> ${esc(c.initial_state)}</p><p><b>Desired improvement:</b> ${esc(c.desired_improvement)}</p><p><b>Worsening consequence:</b> ${esc(c.worsening_consequence)}</p><p><b>Transformation:</b> ${esc(c.transformation)}</p><p><b>Result:</b> ${esc(c.resulting_state)}</p><p><b>Case hash:</b> ${esc(c.case_payload_sha256)}</p>`;byId('labels').innerHTML=session.guide.labels.map((l,n)=>`<label><input type=\"radio\" name=\"label\" value=\"${esc(l.id)}\" ${n===0?'required':''}> <b>${esc(l.name||l.id)}</b> — ${esc(l.definition)}</label>`).join('')}
+function buildPayload(label,confidence){const payload={case_id:session.cases[i].case_id,label:label,case_payload_sha256:session.cases[i].case_payload_sha256,dataset_batch_sha256:session.dataset_batch_sha256,display_view_version:session.display_view_version,session_id:session.session_id,confidence:confidence,rationale:byId('rationale').value,operator_presence:Number(byId('operator_presence').value),operator_essentiality:Number(byId('operator_essentiality').value),contradiction_resolution:Number(byId('contradiction_resolution').value),solution_feasibility:Number(byId('solution_feasibility').value),alternative_principle:(byId('alternative_principle').value||'').trim()||undefined};if(payload.alternative_principle===''){delete payload.alternative_principle}return payload}
+async function save(payload){const response=await fetch('/api/annotations',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':csrf},body:JSON.stringify(payload)}),result=await response.json();byId('status').textContent=result.message||result.error;if(response.ok){i++;byId('rationale').value='';show()}}
+byId('dimension_help').innerHTML='<h3>Ordinal dimensions</h3>'+session.guide.ordinal_dimensions.map(d=>`<p><b>${esc(d.name)} (${d.minimum}-${d.maximum})</b> — ${esc(d.definition)} Anchors: ${esc(Object.entries(d.anchors).map(([k,v])=>k+'='+v).join('; '))}</p>`).join('');byId('abstain').onclick=()=>save(buildPayload(session.guide.abstention.id,0));byId('form').onsubmit=e=>{e.preventDefault();const selected=document.querySelector('input[name=label]:checked');if(selected)save(buildPayload(selected.value,Number(byId('confidence').value)))};show()</script></main></body></html>"""
+    return template.replace("__DATA__", data).replace("__TOKEN__", token)
 def create_server(
     *, cases_path: str | Path, guide_path: str | Path, output_path: str | Path,
     schema_path: str | Path, rater_id: str, host: str = "127.0.0.1", port: int = 8765,
@@ -210,12 +273,25 @@ def create_server(
         raise AnnotationWorkbenchError("rater_id must be non-empty and contain no whitespace")
     cases, guide = sanitize_cases(load_jsonl(cases_path)), load_guide(guide_path)
     guide_sha256 = hashlib.sha256(Path(guide_path).read_bytes()).hexdigest()
-    cases = order_cases_for_rater(cases, rater_id, guide_sha256)
+    case_hashes = {case["case_id"]: case_display_hash(case) for case in cases}
+    for case in cases:
+        case["case_payload_sha256"] = case_hashes[case["case_id"]]
+    dataset_batch_sha256 = dataset_batch_hash(cases)
+    cases = order_cases_for_rater(cases, rater_id, guide_sha256, dataset_batch_sha256)
     store, csrf_token = AnnotationStore(output_path, schema_path), secrets.token_urlsafe(32)
     cases = [case for case in cases if not store.contains(case["case_id"], rater_id)]
     case_ids = {case["case_id"] for case in cases}
     allowed_labels = {item["id"] for item in guide["labels"]} | {guide["abstention"]["id"]}
-    session = {"rater_id": rater_id, "cases": cases, "guide": guide, "guide_sha256": guide_sha256, "evidence_eligible": False}
+    session = {
+        "rater_id": rater_id,
+        "cases": cases,
+        "guide": guide,
+        "guide_sha256": guide_sha256,
+        "dataset_batch_sha256": dataset_batch_sha256,
+        "display_view_version": DISPLAY_VIEW_VERSION,
+        "session_id": secrets.token_urlsafe(12),
+        "evidence_eligible": False,
+    }
     html = render_workbench_html(session, csrf_token).encode()
 
     class Handler(BaseHTTPRequestHandler):
@@ -243,7 +319,19 @@ def create_server(
             try:
                 payload = json.loads(self.rfile.read(length))
                 if not isinstance(payload, dict): raise AnnotationWorkbenchError("request body must be an object")
-                record = build_annotation_record(payload, rater_id=rater_id, case_ids=case_ids, labels=allowed_labels, guide_revision=guide["revision"], guide_sha256=guide_sha256, abstention_id=guide["abstention"]["id"])
+                record = build_annotation_record(
+                    payload,
+                    rater_id=rater_id,
+                    case_ids=case_ids,
+                    case_hashes=case_hashes,
+                    labels=allowed_labels,
+                    guide_revision=guide["revision"],
+                    guide_sha256=guide_sha256,
+                    dataset_batch_sha256=dataset_batch_sha256,
+                    display_view_version=session["display_view_version"],
+                    session_id=session["session_id"],
+                    abstention_id=guide["abstention"]["id"],
+                )
                 store.append(record)
             except (json.JSONDecodeError, AnnotationWorkbenchError) as exc: self._json(HTTPStatus.BAD_REQUEST, {"error": str(exc)}); return
             self._json(HTTPStatus.CREATED, {"message": f"saved {record['annotation_id']}"})
@@ -255,8 +343,11 @@ def create_server(
 
 
 def serve_annotation_workbench(*, open_browser: bool = False, **kwargs: Any) -> None:
-    server = create_server(**kwargs); host, port = server.server_address[:2]; url = f"http://{host}:{port}/"
-    print(f"annotation workbench: {url}"); print(f"annotations: {kwargs['output_path']}")
+    server = create_server(**kwargs)
+    host, port = server.server_address[:2]
+    url = f"http://{host}:{port}/"
+    print(f"annotation workbench: {url}")
+    print(f"annotations: {kwargs['output_path']}")
     if open_browser: webbrowser.open(url)
     try: server.serve_forever()
     except KeyboardInterrupt: pass

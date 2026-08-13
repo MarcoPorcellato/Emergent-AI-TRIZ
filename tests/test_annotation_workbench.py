@@ -38,17 +38,28 @@ class AnnotationWorkbenchTests(unittest.TestCase):
 
     def test_case_order_is_stable_and_rater_specific(self) -> None:
         cases = [{"case_id": f"case_{index:03d}"} for index in range(20)]
-        first = order_cases_for_rater(cases, "rater_1", "a" * 64)
-        repeated = order_cases_for_rater(cases, "rater_1", "a" * 64)
-        second = order_cases_for_rater(cases, "rater_2", "a" * 64)
+        first = order_cases_for_rater(cases, "rater_1", "a" * 64, "batch_1")
+        repeated = order_cases_for_rater(cases, "rater_1", "a" * 64, "batch_1")
+        second = order_cases_for_rater(cases, "rater_2", "a" * 64, "batch_1")
+        second_batch = order_cases_for_rater(cases, "rater_1", "a" * 64, "batch_2")
         self.assertEqual(first, repeated)
         self.assertNotEqual(first, second)
+        self.assertNotEqual(first, second_batch)
 
     def test_human_record_is_schema_valid_but_not_evidence(self) -> None:
         record = build_annotation_record(
-            {"case_id": "pilot_case_001", "label": "segmentation", "confidence": 0.75, "rationale": "The transformation creates separately managed zones."},
+            {
+                "case_id": "pilot_case_001", "label": "segmentation", "confidence": 0.75,
+                "rationale": "The transformation creates separately managed zones.",
+                "case_payload_sha256": "a" * 64, "dataset_batch_sha256": "b" * 64,
+                "display_view_version": "v1.1.0", "session_id": "session-1",
+                "operator_presence": 2, "operator_essentiality": 2,
+                "contradiction_resolution": 2, "solution_feasibility": 2,
+            },
             rater_id="rater_1", case_ids={"pilot_case_001"}, labels={"segmentation", "inversion"},
-            guide_revision="v1.0.0", guide_sha256="a" * 64,
+            case_hashes={"pilot_case_001": "a" * 64},
+            guide_revision="v1.0.0", guide_sha256="a" * 64, dataset_batch_sha256="b" * 64,
+            session_id="session-1",
         )
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
         self.assertEqual([], validate(record, schema))
@@ -59,9 +70,15 @@ class AnnotationWorkbenchTests(unittest.TestCase):
             output = Path(directory) / "annotations.jsonl"
             store = AnnotationStore(output, SCHEMA)
             record = build_annotation_record(
-                {"case_id": "pilot_case_001", "label": "segmentation", "confidence": 0.5, "rationale": "Separate zones."},
+                {
+                    "case_id": "pilot_case_001", "label": "segmentation", "confidence": 0.5,
+                    "rationale": "Separate zones.", "case_payload_sha256": "c" * 64,
+                    "dataset_batch_sha256": "d" * 64, "display_view_version": "v1.1.0", "session_id": "session-1",
+                    "operator_presence": 2, "operator_essentiality": 2, "contradiction_resolution": 2, "solution_feasibility": 2,
+                },
                 rater_id="rater_1", case_ids={"pilot_case_001"}, labels={"segmentation"},
-                guide_revision="v1.0.0", guide_sha256="b" * 64,
+                case_hashes={"pilot_case_001": "c" * 64}, guide_revision="v1.0.0", guide_sha256="b" * 64,
+                dataset_batch_sha256="d" * 64, session_id="session-1",
             )
             store.append(record)
             self.assertTrue(store.contains("pilot_case_001", "rater_1"))
@@ -70,13 +87,38 @@ class AnnotationWorkbenchTests(unittest.TestCase):
 
     def test_abstention_is_a_persisted_audit_state(self) -> None:
         record = build_annotation_record(
-            {"case_id": "pilot_case_001", "label": "abstain", "confidence": 0, "rationale": "Neither operator fits."},
+            {
+                "case_id": "pilot_case_001", "label": "abstain", "confidence": 0,
+                "rationale": "Neither operator fits.",
+                "case_payload_sha256": "e" * 64, "dataset_batch_sha256": "f" * 64,
+                "display_view_version": "v1.1.0", "session_id": "session-1",
+                "operator_presence": 0, "operator_essentiality": 0,
+                "contradiction_resolution": 0, "solution_feasibility": 0,
+            },
             rater_id="rater_3", case_ids={"pilot_case_001"}, labels={"segmentation", "inversion", "abstain"},
+            case_hashes={"pilot_case_001": "e" * 64},
             guide_revision="v1.0.0", guide_sha256="c" * 64,
+            dataset_batch_sha256="f" * 64, session_id="session-1",
         )
         self.assertEqual("abstain", record["label"])
         self.assertFalse(record["non_empirical"])
-        self.assertNotIn("rationale", record)
+        self.assertIn("rationale", record)
+
+    def test_score_bounds_are_validated(self) -> None:
+        with self.assertRaisesRegex(AnnotationWorkbenchError, "operator_presence"):
+            build_annotation_record(
+                {
+                    "case_id": "pilot_case_001", "label": "segmentation", "confidence": 0.5,
+                    "rationale": "Range test.", "case_payload_sha256": "a" * 64,
+                    "dataset_batch_sha256": "b" * 64, "display_view_version": "v1.1.0", "session_id": "session-1",
+                    "operator_presence": 5, "operator_essentiality": 2,
+                    "contradiction_resolution": 2, "solution_feasibility": 2,
+                },
+                rater_id="rater_1", case_ids={"pilot_case_001"}, labels={"segmentation"},
+                case_hashes={"pilot_case_001": "a" * 64},
+                guide_revision="v1.0.0", guide_sha256="a" * 64,
+                dataset_batch_sha256="b" * 64, session_id="session-1",
+            )
 
     def test_loopback_server_hides_labels_and_accepts_csrf_guarded_post(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -95,7 +137,16 @@ class AnnotationWorkbenchTests(unittest.TestCase):
                 token = re.search(r'csrf=("[^"]+")', html)
                 if token is None:
                     self.fail("CSRF token was not embedded in the workbench page")
-                payload = json.dumps({"case_id": "pilot_case_001", "label": "segmentation", "confidence": 0.8, "rationale": "Independent thermal zones."}).encode()
+                case = session["cases"][0]
+                payload = json.dumps({
+                    "case_id": case["case_id"], "label": "segmentation", "confidence": 0.8,
+                    "rationale": "Independent thermal zones.",
+                    "case_payload_sha256": case["case_payload_sha256"],
+                    "dataset_batch_sha256": session["dataset_batch_sha256"],
+                    "display_view_version": session["display_view_version"], "session_id": session["session_id"],
+                    "operator_presence": 2, "operator_essentiality": 2,
+                    "contradiction_resolution": 2, "solution_feasibility": 2,
+                }).encode()
                 request = urllib.request.Request(base + "/api/annotations", data=payload, method="POST", headers={"Content-Type": "application/json", "X-CSRF-Token": json.loads(token.group(1))})
                 self.assertEqual(201, urllib.request.urlopen(request).status)
                 saved = json.loads(output.read_text(encoding="utf-8"))

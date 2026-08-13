@@ -134,8 +134,8 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 ### Immediate sequence
 
 1. Preserve the completed foundation: protected `main`, exact-head Commit CI Preflight, Lab 01 receipts, calibrated Lab 04 statistics, and the model-backed representation bridge.
-2. Freeze annotation ontology v1.1, case-payload binding, abstention handling, agreement statistics, and adjudication rules.
-3. Complete blinded Wave 1 review and semantic leakage baselines; replace nominal matched controls with defensible minimal or closely matched pairs.
+2. Preserve the frozen annotation ontology v1.1, case-payload binding, abstention handling, agreement statistics, bootstrap calibration metadata, and adjudication rules.
+3. Collect two independent Wave 1 annotation files, complete their blinded audit and semantic leakage baselines, and replace nominal matched controls with defensible minimal or closely matched pairs.
 4. Assemble a consensus recognition dataset with at least six usable cases per label/domain cell, then freeze its split and exclusion ledger.
 5. Run the first empirical exploratory recognition analysis with a preregistered permutation budget capable of resolving its decision threshold; keep `evidence_eligible: false` and every claim at E0.
 6. Only after recognition survives lexical, field-specific and domain-transfer controls, build pre-output selection and causal-control datasets as separate claim paths.
