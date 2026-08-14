@@ -3,12 +3,16 @@ type: Roadmap
 title: Research Laboratory Roadmap
 description: Delivered foundation and staged route to a complete, visual, falsifiable Latent TRIZ laboratory.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-14
 ---
 
 # Roadmap
 
+For the canonical long-form milestone sequence, see [Laboratory Master Plan](./LABORATORY_MASTER_PLAN.md).
+
 The laboratory foundation is operational. Lab 00 is a deterministic synthetic process smoke. Lab 01 is the first real-model instrumentation result and remains explicitly ineligible as evidence for the hypothesis. Its model-backed representation extractor now provides the hash-verified bridge from frozen cases and real residual-stream activations to Lab 04.
+
+This roadmap stays intentionally short. It records the current delivery shape and points to the master plan for the verified chronology, dependencies, exit gates, and deferred work.
 
 The maintained Lab 00 through Lab 05 artifacts now have a single local visual entrance. `make lab` opens the dashboard and `make lab-render` produces the same deterministic page for headless use. The dashboard is a navigation and integrity surface; it does not recompute experiments or promote scientific claims.
 
