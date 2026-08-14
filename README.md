@@ -122,7 +122,8 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 - [Lab 04 decodability](docs/LAB04.md) — deterministic probe and control contract before any representational claim
 - [Lab 05 candidate directions](docs/LAB05.md) — descriptive controls with no dense-vector publication, intervention, or causal claim
 - [Research protocol](docs/RESEARCH_PROTOCOL.md) — controls, metrics, and decision criteria
-- [Roadmap](docs/ROADMAP.md) — visual labs, EXP-001, and the replication program
+- [Laboratory master plan](docs/LABORATORY_MASTER_PLAN.md) — canonical evolution map from delivered milestones to EXP-001-R
+- [Roadmap](docs/ROADMAP.md) — living milestone map for the visual labs, EXP-001, and the replication program
 - [EXP-001 readiness gates](docs/EXP001_READINESS.md) — offline model/dataset checks and remaining blockers
 - [Article](docs/ARTICLE.md) and [article status](docs/ARTICLE_STATUS.md) — hypothesis framing and provenance
 - [Claim registry](data/claims.jsonl) and [claim schema](schemas/claim.schema.json) — falsifiable public claims
@@ -144,9 +145,9 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Foundation governance and schemas: implemented
 - Schema integrity: fail-closed local Draft 2020-12 subset plus pinned `jsonschema` cross-validation and mutation tests
 - Matryca-Knowledge-style maintained documentation bundle: implemented
-- CI cost boundary: one read-only, dependency-free Python 3.12 job per small pull request; Python 3.11 compatibility runs after merge, while Commit CI Preflight remains available for larger local qualifications
+- CI cost boundary: docs-only pull requests use lightweight documentation checks; code and scientific changes follow the stable merge-policy/gate with Python 3.11 and 3.12 compatibility checks plus exact-head CCP where required
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
-- Annotation ontology v1.1: frozen with five judgment states, ordinal quality scores, case/batch cryptographic binding, nominal and ordinal agreement receipts, and explicit adjudication; independent Wave 1 judgments are still pending
+- Annotation ontology v1.1: current on `main`; the v1.2 amendment is in delivery with separate operator scores and a real three-expert cognitive-pilot gate still pending
 - Lab 00 public visual surface: implemented, infrastructure-only, not claim-attached
 - Lab 01 model anatomy: implemented on an exact-revision didactic model; empirical instrumentation only, not claim-eligible
 - Model-backed representation bridge: implemented for exact-revision Pythia smoke runs; real activations remain exploratory and not claim-eligible

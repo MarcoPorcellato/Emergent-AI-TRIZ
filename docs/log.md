@@ -3,10 +3,19 @@ type: chronology-log
 title: Documentation Chronology
 description: Time-ordered notes for maintained documentation and governance updates.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-14
 ---
 
 # Documentation Chronology
+
+## 2026-08-14
+
+- Added the canonical Laboratory Master Plan: an evidence-bounded evolution
+  ledger from the verified PR 1–29 foundation through annotation v1.2, the
+  permanent Wave 1 negative control, paired label-free Wave 2, canonical human
+  labels, empirical envelope v2, multi-view model artifacts, and the first
+  authentic EXP-001-R path. The plan records exact exit evidence, claim impact,
+  residual risk, deferred work, and the cost-aware delegation policy.
 
 ## 2026-08-13
 
