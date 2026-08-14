@@ -3,10 +3,19 @@ type: chronology-log
 title: Documentation Chronology
 description: Time-ordered notes for maintained documentation and governance updates.
 status: canonical
-last_verified: 2026-08-14
+last_verified: 2026-08-15
 ---
 
 # Documentation Chronology
+
+## 2026-08-15
+
+- Split the A0 foundation from the annotation-ontology delivery so its protocol
+  can merge before sealed evaluation. Added the proposed adaptive protocol,
+  strict case/target/manifest schemas, a deterministic 96-family paired corpus
+  generator with neutral counterbalanced variant identifiers, and a bounded
+  `a0-corpus` command. No freeze, sealed access, activation extraction,
+  statistic, or result is claimed.
 
 ## 2026-08-14
 

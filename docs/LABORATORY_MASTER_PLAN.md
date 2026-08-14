@@ -3,7 +3,7 @@ type: master-plan
 title: Laboratory Master Plan
 description: Canonical evolution ledger and gated route from the verified laboratory foundation to falsifiable, reproducible Latent TRIZ experiments.
 status: canonical
-last_verified: 2026-08-14
+last_verified: 2026-08-15
 ---
 
 # Laboratory Master Plan
@@ -137,6 +137,14 @@ The A0 protocol must be merged before any sealed evaluation is observed. A0 is
 complete only when `make a0` reproduces a real exact-revision model run and
 publishes a positive, null, failed, or non-interpretable exploratory proxy result
 with immutable receipts.
+
+**Current status — in delivery:** branch `agent/a0-foundation` is isolated
+from PR 30 and based on the verified `main` anchor. It contains the proposed
+adaptive protocol, strict case/target/manifest schemas, a deterministic
+96-family paired generator, and a temporary-safe `a0-corpus` command. This is
+not a protocol freeze or empirical result. Calibration, sealed access,
+activations, statistics, `make a0`, report integration, and publication remain
+open.
 
 ### PR 30 — annotation ontology v1.2 implementation
 
@@ -352,7 +360,7 @@ Proceed only when the predecessor result justifies the next cost:
    to the cheapest suitable worker; provide only the necessary excerpts.
 3. Reserve the primary model for architecture, integration, scientific and
    statistical judgment, security, release qualification, and merge decisions.
-4. Never use LM Studio. Do not repeat broad repository discovery when the master
+4. Never depend on an interactive local model-serving application. Do not repeat broad repository discovery when the master
    plan, exact checkpoint, or a recent receipt already answers the question.
 5. Run the narrowest relevant validation first. Use the path-aware remote gate,
    and require exact-head CCP for scientific, governance, workflow, dependency,

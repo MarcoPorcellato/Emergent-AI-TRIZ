@@ -3,7 +3,7 @@ type: research-spec
 title: A0 Automated Weak Hypothesis Exploration
 description: Frozen-design contract for a fully automated, evidence-bounded proxy test before expert TRIZ validation.
 status: proposed
-last_verified: 2026-08-14
+last_verified: 2026-08-15
 ---
 
 # A0 Automated Weak Hypothesis Exploration
@@ -38,7 +38,7 @@ A0 must not:
 - claim validation of TRIZ constructs by experts;
 - replace the H1 cognitive pilot;
 - replace Wave 2;
-- use LM Studio;
+- depend on an interactive local model-serving application;
 - use an LLM judge as ground truth;
 - promote TRIZ claims;
 - widen into a new horizontal lab;
@@ -216,7 +216,7 @@ Requirements:
 - integrity and residual-parity checks recorded;
 - run directory is immutable after write;
 - atomic writes only;
-- no LM Studio;
+- no interactive local model-serving application;
 - no unverified model substitution.
 
 Extract at least these views when the implementation supports them:
@@ -455,7 +455,7 @@ Recommended order:
 1. deterministic shell tools and repository scripts;
 2. bounded local checks;
 3. cheaper LLM lanes for mechanical or bounded work;
-4. main Codex only for scientific framing, integration, and final interpretation.
+4. primary agent only for scientific framing, integration, and final interpretation.
 
 Rules:
 
@@ -463,17 +463,17 @@ Rules:
 - delegate only bounded work;
 - do not ask cheaper lanes to rediscover the whole protocol;
 - do not use LLMs as truth sources for labels or ground truth;
-- do not use LM Studio;
+- do not use an interactive local model-serving application;
 - stop a delegated attempt after one clear failure and escalate if needed.
 
-## Codex execution interface
+## Agent execution interface
 
 The long scientific and delivery contract stays in this file. Do not duplicate
 it in the persistent goal or in `AGENTS.md`.
 
-Use Codex in this order:
+Use the execution agent in this order:
 
-1. start with `/plan` so Codex verifies live repository state and decomposes the
+1. start with a planning step so the agent verifies live repository state and decomposes the
    current milestone before editing;
 2. load a concise persistent goal that names this file, the intended outcome,
    the non-negotiable boundaries, and the completion check;
@@ -481,12 +481,11 @@ Use Codex in this order:
    for this phase-specific scientific specification;
 4. delegate independent exploration, tests, and documentation to bounded
    subagents, while keeping overlapping writes serialized;
-5. require Codex to report the exact commands and terminal validation results.
+5. require the agent to report the exact commands and terminal validation results.
 
-This structure follows the official OpenAI guidance on
-[prompting](https://learn.chatgpt.com/docs/prompting),
-[AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md), and
-[subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents).
+Keep phase-specific contracts in this file, durable repository-wide rules in
+the repository instruction file, and bounded worker assignments in task-local
+prompts.
 
 ## Human approval boundaries
 
@@ -539,6 +538,12 @@ A0 is complete only when all of the following are true:
 - H1 and Wave 2 remain independent and untouched.
 
 ## Status note
+
+The A0 foundation is in delivery with a proposed adaptive protocol, strict
+schemas, a deterministic label-free corpus generator, and a bounded
+`a0-corpus` command. These artifacts are engineering readiness only: no
+protocol freeze, sealed corpus access, activation extraction, statistic, or
+result has occurred.
 
 This document remains `proposed` until the protocol freeze is executed and recorded.
 After freeze, update only the status and the corresponding run manifests; do not rewrite the

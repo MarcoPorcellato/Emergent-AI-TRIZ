@@ -1,0 +1,123 @@
+{
+  "protocol_id": "a0-automated-weak-proxy-v1.0.1",
+  "protocol_status": "proposed",
+  "artifact_class": "automated-operator-proxy-exploration",
+  "empirical": true,
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "corpus_generation": {
+    "seed": 20260814
+  },
+  "calibration_families_per_domain": 8,
+  "sealed_families_per_domain": 8,
+  "paired_syntax_templates": [
+    {
+      "template_id": "tpl_seg_inv_001",
+      "segmentation_like": "Local units act before the shared controller integrates their outputs.",
+      "inversion_like": "The shared controller acts before local units integrate its outputs."
+    },
+    {
+      "template_id": "tpl_seg_inv_002",
+      "segmentation_like": "Each stage governs its own input while the central stage combines outcomes.",
+      "inversion_like": "The central stage governs each input while each stage combines outcomes."
+    },
+    {
+      "template_id": "tpl_seg_inv_003",
+      "segmentation_like": "Parallel channels send resources toward the common endpoint.",
+      "inversion_like": "The common endpoint sends resources toward parallel channels."
+    },
+    {
+      "template_id": "tpl_seg_inv_004",
+      "segmentation_like": "Component roles coordinate locally before system roles combine them.",
+      "inversion_like": "System roles coordinate locally before component roles combine them."
+    }
+  ],
+  "model": {
+    "name": "EleutherAI/pythia-70m-deduped",
+    "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+  },
+  "tokenizer": {
+    "name": "EleutherAI/pythia-70m-deduped",
+    "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+  },
+  "neutral_domains": [
+    "manufacturing",
+    "energy",
+    "software",
+    "medicine",
+    "transport",
+    "agriculture"
+  ],
+  "target_families": [
+    "segmentation_like",
+    "inversion_like"
+  ],
+  "splits": {
+    "calibration_partition": "calibration",
+    "sealed_partition": "sealed"
+  },
+  "predeclared_calibration_rule": {
+    "candidate_families_per_domain": [4, 6, 8],
+    "permutation_budgets": [199, 499, 999],
+    "selection_mode": "deterministic_predeclared",
+    "deterministic_seed": 20260814,
+    "target_power": 0.8,
+    "maximum_false_positive_rate": 0.06,
+    "target_effect_size": 0.35,
+    "choose_smallest_deterministic_rule": "choose-smallest"
+  },
+  "views": [
+    "problem_only",
+    "transformation_only",
+    "problem_plus_transformation",
+    "problem_plus_solution"
+  ],
+  "token_sites": [
+    "sentinel",
+    "final_transformation_token",
+    "mean_transformation_span"
+  ],
+  "preregistered_layers": [0, 2, 4, 6],
+  "shortcut_evaluation": {
+    "macro_f1_threshold": 0.65,
+    "margin_over_majority": 0.10,
+    "a0_controls": [
+      "bag_of_words_baselines",
+      "character_ngram_baselines",
+      "length_and_punctuation_baselines",
+      "style_and_template_baselines",
+      "provenance_classifiers",
+      "problem_only_label_prediction",
+      "leave_one_domain_out_surface_evaluation",
+      "duplicate_and_near_duplicate_detection",
+      "family_leakage_detection",
+      "random_label_controls",
+      "random_partition_controls",
+      "generic_action_taxonomy_controls",
+      "generic_transformation_taxonomy_controls",
+      "adjacent_principle_proxy_controls"
+    ]
+  },
+  "outcome_rules": {
+    "positive": "all shortcut gates pass and max_statistic_p <= 0.05 and macro_f1_margin_over_surface >= 0.10",
+    "null": "all shortcut gates pass and the positive rule is false",
+    "failed": "an execution, integrity, identity, or receipt gate fails before a valid statistic",
+    "non_interpretable": "any shortcut gate reaches or exceeds its frozen threshold"
+  },
+  "shortcuts": [
+    "problem_only",
+    "length_template",
+    "surface_lexicon",
+    "domain_lexicon"
+  ],
+  "runtime": {
+    "requires_interactive_model_server": false
+  },
+  "provenance": {
+    "license": "Apache-2.0",
+    "source": "docs/A0_AUTOMATED_WEAK_HYPOTHESIS.md",
+    "created_at": "2026-08-14T00:00:00Z"
+  }
+}
