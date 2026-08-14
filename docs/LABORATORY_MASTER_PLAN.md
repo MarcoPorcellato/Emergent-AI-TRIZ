@@ -124,6 +124,20 @@ annotation contract integrity
 
 ## Ordered delivery plan
 
+### Parallel Phase A0 — automated weak-hypothesis exploration
+
+A0 may run before the human H1 gate because its targets are assigned by frozen
+procedural transformations rather than expert judgment. It remains independent
+from Wave 2 and cannot validate the TRIZ construct or promote a claim. Its
+complete freeze, corpus, controls, activation, analysis, publication, and
+completion contract is defined in
+[A0 Automated Weak Hypothesis Exploration](./A0_AUTOMATED_WEAK_HYPOTHESIS.md).
+
+The A0 protocol must be merged before any sealed evaluation is observed. A0 is
+complete only when `make a0` reproduces a real exact-revision model run and
+publishes a positive, null, failed, or non-interpretable exploratory proxy result
+with immutable receipts.
+
 ### PR 30 — annotation ontology v1.2 implementation
 
 **Outcome**
