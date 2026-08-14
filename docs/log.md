@@ -10,12 +10,19 @@ last_verified: 2026-08-14
 
 ## 2026-08-15
 
-- Split the A0 foundation from the annotation-ontology delivery so its protocol
-  can merge before sealed evaluation. Added the proposed adaptive protocol,
-  strict case/target/manifest schemas, a deterministic 96-family paired corpus
-  generator with neutral counterbalanced variant identifiers, and a bounded
-  `a0-corpus` command. No freeze, sealed access, activation extraction,
-  statistic, or result is claimed.
+- A0 protocol checkpoint `v1.0.3` was frozen before any model-backed or sealed
+  execution. The deterministic label-free corpus is 96 families / 192 cases.
+- Calibration and sealed evaluation files were separated at manifest level, with
+  `sealed_targets_accessed: false`.
+- Initial v1.0.1 corpus setup was rejected for shortcut calibration and replaced
+  pre-freeze with token-matched unique role-pair redesign.
+- All 14 shortcut controls passed on the 96 calibration cases.
+- Power-calibration parameters fixed as 4 problem families/domain, 24 problem
+  families (48 paired cases), 199 permutations, critical threshold 19,
+  MDE 0.333212784429589.
+- No real model result has been produced yet; no TRIZ validation claim is made.
+- The next planned milestone is exact-model activation extraction and sealed
+  inference.
 
 ## 2026-08-14
 

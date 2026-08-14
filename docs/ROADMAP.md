@@ -146,13 +146,21 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 1. **Delivered:** close the integrity hotfix by enforcing every JSON Schema keyword used by the repository, cross-checking tracked artifacts against Draft 2020-12 `jsonschema`, and making case-level disagreement incompatible with freeze readiness.
 2. **Delivered:** replace changing branch-policy exceptions with one stable, path- and risk-aware merge gate; restore pre-merge Python 3.11 coverage for code and require CCP plus scientific artifact checks where appropriate.
 3. **In delivery:** amend the unused annotation ontology to v1.2 before real collection: score Segmentation and Inversion separately, require an identified alternative for `Other`, permit null operator scores for `Cannot determine`, expose guide examples, reset every form field after submission, and complete the three-expert cognitive-pilot gate.
-4. Run [Phase A0](./A0_AUTOMATED_WEAK_HYPOTHESIS.md) as an independent, fully automated exploratory proxy test before H1; freeze its protocol before sealed evaluation and keep it ineligible for expert-validated TRIZ claims.
-5. Preserve Wave 1 unchanged as a `calibration_only`, known-leaky corpus. Its negative audit becomes a permanent regression fixture; it is not iteratively optimized into an EXP-001 dataset.
-6. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
-7. Store independent raw ratings, adjudications, exclusions, and canonical human labels as separate immutable artifacts. Labs 03–05 consume canonical labels, never generator intent.
-8. Add a common empirical envelope without rewriting v1 fixtures, and separate pre-freeze candidate surface auditing from post-freeze Lab 03.
-9. Publish a real model-backed recognition smoke with problem-only and completed-solution views, multiple token sites, versioned index/summary receipts, external Safetensors, and no promoted claim.
-10. Run EXP-001-R only after surface, provenance, annotation, grouped-split, and held-out-domain gates pass. Empirical Lab 05 and Lab 06 remain deferred until an out-of-sample direction is demonstrated.
+4. Run [Phase A0](./A0_AUTOMATED_WEAK_HYPOTHESIS.md) as an independent,
+   fully automated exploratory proxy test before H1; freeze its protocol before sealed
+   evaluation and keep it ineligible for expert-validated TRIZ claims.
+   Status checkpoint (v1.0.3) is complete: deterministic 96-family/192-case
+   corpus, 14 shortcut controls passed on 96 calibration cases, strict 96/96
+   calibration/sealed separation, and no model-backed sealed execution yet.
+5. Preserve Wave 1 unchanged as a `calibration_only`, known-leaky corpus. Its
+   negative audit becomes a permanent regression fixture; it is not iteratively
+   optimized into an EXP-001 dataset.
+6. Next A0 dependency: exact-model activation extraction and frozen sealed inference.
+7. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
+8. Store independent raw ratings, adjudications, exclusions, and canonical human labels as separate immutable artifacts. Labs 03–05 consume canonical labels, never generator intent.
+9. Add a common empirical envelope without rewriting v1 fixtures, and separate pre-freeze candidate surface auditing from post-freeze Lab 03.
+10. Publish a real model-backed recognition smoke with problem-only and completed-solution views, multiple token sites, versioned index/summary receipts, external Safetensors, and no promoted claim.
+11. Run EXP-001-R only after surface, provenance, annotation, grouped-split, and held-out-domain gates pass. Empirical Lab 05 and Lab 06 remain deferred until an out-of-sample direction is demonstrated.
 
 The target milestone is a complete chain of label-free paired cases, independent
 canonical human labels, no detected surface shortcut, exact model activations,
