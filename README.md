@@ -123,6 +123,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 - [Lab 05 candidate directions](docs/LAB05.md) — descriptive controls with no dense-vector publication, intervention, or causal claim
 - [Research protocol](docs/RESEARCH_PROTOCOL.md) — controls, metrics, and decision criteria
 - [Laboratory master plan](docs/LABORATORY_MASTER_PLAN.md) — canonical evolution map from delivered milestones to EXP-001-R
+- [A0 automated exploration](docs/A0_AUTOMATED_WEAK_HYPOTHESIS.md) — fully automated, pre-expert proxy test of the weak hypothesis
 - [Roadmap](docs/ROADMAP.md) — living milestone map for the visual labs, EXP-001, and the replication program
 - [EXP-001 readiness gates](docs/EXP001_READINESS.md) — offline model/dataset checks and remaining blockers
 - [Article](docs/ARTICLE.md) and [article status](docs/ARTICLE_STATUS.md) — hypothesis framing and provenance

@@ -12,6 +12,7 @@ This is the **maintained** documentation bundle.
 
 - [Human portal](./README.md)
 - [Laboratory master plan](./LABORATORY_MASTER_PLAN.md)
+- [A0 automated weak-hypothesis exploration](./A0_AUTOMATED_WEAK_HYPOTHESIS.md)
 - [Chronology log](./log.md)
 - [Reference collection](./reference/index.md)
 - [Decision records](./decisions/index.md)

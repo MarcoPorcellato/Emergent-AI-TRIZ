@@ -15,6 +15,7 @@ last_verified: 2026-08-14
 - [Fail-closed schema validation](schema-validation.md)
 - [Lab architecture](../LAB_ARCHITECTURE.md)
 - [Laboratory master plan](../LABORATORY_MASTER_PLAN.md)
+- [A0 automated weak-hypothesis exploration](../A0_AUTOMATED_WEAK_HYPOTHESIS.md)
 - [Research protocol](../RESEARCH_PROTOCOL.md)
 - [Roadmap](../ROADMAP.md)
 - [Evidence Ladder](../EVIDENCE_LADDER.md)

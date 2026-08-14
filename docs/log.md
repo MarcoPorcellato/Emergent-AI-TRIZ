@@ -10,6 +10,11 @@ last_verified: 2026-08-14
 
 ## 2026-08-14
 
+- Added the canonical Phase A0 specification for a fully automated,
+  exact-revision, counterfactual proxy exploration of the Weak Latent TRIZ
+  Hypothesis. A0 freezes its design before sealed evaluation, publishes null and
+  failed outcomes, remains independent from H1 and Wave 2, and cannot promote an
+  expert-validated TRIZ claim.
 - Added the canonical Laboratory Master Plan: an evidence-bounded evolution
   ledger from the verified PR 1–29 foundation through annotation v1.2, the
   permanent Wave 1 negative control, paired label-free Wave 2, canonical human
