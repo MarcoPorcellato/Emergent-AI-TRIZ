@@ -20,6 +20,7 @@ from .annotation_workbench import AnnotationWorkbenchError, serve_annotation_wor
 from .candidate_batch import CandidateBatchError, audit_candidate_batch
 from .annotation_audit import AnnotationAuditError, audit_annotations
 from .a0_corpus import A0CorpusError, generate_a0_corpus
+from .a0_calibration import A0CalibrationError, run_a0_calibration
 from .validator import ValidationIssue, validate
 
 
@@ -151,6 +152,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     a0_corpus_parser.add_argument("--protocol", required=True, help="Path to the A0 protocol JSON file")
     a0_corpus_parser.add_argument("--output-dir", required=True, help="Output directory for generated A0 artifacts")
 
+    a0_calibration_parser = subparsers.add_parser(
+        "a0-calibrate",
+        help="Run calibration-only A0 power and shortcut gates",
+    )
+    a0_calibration_parser.add_argument("--protocol", required=True)
+    a0_calibration_parser.add_argument("--corpus-dir", required=True)
+    a0_calibration_parser.add_argument("--output-dir", required=True)
+
     fingerprint_parser = subparsers.add_parser("fingerprint", help="Compute SHA-256 of a file")
     fingerprint_parser.add_argument("path", help="Path to file")
 
@@ -215,6 +224,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
     if args.command == "a0-corpus":
         return _run_a0_corpus(args.protocol, args.output_dir)
+    if args.command == "a0-calibrate":
+        return _run_a0_calibration(args.protocol, args.corpus_dir, args.output_dir)
     parser.error("Unknown command")
     return 1
 
@@ -688,6 +699,16 @@ def _run_a0_corpus(protocol: str, output_dir: str) -> int:
         return 1
     print(stable_json_dumps(manifest))
     return 0
+
+
+def _run_a0_calibration(protocol: str, corpus_dir: str, output_dir: str) -> int:
+    try:
+        summary = run_a0_calibration(protocol, corpus_dir, output_dir)
+    except (A0CalibrationError, OSError, ValueError) as exc:
+        _print_error(f"a0-calibrate: {exc}")
+        return 1
+    print(stable_json_dumps(summary))
+    return 0 if summary["status"] == "pass" else 1
 
 
 def _write_json_output(payload: dict, output: str, dumper) -> int:

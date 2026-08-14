@@ -1,6 +1,6 @@
 {
-  "protocol_id": "a0-automated-weak-proxy-v1.0.2",
-  "protocol_status": "proposed",
+  "protocol_id": "a0-automated-weak-proxy-v1.0.3",
+  "protocol_status": "frozen",
   "artifact_class": "automated-operator-proxy-exploration",
   "empirical": true,
   "scientific_status": "exploratory",
@@ -67,6 +67,22 @@
     "maximum_false_positive_rate": 0.06,
     "target_effect_size": 0.35,
     "choose_smallest_deterministic_rule": "choose-smallest"
+  },
+  "frozen_analysis": {
+    "calibration_protocol_id": "a0-automated-weak-proxy-v1.0.2",
+    "calibration_protocol_hash": "cfe01731aafbe27d2f3262853a004492efc4ec14d4de95eb626bda91c6d9b153",
+    "calibration_freeze_candidate_sha256": "4992ecd73376df9678d81a4bc8e6e32c3d72a36194f0608ab806c31042d12796",
+    "calibration_status": "pass",
+    "shortcut_status": "pass",
+    "effect_definition": "family_level_macro_f1_margin_over_balanced_chance",
+    "power_method": "exact_family_blocked_binomial_max_statistic",
+    "selected_families_per_domain": 4,
+    "selected_family_count": 24,
+    "selected_permutation_budget": 199,
+    "critical_successes": 19,
+    "minimum_detectable_effect": 0.333212784429589,
+    "sealed_family_selection_rule": "lexicographic_family_id_first_n_within_each_domain",
+    "max_statistic_multiplicity": 12
   },
   "views": [
     "problem_only",

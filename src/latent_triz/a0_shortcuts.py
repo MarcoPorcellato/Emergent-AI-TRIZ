@@ -53,7 +53,8 @@ def audit_a0_shortcuts(
     cases_path:
         Path to ``cases.jsonl`` (label-free problem surfaces).
     targets_path:
-        Path to ``procedural-targets/targets.jsonl`` (labels + provenance).
+        Path to ``procedural-targets/calibration-targets.jsonl``. Sealed
+        targets are physically separate and must never be passed here.
     protocol_path:
         Path to the protocol JSON containing shortcut thresholds and control list.
     """
@@ -185,10 +186,31 @@ def _join_and_validate(
     case_records: list[dict[str, Any]],
     target_records: list[dict[str, Any]],
 ) -> tuple[list[dict[str, Any]], list[dict[str, str]]]:
-    by_case = {str(row.get("case_id", "")): row for row in case_records if isinstance(row, dict)}
     issues: list[dict[str, str]] = []
     joined: list[dict[str, Any]] = []
-    target_by_case = {str(row.get("case_id", "")): row for row in target_records if isinstance(row, dict)}
+    case_ids = [str(row.get("case_id", "")) for row in case_records]
+    target_ids = [str(row.get("case_id", "")) for row in target_records]
+    if len(case_ids) != len(set(case_ids)):
+        issues.append({"code": "duplicate_case_id"})
+    if len(target_ids) != len(set(target_ids)):
+        issues.append({"code": "duplicate_target_case_id"})
+
+    family_splits: dict[str, set[str]] = defaultdict(set)
+    for case in case_records:
+        family_splits[str(case.get("problem_family_id", ""))].add(str(case.get("split", "")))
+    for family_id, splits in family_splits.items():
+        if len(splits) != 1:
+            issues.append({"code": "split_crosses_family", "family_id": family_id})
+
+    calibration_cases = [row for row in case_records if row.get("split") == "calibration"]
+    by_case = {str(row.get("case_id", "")): row for row in calibration_cases}
+    target_by_case: dict[str, dict[str, Any]] = {}
+    for target in target_records:
+        case_id = str(target.get("case_id", ""))
+        if target.get("split") != "calibration":
+            issues.append({"code": "non_calibration_target_supplied", "case_id": case_id})
+            continue
+        target_by_case[case_id] = target
 
     for case_id, case in by_case.items():
         if case_id not in target_by_case:
@@ -201,7 +223,7 @@ def _join_and_validate(
         if not family:
             issues.append({"code": "missing_family", "case_id": case_id})
             continue
-        if split not in {"calibration", "sealed"}:
+        if split != "calibration":
             issues.append({"code": "invalid_split", "case_id": case_id, "split": split})
             continue
 
@@ -249,8 +271,6 @@ def _join_and_validate(
         if not rows:
             issues.append({"code": "empty_family", "family_id": family_id})
             continue
-        if len({row["split"] for row in rows}) != 1:
-            issues.append({"code": "split_crosses_family", "family_id": family_id})
         labels = sorted({row["label"] for row in rows})
         if labels != ["inversion_like", "segmentation_like"]:
             issues.append(

@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0-power-calibration.schema.json",
+  "title": "A0 power-calibration artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "protocol_id",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "method",
+    "effect_definition",
+    "multiplicity",
+    "targets",
+    "null_signal",
+    "positive_signal",
+    "confound_only_scenarios",
+    "candidates",
+    "selected",
+    "status"
+  ],
+  "properties": {
+    "artifact_class": {
+      "const": "a0-power-calibration"
+    },
+    "protocol_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "empirical": {
+      "type": "boolean",
+      "const": true
+    },
+    "scientific_status": {
+      "type": "string",
+      "const": "exploratory"
+    },
+    "evidence_eligible": {
+      "type": "boolean",
+      "const": false
+    },
+    "expert_validated": {
+      "type": "boolean",
+      "const": false
+    },
+    "claim_ids": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "method": {
+      "type": "string",
+      "const": "exact_family_blocked_binomial_max_statistic"
+    },
+    "effect_definition": {
+      "type": "string",
+      "const": "family_level_macro_f1_margin_over_balanced_chance"
+    },
+    "multiplicity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["layers", "token_sites", "total"],
+      "properties": {
+        "layers": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "token_sites": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["power", "maximum_false_positive_rate", "effect_size"],
+      "properties": {
+        "power": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0
+        },
+        "maximum_false_positive_rate": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0
+        },
+        "effect_size": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 0.5
+        }
+      }
+    },
+    "null_signal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family_success_probability"],
+      "properties": {
+        "family_success_probability": {
+          "type": "number",
+          "const": 0.5
+        }
+      }
+    },
+    "positive_signal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family_success_probability"],
+      "properties": {
+        "family_success_probability": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 1.0
+        }
+      }
+    },
+    "confound_only_scenarios": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lexical_confound_only",
+        "domain_confound_only",
+        "template_confound_only"
+      ],
+      "properties": {
+        "lexical_confound_only": { "$ref": "#/$defs/confound_scenario" },
+        "domain_confound_only": { "$ref": "#/$defs/confound_scenario" },
+        "template_confound_only": { "$ref": "#/$defs/confound_scenario" }
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "families_per_domain",
+          "family_count",
+          "permutation_budget",
+          "minimum_attainable_p",
+          "site_alpha",
+          "critical_successes",
+          "passes",
+          "exact_site_false_positive_rate",
+          "exact_familywise_false_positive_rate",
+          "exact_power_at_target_effect",
+          "minimum_detectable_effect"
+        ],
+        "properties": {
+          "families_per_domain": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "family_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "permutation_budget": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minimum_attainable_p": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "site_alpha": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "critical_successes": {
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
+          "exact_site_false_positive_rate": {
+            "type": ["number", "null"],
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "exact_familywise_false_positive_rate": {
+            "type": ["number", "null"],
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "exact_power_at_target_effect": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "minimum_detectable_effect": {
+            "type": ["number", "null"],
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "passes": {
+            "type": "boolean"
+          },
+          "failure_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "selected": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "families_per_domain",
+        "family_count",
+        "permutation_budget",
+        "critical_successes",
+        "minimum_detectable_effect"
+      ],
+      "properties": {
+        "families_per_domain": { "type": "integer", "minimum": 1 },
+        "family_count": { "type": "integer", "minimum": 1 },
+        "permutation_budget": { "type": "integer", "minimum": 1 },
+        "critical_successes": { "type": "integer", "minimum": 0 },
+        "minimum_detectable_effect": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "failed_no_feasible_candidate"]
+    }
+  },
+  "$defs": {
+    "confound_scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assumed_macro_f1_margin",
+        "raw_rejection_probability",
+        "interpretation"
+      ],
+      "properties": {
+        "assumed_macro_f1_margin": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "raw_rejection_probability": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "interpretation": {
+          "type": "string",
+          "const": "must be caught by the separate surface-shortcut gate"
+        }
+      }
+    }
+  }
+}

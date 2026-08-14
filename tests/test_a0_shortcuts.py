@@ -26,7 +26,7 @@ class A0ShortcutTests(unittest.TestCase):
             manifest = generate_a0_corpus(self.protocol_path, output)
             result = audit_a0_shortcuts(
                 output / "cases.jsonl",
-                output / "procedural-targets" / "targets.jsonl",
+                output / "procedural-targets" / "calibration-targets.jsonl",
                 self.protocol_path,
             )
             self.assertEqual(result["artifact_class"], "a0-shortcut-audit")

@@ -89,10 +89,11 @@
     "files": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["cases_jsonl", "targets_jsonl"],
+      "required": ["cases_jsonl", "calibration_targets_jsonl", "sealed_targets_jsonl"],
       "properties": {
         "cases_jsonl": {"$ref": "#/$defs/file"},
-        "targets_jsonl": {"$ref": "#/$defs/file"}
+        "calibration_targets_jsonl": {"$ref": "#/$defs/file"},
+        "sealed_targets_jsonl": {"$ref": "#/$defs/file"}
       }
     },
     "preregistered_layers": {

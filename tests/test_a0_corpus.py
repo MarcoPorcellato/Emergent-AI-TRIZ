@@ -43,8 +43,8 @@ class A0CorpusGeneratorTests(unittest.TestCase):
                 (Path(second) / "a0" / "cases.jsonl").read_bytes(),
             )
             self.assertEqual(
-                (Path(first) / "a0" / "procedural-targets" / "targets.jsonl").read_bytes(),
-                (Path(second) / "a0" / "procedural-targets" / "targets.jsonl").read_bytes(),
+                (Path(first) / "a0" / "procedural-targets" / "calibration-targets.jsonl").read_bytes(),
+                (Path(second) / "a0" / "procedural-targets" / "calibration-targets.jsonl").read_bytes(),
             )
 
     def test_missing_nested_output_parent_is_created(self) -> None:
@@ -53,14 +53,15 @@ class A0CorpusGeneratorTests(unittest.TestCase):
             generate_a0_corpus(self.protocol_path, output)
             self.assertTrue((output / "manifest.json").is_file())
             self.assertTrue((output / "cases.jsonl").is_file())
-            self.assertTrue((output / "procedural-targets" / "targets.jsonl").is_file())
+            self.assertTrue((output / "procedural-targets" / "calibration-targets.jsonl").is_file())
+            self.assertTrue((output / "sealed-targets" / "targets.jsonl").is_file())
 
     def test_counts_splits_and_family_pairing_match_protocol(self) -> None:
         with tempfile.TemporaryDirectory() as workdir:
             output = Path(workdir) / "a0"
             manifest = generate_a0_corpus(self.protocol_path, output)
             cases = self._jsonl(output / "cases.jsonl")
-            targets = self._jsonl(output / "procedural-targets" / "targets.jsonl")
+            targets = self._jsonl(output / "procedural-targets" / "calibration-targets.jsonl") + self._jsonl(output / "sealed-targets" / "targets.jsonl")
             self.assertEqual(manifest["counts"]["families"], 96)
             self.assertEqual(manifest["counts"]["total_cases"], 192)
             self.assertEqual(manifest["counts"]["total_targets"], 192)
@@ -79,7 +80,7 @@ class A0CorpusGeneratorTests(unittest.TestCase):
             output = Path(workdir) / "a0"
             generate_a0_corpus(self.protocol_path, output)
             cases = self._jsonl(output / "cases.jsonl")
-            targets = self._jsonl(output / "procedural-targets" / "targets.jsonl")
+            targets = self._jsonl(output / "procedural-targets" / "calibration-targets.jsonl") + self._jsonl(output / "sealed-targets" / "targets.jsonl")
             target_by_case = {row["case_id"]: row for row in targets}
             variant_a_targets = {
                 target_by_case[row["case_id"]]["operator_proxy_family"]
@@ -130,7 +131,7 @@ class A0CorpusGeneratorTests(unittest.TestCase):
             output = Path(workdir) / "a0"
             manifest = generate_a0_corpus(self.protocol_path, output)
             cases = self._jsonl(output / "cases.jsonl")
-            targets = self._jsonl(output / "procedural-targets" / "targets.jsonl")
+            targets = self._jsonl(output / "procedural-targets" / "calibration-targets.jsonl") + self._jsonl(output / "sealed-targets" / "targets.jsonl")
             targets_by_case = {row["case_id"]: row for row in targets}
             for case in cases:
                 target = targets_by_case[case["case_id"]]
@@ -144,7 +145,7 @@ class A0CorpusGeneratorTests(unittest.TestCase):
                 )
                 self.assertEqual(case["target_content_sha256"], target["target_content_sha256"])
                 self.assertEqual(target["case_content_sha256"], case["case_content_sha256"])
-            for key in ("cases_jsonl", "targets_jsonl"):
+            for key in ("cases_jsonl", "calibration_targets_jsonl", "sealed_targets_jsonl"):
                 entry = manifest["files"][key]
                 path = output / entry["path"]
                 self.assertEqual(entry["sha256"], hashlib.sha256(path.read_bytes()).hexdigest())

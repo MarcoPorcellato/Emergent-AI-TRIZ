@@ -131,7 +131,7 @@ def generate_a0_corpus(
         ``experiments/a0-automated-weak-proxy/protocol.json`` relative to the
         project root.
     output_dir:
-        Output directory to write ``cases.jsonl``, ``targets.jsonl`` and
+        Output directory to write ``cases.jsonl``, split target files, and
         ``manifest.json``.
     seed:
         Overrides protocol seed used for deterministic family split fallback.
@@ -491,19 +491,26 @@ def _write_atomic_bundle(
         staging_root.mkdir()
 
         cases_path = staging_root / "cases.jsonl"
-        targets_path = staging_root / "procedural-targets" / "targets.jsonl"
+        calibration_targets_path = staging_root / "procedural-targets" / "calibration-targets.jsonl"
+        sealed_targets_path = staging_root / "sealed-targets" / "targets.jsonl"
         manifest_path = staging_root / "manifest.json"
 
-        targets_path.parent.mkdir()
+        calibration_targets_path.parent.mkdir()
+        sealed_targets_path.parent.mkdir()
         _write_jsonl(cases_path, case_rows)
-        _write_jsonl(targets_path, target_rows)
+        _write_jsonl(calibration_targets_path, (row for row in target_rows if row["split"] == "calibration"))
+        _write_jsonl(sealed_targets_path, (row for row in target_rows if row["split"] == "sealed"))
 
         case_sha, case_size = _sha256_file(cases_path)
-        target_sha, target_size = _sha256_file(targets_path)
+        calibration_sha, calibration_size = _sha256_file(calibration_targets_path)
+        sealed_sha, sealed_size = _sha256_file(sealed_targets_path)
 
         manifest["files"]["cases_jsonl"].update({"path": "cases.jsonl", "sha256": case_sha, "size": case_size})
-        manifest["files"]["targets_jsonl"].update(
-            {"path": "procedural-targets/targets.jsonl", "sha256": target_sha, "size": target_size}
+        manifest["files"]["calibration_targets_jsonl"].update(
+            {"path": "procedural-targets/calibration-targets.jsonl", "sha256": calibration_sha, "size": calibration_size}
+        )
+        manifest["files"]["sealed_targets_jsonl"].update(
+            {"path": "sealed-targets/targets.jsonl", "sha256": sealed_sha, "size": sealed_size}
         )
 
         _write_manifest(manifest_path, manifest)
@@ -572,8 +579,13 @@ def _build_manifest(
         "license": protocol.get("provenance", {}).get("license", "Apache-2.0"),
         "files": {
             "cases_jsonl": {"path": "cases.jsonl", "sha256": "", "size": 0},
-            "targets_jsonl": {
-                "path": "procedural-targets/targets.jsonl",
+            "calibration_targets_jsonl": {
+                "path": "procedural-targets/calibration-targets.jsonl",
+                "sha256": "",
+                "size": 0,
+            },
+            "sealed_targets_jsonl": {
+                "path": "sealed-targets/targets.jsonl",
                 "sha256": "",
                 "size": 0,
             },
