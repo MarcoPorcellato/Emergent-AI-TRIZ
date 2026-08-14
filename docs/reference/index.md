@@ -3,7 +3,7 @@ type: reference-collection
 title: Reference Collection
 description: Canonical pointers for artifact flow, schemas, and operational references.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-14
 ---
 
 # Reference Collection
@@ -14,6 +14,8 @@ last_verified: 2026-08-13
 - [Commit CI Preflight adoption](commit-ci-preflight.md)
 - [Fail-closed schema validation](schema-validation.md)
 - [Lab architecture](../LAB_ARCHITECTURE.md)
+- [Laboratory master plan](../LABORATORY_MASTER_PLAN.md)
+- [A0 automated weak-hypothesis exploration](../A0_AUTOMATED_WEAK_HYPOTHESIS.md)
 - [Research protocol](../RESEARCH_PROTOCOL.md)
 - [Roadmap](../ROADMAP.md)
 - [Evidence Ladder](../EVIDENCE_LADDER.md)
@@ -31,6 +33,7 @@ last_verified: 2026-08-13
 - [Stage 1 blinded pilot](../STAGE1_PILOT.md)
 - [Research protocol](../RESEARCH_PROTOCOL.md)
 - [Roadmap](../ROADMAP.md)
+- [Laboratory master plan](../LABORATORY_MASTER_PLAN.md)
 - [Annotation workbench notes](../log.md)
 - [Blinded annotation workbench](../ANNOTATION_WORKBENCH.md)
 - [Wave 1 annotation audit command](../ANNOTATION_WORKBENCH.md)

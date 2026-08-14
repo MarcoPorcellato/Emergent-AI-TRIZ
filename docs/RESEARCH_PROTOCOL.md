@@ -55,11 +55,14 @@ of dataset cases. It is an operational aid, not evidence. The workbench must:
 - accept only the curated ontology choices for this stage:
   Segmentation, Inversion, Both, Other, and Abstain (Cannot determine);
 - capture a confidence value and rationale for each judgment;
-- capture four ordinal dimensions: `operator_presence`, `operator_essentiality`,
-  `contradiction_resolution`, and `solution_feasibility`;
+- capture operator-specific `segmentation_presence`,
+  `segmentation_essentiality`, `inversion_presence`, and
+  `inversion_essentiality` judgments plus global
+  `contradiction_resolution` and `solution_feasibility`;
 - bind each record to `case_payload_sha256`, `dataset_batch_sha256`,
-  `guide_sha256`, and `display_view_version = v1.1.0`;
-- optionally include `alternative_principle` text when helpful.
+  `guide_sha256`, and `display_view_version = v1.2.0`;
+- require `alternative_principle` exactly when Other is selected;
+- store all six score fields as null for Cannot determine;
 - persist abstentions explicitly so undecidable cases remain visible in coverage;
 - append validated records to `artifacts/annotations/dataset-annotations.jsonl`;
 - mark human annotation records with `non_empirical = false` because they are
@@ -91,9 +94,12 @@ abstentions remain explicit adjudication work. Ordinal Krippendorff alpha is
 reported per dimension as descriptive calibration metadata and is not a freeze
 gate until a threshold is preregistered.
 
-Annotation records created under guide v1.0 are discovery-only and cannot be
-mixed into a v1.1 freeze audit. A definitive Wave 1 audit must use records bound
-to the frozen v1.1 guide, displayed case payload, and dataset batch digests.
+Annotation records created under guide v1.0 or v1.1 are discovery-only and
+cannot be mixed into a v1.2 audit. Before any real v1.2 collection, three
+independent TRIZ experts must complete the six-case cognitive pilot and an
+explicit ontology keep-or-amend decision must be retained. A definitive audit
+must use records bound to one frozen guide revision, displayed case payload,
+and dataset batch digests.
 
 Default entry points are `make annotate` for the interactive browser flow and
 `make annotate-serve` for headless or externally controlled use.

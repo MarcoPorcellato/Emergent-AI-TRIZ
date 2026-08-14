@@ -3,7 +3,7 @@ type: Reference
 title: Stable merge policy and Commit CI Preflight
 description: Path-aware GitHub qualification with exact-head CCP evidence for scientific changes.
 status: active
-last_verified: 2026-08-13
+last_verified: 2026-08-14
 ---
 
 # Stable merge policy and Commit CI Preflight
@@ -41,6 +41,37 @@ runtime, and a maximum receipt age of 24 hours. When the classifier requires
 CCP, publish the receipt on the commit-bound
 `ccp-evidence/<40-character-head-SHA>` branch. The trusted workflow verifies
 it against the base-branch policy.
+
+### Installed macOS v3 resource admission
+
+The locally installed CCP binary was rebuilt from the commit-ci-preflight PR 35
+merge at exact upstream commit
+`9c506890880b89747462c0d21087e49abe78b8ee`. Its active host policy is
+`macos-v3`:
+
+- available RAM must be at least 20%;
+- swap must remain below the smaller of 8 GiB or 30% of physical RAM;
+- pre-start compressor use must remain below 40%;
+- runtime compressor use above 40% is a soft-pressure signal only after three
+  consecutive samples;
+- runtime compressor use above 45% is immediate hard pressure.
+
+Before an official guarded runner, execute:
+
+```text
+commit-ci-preflight resource status --json
+commit-ci-preflight admission status --json
+```
+
+Proceed only when admission returns `Admit` and there is no active or queued
+run. `Unknown` and `Deny` remain fail-closed and must not authorize a retry or
+runner start.
+
+The Rust 1.96 Bookworm runner image is pinned to
+`sha256:5e2214abe154fe26e39f64488952e5c991eeed1d6d6da7cc8381ae83927f0cfc`
+and cached persistently in OrbStack. Preserve `macos-v2` receipts as historical
+evidence; never relabel them as `macos-v3`. The still-draft upstream CCP PR 34
+is not part of the installed contract.
 
 ## Stable path and risk contract
 

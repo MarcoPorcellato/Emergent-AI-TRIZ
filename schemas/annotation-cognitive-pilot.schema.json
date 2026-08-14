@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/annotation-cognitive-pilot.schema.json",
+  "title": "Annotation ontology cognitive pilot protocol",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "ontology_revision", "status", "target_experts", "case_ids", "blinding", "questions", "completion_gate", "evidence_eligible", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "annotation-cognitive-pilot-protocol"},
+    "protocol_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "ontology_revision": {"const": "v1.2.0"},
+    "status": {"const": "ready_for_human_pilot"},
+    "target_experts": {"const": 3},
+    "case_ids": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"}
+    },
+    "blinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hide_generator_targets", "hide_provenance", "hide_related_cases"],
+      "properties": {
+        "hide_generator_targets": {"const": true},
+        "hide_provenance": {"const": true},
+        "hide_related_cases": {"const": true}
+      }
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 6,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "completion_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["independent_experts_per_case", "qualitative_ambiguity_synthesis", "ontology_amendment_decision", "required_before_wave2_collection"],
+      "properties": {
+        "independent_experts_per_case": {"const": 3},
+        "qualitative_ambiguity_synthesis": {"const": true},
+        "ontology_amendment_decision": {"const": true},
+        "required_before_wave2_collection": {"const": true}
+      }
+    },
+    "evidence_eligible": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}

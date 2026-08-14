@@ -47,6 +47,22 @@ the workbench boundary: collection alone cannot support or promote a hypothesis
 claim. Dataset freeze, agreement, leakage, preregistration, and claim gates are
 separate steps.
 
+Ontology v1.2 replaces the selected-label presence and essentiality fields with
+independent Segmentation and Inversion judgments. A substantive annotation
+records four operator-specific scores plus global contradiction-resolution and
+feasibility scores. Cannot determine stores all six scores as null. Other is
+valid only with a named alternative principle. The interface exposes the guide
+definition, positive examples, near misses, adjacent-principle confusions, and
+decision rule, then clears every control after a successful save to prevent
+carry-over anchoring.
+
+Version 1.2 remains a development ontology until three independent TRIZ experts
+complete the six-case cognitive pilot described in
+`experiments/annotation-ontology-v1-2-cognitive-pilot/protocol.json`. The
+protocol is ready, but no expert responses or result are claimed. Wave 2 human
+collection remains blocked until the ambiguity synthesis and keep-or-amend
+decision are recorded.
+
 For Wave 1 audit runs, the repository also supports a batched check that reads
 per-rater files, validates the guide revision and digest, and writes a retained
 audit summary at `artifacts/annotations/wave1-audit.json`:
@@ -70,6 +86,6 @@ freeze remains false.
 Even above the aggregate agreement threshold, any disagreement or unanimous
 abstention prevents freeze readiness until the case is adjudicated.
 
-Guide v1.0 records are discovery-only. They must not be combined with v1.1
-records in a freeze audit; v1.1 binds each judgment to the exact displayed case,
-dataset batch, guide digest, display version, and collection session.
+Guide v1.0 and v1.1 records are discovery-only. They must not be combined with
+v1.2 records in a freeze audit; v1.2 binds each judgment to the exact displayed
+case, dataset batch, guide digest, display version, and collection session.
