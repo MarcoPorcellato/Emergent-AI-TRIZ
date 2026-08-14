@@ -8,7 +8,7 @@ last_verified: 2026-08-14
 
 # Documentation Chronology
 
-## 2026-08-15
+## 2026-08-14
 
 - A0 protocol checkpoint `v1.0.3` was frozen before any model-backed or sealed
   execution. The deterministic label-free corpus is 96 families / 192 cases.
@@ -18,7 +18,7 @@ last_verified: 2026-08-14
   pre-freeze with token-matched unique role-pair redesign.
 - All 14 shortcut controls passed on the 96 calibration cases.
 - Power-calibration parameters fixed as 4 problem families/domain, 24 problem
-  families (48 paired cases), 199 permutations, critical threshold 19,
+  families total (48 paired cases), 199 permutations, critical threshold 19,
   MDE 0.333212784429589.
 - No real model result has been produced yet; no TRIZ validation claim is made.
 - The next planned milestone is exact-model activation extraction and sealed

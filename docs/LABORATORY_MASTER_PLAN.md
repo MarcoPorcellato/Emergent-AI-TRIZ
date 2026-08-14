@@ -144,7 +144,7 @@ tracked in the freeze manifest, 14 shortcut controls have passed on 96 calibrati
 cases, and calibration/sealed target files are physically separated.
 
 - deterministic design selected by power calibration:
-  4 problem families/domain, 24 problem families (48 paired cases) total, 199 permutations, critical=19,
+  4 problem families/domain, 24 problem families total (48 paired cases), 199 permutations, critical=19,
   MDE 0.333212784429589
 - v1.0.1 pre-freeze prototype was rejected and redesigned pre-freeze as token-matched
   unique role pairs

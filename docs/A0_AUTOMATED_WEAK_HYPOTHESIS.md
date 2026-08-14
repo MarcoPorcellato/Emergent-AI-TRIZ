@@ -547,7 +547,7 @@ Status is now `in_delivery` and protocol version `v1.0.3` is frozen before any m
 - Calibration and sealed targets are physically separated into dedicated target files.
 - Initial 96-family proposal in v1.0.1 was redesigned after failing shortcut calibration and was replaced pre-freeze with a token-matched unique role-pair design.
 - All 14 anti-shortcut controls passed on the 96 calibration cases used for selection and verification.
-- Exact power calibration parameters were fixed: 4 problem families/domain, 24 problem families (48 paired cases) total, 199 permutations, critical threshold 19, MDE 0.333212784429589.
+- Exact power calibration parameters were fixed: 4 problem families/domain, 24 problem families total (48 paired cases), 199 permutations, critical threshold 19, MDE 0.333212784429589.
 - The immutable freeze record is `results/a0/calibration/freeze-manifest.json`.
 - `sealed_targets_accessed` is `false` in the freeze records.
 - No real model activations have been observed, and no TRIZ claim is made.
