@@ -57,6 +57,7 @@ def main() -> int:
         ("schemas/representation-record.schema.json", "data/pilot/representations.jsonl"),
         ("schemas/lab05-config.schema.json", "experiments/lab05-candidate-directions/config.json"),
         ("schemas/lab05-result.schema.json", "results/lab05/candidate-directions/summary.json"),
+        ("schemas/a0-protocol.schema.json", "experiments/a0-automated-weak-proxy/protocol.json"),
     )
     for schema, data in validation_pairs:
         validate(schema, data)
@@ -104,6 +105,10 @@ def main() -> int:
         "schemas/representation-record.schema.json",
         "schemas/lab05-config.schema.json",
         "schemas/lab05-result.schema.json",
+        "schemas/a0-protocol.schema.json",
+        "schemas/a0-corpus-manifest.schema.json",
+        "schemas/a0-case.schema.json",
+        "schemas/a0-procedural-target.schema.json",
         "experiments/lab03-behavioral-baselines/config.json",
         "experiments/lab04-decodability/config.json",
         "experiments/lab05-candidate-directions/config.json",
@@ -116,6 +121,61 @@ def main() -> int:
         "--manifest", "data/candidates/wave1-manifest.json",
         "--cases", "data/candidates/wave1-model-generated.jsonl",
     )
+
+    with tempfile.TemporaryDirectory() as directory:
+        a0_output = Path(directory) / "data" / "a0"
+        run(
+            PYTHON,
+            "-m",
+            "latent_triz.cli",
+            "a0-corpus",
+            "--protocol",
+            "experiments/a0-automated-weak-proxy/protocol.json",
+            "--output-dir",
+            str(a0_output),
+        )
+        manifest_path = a0_output / "manifest.json"
+        cases_path = a0_output / "cases.jsonl"
+        targets_path = a0_output / "procedural-targets/targets.jsonl"
+        validate("schemas/a0-corpus-manifest.schema.json", str(manifest_path))
+        validate("schemas/a0-case.schema.json", str(cases_path))
+        validate("schemas/a0-procedural-target.schema.json", str(targets_path))
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest["empirical"] is not True:
+            raise RuntimeError("A0 manifest must be empirical")
+        if manifest["scientific_status"] != "exploratory":
+            raise RuntimeError("A0 manifest scientific_status must be exploratory")
+        if manifest["evidence_eligible"] is not False:
+            raise RuntimeError("A0 manifest evidence_eligible must be false")
+        if manifest["expert_validated"] is not False:
+            raise RuntimeError("A0 manifest expert_validated must be false")
+        if manifest["claim_ids"] != []:
+            raise RuntimeError("A0 manifest claim_ids must be empty")
+        if manifest["counts"]["families"] != 96:
+            raise RuntimeError("A0 manifest family count changed")
+        if manifest["counts"]["total_cases"] != 192:
+            raise RuntimeError("A0 manifest total case count changed")
+        if manifest["counts"]["total_targets"] != 192:
+            raise RuntimeError("A0 manifest total target count changed")
+        if manifest["family_integrity"]["paired_records_by_family"] is not True:
+            raise RuntimeError("A0 family integrity paired_records_by_family must be true")
+        if manifest["family_integrity"]["uniform_split_by_family"] is not True:
+            raise RuntimeError("A0 family integrity uniform_split_by_family must be true")
+        if manifest["counts"]["sealed_cases"] < 1 or manifest["counts"]["calibration_cases"] < 1:
+            raise RuntimeError("A0 manifest missing required split cases")
+        for key, suffix in {
+            "cases_jsonl": "cases.jsonl",
+            "targets_jsonl": "procedural-targets/targets.jsonl",
+        }.items():
+            path = a0_output / manifest["files"][key]["path"]
+            if not path.is_file():
+                raise RuntimeError(f"A0 manifest references missing {path}")
+            expected = manifest["files"][key]["sha256"]
+            observed = hashlib.sha256(path.read_bytes()).hexdigest()
+            if observed != expected:
+                raise RuntimeError(f"A0 manifest file hash mismatch for {suffix}")
+            if path.stat().st_size != manifest["files"][key]["size"]:
+                raise RuntimeError(f"A0 manifest file size mismatch for {suffix}")
 
     with tempfile.TemporaryDirectory() as directory:
         temporary = Path(directory)

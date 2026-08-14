@@ -3,10 +3,33 @@ type: chronology-log
 title: Documentation Chronology
 description: Time-ordered notes for maintained documentation and governance updates.
 status: canonical
-last_verified: 2026-08-13
+last_verified: 2026-08-14
 ---
 
 # Documentation Chronology
+
+## 2026-08-15
+
+- Split the A0 foundation from the annotation-ontology delivery so its protocol
+  can merge before sealed evaluation. Added the proposed adaptive protocol,
+  strict case/target/manifest schemas, a deterministic 96-family paired corpus
+  generator with neutral counterbalanced variant identifiers, and a bounded
+  `a0-corpus` command. No freeze, sealed access, activation extraction,
+  statistic, or result is claimed.
+
+## 2026-08-14
+
+- Added the canonical Phase A0 specification for a fully automated,
+  exact-revision, counterfactual proxy exploration of the Weak Latent TRIZ
+  Hypothesis. A0 freezes its design before sealed evaluation, publishes null and
+  failed outcomes, remains independent from H1 and Wave 2, and cannot promote an
+  expert-validated TRIZ claim.
+- Added the canonical Laboratory Master Plan: an evidence-bounded evolution
+  ledger from the verified PR 1–29 foundation through annotation v1.2, the
+  permanent Wave 1 negative control, paired label-free Wave 2, canonical human
+  labels, empirical envelope v2, multi-view model artifacts, and the first
+  authentic EXP-001-R path. The plan records exact exit evidence, claim impact,
+  residual risk, deferred work, and the cost-aware delegation policy.
 
 ## 2026-08-13
 

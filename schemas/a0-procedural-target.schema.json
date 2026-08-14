@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0-procedural-target.schema.json",
+  "title": "A0 procedural target record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "target_record_id",
+    "case_id",
+    "problem_family_id",
+    "solution_variant_id",
+    "operator_proxy_family",
+    "generator_rule",
+    "split",
+    "provenance",
+    "target_content_sha256",
+    "case_content_sha256"
+  ],
+  "properties": {
+    "target_record_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "case_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "problem_family_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "solution_variant_id": {"type": "string", "enum": ["variant_a", "variant_b"]},
+    "operator_proxy_family": {
+      "type": "string",
+      "enum": ["segmentation_like", "inversion_like"]
+    },
+    "generator_rule": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "split": {"type": "string", "enum": ["calibration", "sealed"]},
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "target_content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "case_content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed", "template_id", "generator_id", "license"],
+      "properties": {
+        "seed": {"type": "integer", "minimum": 0},
+        "template_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+        "generator_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+        "license": {"const": "Apache-2.0"}
+      }
+    }
+  }
+}

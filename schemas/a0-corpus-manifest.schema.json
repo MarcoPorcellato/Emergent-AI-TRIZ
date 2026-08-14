@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0-corpus-manifest.schema.json",
+  "title": "A0 corpus manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "protocol_id",
+    "protocol_hash",
+    "generator_id",
+    "generator_source_sha256",
+    "seed",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "neutral_domains",
+    "counts",
+    "splits",
+    "family_integrity",
+    "files",
+    "preregistered_layers",
+    "token_sites",
+    "views",
+    "license"
+  ],
+  "properties": {
+    "artifact_class": {"const": "a0-corpus-manifest"},
+    "protocol_id": {"type": "string", "minLength": 1},
+    "protocol_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "generator_id": {"const": "latent-triz-a0-corpus-v1"},
+    "generator_source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "seed": {"type": "integer", "minimum": 0},
+    "empirical": {"const": true},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "neutral_domains": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_cases",
+        "total_targets",
+        "families",
+        "domains",
+        "calibration_cases",
+        "sealed_cases"
+      ],
+      "properties": {
+        "total_cases": {"type": "integer", "minimum": 1},
+        "total_targets": {"type": "integer", "minimum": 1},
+        "families": {"type": "integer", "minimum": 2},
+        "domains": {"const": 6},
+        "calibration_cases": {"type": "integer", "minimum": 1},
+        "sealed_cases": {"type": "integer", "minimum": 1}
+      }
+    },
+    "splits": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {"type": "string", "enum": ["calibration", "sealed"]}
+    },
+    "family_integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "paired_records_by_family",
+        "uniform_split_by_family",
+        "family_split_sha256"
+      ],
+      "properties": {
+        "paired_records_by_family": {"const": true},
+        "uniform_split_by_family": {"const": true},
+        "family_split_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "files": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cases_jsonl", "targets_jsonl"],
+      "properties": {
+        "cases_jsonl": {"$ref": "#/$defs/file"},
+        "targets_jsonl": {"$ref": "#/$defs/file"}
+      }
+    },
+    "preregistered_layers": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"type": "integer", "enum": [0, 2, 4, 6]}
+    },
+    "token_sites": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "string",
+        "enum": ["sentinel", "final_transformation_token", "mean_transformation_span"]
+      }
+    },
+    "views": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "string",
+        "enum": [
+          "problem_only",
+          "transformation_only",
+          "problem_plus_transformation",
+          "problem_plus_solution"
+        ]
+      }
+    },
+    "license": {"const": "Apache-2.0"}
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^[^/].*$"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "size": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

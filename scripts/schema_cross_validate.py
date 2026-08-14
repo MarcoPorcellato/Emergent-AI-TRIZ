@@ -44,6 +44,7 @@ VALIDATION_PAIRS = (
     ("schemas/representation-record.schema.json", "data/pilot/representations.jsonl"),
     ("schemas/lab05-config.schema.json", "experiments/lab05-candidate-directions/config.json"),
     ("schemas/lab05-result.schema.json", "results/lab05/candidate-directions/summary.json"),
+    ("schemas/a0-protocol.schema.json", "experiments/a0-automated-weak-proxy/protocol.json"),
 )
 
 

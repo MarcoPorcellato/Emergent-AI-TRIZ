@@ -19,6 +19,7 @@ from .lab_suite import LAB00_REPORT_PATH, LabSuiteError, build_lab_suite_report
 from .annotation_workbench import AnnotationWorkbenchError, serve_annotation_workbench
 from .candidate_batch import CandidateBatchError, audit_candidate_batch
 from .annotation_audit import AnnotationAuditError, audit_annotations
+from .a0_corpus import A0CorpusError, generate_a0_corpus
 from .validator import ValidationIssue, validate
 
 
@@ -143,6 +144,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     annotation_parser.add_argument("--port", type=int, default=8765, help="Local TCP port")
     annotation_parser.add_argument("--open", action="store_true", help="Open the workbench in a browser")
 
+    a0_corpus_parser = subparsers.add_parser(
+        "a0-corpus",
+        help="Generate pre-sealed A0 corpus artifacts from a protocol",
+    )
+    a0_corpus_parser.add_argument("--protocol", required=True, help="Path to the A0 protocol JSON file")
+    a0_corpus_parser.add_argument("--output-dir", required=True, help="Output directory for generated A0 artifacts")
+
     fingerprint_parser = subparsers.add_parser("fingerprint", help="Compute SHA-256 of a file")
     fingerprint_parser.add_argument("path", help="Path to file")
 
@@ -205,6 +213,8 @@ def main(argv: Optional[List[str]] = None) -> int:
             _print_error(str(exc))
             return 1
         return 0
+    if args.command == "a0-corpus":
+        return _run_a0_corpus(args.protocol, args.output_dir)
     parser.error("Unknown command")
     return 1
 
@@ -667,6 +677,16 @@ def _run_pilot_export_evaluator(
         return 1
     print(f"evaluator packets: {evaluator_output}")
     print(f"sealed allocation key: {key_output}")
+    return 0
+
+
+def _run_a0_corpus(protocol: str, output_dir: str) -> int:
+    try:
+        manifest = generate_a0_corpus(protocol, output_dir)
+    except (A0CorpusError, OSError) as exc:
+        _print_error(f"a0-corpus: {exc}")
+        return 1
+    print(stable_json_dumps(manifest))
     return 0
 
 

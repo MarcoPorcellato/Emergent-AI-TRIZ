@@ -1,0 +1,382 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0-protocol.schema.json",
+  "title": "A0 automated weak proxy protocol contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol_id",
+    "protocol_status",
+    "artifact_class",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "corpus_generation",
+    "calibration_families_per_domain",
+    "sealed_families_per_domain",
+    "paired_syntax_templates",
+    "model",
+    "tokenizer",
+    "neutral_domains",
+    "target_families",
+    "splits",
+    "predeclared_calibration_rule",
+    "views",
+    "token_sites",
+    "preregistered_layers",
+    "shortcut_evaluation",
+    "outcome_rules",
+    "runtime",
+    "provenance"
+  ],
+  "properties": {
+    "protocol_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "protocol_status": {
+      "type": "string",
+      "enum": ["proposed", "frozen"]
+    },
+    "artifact_class": {
+      "type": "string",
+      "const": "automated-operator-proxy-exploration"
+    },
+    "empirical": {
+      "type": "boolean",
+      "const": true
+    },
+    "scientific_status": {
+      "type": "string",
+      "enum": ["exploratory"]
+    },
+    "evidence_eligible": {
+      "type": "boolean",
+      "const": false
+    },
+    "expert_validated": {
+      "type": "boolean",
+      "const": false
+    },
+    "claim_ids": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "corpus_generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed"],
+      "properties": {
+        "seed": {
+          "type": "integer",
+          "const": 20260814
+        }
+      }
+    },
+    "calibration_families_per_domain": {
+      "type": "integer",
+      "const": 8
+    },
+    "sealed_families_per_domain": {
+      "type": "integer",
+      "const": 8
+    },
+    "paired_syntax_templates": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "template_id",
+          "segmentation_like",
+          "inversion_like"
+        ],
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "segmentation_like": {
+            "type": "string",
+            "minLength": 1
+          },
+          "inversion_like": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "revision"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "EleutherAI/pythia-70m-deduped"
+        },
+        "revision": {
+          "type": "string",
+          "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+        }
+      }
+    },
+    "tokenizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "revision"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "EleutherAI/pythia-70m-deduped"
+        },
+        "revision": {
+          "type": "string",
+          "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+        }
+      }
+    },
+    "neutral_domains": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "target_families": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "string",
+        "enum": ["segmentation_like", "inversion_like"]
+      }
+    },
+    "splits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calibration_partition",
+        "sealed_partition"
+      ],
+      "properties": {
+        "calibration_partition": {
+          "type": "string",
+          "enum": ["calibration"]
+        },
+        "sealed_partition": {
+          "type": "string",
+          "enum": ["sealed"]
+        }
+      }
+    },
+    "predeclared_calibration_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_families_per_domain",
+        "permutation_budgets",
+        "selection_mode",
+        "deterministic_seed",
+        "target_power",
+        "maximum_false_positive_rate",
+        "target_effect_size"
+      ],
+      "properties": {
+        "candidate_families_per_domain": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "integer",
+            "enum": [4, 6, 8]
+          }
+        },
+        "permutation_budgets": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "integer",
+            "enum": [199, 499, 999]
+          }
+        },
+        "selection_mode": {
+          "type": "string",
+          "const": "deterministic_predeclared"
+        },
+        "deterministic_seed": {
+          "type": "integer",
+          "const": 20260814
+        },
+        "target_power": {
+          "type": "number",
+          "const": 0.8
+        },
+        "maximum_false_positive_rate": {
+          "type": "number",
+          "const": 0.06
+        },
+        "target_effect_size": {
+          "type": "number",
+          "const": 0.35
+        },
+        "choose_smallest_deterministic_rule": {
+          "type": "string",
+          "enum": ["choose-smallest"]
+        }
+      }
+    },
+    "views": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "string",
+        "enum": [
+          "problem_only",
+          "transformation_only",
+          "problem_plus_transformation",
+          "problem_plus_solution"
+        ]
+      }
+    },
+    "token_sites": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "string",
+        "enum": [
+          "sentinel",
+          "final_transformation_token",
+          "mean_transformation_span"
+        ]
+      }
+    },
+    "preregistered_layers": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "integer",
+        "enum": [0, 2, 4, 6]
+      }
+    },
+    "shortcut_evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "macro_f1_threshold",
+        "margin_over_majority",
+        "a0_controls"
+      ],
+      "properties": {
+        "macro_f1_threshold": {
+          "type": "number",
+          "const": 0.65
+        },
+        "margin_over_majority": {
+          "type": "number",
+          "const": 0.10
+        },
+        "a0_controls": {
+          "type": "array",
+          "minItems": 13,
+          "maxItems": 14,
+          "items": {
+            "type": "string",
+            "enum": [
+              "bag_of_words_baselines",
+              "character_ngram_baselines",
+              "length_and_punctuation_baselines",
+              "style_and_template_baselines",
+              "provenance_classifiers",
+              "problem_only_label_prediction",
+              "leave_one_domain_out_surface_evaluation",
+              "duplicate_and_near_duplicate_detection",
+              "family_leakage_detection",
+              "random_label_controls",
+              "random_partition_controls",
+              "generic_action_taxonomy_controls",
+              "generic_transformation_taxonomy_controls",
+              "adjacent_principle_proxy_controls"
+            ]
+          }
+        }
+      }
+    },
+    "outcome_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["positive", "null", "failed", "non_interpretable"],
+      "properties": {
+        "positive": {
+          "const": "all shortcut gates pass and max_statistic_p <= 0.05 and macro_f1_margin_over_surface >= 0.10"
+        },
+        "null": {
+          "const": "all shortcut gates pass and the positive rule is false"
+        },
+        "failed": {
+          "const": "an execution, integrity, identity, or receipt gate fails before a valid statistic"
+        },
+        "non_interpretable": {
+          "const": "any shortcut gate reaches or exceeds its frozen threshold"
+        }
+      }
+    },
+    "shortcuts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requires_interactive_model_server"],
+      "properties": {
+        "requires_interactive_model_server": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "license",
+        "source",
+        "created_at"
+      ],
+      "properties": {
+        "license": {
+          "type": "string",
+          "const": "Apache-2.0"
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}
