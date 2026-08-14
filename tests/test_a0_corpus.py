@@ -106,6 +106,25 @@ class A0CorpusGeneratorTests(unittest.TestCase):
                 for forbidden in ("triz", "segmentation", "inversion", "operator_proxy_family"):
                     self.assertNotIn(forbidden, surface)
 
+    def test_paired_transformations_are_token_matched_and_family_unique(self) -> None:
+        with tempfile.TemporaryDirectory() as workdir:
+            output = Path(workdir) / "a0"
+            generate_a0_corpus(self.protocol_path, output)
+            cases = self._jsonl(output / "cases.jsonl")
+            by_family: dict[str, list[dict]] = {}
+            transformations: set[str] = set()
+            for case in cases:
+                by_family.setdefault(case["problem_family_id"], []).append(case)
+                self.assertNotIn(case["transformation"], transformations)
+                transformations.add(case["transformation"])
+            for pair in by_family.values():
+                self.assertEqual(len(pair), 2)
+                tokens = [
+                    sorted(item["transformation"].lower().replace(".", "").split())
+                    for item in pair
+                ]
+                self.assertEqual(tokens[0], tokens[1])
+
     def test_content_hash_links_are_recomputable(self) -> None:
         with tempfile.TemporaryDirectory() as workdir:
             output = Path(workdir) / "a0"

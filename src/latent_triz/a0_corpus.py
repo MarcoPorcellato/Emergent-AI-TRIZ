@@ -105,6 +105,15 @@ _DOMAIN_BLUEPRINTS = {
     },
 }
 
+_ROLE_ADJECTIVES = (
+    "amber", "brisk", "cobalt", "dappled", "ember", "fallow", "gentle", "harbor",
+    "indigo", "juniper", "kindred", "lucid", "mellow", "noble", "opal", "quiet",
+)
+_ROLE_NOUNS = (
+    "arch", "beacon", "circuit", "delta", "engine", "frame", "grove", "hinge",
+    "island", "junction", "keystone", "lattice", "module", "node", "orbit", "relay",
+)
+
 
 def generate_a0_corpus(
     mapping_path: str | Path,
@@ -272,6 +281,7 @@ def _extract_families(protocol: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
         raise A0CorpusError("the frozen generator supports at most 16 families per domain")
 
     families: dict[str, dict[str, Any]] = {}
+    global_family_index = 0
     for domain in domains:
         blueprint = _DOMAIN_BLUEPRINTS.get(str(domain))
         if blueprint is None:
@@ -282,20 +292,39 @@ def _extract_families(protocol: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
                 if family_index >= total_per_domain:
                     break
                 family_index += 1
+                first_role = _neutral_role_name(global_family_index * 2)
+                second_role = _neutral_role_name(global_family_index * 2 + 1)
+                global_family_index += 1
                 family_id = f"{domain}_{family_index:03d}"
+                if int(hashlib.sha256(family_id.encode("utf-8")).hexdigest()[:2], 16) % 2:
+                    local_role, collective_role = second_role, first_role
+                else:
+                    local_role, collective_role = first_role, second_role
                 families[family_id] = {
                     "problem_family_id": family_id,
                     "domain": str(domain),
-                    "problem": f"The {system} experiences {stress} while coordinating shared work.",
+                    "problem": (
+                        f"For this case, {local_role} coordinates local work while "
+                        f"{collective_role} integrates shared outputs. The {system} experiences {stress}."
+                    ),
                     "constraints": list(blueprint["constraints"]),
                     "initial_state": f"The {system} handles {stress} through one shared sequence.",
                     "desired_improvement": str(blueprint["goal"]),
                     "worsening_consequence": str(blueprint["risk"]),
                     "resulting_state": f"The {system} maintains {blueprint['goal']} under {stress}.",
+                    "local_role": local_role,
+                    "collective_role": collective_role,
                     "template_index": (family_index - 1) % 4,
                     "declared_split": "calibration" if family_index <= calibration_count else "sealed",
                 }
     return families
+
+
+def _neutral_role_name(slot: int) -> str:
+    capacity = len(_ROLE_ADJECTIVES) * len(_ROLE_NOUNS)
+    if not 0 <= slot < capacity:
+        raise A0CorpusError("neutral role vocabulary exhausted")
+    return f"{_ROLE_ADJECTIVES[slot // len(_ROLE_NOUNS)]} {_ROLE_NOUNS[slot % len(_ROLE_NOUNS)]}"
 
 
 def _extract_templates(protocol: Mapping[str, Any]) -> list[dict[str, str]]:
@@ -345,6 +374,8 @@ def _render_from_template(template: str, family: Mapping[str, Any]) -> str:
         resulting_state=family["resulting_state"],
         domain=family["domain"],
         family_id=family["problem_family_id"],
+        local_role=family["local_role"],
+        collective_role=family["collective_role"],
     )
 
 

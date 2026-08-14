@@ -1,5 +1,5 @@
 {
-  "protocol_id": "a0-automated-weak-proxy-v1.0.1",
+  "protocol_id": "a0-automated-weak-proxy-v1.0.2",
   "protocol_status": "proposed",
   "artifact_class": "automated-operator-proxy-exploration",
   "empirical": true,
@@ -15,23 +15,23 @@
   "paired_syntax_templates": [
     {
       "template_id": "tpl_seg_inv_001",
-      "segmentation_like": "Local units act before the shared controller integrates their outputs.",
-      "inversion_like": "The shared controller acts before local units integrate its outputs."
+      "segmentation_like": "{local_role} signals before {collective_role} signals.",
+      "inversion_like": "{collective_role} signals before {local_role} signals."
     },
     {
       "template_id": "tpl_seg_inv_002",
-      "segmentation_like": "Each stage governs its own input while the central stage combines outcomes.",
-      "inversion_like": "The central stage governs each input while each stage combines outcomes."
+      "segmentation_like": "{local_role} responds before {collective_role} responds.",
+      "inversion_like": "{collective_role} responds before {local_role} responds."
     },
     {
       "template_id": "tpl_seg_inv_003",
-      "segmentation_like": "Parallel channels send resources toward the common endpoint.",
-      "inversion_like": "The common endpoint sends resources toward parallel channels."
+      "segmentation_like": "{local_role} activates before {collective_role} activates.",
+      "inversion_like": "{collective_role} activates before {local_role} activates."
     },
     {
       "template_id": "tpl_seg_inv_004",
-      "segmentation_like": "Component roles coordinate locally before system roles combine them.",
-      "inversion_like": "System roles coordinate locally before component roles combine them."
+      "segmentation_like": "{local_role} updates before {collective_role} updates.",
+      "inversion_like": "{collective_role} updates before {local_role} updates."
     }
   ],
   "model": {
