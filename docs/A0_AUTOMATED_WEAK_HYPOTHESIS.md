@@ -3,7 +3,7 @@ type: research-spec
 title: A0 Automated Weak Hypothesis Exploration
 description: Frozen-design contract for a fully automated, evidence-bounded proxy test before expert TRIZ validation.
 status: proposed
-last_verified: 2026-08-15
+last_verified: 2026-08-14
 ---
 
 # A0 Automated Weak Hypothesis Exploration
