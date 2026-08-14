@@ -454,6 +454,7 @@ def _write_atomic_bundle(
     manifest: dict[str, Any],
 ) -> None:
     parent = output_root.parent
+    parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=str(parent)) as tmp_dir:
         staging_root = Path(tmp_dir) / output_root.name
         staging_root.mkdir()

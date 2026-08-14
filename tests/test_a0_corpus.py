@@ -47,6 +47,14 @@ class A0CorpusGeneratorTests(unittest.TestCase):
                 (Path(second) / "a0" / "procedural-targets" / "targets.jsonl").read_bytes(),
             )
 
+    def test_missing_nested_output_parent_is_created(self) -> None:
+        with tempfile.TemporaryDirectory() as workdir:
+            output = Path(workdir) / "data" / "a0"
+            generate_a0_corpus(self.protocol_path, output)
+            self.assertTrue((output / "manifest.json").is_file())
+            self.assertTrue((output / "cases.jsonl").is_file())
+            self.assertTrue((output / "procedural-targets" / "targets.jsonl").is_file())
+
     def test_counts_splits_and_family_pairing_match_protocol(self) -> None:
         with tempfile.TemporaryDirectory() as workdir:
             output = Path(workdir) / "a0"
