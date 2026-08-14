@@ -8,7 +8,7 @@ last_verified: 2026-08-14
 
 # Documentation Chronology
 
-## 2026-08-14
+## 2026-08-15
 
 - A0 protocol checkpoint `v1.0.3` was frozen before any model-backed or sealed
   execution. The deterministic label-free corpus is 96 families / 192 cases.
