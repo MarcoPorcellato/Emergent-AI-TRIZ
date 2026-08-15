@@ -76,6 +76,8 @@ def main() -> int:
         ("schemas/a0r1-statistical-result.schema.json", "results/a0r1/a0r1-v1.0.0-e93a9faa-r1/statistical-result.json"),
         ("schemas/a0r1-recovery-receipt.schema.json", "results/a0r1/a0r1-v1.0.0-e93a9faa-r1/recovery-receipt.json"),
         ("schemas/a0r1-publication-manifest.schema.json", "results/a0r1/a0r1-v1.0.0-e93a9faa-r1/publication-manifest.json"),
+        ("schemas/a0r2-acquisition-contract.schema.json", "experiments/a0r2-independent-model/acquisition-contract.json"),
+        ("schemas/a0r2-acquisition-receipt.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json"),
         ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),
         ("schemas/a0-case.schema.json", "data/a0/cases.jsonl"),
         ("schemas/a0-procedural-target.schema.json", "data/a0/procedural-targets/calibration-targets.jsonl"),
@@ -145,6 +147,8 @@ def main() -> int:
         "schemas/a0r1-run-failure.schema.json",
         "schemas/a0r1-recovery-receipt.schema.json",
         "schemas/a0r1-publication-manifest.schema.json",
+        "schemas/a0r2-acquisition-contract.schema.json",
+        "schemas/a0r2-acquisition-receipt.schema.json",
         "schemas/a0-corpus-manifest.schema.json",
         "schemas/a0-case.schema.json",
         "schemas/a0-procedural-target.schema.json",
@@ -166,6 +170,8 @@ def main() -> int:
         "experiments/a0r1-independent-proxy/implementation.json",
         "results/a0r1/freeze/protocol-planned.json",
         "results/a0r1/freeze/protocol-frozen.json",
+        "experiments/a0r2-independent-model/acquisition-contract.json",
+        "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))

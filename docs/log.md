@@ -19,7 +19,15 @@ last_verified: 2026-08-15
   margin 0.125217, six domain-direction successes, and permutation p = 0.002.
   Exact-head repository qualification and all seven hosted checks passed; A0
   stayed byte-stable, claim IDs stayed empty, and H1/Wave 2 were untouched.
-  R2 model acquisition and material execution remain explicitly approval-gated.
+  At that closeout, R2 model acquisition and material execution remained
+  explicitly approval-gated.
+- Recorded the authorized SmolLM2 runtime acquisition: nine files at revision
+  `f8027fd0eaeea54caa13c31d31b9fdc459c38b49`, 727,058,433 bytes total, receipt
+  status `integrity_verified`, weights SHA-256
+  `7aaff6661428bed033abba9522bec81938678642cca3181fe752b6ca9e1e540f`, all
+  access flags false. This is instrumentation-only and evidence-ineligible.
+  Model load, feasibility, output generation, sealed targets, and any sealed R2
+  run were not authorized and were not performed.
 - Merged the A0-R R1.4b harness in PR 40 at
   `c5b28cd3ffca38a4bbdca076ba4bff306e653aa6`, then executed the frozen R1
   endpoint once. The exploratory result is positive: 23/24 family successes,

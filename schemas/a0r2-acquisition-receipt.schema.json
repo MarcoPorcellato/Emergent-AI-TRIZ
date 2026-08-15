@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-acquisition-receipt.schema.json",
+  "title": "A0-R2 exact snapshot integrity receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "status", "integrity_status", "state_before", "state_after", "scientific_status", "empirical", "evidence_eligible", "expert_validated", "claim_ids", "contract_sha256", "model", "source_url", "terms_url", "receipt_time", "authorization", "local_locator", "total_bytes", "runtime_files", "access"],
+  "properties": {
+    "artifact_class": {"const": "a0r2-acquisition-receipt"},
+    "status": {"const": "pass"},
+    "integrity_status": {"const": "integrity_verified"},
+    "state_before": {"const": "acquisition_authorized"},
+    "state_after": {"const": "integrity_verified"},
+    "scientific_status": {"const": "instrumentation_only"},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "contract_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "license_id"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "license_id": {"const": "Apache-2.0"}
+      }
+    },
+    "source_url": {"const": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/tree/f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+    "terms_url": {"const": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/blob/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/README.md"},
+    "receipt_time": {"type": "string", "format": "date-time"},
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "maximum_download_bytes"],
+      "properties": {
+        "scope": {"const": "exact_snapshot_download_and_integrity_receipt_only"},
+        "maximum_download_bytes": {"const": 1073741824}
+      }
+    },
+    "local_locator": {"const": "artifacts/models/smollm2-360m-f8027fd0"},
+    "total_bytes": {"const": 727058433},
+    "runtime_files": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "size", "sha256", "source_kind", "source_oid", "source_url"],
+        "properties": {
+          "name": {"enum": ["README.md", "config.json", "generation_config.json", "merges.txt", "model.safetensors", "special_tokens_map.json", "tokenizer.json", "tokenizer_config.json", "vocab.json"]},
+          "size": {"type": "integer", "minimum": 1, "maximum": 1073741824},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "source_kind": {"enum": ["git_blob", "lfs_sha256"]},
+          "source_oid": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"},
+          "source_url": {"type": "string", "pattern": "^https://huggingface\\.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/"}
+        }
+      }
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_loaded", "model_output_accessed", "sealed_targets_accessed", "feasibility_tested"],
+      "properties": {
+        "model_loaded": {"const": false},
+        "model_output_accessed": {"const": false},
+        "sealed_targets_accessed": {"const": false},
+        "feasibility_tested": {"const": false}
+      }
+    }
+  }
+}

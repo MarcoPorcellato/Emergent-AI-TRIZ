@@ -122,6 +122,7 @@ carried forward by assumption.
 | PR [#39](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/39) | A0-R R1.4a implementation binding and deterministic pre-output tests | exact runtime/input/code/statistical contract; no model or sealed-target access |
 | PR [#40](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/40) | A0-R R1.4b guarded runner and failure receipts | exact-head qualified harness; model and sealed-target access remained blocked until merge |
 | PR [#41](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/41) | one-time R1 sealed execution, transparent clerical recovery, and immutable publication package | positive exploratory same-model replication; E0, evidence-ineligible, and not expert-validated |
+| PR [#42](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/42) | R1 publication closeout | documentation-only closeout; no empirical claim changes |
 | PR [#32](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/32) | calibrated and frozen A0 protocol `v1.0.3` | freeze and controls, not evidence by themselves |
 | PR [#33](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/33) | hosted repository lane allowed to complete | CI policy correction only |
 | PR [#34](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/34) | exact-model activations, sealed analysis, immutable result package, `make a0`, HTML report, schemas, and receipts | positive exploratory proxy result; not expert-validated TRIZ evidence and not claim-eligible |
@@ -228,7 +229,10 @@ declared dense asset, one-command verifier, exact-head repository check, and
 all seven hosted checks passed. Published A0 remained byte-stable, all claims
 remain E0, and H1 and Wave 2 were untouched. The next automated milestone is
 R2, gated by explicit approval of its exact model acquisition, license or
-terms, disk budget, and material RAM/runtime use.
+terms, disk budget, and material RAM/runtime use. The subsequent authorized
+checkpoint produced a verified SmolLM2 acquisition dossier: nine runtime files,
+727,058,433 bytes total,
+integrity verified, no model load, and no sealed execution.
 
 ### PR 30 — annotation ontology v1.2 implementation
 
