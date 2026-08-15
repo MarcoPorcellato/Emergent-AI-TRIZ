@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-acquisition-contract.schema.json",
+  "title": "A0-R2 exact snapshot acquisition contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "contract_status", "created_at", "repository_anchor", "scientific_status", "empirical", "evidence_eligible", "expert_validated", "claim_ids", "selection_observed_r1_performance", "authorization", "model", "runtime_files", "expected_total_bytes", "local_locator"],
+  "properties": {
+    "artifact_class": {"const": "a0r2-acquisition-contract"},
+    "contract_status": {"const": "frozen_pre_download"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "repository_anchor": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "scientific_status": {"const": "instrumentation_only"},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "selection_observed_r1_performance": {"const": false},
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "scope", "maximum_download_bytes", "not_authorized"],
+      "properties": {
+        "status": {"const": "operator_authorized"},
+        "scope": {"const": "exact_snapshot_download_and_integrity_receipt_only"},
+        "maximum_download_bytes": {"const": 1073741824},
+        "not_authorized": {
+          "type": "array",
+          "const": ["model_load", "feasibility_test", "model_output_access", "sealed_target_access", "sealed_r2_execution"]
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "license_id", "gated", "source_tree_url", "source_api_url"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "license_id": {"const": "Apache-2.0"},
+        "gated": {"const": false},
+        "source_tree_url": {"const": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/tree/f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "source_api_url": {"type": "string", "pattern": "^https://huggingface\\.co/api/models/HuggingFaceTB/SmolLM2-360M/tree/f8027fd0eaeea54caa13c31d31b9fdc459c38b49"}
+      }
+    },
+    "runtime_files": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {"$ref": "#/$defs/runtimeFile"}
+    },
+    "expected_total_bytes": {"const": 727058433},
+    "local_locator": {"const": "artifacts/models/smollm2-360m-f8027fd0"}
+  },
+  "$defs": {
+    "runtimeFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "size", "source_kind", "source_oid"],
+      "properties": {
+        "name": {"enum": ["README.md", "config.json", "generation_config.json", "merges.txt", "model.safetensors", "special_tokens_map.json", "tokenizer.json", "tokenizer_config.json", "vocab.json"]},
+        "size": {"type": "integer", "minimum": 1, "maximum": 1073741824},
+        "source_kind": {"enum": ["git_blob", "lfs_sha256"]},
+        "source_oid": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"}
+      }
+    }
+  }
+}

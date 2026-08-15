@@ -1,0 +1,45 @@
+{
+  "artifact_class": "a0r2-acquisition-contract",
+  "contract_status": "frozen_pre_download",
+  "created_at": "2026-08-15T07:16:23Z",
+  "repository_anchor": "d43baab8c1ef77da031f22240017f5d04d39e3be",
+  "scientific_status": "instrumentation_only",
+  "empirical": false,
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "selection_observed_r1_performance": false,
+  "authorization": {
+    "status": "operator_authorized",
+    "scope": "exact_snapshot_download_and_integrity_receipt_only",
+    "maximum_download_bytes": 1073741824,
+    "not_authorized": [
+      "model_load",
+      "feasibility_test",
+      "model_output_access",
+      "sealed_target_access",
+      "sealed_r2_execution"
+    ]
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "license_id": "Apache-2.0",
+    "gated": false,
+    "source_tree_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/tree/f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "source_api_url": "https://huggingface.co/api/models/HuggingFaceTB/SmolLM2-360M/tree/f8027fd0eaeea54caa13c31d31b9fdc459c38b49?recursive=true&expand=false"
+  },
+  "runtime_files": [
+    {"name": "README.md", "size": 6623, "source_kind": "git_blob", "source_oid": "75cae4c3d8f5f25a3f22ef6427403db2bb3dc83b"},
+    {"name": "config.json", "size": 689, "source_kind": "git_blob", "source_oid": "2c111af0f7d9845b3b9910d3d18f7cdd94bf16c4"},
+    {"name": "generation_config.json", "size": 111, "source_kind": "git_blob", "source_oid": "0fce861c328ff24830f3037d91ce773254447bf7"},
+    {"name": "merges.txt", "size": 466391, "source_kind": "git_blob", "source_oid": "69503b13f727ba3812b6803e97442a6de05ef5eb"},
+    {"name": "model.safetensors", "size": 723674912, "source_kind": "lfs_sha256", "source_oid": "7aaff6661428bed033abba9522bec81938678642cca3181fe752b6ca9e1e540f"},
+    {"name": "special_tokens_map.json", "size": 831, "source_kind": "git_blob", "source_oid": "f6652f246cb895ca1edfb16d10b57917b266e335"},
+    {"name": "tokenizer.json", "size": 2104556, "source_kind": "git_blob", "source_oid": "f922b1797f0c88e71addc8393787831f2477a4bd"},
+    {"name": "tokenizer_config.json", "size": 3658, "source_kind": "git_blob", "source_oid": "d45192775d58298087a1fedf5967fe5b63b091ab"},
+    {"name": "vocab.json", "size": 800662, "source_kind": "git_blob", "source_oid": "0ad5ecc2035b7031b88afb544ee95e2d49baa484"}
+  ],
+  "expected_total_bytes": 727058433,
+  "local_locator": "artifacts/models/smollm2-360m-f8027fd0"
+}

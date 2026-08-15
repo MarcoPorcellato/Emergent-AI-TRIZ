@@ -229,13 +229,24 @@ when required, hosted aggregate, and review-thread gates are terminally green.
 
 ### R2 — cross-model replication
 
-**Current gate — explicit approval required:** R1 is terminally published.
-R2 may begin only after the user approves the selected exact model and
-tokenizer revision, applicable license or terms, download and disk budget, and
-material RAM/runtime use. No such approval is implied by R1 completion.
+**Current checkpoint — instrumentation only:** the operator authorized only the
+download of the declared runtime files for `HuggingFaceTB/SmolLM2-360M` at
+revision `f8027fd0eaeea54caa13c31d31b9fdc459c38b49`, with a maximum disk budget
+of 1 GiB and integrity receipt production. The acquisition completed as a
+bounded file transfer: nine files, 727,058,433 bytes total, receipt status
+`integrity_verified`, and weights SHA-256
+`7aaff6661428bed033abba9522bec81938678642cca3181fe752b6ca9e1e540f`. All
+access flags remained false. This is instrumentation-only, evidence-ineligible,
+and makes no empirical claim.
 
-**Exit evidence:** a separate frozen model-selection decision, exact acquisition
-receipt, architecture mapping, sealed run, and immutable result package.
+**Not authorized and not performed:** model load, feasibility testing, output
+generation, sealed targets, or any sealed R2 run.
+
+**Next gate:** a separate explicit approval is required for bounded load and
+feasibility work only. Sealed execution remains a later gate.
+
+**Exit evidence:** `make a0r2-acquisition-verify`, the acquisition receipt, the
+integrity hash list, and the byte-count record.
 
 ## Statistical and missing-data rules
 

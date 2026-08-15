@@ -3,22 +3,24 @@ docs/LABORATORY_MASTER_PLAN.md, using its requirement checklist and linked
 phase specifications as the source of truth.
 
 Start from the last-known public anchor
-05ba15a28442260c32951413c9128f0179573198, but verify origin/main, open pull
+d43baab8c1ef77da031f22240017f5d04d39e3be, but verify origin/main, open pull
 requests, the active ruleset, exact worktree state, and current evidence live
 before acting. Do not repeat delivered work.
 
-Treat A0-R Tier R1 as terminally published and verified. Execute the next
-dependency-ordered milestone in docs/A0_REPLICATION_AND_ROBUSTNESS.md only
-after its approval boundary is satisfied. Preserve the published A0 and R1
-packages byte-for-byte, all E0 claim levels, the separation from H1 and Wave 2,
-and every human or acquisition gate. Do not rerun either sealed model path,
-reopen sealed targets, or promote any TRIZ claim.
+Treat A0-R Tier R1 as terminally published and verified. The SmolLM2 runtime
+acquisition is complete and verified, but it is instrumentation-only and
+evidence-ineligible. The next dependency-ordered milestone in
+docs/A0_REPLICATION_AND_ROBUSTNESS.md is the separate explicit approval gate for
+bounded load and feasibility work. Preserve the published A0 and R1 packages
+byte-for-byte, all E0 claim levels, the separation from H1 and Wave 2, and
+every human or acquisition gate. Do not rerun either sealed model path, reopen
+sealed targets, load the acquired model, or promote any TRIZ claim.
 
-Before R2 acquisition or material execution, present a reviewable dossier that
-names the exact model and tokenizer revision, applicable license or terms,
+Before any bounded R2 load or material execution, present a reviewable dossier
+that names the exact model and tokenizer revision, applicable license or terms,
 download and disk budget, and expected RAM/runtime envelope. Stop for explicit
-operator approval; do not download weights, accept gated terms, load the model,
-or begin material execution without it.
+operator approval; do not load the model, begin feasibility testing, or start
+material execution without it.
 
 Use deterministic tools first and delegate the largest safe, independent share
 to cheaper bounded workers. Keep architecture, statistics, security,

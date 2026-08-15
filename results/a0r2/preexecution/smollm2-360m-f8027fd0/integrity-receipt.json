@@ -1,0 +1,107 @@
+{
+  "access": {
+    "feasibility_tested": false,
+    "model_loaded": false,
+    "model_output_accessed": false,
+    "sealed_targets_accessed": false
+  },
+  "artifact_class": "a0r2-acquisition-receipt",
+  "authorization": {
+    "maximum_download_bytes": 1073741824,
+    "scope": "exact_snapshot_download_and_integrity_receipt_only"
+  },
+  "claim_ids": [],
+  "contract_sha256": "55ae5f8dffa4caef00d67e38f47c4793ccb716a054351bb752d277f0173df4e8",
+  "empirical": false,
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "integrity_status": "integrity_verified",
+  "local_locator": "artifacts/models/smollm2-360m-f8027fd0",
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "license_id": "Apache-2.0",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"
+  },
+  "receipt_time": "2026-08-15T07:40:21Z",
+  "runtime_files": [
+    {
+      "name": "README.md",
+      "sha256": "631f842e4a02262e07fc522ede86c816114541319dea53dbf86bac4539a24ac9",
+      "size": 6623,
+      "source_kind": "git_blob",
+      "source_oid": "75cae4c3d8f5f25a3f22ef6427403db2bb3dc83b",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/README.md"
+    },
+    {
+      "name": "config.json",
+      "sha256": "34f7801487078de7e434e19162c497e5cc6ff397080e40e8586627cb68a5168a",
+      "size": 689,
+      "source_kind": "git_blob",
+      "source_oid": "2c111af0f7d9845b3b9910d3d18f7cdd94bf16c4",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/config.json"
+    },
+    {
+      "name": "generation_config.json",
+      "sha256": "2056c988e990b0d13670f63f2f3b87b3b6d07edaf7a3416998ba27dab2d8a059",
+      "size": 111,
+      "source_kind": "git_blob",
+      "source_oid": "0fce861c328ff24830f3037d91ce773254447bf7",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/generation_config.json"
+    },
+    {
+      "name": "merges.txt",
+      "sha256": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510",
+      "size": 466391,
+      "source_kind": "git_blob",
+      "source_oid": "69503b13f727ba3812b6803e97442a6de05ef5eb",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/merges.txt"
+    },
+    {
+      "name": "model.safetensors",
+      "sha256": "7aaff6661428bed033abba9522bec81938678642cca3181fe752b6ca9e1e540f",
+      "size": 723674912,
+      "source_kind": "lfs_sha256",
+      "source_oid": "7aaff6661428bed033abba9522bec81938678642cca3181fe752b6ca9e1e540f",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/model.safetensors"
+    },
+    {
+      "name": "special_tokens_map.json",
+      "sha256": "e786b595b9a23148bf1630df78d9037a048ea671e48bfd3549a1e3c233742bb3",
+      "size": 831,
+      "source_kind": "git_blob",
+      "source_oid": "f6652f246cb895ca1edfb16d10b57917b266e335",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/special_tokens_map.json"
+    },
+    {
+      "name": "tokenizer.json",
+      "sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c",
+      "size": 2104556,
+      "source_kind": "git_blob",
+      "source_oid": "f922b1797f0c88e71addc8393787831f2477a4bd",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/tokenizer.json"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "sha256": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424",
+      "size": 3658,
+      "source_kind": "git_blob",
+      "source_oid": "d45192775d58298087a1fedf5967fe5b63b091ab",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/tokenizer_config.json"
+    },
+    {
+      "name": "vocab.json",
+      "sha256": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79",
+      "size": 800662,
+      "source_kind": "git_blob",
+      "source_oid": "0ad5ecc2035b7031b88afb544ee95e2d49baa484",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/resolve/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/vocab.json"
+    }
+  ],
+  "scientific_status": "instrumentation_only",
+  "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/tree/f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+  "state_after": "integrity_verified",
+  "state_before": "acquisition_authorized",
+  "status": "pass",
+  "terms_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/blob/f8027fd0eaeea54caa13c31d31b9fdc459c38b49/README.md",
+  "total_bytes": 727058433
+}
