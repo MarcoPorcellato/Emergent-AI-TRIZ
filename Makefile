@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0
+.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -98,6 +98,13 @@ a0r1-run-verify:
 	  --created-at "$(or $(A0R1_CREATED_AT),2000-01-01T00:00:00Z)" \
 	  --stage verify
 	@echo "A0-R1 sealed verify result: results/a0r1/$(A0R1_RUN_ID)/statistical-result.json"
+
+a0r1-publication-verify:
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.a0r1_report \
+	  --stage verify \
+	  --package-dir results/a0r1/$(A0R1_RUN_ID) \
+	  --external-activation-dir artifacts/a0r1/$(A0R1_RUN_ID)
+	@echo "A0-R1 immutable publication package verified; no model or sealed target was accessed."
 
 a0:
 	@test -x "$(LAB01_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)

@@ -197,15 +197,22 @@ synthetic vectors only; no actual model or sealed-target access occurs in this
 checkpoint. PR 39 merged only after exact-head local qualification and hosted
 gates passed.
 
-**Current checkpoint — R1.4b pre-run harness in delivery:** exact-model
-activation and sealed inference remain blocked until the runner is included in
-the code-hash binding, reviewed, qualified, and merged under the guarded
-resource contract. Operational exceptions are recorded separately from
-statistical outcomes in an immutable `run-failure.json` receipt. Its access
-states are tri-state (`not_accessed`, `possibly_accessed`, or `accessed`) so an
-uncertain boundary can never be reported as a proven non-access.
+**Verified checkpoint — R1.4b merged and executed once:** the guarded run used
+the frozen layer 6 / mean-transformation-span primary and opened sealed targets
+once at the analysis boundary. The exploratory result is positive: 23/24
+family successes, primary macro-F1 0.624348, problem-only macro-F1 0.499130,
+margin 0.125217, six domain-direction successes, and permutation p = 0.002.
+The raw output retained an `r1_` domain prefix and failed the public schema.
+R1.5 therefore preserves that raw hash and applies a deterministic 54-label
+clerical recovery; its receipt proves that no metric value changed and that the
+recovery accessed neither model output nor sealed targets.
 
 ### R1.5 — immutable publication
+
+**Current checkpoint — in delivery:** the tracked package contains the raw and
+recovered results, recovery receipt, activation receipt, representation index,
+external dense locator, report, and publication manifest. All statements remain
+E0 exploratory proxy evidence and are not expert-validated TRIZ claims.
 
 **Exit evidence:** one command creates or verifies the result, report,
 limitations, receipts, indexes, and hashes; a fresh clone plus declared external
