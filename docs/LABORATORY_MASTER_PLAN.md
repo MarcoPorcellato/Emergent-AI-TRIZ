@@ -232,7 +232,10 @@ R2, gated by explicit approval of its exact model acquisition, license or
 terms, disk budget, and material RAM/runtime use. The subsequent authorized
 checkpoint produced a verified SmolLM2 acquisition dossier: nine runtime files,
 727,058,433 bytes total,
-integrity verified, no model load, and no sealed execution.
+integrity verified, no model load, and no sealed execution. The operator then
+authorized a bounded CPU feasibility test. Its contract/runner tranche must
+merge before the first load; the later run may publish compatibility, timing,
+and memory measurements only, while sealed execution remains gated.
 
 ### PR 30 — annotation ontology v1.2 implementation
 

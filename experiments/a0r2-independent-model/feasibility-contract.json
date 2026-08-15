@@ -1,0 +1,71 @@
+{
+  "artifact_class": "a0r2-feasibility-contract",
+  "contract_status": "frozen_pre_load",
+  "created_at": "2026-08-15T16:58:00Z",
+  "repository_anchor": "5d4d96c16b56715203aa8a077b13d3b6cc550fc9",
+  "scientific_status": "instrumentation_only",
+  "empirical": false,
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "authorization": {
+    "status": "operator_authorized",
+    "scope": "bounded_cpu_float32_feasibility_only",
+    "not_authorized": [
+      "sealed_target_access",
+      "sealed_r2_execution",
+      "scientific_outcome_inference",
+      "model_or_tokenizer_download",
+      "generation"
+    ]
+  },
+  "predecessor": {
+    "acquisition_contract": "experiments/a0r2-independent-model/acquisition-contract.json",
+    "acquisition_contract_sha256": "55ae5f8dffa4caef00d67e38f47c4793ccb716a054351bb752d277f0173df4e8",
+    "integrity_receipt": "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json",
+    "integrity_receipt_sha256": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3"
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "license_id": "Apache-2.0",
+    "model_type": "llama",
+    "architecture": "LlamaForCausalLM",
+    "num_hidden_layers": 32,
+    "hidden_size": 960,
+    "local_locator": "artifacts/models/smollm2-360m-f8027fd0"
+  },
+  "runtime": {
+    "network_access": false,
+    "local_files_only": true,
+    "device": "cpu",
+    "torch_dtype": "float32",
+    "generation": false,
+    "inference_passes": 2,
+    "maximum_prompt_tokens": 128,
+    "maximum_wall_seconds": 900,
+    "maximum_peak_rss_bytes": 8589934592
+  },
+  "probe": {
+    "text": "Problem: A rotating housing vibrates under load. Transformation: add a compliant damping layer between the housing and its mount.",
+    "purpose": "synthetic_runtime_compatibility_only",
+    "output_content_retained": false
+  },
+  "compatibility": {
+    "fast_tokenizer_offsets_required": true,
+    "hidden_states_include_embeddings": true,
+    "expected_hidden_states_count": 33,
+    "primary_semantics": "final_transformer_block_output",
+    "primary_hidden_states_tuple_index": 32,
+    "descriptive_sensitivity_tuple_indices": [0, 11, 21, 32],
+    "finite_hidden_states_required": true,
+    "finite_logits_required": true,
+    "repeatability_max_abs_difference": 0.000001,
+    "incompatibility_is_terminal": true
+  },
+  "receipt": {
+    "path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json",
+    "overwrite": false,
+    "terminal_statuses": ["compatible", "incompatible", "failed"]
+  }
+}

@@ -239,14 +239,25 @@ bounded file transfer: nine files, 727,058,433 bytes total, receipt status
 access flags remained false. This is instrumentation-only, evidence-ineligible,
 and makes no empirical claim.
 
-**Not authorized and not performed:** model load, feasibility testing, output
-generation, sealed targets, or any sealed R2 run.
+**Current delivery gate — bounded feasibility:** the operator subsequently
+authorized a test of the acquired model. Before any load, the repository freezes
+`experiments/a0r2-independent-model/feasibility-contract.json`: local-only CPU
+float32, two inference passes over one fixed synthetic prompt, no generation,
+at most 128 prompt tokens, a 900-second wall envelope, and an 8 GiB peak-RSS
+reporting ceiling. The test may retain only shapes, finite-value checks,
+repeatability difference, timings, runtime versions, and memory measurements;
+it must not retain model output content.
 
-**Next gate:** a separate explicit approval is required for bounded load and
-feasibility work only. Sealed execution remains a later gate.
+**Still not authorized:** sealed-target access, sealed R2 execution, scientific
+outcome inference, any additional model download, or any TRIZ claim promotion.
+The feasibility contract, runner, schemas, and synthetic tests must merge before
+the first real load. A compatible result authorizes only a later review of the
+sealed-execution gate; it does not authorize that execution.
 
-**Exit evidence:** `make a0r2-acquisition-verify`, the acquisition receipt, the
-integrity hash list, and the byte-count record.
+**Exit evidence:** immutable contract and receipt hashes, exact snapshot
+verification, a CCP-guarded terminal feasibility receipt, and exact-head
+repository/hosted qualification. `compatible`, `incompatible`, and `failed` are
+all publishable terminal outcomes.
 
 ## Statistical and missing-data rules
 

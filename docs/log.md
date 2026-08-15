@@ -10,6 +10,15 @@ last_verified: 2026-08-15
 
 ## 2026-08-15
 
+- Merged the A0-R2 acquisition checkpoint through PR 43 at
+  `5d4d96c16b56715203aa8a077b13d3b6cc550fc9` after publishing the exact-head
+  CCP receipt and obtaining a green trusted aggregate. The external nine-file
+  snapshot remains integrity-verified and ignored by Git.
+- Started the separately authorized A0-R2 bounded feasibility tranche by
+  freezing a pre-load CPU float32 contract. The tranche allows only a fixed
+  synthetic probe, two non-generative forward passes, compatibility, timing,
+  repeatability, and memory measurements. It remains instrumentation-only;
+  sealed targets, sealed R2 execution, and scientific inference stay blocked.
 - Published the terminal A0-R R1 package through PR 41 at merge commit
   `05ba15a28442260c32951413c9128f0179573198`. The immutable package retains
   the raw output, deterministic 54-label clerical recovery, recovery receipt,
