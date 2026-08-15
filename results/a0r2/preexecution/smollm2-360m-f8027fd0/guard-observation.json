@@ -1,0 +1,20 @@
+{
+  "artifact_class": "a0r2-feasibility-guard-observation",
+  "created_at": "2026-08-15T17:43:17Z",
+  "evidence_eligible": false,
+  "feasibility_receipt_sha256": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67",
+  "feasibility_receipt_status": "compatible",
+  "guard_error_stage": "completed_descendant_seal",
+  "guard_exit_code": 70,
+  "guard_status": "cleanup_uncertain",
+  "interpretation": "postrun_observation_does_not_upgrade_guarded_run_to_pass",
+  "postrun_observation": {
+    "admission_active": false,
+    "matching_processes_observed": false,
+    "queue_count": 0,
+    "resource_decision": "admit"
+  },
+  "rerun_performed": false,
+  "run_anchor_commit": "da8f4bb0c07fe32ede438b13da80b89019cfb812",
+  "scientific_status": "instrumentation_only"
+}
