@@ -3,17 +3,18 @@ docs/LABORATORY_MASTER_PLAN.md, using its requirement checklist and linked
 phase specifications as the source of truth.
 
 Start from the last-known public anchor
-e2fd611d3d7a70778bde83f7936cdbc8a5ef8d0d, but verify origin/main, open pull
+73d5e1cad5422d24209252257b54a46c24f8ee16, but verify origin/main, open pull
 requests, the active ruleset, exact worktree state, and current evidence live
 before acting. Do not repeat delivered work.
 
-Execute the current dependency-ordered milestone, A0-R Tier R1.4a
-implementation binding and deterministic pre-output tests in
+Execute the current dependency-ordered milestone, A0-R Tier R1.4b pre-run
+harness and then its single sealed run in
 docs/A0_REPLICATION_AND_ROBUSTNESS.md, while preserving the published A0 run,
 all E0 claim levels, the separation from H1 and Wave 2, and every human or
-acquisition approval gate. Keep R1.4b blocked until R1.4a review and
-qualification. Publish positive, null, failed, and non-interpretable outcomes
-under the same immutable standard.
+acquisition approval gate. Keep model output and sealed-target access blocked
+until the runner binding is reviewed, exact-head qualified, and merged.
+Publish positive, null, failed, and non-interpretable outcomes under the same
+immutable standard.
 
 Use deterministic tools first and delegate the largest safe, independent share
 to cheaper bounded workers. Keep architecture, statistics, security,

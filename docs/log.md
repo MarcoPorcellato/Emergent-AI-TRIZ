@@ -10,17 +10,22 @@ last_verified: 2026-08-15
 
 ## 2026-08-15
 
+- Merged A0-R R1.4a at `73d5e1cad5422d24209252257b54a46c24f8ee16`
+  after exact-head qualification and hosted gates. The checkpoint binds the
+  runtime, inputs, code, classifier, permutation, baseline, and domain rule;
+  it accessed neither model output nor sealed targets. R1.4b is now preparing
+  a separately bound runner and remains pre-output until that harness is
+  reviewed, qualified, and merged.
 - Froze the A0-R R1.3 calibration and protocol state: exact-binomial power
   receipt now records false-positive rate `0.03195732831954956`, power
   `0.9108287412264922` under family-success probability `0.8`, minimum
   detectable effect `0.2597184664182352`, `100000` deterministic simulations,
   and minimum permutation p-value resolution `.001`. R1.3 merged to `main` and
   the protocol is frozen before model output, with no model or sealed output
-  accessed. R1.4a is now
-  the live implementation checkpoint: fixed runtime/input/code hash binding,
+  accessed. R1.4a subsequently merged with fixed runtime/input/code hash binding,
   fixed classifier/permutation/baseline/domain-statistic specification, and
   synthetic-adapter / synthetic-vector tests only. Model activation and sealed
-  inference remain blocked until R1.4a review and qualification.
+  inference remain blocked behind the R1.4b pre-run harness gate.
 - Completed the pre-freeze A0-R R1.2 corpus substrate: 48 independent families,
   96 paired cases, physically separate 48-case calibration and sealed target
   files, zero independence-audit violations against the 192-case A0 source,

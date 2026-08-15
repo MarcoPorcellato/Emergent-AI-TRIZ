@@ -124,6 +124,7 @@
       {"path": "src/latent_triz/a0r1_activations.py", "sha256": "7deac93e6f11e9e31af10f37061ebe13dc2eb70582cdad8d40fc7f845c7adc8e", "size": 27103},
       {"path": "src/latent_triz/a0r1_analysis.py", "sha256": "6f7e2136e6d6fa46724ab3bac01216ddf62f5d9708d32a80fd4f35d4285d876a", "size": 36923},
       {"path": "src/latent_triz/a0r1_execution.py", "sha256": "2fb968962df3abf13a5856ac7c1965bde3650ec1cab40247cff67b940af7da3f", "size": 6745},
+      {"path": "src/latent_triz/a0r1_runner.py", "sha256": "f3e073a7fa4bb5359bf8f29e06b9dc0f5ef0ff9b5c13c94c13bf466cdc5f6814", "size": 14812},
       {"path": "src/latent_triz/lab01_acquisition.py", "sha256": "31617c6a83cdf059ae0e6ac11c32526492918f2d091e56f60e7fe1f9e473e4c3", "size": 11520},
       {"path": "src/latent_triz/lab01_transformers.py", "sha256": "6613bae9b663f296ca066f49279460771951708768dcccd0b4f105606cc5d3eb", "size": 10428}
     ],

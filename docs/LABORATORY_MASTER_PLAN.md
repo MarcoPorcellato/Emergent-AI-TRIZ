@@ -36,7 +36,7 @@ as a short pointer to this plan rather than duplicating its milestones.
 | Item | Verified state | Authoritative anchor |
 |---|---|---|
 | Public repository | `MarcoPorcellato/Latent-TRIZ` | GitHub repository and tracked `LICENSE` / `NOTICE` |
-| Protected `main` | `e2fd611d3d7a70778bde83f7936cdbc8a5ef8d0d` | live GitHub state verified 2026-08-15 after PR 38 |
+| Protected `main` | `73d5e1cad5422d24209252257b54a46c24f8ee16` | live GitHub state verified 2026-08-15 after PR 39 |
 | Required merge context | strict `merge-policy/gate` | active GitHub ruleset and `.github/expected-main-ruleset.json` |
 | Completed automated milestone | A0 sealed proxy exploration | PR 34, protocol `v1.0.3`, run `a0-v1.0.3-e93a9faa` |
 | Current authentic-TRIZ milestone | annotation ontology v1.2 | draft PR 30; live state must be rebased and requalified before delivery |
@@ -119,6 +119,7 @@ carried forward by assumption.
 |---|---|---|
 | PR [#31](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/31) | pre-sealed deterministic corpus foundation | procedural targets only; no model result |
 | PR [#38](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/38) | A0-R R1.3 calibration and protocol freeze | exact power receipt, freeze manifest, and protocol lock; no model or sealed-output access |
+| PR [#39](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/39) | A0-R R1.4a implementation binding and deterministic pre-output tests | exact runtime/input/code/statistical contract; no model or sealed-target access |
 | PR [#32](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/32) | calibrated and frozen A0 protocol `v1.0.3` | freeze and controls, not evidence by themselves |
 | PR [#33](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/33) | hosted repository lane allowed to complete | CI policy correction only |
 | PR [#34](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/34) | exact-model activations, sealed analysis, immutable result package, `make a0`, HTML report, schemas, and receipts | positive exploratory proxy result; not expert-validated TRIZ evidence and not claim-eligible |
@@ -214,12 +215,11 @@ sealed targets, a zero-violation comparison against the published A0 corpus,
 14/14 passing shortcut controls, strict schemas, and byte-for-byte one-command
 verification. R1.3 has frozen the protocol with a separately hashed power
 receipt and freeze manifest. No model output or A0-R result exists yet. The
-next exit evidence is the R1.4a implementation binding and deterministic
-pre-output tests. R1.4a is now the live implementation checkpoint, with fixed
-runtime/input/code hash binding, fixed classifier/permutation/baseline/domain-
-statistic specification, and synthetic-adapter / synthetic-vector coverage
-only. Exact-model activation and sealed inference remain blocked until R1.4a is
-reviewed and qualified under the guarded resource contract.
+R1.4a is merged and verified with fixed runtime/input/code hash binding, fixed
+classifier/permutation/baseline/domain-statistic specification, and
+synthetic-adapter / synthetic-vector coverage only. R1.4b is the live pre-run
+checkpoint: its runner must be bound, reviewed, qualified, and merged before
+the single exact-model activation and sealed analysis may begin.
 
 ### PR 30 — annotation ontology v1.2 implementation
 
