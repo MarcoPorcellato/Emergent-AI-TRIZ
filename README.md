@@ -4,7 +4,11 @@
 
 Latent TRIZ is an open laboratory for testing whether language models learn internal, cross-domain, and causally active transformations that resemble TRIZ Inventive Principles. The project combines reproducible experiments, mechanistic interpretability, blinded evaluation, and explicit falsification criteria.
 
-> **Current evidence boundary:** the repository contains deterministic Lab 00–05 artifacts and exact-revision Lab 01 model instrumentation. None is evidence that a TRIZ-like representation exists in a model. Every scientific claim remains at E0: hypothesis.
+> **Current evidence boundary:** the repository now contains one positive,
+> exact-revision A0 automated-proxy exploration. It found a cross-domain
+> decodable signal for frozen procedural proxies, not expert-validated TRIZ
+> constructs. The result is exploratory, not claim-eligible, and every
+> registered scientific claim remains at E0: hypothesis.
 
 ## Run the laboratory
 
@@ -156,7 +160,10 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Lab 03 behavioral baselines: implemented with field-specific and provenance shortcut diagnostics; the current Wave 1 batch is rejected for freeze and is not claim-eligible
 - Lab 04 decodability: implemented as a deterministic, synthetic pass/fail probe boundary with explicit non-claim interpretation; not claim-eligible
 - Lab 05 candidate directions: implemented as deterministic descriptive instrumentation; current fixture is not ready and no dense vectors or claims are published
-- Empirical support for the Latent TRIZ hypothesis: none claimed
+- A0 automated proxy exploration: published positive exploratory result with
+  frozen controls and immutable receipts; not expert-validated and not
+  claim-eligible
+- Empirical support for registered Latent TRIZ claims: none claimed; all remain E0
 
 ## License and attribution
 

@@ -1,0 +1,23 @@
+Complete the Latent-TRIZ laboratory according to
+docs/LABORATORY_MASTER_PLAN.md, using its requirement checklist and linked
+phase specifications as the source of truth.
+
+Start from the last-known public anchor
+fc80976d3a256ed88e2d59f1a6f893e15154e3a0, but verify origin/main, open pull
+requests, the active ruleset, exact worktree state, and current evidence live
+before acting. Do not repeat delivered work.
+
+Execute the next dependency-ordered milestone, currently A0-R Tier R1 in
+docs/A0_REPLICATION_AND_ROBUSTNESS.md, while preserving the published A0 run,
+all E0 claim levels, the separation from H1 and Wave 2, and every human or
+acquisition approval gate. Publish positive, null, failed, and
+non-interpretable outcomes under the same immutable standard.
+
+Use deterministic tools first and delegate the largest safe, independent share
+to cheaper bounded workers. Keep architecture, statistics, security,
+scientific interpretation, integration, qualification, and merge decisions
+with the primary agent. Do not use an interactive model-serving application.
+
+Continue across isolated branches and pull requests until every applicable
+master-plan checklist item is proven by exact-head terminal evidence, or record
+the precise external gate while completing all safe independent work.

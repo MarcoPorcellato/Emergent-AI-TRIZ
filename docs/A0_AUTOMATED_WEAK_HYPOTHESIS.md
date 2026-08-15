@@ -2,7 +2,7 @@
 type: research-spec
 title: A0 Automated Weak Hypothesis Exploration
 description: Frozen-design contract for a fully automated, evidence-bounded proxy test before expert TRIZ validation.
-status: in_delivery
+status: complete
 last_verified: 2026-08-15
 protocol_version: v1.0.3
 ---
@@ -13,10 +13,9 @@ This document is the canonical Phase A0 specification for the Latent TRIZ labora
 It defines a fully automatic, reproducible, evidence-bounded reconnaissance run for the
 Weak Latent TRIZ Hypothesis.
 
-A short persistent goal should reference this file as its scientific source of
-truth:
-
-> Execute Phase A0 exactly as specified in `docs/A0_AUTOMATED_WEAK_HYPOTHESIS.md`.
+The repository-wide [persistent execution goal](./PERSISTENT_GOAL.txt) points to
+the Laboratory Master Plan. This completed specification remains the immutable
+scientific source of truth for A0 and must not be reused as a mutable A0-R plan.
 
 ## Purpose
 
@@ -555,18 +554,30 @@ A0 is complete only when all of the following are true:
 
 ## Status note
 
-Status is now `in_delivery` and protocol version `v1.0.3` is frozen before any model or sealed analysis.
+Status is `complete`. Protocol `v1.0.3` was frozen before model output, and PR
+34 published the sealed result on 2026-08-15.
 
 - Protocol freeze checkpoint completed before sealed execution.
 - Deterministic label-free corpus: 96 families, 192 cases.
 - Calibration and sealed targets are physically separated into dedicated target files.
-- Initial 96-family proposal in v1.0.1 was redesigned after failing shortcut calibration and was replaced pre-freeze with a token-matched unique role-pair design.
-- All 14 anti-shortcut controls passed on the 96 calibration cases used for selection and verification.
-- Exact power calibration parameters were fixed: 4 problem families/domain, 24 problem families total (48 paired cases), 199 permutations, critical threshold 19, MDE 0.333212784429589.
-- The immutable freeze record is `results/a0/calibration/freeze-manifest.json`.
-- `sealed_targets_accessed` is `false` in the freeze records.
-- No real model activations have been observed, and no TRIZ claim is made.
-- Next milestone: exact-model activation extraction, then sealed statistical inference.
+- Initial v1.0.1 setup was rejected during pre-freeze shortcut calibration and
+  replaced by the token-matched unique role-pair design before any sealed run.
+- All 14 anti-shortcut controls passed on the 96 calibration cases.
+- The sealed design fixed 4 problem families/domain, 24 problem families total,
+  48 paired cases, 199 permutations, critical threshold 19, and MDE
+  0.333212784429589.
+- The exact model revision produced 1,920 indexed activation records across
+  four views, three token sites, and layers 0, 2, 4, and 6.
+- The immutable result is `positive`: maximum-statistic p = 0.005, 24/24
+  paired-family successes, and macro-F1 margin = 0.188234 over the problem-only
+  surface baseline.
+- The publication manifest hashes the result, report, activation receipt, and
+  representation index; dense vectors remain external and hash-addressed.
+- Scientific artifact audit, exact-head CCP, Python 3.11/3.12 checks, trusted
+  aggregate, zero unresolved review threads, and exact-head merge passed.
+- `expert_validated` and `evidence_eligible` remain false, `claim_ids` remains
+  empty, and all registered claims remain E0.
+- Further automated work is a new A0-R experiment, not a revision of A0.
 
 After freeze, contracts and manifests should only be updated for immutable audit-ready
 artifacts and run outputs, not for protocol reinterpretation of the observed result.

@@ -16,6 +16,9 @@ delivery sequence, and the proof required to close each milestone. The shorter
 This plan is operational metadata. It is not evidence for the Latent TRIZ
 Hypothesis.
 
+Long-running Codex work should use [the persistent execution goal](./PERSISTENT_GOAL.txt)
+as a short pointer to this plan rather than duplicating its milestones.
+
 ## Status vocabulary
 
 - **Verified:** supported by a tracked artifact, exact commit, merged pull
@@ -33,9 +36,10 @@ Hypothesis.
 | Item | Verified state | Authoritative anchor |
 |---|---|---|
 | Public repository | `MarcoPorcellato/Latent-TRIZ` | GitHub repository and tracked `LICENSE` / `NOTICE` |
-| Protected `main` | `76db33b508abbe7ac5185e6f88a7a5a96e046e94` | live GitHub state verified 2026-08-14 |
+| Protected `main` | `fc80976d3a256ed88e2d59f1a6f893e15154e3a0` | live GitHub state verified 2026-08-15 after PR 34 |
 | Required merge context | strict `merge-policy/gate` | active GitHub ruleset and `.github/expected-main-ruleset.json` |
-| Current implementation milestone | annotation ontology v1.2 | branch `agent/annotation-ontology-v1-2`, checkpoint `23258c1c80db1abad3752dafffa5592842af36da` |
+| Completed automated milestone | A0 sealed proxy exploration | PR 34, protocol `v1.0.3`, run `a0-v1.0.3-e93a9faa` |
+| Current authentic-TRIZ milestone | annotation ontology v1.2 | draft PR 30; live state must be rebased and requalified before delivery |
 | Claim state | all registered claims remain E0 | `data/claims.jsonl` |
 | First dataset attempt | rejected for scientific freeze | retained Wave 1 surface-audit artifacts |
 
@@ -99,18 +103,38 @@ calibration corpus and regression fixture.
 | PR [#28](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/28) | local `$ref` / `$defs`, `allOf`, exclusive bounds, unsupported-keyword failure, Draft 2020-12 cross-validation, mutation tests, disagreement-safe freeze, and `constraints` cue scanning | closed the two reported P0 fail-open paths; did not change a claim |
 | PR [#29](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/29) | one stable path- and risk-aware `merge-policy/gate`, pre-merge Python 3.11/3.12 where applicable, exact-head CCP and artifact audit for scientific/governance changes, scheduled ruleset drift audit | qualification policy only |
 
-### Phase E — current work
+### Phase E — human-label route in delivery
 
 PR 30 is **in delivery**, not merged. The saved checkpoint contains the v1.2
 decision record, documentation amendment, and a ready-to-run three-expert,
 six-case cognitive-pilot protocol. The schemas, workbench, audit, synthetic
 fixture migration, full tests, exact-commit CCP receipt, pull request, and human
-pilot result are not yet complete.
+pilot result are not yet complete. Its recorded base predates the merged A0
+work, so every implementation and receipt must be re-verified rather than
+carried forward by assumption.
 
-## Current bottleneck
+### Phase F — completed automated A0 exploration
 
-The laboratory infrastructure is ahead of the scientific dataset. The shortest
-path to useful evidence is therefore not another horizontal lab. It is:
+| Delivery | What became usable | Scientific boundary |
+|---|---|---|
+| PR [#31](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/31) | pre-sealed deterministic corpus foundation | procedural targets only; no model result |
+| PR [#32](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/32) | calibrated and frozen A0 protocol `v1.0.3` | freeze and controls, not evidence by themselves |
+| PR [#33](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/33) | hosted repository lane allowed to complete | CI policy correction only |
+| PR [#34](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/34) | exact-model activations, sealed analysis, immutable result package, `make a0`, HTML report, schemas, and receipts | positive exploratory proxy result; not expert-validated TRIZ evidence and not claim-eligible |
+
+The sealed A0 result is `positive` under its frozen automated-proxy rule:
+maximum statistic p = 0.005, 24/24 paired-family successes, maximum primary
+macro-F1 = 0.687364, problem-only surface macro-F1 = 0.499130, and margin =
+0.188234. The strongest preregistered combination was layer 6 at the mean
+transformation span. Energy and transport remained at 0.5 accuracy in that
+combination, the corpus is procedural, and only one small model revision was
+tested. Those limits are part of the result, not optional caveats.
+
+## Current bottlenecks
+
+The laboratory now has one empirical automated-proxy result, while the authentic
+TRIZ route still lacks expert-validated constructs and canonical labels. The
+two routes must remain separate:
 
 ```text
 annotation contract integrity
@@ -120,6 +144,16 @@ annotation contract integrity
         -> empirical artifact contract
         -> real multi-view activations
         -> held-out-domain EXP-001-R
+```
+
+The automated route may challenge A0 through a new preregistered replication,
+but it cannot unblock or replace any node in the authentic route:
+
+```text
+A0 published result
+        -> independent procedural-corpus replication
+        -> independent model-family replication
+        -> robustness conclusion for automated proxies only
 ```
 
 ## Ordered delivery plan
@@ -133,27 +167,45 @@ complete freeze, corpus, controls, activation, analysis, publication, and
 completion contract is defined in
 [A0 Automated Weak Hypothesis Exploration](./A0_AUTOMATED_WEAK_HYPOTHESIS.md).
 
-The A0 protocol was merged and frozen before model output. The implementation
-contract, exact-revision activation runner, statistical analyzer, schemas, and
-`make a0` wrapper are saved on the isolated A0 delivery branch. The sealed run
-completed under macos-v3 and published an immutable positive exploratory proxy
-result: p = 0.005, 24/24 paired-family successes, and macro-F1 margin 0.188234
-over the problem-only surface baseline. This result remains outside the claim
-registry and cannot validate TRIZ constructs. Final A0 completion still
-requires the normal exact-head PR, artifact, CCP, hosted-gate, and merge audit.
+The A0 protocol was merged and frozen before model output. PR 34 then passed the
+scientific artifact audit, exact-head CCP receipt verification, Python 3.11 and
+3.12 repository checks, the trusted aggregate gate, and exact-head squash merge.
+The tracked package includes the exact-revision activation receipt, statistical
+result, representation index, publication manifest, and HTML report. Dense
+vectors remain external and hash-addressed.
 
-**Current status — in delivery:** protocol `v1.0.3` is frozen before any
-model-backed sealed execution. A deterministic 96-family / 192-case label-free corpus is
-tracked in the freeze manifest, 14 shortcut controls have passed on 96 calibration
-cases, and calibration/sealed target files are physically separated.
+**Current status — verified complete:** protocol `v1.0.3` is immutable and run
+`a0-v1.0.3-e93a9faa` is published on `main` at PR 34's merge commit.
 
 - deterministic design selected by power calibration:
   4 problem families/domain, 24 problem families total (48 paired cases), 199 permutations, critical=19,
   MDE 0.333212784429589
 - v1.0.1 pre-freeze prototype was rejected and redesigned pre-freeze as token-matched
   unique role pairs
-- no model activations or TRIZ interpretation has been observed yet
-- immediate next dependency: exact activation extraction and sealed run analysis
+- exact Pythia activations and the sealed automated-proxy result are published
+- all registered claims remain E0 and H1/Wave 2 remain independent
+
+### Parallel Phase A0-R — automated replication and robustness
+
+A0-R is the next fully automated milestone. It is a new preregistered experiment,
+not a mutable continuation of the observed A0 protocol. Its canonical contract
+is [A0 Replication and Robustness](./A0_REPLICATION_AND_ROBUSTNESS.md).
+
+**Dependency:** A0 is terminally published and its inputs and results remain
+byte-stable.
+
+**Outcome:** challenge the A0 signal on an independently generated procedural
+corpus, first with the already cached exact model revision and then, only with
+explicit acquisition approval, with an independent model family.
+
+**Exit evidence:** pre-output protocol freeze, independent case/template hashes,
+the full shortcut suite, exact-model receipts, a terminal positive/null/failed/
+non-interpretable result, one-command verification, artifact audit, exact-head
+qualification, and immutable publication.
+
+**Claim impact:** none. A successful A0-R strengthens only the robustness of the
+automated proxy observation; it does not validate Segmentation or Inversion as
+TRIZ constructs.
 
 ### PR 30 — annotation ontology v1.2 implementation
 
@@ -191,7 +243,7 @@ produce a versioned keep-or-amend decision. Synthetic or model-generated
 responses cannot substitute for this gate. Wave 2 collection cannot start until
 H1 closes, although software and archival work may continue.
 
-### PR 31 — preserve Wave 1 as a permanent calibration corpus
+### Milestone W1 — preserve Wave 1 as a permanent calibration corpus
 
 **Outcome**
 
@@ -209,7 +261,7 @@ passes as a regression, and no EXP-001 manifest can select Wave 1.
 **Claim impact:** none; the negative result qualifies the method, not the
 hypothesis.
 
-### PR 32 — label-free paired Wave 2 contract
+### Milestone W2 — label-free paired Wave 2 contract
 
 **Outcome**
 
@@ -227,7 +279,7 @@ pass under rules fixed before generation.
 
 **Claim impact:** none; a valid candidate corpus is not a result.
 
-### PR 33 — canonical human-label pipeline
+### Milestone C1 — canonical human-label pipeline
 
 **Dependency:** H1 closed and Wave 2 contract frozen.
 
@@ -247,7 +299,7 @@ or hidden label fallback is possible.
 **Claim impact:** none; independently labelled data becomes eligible for a
 future frozen study.
 
-### PR 34 — empirical envelope v2 and immutable run substrate
+### Milestone E1 — empirical envelope v2 and immutable run substrate
 
 **Outcome**
 
@@ -269,7 +321,7 @@ byte-stable.
 **Claim impact:** claim structure becomes more precise; evidence levels do not
 change.
 
-### PR 35 — published multi-view Pythia instrumentation bundle
+### Milestone I1 — published multi-view Pythia instrumentation bundle
 
 **Outcome**
 
@@ -284,7 +336,7 @@ publish, and fresh-clone verification pass.
 
 **Claim impact:** none; this remains a published engineering smoke.
 
-### PR 36 — current model feasibility and statistical calibration
+### Milestone F1 — current model feasibility and statistical calibration
 
 **Outcome**
 
@@ -305,9 +357,9 @@ controls, sample size, and stopping rules.
 
 **Claim impact:** none; feasibility and preregistration are planning artifacts.
 
-### PR 37 — first authentic EXP-001-R exploratory recognition run
+### Milestone R1 — first authentic EXP-001-R exploratory recognition run
 
-**Dependencies:** PRs 30–36 and H1 are closed; Wave 2 and canonical labels are
+**Dependencies:** PR 30, milestones W1–F1, and H1 are closed; Wave 2 and canonical labels are
 frozen; Candidate Surface Audit passes.
 
 **Outcome**
