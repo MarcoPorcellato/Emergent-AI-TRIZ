@@ -15,7 +15,7 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run the frozen A0 activation and analysis stages")
     parser.add_argument("--root", default=".")
     parser.add_argument("--model-root", required=True)
-    parser.add_argument("--stage", choices=("activations", "analysis", "all"), default="all")
+    parser.add_argument("--stage", choices=("activations", "analysis", "all", "verify"), default="all")
     return parser
 
 
@@ -30,6 +30,26 @@ def main(argv: list[str] | None = None) -> int:
     dense_dir = root / "artifacts/a0" / run_id
 
     try:
+        if args.stage == "verify":
+            required = (
+                result_dir / "activation-receipt.json",
+                result_dir / "representations-index.jsonl",
+                result_dir / "statistical-result.json",
+                result_dir / "report.html",
+                result_dir / "publication-manifest.json",
+            )
+            if any(not path.is_file() for path in required):
+                raise A0ReportError("published A0 run is incomplete")
+            manifest = json.loads((result_dir / "publication-manifest.json").read_text(encoding="utf-8"))
+            for key in ("result", "report", "activation_receipt", "representation_index"):
+                entry = manifest.get(key, {})
+                path = result_dir / str(entry.get("path", ""))
+                import hashlib
+                observed = hashlib.sha256(path.read_bytes()).hexdigest()
+                if observed != entry.get("sha256"):
+                    raise A0ReportError(f"publication hash mismatch: {key}")
+            print(f"a0-verify: PASS ({result_dir})")
+            return 0
         if args.stage in {"activations", "all"}:
             artifacts = run_a0_activations(
                 protocol_path=protocol_path,

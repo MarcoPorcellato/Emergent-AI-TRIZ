@@ -133,13 +133,14 @@ complete freeze, corpus, controls, activation, analysis, publication, and
 completion contract is defined in
 [A0 Automated Weak Hypothesis Exploration](./A0_AUTOMATED_WEAK_HYPOTHESIS.md).
 
-The A0 protocol is merged and frozen before any model output is observed. The
-implementation contract, exact-revision activation runner, statistical analyzer,
-schemas, and `make a0` wrapper are now saved on the isolated A0 delivery branch.
-The sealed runner is paused by the host resource coordinator; no activation or
-sealed result exists yet. A0 is complete only when `make a0` reproduces a real
-exact-revision model run and publishes a positive, null, failed, or
-non-interpretable exploratory proxy result with immutable receipts.
+The A0 protocol was merged and frozen before model output. The implementation
+contract, exact-revision activation runner, statistical analyzer, schemas, and
+`make a0` wrapper are saved on the isolated A0 delivery branch. The sealed run
+completed under macos-v3 and published an immutable positive exploratory proxy
+result: p = 0.005, 24/24 paired-family successes, and macro-F1 margin 0.188234
+over the problem-only surface baseline. This result remains outside the claim
+registry and cannot validate TRIZ constructs. Final A0 completion still
+requires the normal exact-head PR, artifact, CCP, hosted-gate, and merge audit.
 
 **Current status — in delivery:** protocol `v1.0.3` is frozen before any
 model-backed sealed execution. A deterministic 96-family / 192-case label-free corpus is

@@ -69,7 +69,7 @@ a0:
 	  "$(LAB01_PYTHON)" -m latent_triz.a0_runner \
 	  --root . \
 	  --model-root "$(LAB01_MODEL_ROOT)" \
-	  --stage all
+	  --stage "$$(if test -f results/a0/a0-v1.0.3-e93a9faa/statistical-result.json; then echo verify; else echo all; fi)"
 	@echo "A0 sealed result: results/a0/a0-v1.0.3-e93a9faa/statistical-result.json"
 
 preflight-plan:

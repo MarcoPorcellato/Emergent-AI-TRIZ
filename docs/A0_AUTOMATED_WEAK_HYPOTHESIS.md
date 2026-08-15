@@ -134,15 +134,17 @@ The freeze must produce a signed or hashed manifest.
 #### Current execution checkpoint
 
 The protocol freeze is complete at v1.0.3. The implementation-level
-operational contract is frozen before model output in
+operational contract was frozen before model output in
 experiments/a0-automated-weak-proxy/implementation.json, including the
 primary view, problem-only surface baseline, ridge preprocessing, sentinel
 text, hidden-state layer indexing, family-paired statistic, and shared
-permutation seed/budget. Its code and schemas are committed on the isolated
-A0 branch. The exact-model sealed runner is intentionally paused when the
-host resource coordinator reports a competing guarded workload; no activation
-or sealed result has been produced yet. The only permitted next action is
-make a0 after a fresh macos-v3 Admit with an empty queue.
+permutation seed/budget. The exact model run then completed on 2026-08-15
+under the macos-v3 guard with 48 sealed cases and 1,920 indexed vectors.
+The immutable result is `positive` for the frozen automated proxy: maximum
+statistic p = 0.005, observed paired-family successes = 24/24, and
+macro-F1 margin over the problem-only surface baseline = 0.188234. This
+supports only an exploratory decodable signal for the A0 proxies; it does
+not validate TRIZ constructs or promote any claim.
 
 ### A0.3 — Deterministic counterfactual corpus
 
