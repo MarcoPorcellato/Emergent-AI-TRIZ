@@ -219,7 +219,9 @@ R1.4a is merged and verified with fixed runtime/input/code hash binding, fixed
 classifier/permutation/baseline/domain-statistic specification, and
 synthetic-adapter / synthetic-vector coverage only. R1.4b is the live pre-run
 checkpoint: its runner must be bound, reviewed, qualified, and merged before
-the single exact-model activation and sealed analysis may begin.
+the single exact-model activation and sealed analysis may begin. The harness
+keeps operational failure receipts separate from statistical results and uses
+tri-state access evidence so unknown access is never collapsed to `false`.
 
 ### PR 30 — annotation ontology v1.2 implementation
 

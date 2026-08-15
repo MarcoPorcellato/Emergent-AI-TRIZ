@@ -40,7 +40,11 @@ def _copy_schemas(root: Path) -> None:
     if destination.exists():
         return
     destination.mkdir(parents=True, exist_ok=True)
-    for name in ("a0r1-activation-receipt.schema.json", "a0r1-statistical-result.schema.json"):
+    for name in (
+        "a0r1-activation-receipt.schema.json",
+        "a0r1-statistical-result.schema.json",
+        "a0r1-run-failure.schema.json",
+    ):
         _write_json(destination / name, json.loads((schema_root / name).read_text(encoding="utf-8")))
 
 
@@ -49,6 +53,7 @@ def _base_schema_payload() -> str:
 
 
 def _fixture_base(root: Path, run_id: str) -> None:
+    _copy_schemas(root)
     (root / "experiments" / "a0r1-independent-proxy").mkdir(parents=True, exist_ok=True)
     (root / "results" / "a0r1" / "freeze").mkdir(parents=True, exist_ok=True)
     (root / "results" / "a0r1" / "preoutput").mkdir(parents=True, exist_ok=True)
@@ -615,6 +620,160 @@ class A0R1RunnerTests(unittest.TestCase):
 
             result_path = root / "results" / "a0r1" / run_id / "statistical-result.json"
             self.assertFalse(result_path.is_file())
+
+    def test_preflight_failure_generates_run_failure_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            run_id = "runpre"
+            _fixture_base(root, run_id)
+
+            with patch("latent_triz.a0r1_runner.verify_a0r1_execution_contract", side_effect=RuntimeError("preflight failed")):
+                status = main([
+                    "--root",
+                    str(root),
+                    "--model-root",
+                    "models",
+                    "--run-id",
+                    run_id,
+                    "--created-at",
+                    "2026-08-15T00:00:00Z",
+                    "--stage",
+                    "analyze",
+                ])
+
+            self.assertNotEqual(0, status)
+            failure = json.loads((root / "results" / "a0r1" / run_id / "run-failure.json").read_text(encoding="utf-8"))
+            self.assertEqual("preflight", failure["stage"])
+            self.assertEqual(
+                {
+                    "model_output": "not_accessed",
+                    "sealed_model_output": "not_accessed",
+                    "sealed_targets": "not_accessed",
+                },
+                {k: failure[k] for k in ["model_output", "sealed_model_output", "sealed_targets"]},
+            )
+            self.assertFalse((root / "results" / "a0r1" / run_id / "statistical-result.json").is_file())
+
+    def test_activation_failure_generates_stage_and_access_state(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            run_id = "runact"
+            _fixture_base(root, run_id)
+
+            with patch("latent_triz.a0r1_runner.run_a0r1_activations", side_effect=RuntimeError("activation failed")):
+                status = main([
+                    "--root",
+                    str(root),
+                    "--model-root",
+                    "models",
+                    "--run-id",
+                    run_id,
+                    "--created-at",
+                    "2026-08-15T00:00:00Z",
+                    "--stage",
+                    "activate",
+                ])
+
+            self.assertNotEqual(0, status)
+            failure = json.loads((root / "results" / "a0r1" / run_id / "run-failure.json").read_text(encoding="utf-8"))
+            self.assertEqual("activation", failure["stage"])
+            self.assertEqual("possibly_accessed", failure["model_output"])
+            self.assertEqual("possibly_accessed", failure["sealed_model_output"])
+            self.assertEqual("not_accessed", failure["sealed_targets"])
+
+    def test_analysis_failure_generates_run_failure_not_statistical(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            run_id = "runerr"
+            _fixture_base(root, run_id)
+
+            with patch("latent_triz.a0r1_runner.analyze_a0r1", side_effect=RuntimeError("boom")):
+                status = main([
+                    "--root",
+                    str(root),
+                    "--model-root",
+                    "models",
+                    "--run-id",
+                    run_id,
+                    "--created-at",
+                    "2026-08-15T00:00:00Z",
+                    "--stage",
+                    "analyze",
+                ])
+                self.assertNotEqual(0, status)
+
+            failure_path = root / "results" / "a0r1" / run_id / "run-failure.json"
+            result_path = root / "results" / "a0r1" / run_id / "statistical-result.json"
+            self.assertFalse(result_path.is_file())
+            self.assertTrue(failure_path.is_file())
+
+            failure = json.loads(failure_path.read_text(encoding="utf-8"))
+            self.assertEqual("analysis", failure["stage"])
+            self.assertEqual("possibly_accessed", failure["model_output"])
+            self.assertEqual("possibly_accessed", failure["sealed_targets"])
+
+            _copy_schemas(root)
+            failure_schema = a0r1_runner._read_json(root / "schemas" / "a0r1-run-failure.schema.json", "failure schema")
+            self.assertEqual([], a0r1_runner.validate(failure, failure_schema))
+
+    def test_failure_receipt_refuse_overwrite(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            run_id = "runrw"
+            _fixture_base(root, run_id)
+            _copy_schemas(root)
+            failure_path = root / "results" / "a0r1" / run_id / "run-failure.json"
+            failure_path.parent.mkdir(parents=True, exist_ok=True)
+            failure_path.write_text("{}", encoding="utf-8")
+
+            with patch("latent_triz.a0r1_runner.analyze_a0r1", side_effect=RuntimeError("boom")):
+                status = main([
+                    "--root",
+                    str(root),
+                    "--model-root",
+                    "models",
+                    "--run-id",
+                    run_id,
+                    "--created-at",
+                    "2026-08-15T00:00:00Z",
+                    "--stage",
+                    "analyze",
+                ])
+
+            self.assertNotEqual(0, status)
+            self.assertEqual("{}", failure_path.read_text(encoding="utf-8").strip())
+
+    def test_no_sealed_target_content_hashing_in_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            run_id = "runhash"
+            _fixture_base(root, run_id)
+            _write_valid_activation_receipt(root, run_id)
+
+            with patch("latent_triz.a0r1_runner._sha256") as mock_sha256:
+                hashed_paths: list[str] = []
+
+                def _fake_sha256(path: Path) -> str:
+                    hashed_paths.append(str(path))
+                    return _sha256_path(path)
+
+                mock_sha256.side_effect = _fake_sha256
+
+                with patch("latent_triz.a0r1_runner.analyze_a0r1", side_effect=RuntimeError("boom")):
+                    status = main([
+                        "--root",
+                        str(root),
+                        "--model-root",
+                        "models",
+                        "--run-id",
+                        run_id,
+                        "--created-at",
+                        "2026-08-15T00:00:00Z",
+                        "--stage",
+                        "analyze",
+                    ])
+                self.assertNotEqual(0, status)
+                self.assertFalse(any(path.endswith("/sealed_targets.jsonl") for path in hashed_paths))
 
 
 if __name__ == "__main__":

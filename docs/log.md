@@ -15,7 +15,9 @@ last_verified: 2026-08-15
   runtime, inputs, code, classifier, permutation, baseline, and domain rule;
   it accessed neither model output nor sealed targets. R1.4b is now preparing
   a separately bound runner and remains pre-output until that harness is
-  reviewed, qualified, and merged.
+  reviewed, qualified, and merged. The harness records operational exceptions
+  in a separate immutable receipt with tri-state access evidence; it does not
+  fabricate a statistical outcome or treat uncertain access as non-access.
 - Froze the A0-R R1.3 calibration and protocol state: exact-binomial power
   receipt now records false-positive rate `0.03195732831954956`, power
   `0.9108287412264922` under family-success probability `0.8`, minimum

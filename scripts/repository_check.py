@@ -138,6 +138,7 @@ def main() -> int:
         "schemas/a0r1-implementation.schema.json",
         "schemas/a0r1-activation-receipt.schema.json",
         "schemas/a0r1-statistical-result.schema.json",
+        "schemas/a0r1-run-failure.schema.json",
         "schemas/a0-corpus-manifest.schema.json",
         "schemas/a0-case.schema.json",
         "schemas/a0-procedural-target.schema.json",

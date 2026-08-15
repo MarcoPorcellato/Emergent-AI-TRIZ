@@ -200,7 +200,10 @@ gates passed.
 **Current checkpoint — R1.4b pre-run harness in delivery:** exact-model
 activation and sealed inference remain blocked until the runner is included in
 the code-hash binding, reviewed, qualified, and merged under the guarded
-resource contract.
+resource contract. Operational exceptions are recorded separately from
+statistical outcomes in an immutable `run-failure.json` receipt. Its access
+states are tri-state (`not_accessed`, `possibly_accessed`, or `accessed`) so an
+uncertain boundary can never be reported as a proven non-access.
 
 ### R1.5 — immutable publication
 

@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import re
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -26,6 +27,7 @@ RESULTS_DIR = Path("results") / "a0r1"
 EXPERIMENT_DIR = Path("experiments") / "a0r1-independent-proxy"
 PROTO = EXPERIMENT_DIR / "protocol.json"
 IMPL = EXPERIMENT_DIR / "implementation.json"
+RUN_FAILURE_FILE = "run-failure.json"
 FREEZE_MANIFEST = RESULTS_DIR / "freeze" / "freeze-manifest.json"
 CANONICAL_CORPUS = Path("data") / "a0r1" / "manifest.json"
 PREOUTPUT_MANIFEST = RESULTS_DIR / "preoutput" / "preoutput-manifest.json"
@@ -170,6 +172,226 @@ def _read_schema(root: Path, name: str) -> dict[str, Any]:
     return _read_json(root / "schemas" / name, f"schema {name}")
 
 
+def _sha256_text(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _safe_hash(path: Path | None) -> str | None:
+    if path is None or not path.is_file():
+        return None
+    try:
+        return _sha256(path)
+    except OSError:
+        return None
+
+
+def _coerce_bool_access(value: object, *, fallback: str) -> str:
+    if not isinstance(value, bool):
+        return fallback
+    return "accessed" if value else "not_accessed"
+
+
+def _coerce_access_from_payload(payload: dict[str, Any], key: str, *, fallback: str) -> str:
+    return _coerce_bool_access(payload.get(key), fallback=fallback)
+
+
+def _collect_input_hashes(root: Path, stage: str, run_id: str) -> dict[str, str | None]:
+    protocol_hash: str | None = None
+    implementation_hash: str | None = None
+    shortcut_hash: str | None = None
+    activation_receipt_hash: str | None = None
+    representation_index_hash: str | None = None
+    dense_hash: str | None = None
+    sealed_targets_hash: str | None = None
+
+    try:
+        protocol_hash = _canonical_json_sha256(root / PROTO)
+    except Exception:
+        pass
+
+    implementation_hash = _safe_hash(root / IMPL)
+
+    try:
+        if stage != "preflight":
+            manifest = _read_json(root / PREOUTPUT_MANIFEST, "preoutput manifest")
+            artifacts = manifest.get("artifacts")
+            if isinstance(artifacts, Mapping):
+                shortcut = artifacts.get("shortcuts.json")
+                if isinstance(shortcut, Mapping) and isinstance(shortcut.get("sha256"), str):
+                    shortcut_hash = _read_hex(shortcut.get("sha256"), label="shortcuts sha256")
+            if shortcut_hash is None:
+                shortcut_hash = _safe_hash(root / RESULTS_DIR / "preoutput" / "shortcuts.json")
+    except Exception:
+        shortcut_hash = None
+
+    artifacts_dir = root / ARTIFACTS_DIR / run_id
+    activation_receipt_path = artifacts_dir / "activation-receipt.json"
+    activation_receipt_hash = _safe_hash(activation_receipt_path)
+    representation_index_hash = _safe_hash(artifacts_dir / "representations-index.jsonl")
+    dense_hash = _safe_hash(artifacts_dir / "activations.json")
+
+    try:
+        _, sealed_targets_hash = _discover_targets_path(root)
+    except A0R1RunnerError:
+        sealed_targets_hash = None
+    except Exception:
+        sealed_targets_hash = None
+
+    return {
+        "protocol": protocol_hash,
+        "implementation": implementation_hash,
+        "shortcut": shortcut_hash,
+        "activation_receipt": activation_receipt_hash,
+        "representation_index": representation_index_hash,
+        "dense_vectors": dense_hash,
+        "sealed_targets": sealed_targets_hash,
+    }
+
+
+def _coerce_access_from_result(
+    payload: dict[str, Any], *, fallback: str = "possibly_accessed"
+) -> dict[str, str]:
+    return {
+        "model_output": _coerce_access_from_payload(payload, "model_output_accessed", fallback=fallback),
+        "sealed_model_output": _coerce_access_from_payload(payload, "sealed_model_output_accessed", fallback=fallback),
+        "sealed_targets": _coerce_access_from_payload(payload, "sealed_targets_accessed", fallback=fallback),
+    }
+
+
+def _coerce_access_from_receipt(
+    root: Path, run_id: str, *, fallback: str = "possibly_accessed"
+) -> dict[str, str] | None:
+    try:
+        path = root / ARTIFACTS_DIR / run_id / "activation-receipt.json"
+        receipt = _read_json(path, "activation receipt")
+        schema = _read_schema(root, "a0r1-activation-receipt.schema.json")
+        if validate(receipt, schema):
+            return None
+    except Exception:
+        return None
+
+    return {
+        "model_output": _coerce_access_from_payload(receipt, "model_output_accessed", fallback=fallback),
+        "sealed_model_output": _coerce_access_from_payload(receipt, "sealed_model_output_accessed", fallback=fallback),
+        "sealed_targets": _coerce_access_from_payload(receipt, "sealed_targets_accessed", fallback=fallback),
+    }
+
+
+def _access_from_failure_stage(root: Path, run_id: str, stage: str) -> dict[str, str]:
+    if stage == "preflight":
+        return {
+            "model_output": "not_accessed",
+            "sealed_model_output": "not_accessed",
+            "sealed_targets": "not_accessed",
+        }
+
+    if stage == "activation":
+        return {
+            "model_output": "possibly_accessed",
+            "sealed_model_output": "possibly_accessed",
+            "sealed_targets": "not_accessed",
+        }
+
+    if stage == "analysis":
+        access = {
+            "model_output": "possibly_accessed",
+            "sealed_model_output": "possibly_accessed",
+            "sealed_targets": "possibly_accessed",
+        }
+        receipt = _coerce_access_from_receipt(root, run_id, fallback="possibly_accessed")
+        if receipt is None:
+            return access
+        if receipt.get("model_output") == "accessed" or receipt.get("model_output") == "not_accessed":
+            access["model_output"] = receipt["model_output"]
+        if receipt.get("sealed_model_output") == "accessed" or receipt.get("sealed_model_output") == "not_accessed":
+            access["sealed_model_output"] = receipt["sealed_model_output"]
+        return access
+
+    if stage == "verification":
+        result_path = root / RESULTS_DIR / run_id / "statistical-result.json"
+        if result_path.is_file():
+            try:
+                result_payload = _read_json(result_path, "analysis result")
+                return _coerce_access_from_result(result_payload, fallback="possibly_accessed")
+            except Exception:
+                pass
+
+        receipt = _coerce_access_from_receipt(root, run_id, fallback="possibly_accessed")
+        if receipt is None:
+            return {
+                "model_output": "possibly_accessed",
+                "sealed_model_output": "possibly_accessed",
+                "sealed_targets": "possibly_accessed",
+            }
+        return receipt
+
+    raise A0R1RunnerError(f"unknown failure stage: {stage}")
+
+
+def _build_failure_payload(
+    *, root: Path, run_id: str, stage: str, created_at: str, exc: Exception
+) -> dict[str, Any]:
+    if stage not in {"preflight", "activation", "analysis", "verification"}:
+        raise A0R1RunnerError(f"unknown failure stage: {stage}")
+
+    input_hashes = _collect_input_hashes(root, stage=stage, run_id=run_id)
+    access = _access_from_failure_stage(root, run_id, stage)
+
+    return {
+        "artifact_class": "a0r1-run-failure",
+        "status": "failed",
+        "created_at": created_at,
+        "run_id": run_id,
+        "stage": stage,
+        "exception_type": type(exc).__name__,
+        "error_message_sha256": _sha256_text(str(exc)),
+        "input_hashes": input_hashes,
+        "model_output": access["model_output"],
+        "sealed_model_output": access["sealed_model_output"],
+        "sealed_targets": access["sealed_targets"],
+    }
+
+
+def _write_run_failure(root: Path, run_id: str, payload: dict[str, Any]) -> None:
+    result_dir = root / RESULTS_DIR / run_id
+    result_dir.mkdir(parents=True, exist_ok=True)
+    failure_path = result_dir / RUN_FAILURE_FILE
+
+    if failure_path.is_file():
+        raise A0R1RunnerError(f"run-failure already exists: {failure_path}")
+
+    serialised = json.dumps(
+        payload,
+        sort_keys=True,
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ) + "\n"
+    with tempfile.NamedTemporaryFile("w", dir=result_dir, delete=False, encoding="utf-8", suffix=".tmp") as handle:
+        handle.write(serialised)
+        tmp_path = Path(handle.name)
+
+    try:
+        os.link(tmp_path, failure_path)
+    except Exception as exc:
+        raise A0R1RunnerError(f"cannot atomically persist failure receipt: {exc}") from exc
+    finally:
+        tmp_path.unlink(missing_ok=True)
+
+
+def _record_failure(root: Path, run_id: str, stage: str, created_at: str, exc: Exception) -> None:
+    result_path = root / RESULTS_DIR / run_id / "statistical-result.json"
+    if result_path.is_file():
+        return
+
+    payload = _build_failure_payload(root=root, run_id=run_id, stage=stage, created_at=created_at, exc=exc)
+    schema = _read_schema(root, "a0r1-run-failure.schema.json")
+    if validate(payload, schema):
+        raise A0R1RunnerError("failure payload does not validate schema")
+    _write_run_failure(root, run_id, payload)
+
+
+
+
 def _run_activation(root: Path, args: argparse.Namespace) -> A0R1RunnerArtifacts:
     activation_dir = root / ARTIFACTS_DIR / args.run_id
     if activation_dir.exists():
@@ -312,10 +534,15 @@ def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     root = Path(args.root).resolve()
 
+    failure_stage = "preflight"
+    run_id_valid = False
     try:
         _validate_run_id(args.run_id)
+        run_id_valid = True
         verify_a0r1_execution_contract(root)
+
         if args.stage in {"activate", "all"}:
+            failure_stage = "activation"
             artifacts = _run_activation(root, args)
         elif args.stage in {"analyze", "verify"}:
             artifacts = A0R1RunnerArtifacts(
@@ -326,15 +553,27 @@ def main(argv: list[str] | None = None) -> int:
             artifacts = None
 
         if args.stage in {"analyze", "all"}:
+            failure_stage = "analysis"
             _run_analysis(root, args, artifacts)
         elif args.stage == "verify":
+            failure_stage = "verification"
             _run_verify(root, args.run_id)
         return 0
     except Exception as exc:
-        if isinstance(exc, A0R1RunnerError):
-            print(f"a0r1-run: FAILED: {exc}")
-        else:
-            print(f"a0r1-run: FAILED: {exc}")
+        if run_id_valid:
+            try:
+                _record_failure(
+                    root=root,
+                    run_id=args.run_id,
+                    stage=failure_stage,
+                    created_at=args.created_at,
+                    exc=exc,
+                )
+            except Exception:
+                print(f"a0r1-run: FAILED: {exc}")
+                print(f"a0r1-run: FAILED to persist run-failure artifact")
+                return 1
+        print(f"a0r1-run: FAILED: {exc}")
         return 1
 
 
