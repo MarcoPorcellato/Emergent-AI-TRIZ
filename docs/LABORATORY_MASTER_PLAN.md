@@ -239,6 +239,13 @@ GiB peak RSS, and 3.81 seconds total time; the outer guard separately remains
 `cleanup_uncertain` after exit 70 despite a clean post-run observation. No rerun
 is permitted, and sealed execution remains gated.
 
+The next authorized delivery tranche is the fully automated SmolLM2 R2 study
+defined in `docs/A0_REPLICATION_AND_ROBUSTNESS.md`. It reuses the frozen R1
+corpus and statistics, maps the semantic final block to SmolLM2 tuple index 32,
+and expands only descriptive controls and sensitivities. Preregistration and
+synthetic implementation may proceed without human review; the exact one-run
+sealed-data and material envelope remains a separate approval checkpoint.
+
 ### PR 30 — annotation ontology v1.2 implementation
 
 **Outcome**

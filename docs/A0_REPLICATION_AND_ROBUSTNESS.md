@@ -259,16 +259,96 @@ admission inactive, an empty queue, no matching process, and resource decision
 `admit`; this does not retroactively qualify the guard as PASS. The run was not
 repeated.
 
-**Still not authorized:** sealed-target access, sealed R2 execution, scientific
-outcome inference, any additional model download, or any TRIZ claim promotion.
-The feasibility contract, runner, schemas, and synthetic tests merged before
-the first real load. This compatible result authorizes only a later review of the
-sealed-execution gate; it does not authorize that execution.
+**Automated-study direction:** the operator has requested the broadest useful
+SmolLM2 study that does not depend on human review. This authorizes preparation,
+implementation, synthetic qualification, and ordinary repository delivery of
+the R2 study. It does not silently waive the existing sealed-data/material-run
+gate: the exact preregistration, resource envelope, and one-run boundary must be
+merged and presented before sealed-target access or scientific output.
 
-**Exit evidence:** immutable contract and receipt hashes, exact snapshot
+The automated study has one fixed primary question: whether the independent
+model family reproduces the already frozen R1 automated-proxy direction at the
+same semantic endpoint. Pythia tuple index 6 and SmolLM2 tuple index 32 both
+mean the final transformer-block output. The primary remains
+`problem_plus_transformation` / `mean_transformation_span`, compared with the
+problem-only sentinel baseline. Literal layer 6 in SmolLM2 is not the primary.
+
+The broader evidence battery is frozen before output and remains descriptive:
+
+- tuple indices `[0, 11, 21, 32]`, all preregistered views, and every applicable
+  token site;
+- the same grouped leave-one-domain-out classifier, train-fold-only
+  standardization, paired-family statistic, 999 shared permutations, and R1
+  thresholds;
+- the 14 existing surface, provenance, leakage, random-label, random-partition,
+  generic-action, transformation-taxonomy, and adjacent-proxy controls;
+- per-domain directions, effect sizes, uncertainty, depth profiles, surface
+  baseline comparisons, and cross-model directional concordance;
+- mandatory publication of positive, null, failed, non-interpretable, or
+  incompatible outcomes, with no model substitution or sensitivity-based
+  rescue of the primary.
+
+No annotator, expert, LLM judge, or manual adjudication participates in the
+study. That automation limits the conclusion to persistence or absence of the
+procedural proxy signal; it cannot validate TRIZ constructs.
+
+**Feasibility exit evidence:** immutable contract and receipt hashes, exact snapshot
 verification, the terminal feasibility receipt, the separate guard observation,
 and exact-head repository/hosted qualification. The compatibility payload is
 terminal, while the outer guard remains explicitly `cleanup_uncertain`.
+
+#### R2.1 — pre-output preregistration
+
+**In delivery:** freeze a strict machine-readable protocol that binds the R1
+corpus, sealed-target, shortcut, protocol, and freeze hashes; the exact SmolLM2
+revision and integrity/feasibility receipts; the final-block architecture
+mapping; the primary endpoint; all descriptive sensitivities; terminal outcome
+rules; and the no-human-review epistemic boundary. The protocol must say
+`approval_required` for sealed execution until its exact budget is approved.
+
+**Exit evidence:** schema parity, mutation tests, documentation audit, clean
+exact-head repository qualification, reviewed PR, and merge before any new
+model output or sealed-target access.
+
+#### R2.2 — implementation and synthetic qualification
+
+Add R2-only adapter, activation, analysis, runner, report, schemas, and tests.
+Do not edit the hash-bound R1 implementation. Synthetic adapters must prove 33
+hidden-state entries, tuple index 32, dimension 960, offline/local-only loading,
+finite vectors, no generation, zero target reads during activation, exactly one
+verified target read at analysis, deterministic statistics, atomic no-overwrite
+publication, and fail-closed access receipts.
+
+**Exit evidence:** code hashes bound into the reviewed implementation contract;
+all synthetic terminal classes and artifact mutations tested; exact-head gates
+merged before material execution.
+
+#### R2.3 — explicit sealed-execution gate
+
+Present one exact approval dossier after R2.1 and R2.2 merge. The proposed
+envelope is one local-only CPU float32 run, no network or generation, at most 30
+minutes wall time, at most 8 GiB peak RSS, at most 64 MiB of new dense output,
+the already acquired nine-file snapshot only, and no retry after model or
+target access without a new explicit approval. These are conservative caps;
+the feasibility measurement was 2.37 GiB and 3.81 seconds for the synthetic
+probe.
+
+#### R2.4 — one sealed automated run
+
+Only after the exact R2.3 approval and CCP `Admit` with an inactive empty queue,
+run activation extraction once, then open the exact-hash sealed targets once at
+the analysis boundary. Preserve any partial artifact and publish every terminal
+outcome. Verification may be repeated only when it performs no model load and
+opens no sealed target.
+
+#### R2.5 — immutable publication
+
+Publish the statistical result, receipt, representation index, external dense
+asset locator/hash, report, limitations, guard/recovery observation if needed,
+and manifest. Verification from a fresh clone plus the declared external asset
+must fail closed on every missing or mutated dependency. A positive result may
+say only that the frozen automated-proxy signal persisted across the two exact
+model families tested.
 
 ## Statistical and missing-data rules
 
@@ -279,8 +359,11 @@ terminal, while the outer guard remains explicitly `cleanup_uncertain`.
   random-partition controls remain mandatory.
 - Missing, stale, mismatched, or inconclusive identity and integrity evidence is
   a failure, never a pass.
-- Any shortcut gate at or above its frozen refusal threshold makes the run
-  non-interpretable rather than negative evidence about the model.
+- A predictive shortcut makes the run non-interpretable when its aggregate
+  macro-F1 is at least `0.65` and its margin over the majority baseline is at
+  least `0.10`; any required structural control whose status is not `pass`
+  has the same terminal effect. These frozen refusal rules cannot be relaxed
+  after model or target access.
 - Domain results, uncertainty intervals, effect sizes, and all sensitivity
   outcomes are published even when the primary rule fails.
 
@@ -335,3 +418,17 @@ R1 is complete only when:
 R2 is complete only after its separate acquisition approval, frozen model
 decision, exact receipts, sealed run, immutable publication, and the same
 no-claim boundary are all proven.
+
+The no-human-review R2 completion checklist additionally requires:
+
+- the R2 protocol and architecture mapping merged before output;
+- the primary rule to remain singular and unchanged after output;
+- every sensitivity to remain descriptive and unable to rescue the primary;
+- all 14 controls and the surface baseline to be published;
+- model, runtime, code, corpus, target, shortcut, and protocol hashes to link
+  end to end;
+- one material run at most under the approved CCP envelope;
+- no human label, expert judgment, LLM judge, generation, or model substitution;
+- positive, null, failed, non-interpretable, and incompatible publication paths;
+- exact-head local evidence, hosted gates, and immutable package verification;
+- all claim IDs absent and every conclusion kept at automated exploratory E0.

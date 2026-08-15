@@ -3,7 +3,7 @@ docs/LABORATORY_MASTER_PLAN.md, using its requirement checklist and linked
 phase specifications as the source of truth.
 
 Start from the last-known public anchor
-da8f4bb0c07fe32ede438b13da80b89019cfb812, but verify origin/main, open pull
+25c978d89a07fcd66194f8e0e333ebdae2f6bc08, but verify origin/main, open pull
 requests, the active ruleset, exact worktree state, and current evidence live
 before acting. Do not repeat delivered work.
 
@@ -17,9 +17,12 @@ byte-for-byte, all E0 claim levels, the separation from H1 and Wave 2, and
 every human or acquisition gate. Do not rerun either sealed model path, reopen
 sealed targets, generate model content, or promote any TRIZ claim.
 
-Publish and qualify the immutable feasibility receipt, guard observation, and
-human-readable report without rerunning the model. Stop afterward: sealed R2
-execution and sealed-target access remain separately approval-gated.
+Deliver the no-human-review SmolLM2 R2 study specified in
+docs/A0_REPLICATION_AND_ROBUSTNESS.md. First merge the preregistration and then
+the R2-only implementation with synthetic evidence. Do not open sealed targets
+or start the material run until the exact one-run CPU/RAM/time/output dossier is
+presented and explicitly approved. After approval, run once, publish every
+terminal outcome, and never let descriptive sensitivities rescue the primary.
 
 Use deterministic tools first and delegate the largest safe, independent share
 to cheaper bounded workers. Keep architecture, statistics, security,

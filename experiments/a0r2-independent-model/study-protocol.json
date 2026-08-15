@@ -1,0 +1,163 @@
+{
+  "artifact_class": "a0r2-study-protocol",
+  "protocol_id": "a0r2-independent-model-v1.0.0",
+  "protocol_status": "frozen",
+  "created_at": "2026-08-15T18:30:00Z",
+  "empirical": true,
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "no_human_review": true,
+  "approval_required": true,
+  "protocol_type": "pre_output_cross_model_replication",
+  "authorization": {
+    "study_preparation": "operator_authorized",
+    "implementation_and_synthetic_tests": "operator_authorized",
+    "sealed_target_access": "approval_required",
+    "sealed_material_execution": "approval_required"
+  },
+  "inputs": {
+    "r1_protocol_sha256": "ed113d1c0bfdb44b57c879e2995b610d0ecf528fccedb37fc9b89093be083fbf",
+    "r1_freeze_manifest_sha256": "bedb9df1d6650ab0d4d7f9a255555e4dbe80b07b705b45534eeb290d76fe5fc9",
+    "corpus_manifest_sha256": "46c5cdf796f2abad709deb3066cfadd5fc6e6a30f55a737b3408e0a15b065c06",
+    "cases_sha256": "479caee11dd62a978e8f01e9802db624b1714909264292b53067e97e10002541",
+    "sealed_targets_sha256": "e911a70279f5b141c35064da29c020557f69ee17dfed5adad6172ed3fe2db0e0",
+    "shortcuts_sha256": "566586fe571a99eadfbc3871eedec3dbf65b049f9f0311a7676f9625e22ac615"
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "license_id": "Apache-2.0",
+    "model_type": "llama",
+    "architecture": "LlamaForCausalLM",
+    "num_hidden_layers": 32,
+    "hidden_size": 960,
+    "local_locator": "artifacts/models/smollm2-360m-f8027fd0",
+    "integrity_receipt_sha256": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3",
+    "feasibility_receipt_sha256": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67"
+  },
+  "tokenizer": {
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "fast_offsets_required": true
+  },
+  "runtime": {
+    "network_access": false,
+    "local_files_only": true,
+    "device": "cpu",
+    "torch_dtype": "float32",
+    "generation": false
+  },
+  "r1_benchmark_reference": {
+    "protocol_id": "a0-r1-tier-r1-v1.0",
+    "protocol_hash": "ed113d1c0bfdb44b57c879e2995b610d0ecf528fccedb37fc9b89093be083fbf",
+    "freeze_manifest_hash": "bedb9df1d6650ab0d4d7f9a255555e4dbe80b07b705b45534eeb290d76fe5fc9",
+    "cases_sha256": "479caee11dd62a978e8f01e9802db624b1714909264292b53067e97e10002541"
+  },
+  "primary_endpoint": {
+    "tuple_index": 32,
+    "semantics": "final_transformer_block_output",
+    "token_site": "mean_transformation_span",
+    "primary_view": "problem_plus_transformation",
+    "surface_baseline_view": "problem_only",
+    "surface_baseline_token_site": "sentinel",
+    "multiplicity": 1,
+    "is_max_statistic_selection": false
+  },
+  "sensitivity_endpoints": {
+    "descriptive_tuple_indices": [0, 11, 21, 32],
+    "token_sites": ["sentinel", "final_transformation_token", "mean_transformation_span"],
+    "views": ["problem_only", "transformation_only", "problem_plus_transformation", "problem_plus_solution"],
+    "may_replace_primary": false,
+    "interpretation": "descriptive_only"
+  },
+  "classifier": {
+    "name": "l2_regularized_linear_least_squares",
+    "alpha": 1.0,
+    "solver": "dual_kernel_closed_form",
+    "standardization": true,
+    "standardization_scope": "within_train_folds",
+    "evaluation": "family_grouped_leave_one_domain_out"
+  },
+  "thresholds": {
+    "critical_successes": 17,
+    "primary_permutation_p_at_most": 0.05,
+    "macro_f1_margin_at_least": 0.1,
+    "family_successes_at_least": 17,
+    "domain_direction_successes_minimum": 4
+  },
+  "permutations": {
+    "seed": 20260815,
+    "budget": 999,
+    "pairing": "paired_within_family_swaps",
+    "correction": "fixed_primary_no_multiplicity"
+  },
+  "shortcut_refusal": {
+    "predictive_control_scope": "aggregate",
+    "macro_f1_at_or_above": 0.65,
+    "margin_over_majority_at_or_above": 0.1,
+    "predictive_rule": "non_interpretable_if_both_thresholds_reached",
+    "structural_rule": "non_interpretable_if_any_required_control_status_is_not_pass",
+    "required_control_count": 14
+  },
+  "resource_envelope": {
+    "maximum_peak_rss_bytes": 8589934592,
+    "maximum_wall_seconds": 1800,
+    "maximum_new_dense_output_bytes": 67108864
+  },
+  "negative_controls": [
+    "bag_of_words_baselines",
+    "character_ngram_baselines",
+    "length_and_punctuation_baselines",
+    "style_and_template_baselines",
+    "provenance_classifiers",
+    "problem_only_label_prediction",
+    "leave_one_domain_out_surface_evaluation",
+    "duplicate_and_near_duplicate_detection",
+    "family_leakage_detection",
+    "random_label_controls",
+    "random_partition_controls",
+    "generic_action_taxonomy_controls",
+    "generic_transformation_taxonomy_controls",
+    "adjacent_principle_proxy_controls"
+  ],
+  "outcomes": {
+    "terminal": ["positive", "null", "failed", "non_interpretable", "incompatible"],
+    "rules": {
+      "positive": "all gates pass and primary_permutation_p <= 0.05 and macro_f1_margin_over_surface >= 0.10 and family_successes >= 17 and successful_domain_directions >= 4",
+      "null": "all gates pass and the positive rule is false",
+      "failed": "integrity, identity, execution, data, or receipt gate fails before valid statistic",
+      "non_interpretable": "predictive aggregate macro_f1 >= 0.65 and margin_over_majority >= 0.10, or any required structural control status is not pass",
+      "incompatible": "compatibility check fails or resource envelope violated"
+    },
+    "outcome_map": {
+      "positive": "positive",
+      "null": "null",
+      "failed": "failed",
+      "non_interpretable": "non_interpretable",
+      "incompatible": "incompatible"
+    }
+  },
+  "sealed_execution": {
+    "max_runs": 1,
+    "sealed_targets_access": "approval_required",
+    "activation_may_read_target_content": false,
+    "analysis_target_reads": 1,
+    "generation_allowed": false,
+    "retry_after_model_or_target_access": "new_explicit_approval_required",
+    "stopping_rule": "stop_after_first_terminal_attempt"
+  },
+  "human_review": {
+    "annotators": false,
+    "experts": false,
+    "llm_judges": false,
+    "manual_adjudication": false
+  },
+  "publication": {
+    "publish_every_terminal_outcome": true,
+    "sensitivity_may_rescue_primary": false,
+    "model_substitution_after_output": false,
+    "claim_promotion": false
+  }
+}

@@ -66,6 +66,7 @@ VALIDATION_PAIRS = (
     ("schemas/a0r2-acquisition-contract.schema.json", "experiments/a0r2-independent-model/acquisition-contract.json"),
     ("schemas/a0r2-acquisition-receipt.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json"),
     ("schemas/a0r2-feasibility-contract.schema.json", "experiments/a0r2-independent-model/feasibility-contract.json"),
+    ("schemas/a0r2-study-protocol.schema.json", "experiments/a0r2-independent-model/study-protocol.json"),
     ("schemas/a0r2-feasibility-receipt.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json"),
     ("schemas/a0r2-feasibility-guard-observation.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/guard-observation.json"),
     ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),

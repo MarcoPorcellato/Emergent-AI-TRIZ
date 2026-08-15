@@ -1,0 +1,554 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-study-protocol.schema.json",
+  "title": "A0-R2 independent model exploratory protocol",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "protocol_id",
+    "protocol_status",
+    "created_at",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "no_human_review",
+    "approval_required",
+    "protocol_type",
+    "authorization",
+    "inputs",
+    "model",
+    "tokenizer",
+    "runtime",
+    "r1_benchmark_reference",
+    "primary_endpoint",
+    "sensitivity_endpoints",
+    "classifier",
+    "thresholds",
+    "permutations",
+    "shortcut_refusal",
+    "resource_envelope",
+    "negative_controls",
+    "outcomes",
+    "sealed_execution",
+    "human_review",
+    "publication"
+  ],
+  "properties": {
+    "artifact_class": {
+      "const": "a0r2-study-protocol"
+    },
+    "protocol_id": {
+      "const": "a0r2-independent-model-v1.0.0"
+    },
+    "protocol_status": {
+      "type": "string",
+      "const": "frozen"
+    },
+    "created_at": {
+      "const": "2026-08-15T18:30:00Z"
+    },
+    "empirical": {
+      "type": "boolean",
+      "const": true
+    },
+    "scientific_status": {
+      "type": "string",
+      "const": "exploratory"
+    },
+    "evidence_eligible": {
+      "type": "boolean",
+      "const": false
+    },
+    "expert_validated": {
+      "type": "boolean",
+      "const": false
+    },
+    "claim_ids": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "no_human_review": {
+      "type": "boolean",
+      "const": true
+    },
+    "approval_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "protocol_type": {
+      "const": "pre_output_cross_model_replication"
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["study_preparation", "implementation_and_synthetic_tests", "sealed_target_access", "sealed_material_execution"],
+      "properties": {
+        "study_preparation": {"const": "operator_authorized"},
+        "implementation_and_synthetic_tests": {"const": "operator_authorized"},
+        "sealed_target_access": {"const": "approval_required"},
+        "sealed_material_execution": {"const": "approval_required"}
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["r1_protocol_sha256", "r1_freeze_manifest_sha256", "corpus_manifest_sha256", "cases_sha256", "sealed_targets_sha256", "shortcuts_sha256"],
+      "properties": {
+        "r1_protocol_sha256": {"const": "ed113d1c0bfdb44b57c879e2995b610d0ecf528fccedb37fc9b89093be083fbf"},
+        "r1_freeze_manifest_sha256": {"const": "bedb9df1d6650ab0d4d7f9a255555e4dbe80b07b705b45534eeb290d76fe5fc9"},
+        "corpus_manifest_sha256": {"const": "46c5cdf796f2abad709deb3066cfadd5fc6e6a30f55a737b3408e0a15b065c06"},
+        "cases_sha256": {"const": "479caee11dd62a978e8f01e9802db624b1714909264292b53067e97e10002541"},
+        "sealed_targets_sha256": {"const": "e911a70279f5b141c35064da29c020557f69ee17dfed5adad6172ed3fe2db0e0"},
+        "shortcuts_sha256": {"const": "566586fe571a99eadfbc3871eedec3dbf65b049f9f0311a7676f9625e22ac615"}
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "license_id",
+        "model_type",
+        "architecture",
+        "num_hidden_layers",
+        "hidden_size",
+        "local_locator",
+        "integrity_receipt_sha256",
+        "feasibility_receipt_sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "const": "HuggingFaceTB/SmolLM2-360M"
+        },
+        "revision": {
+          "type": "string",
+          "const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"
+        },
+        "license_id": {
+          "type": "string",
+          "const": "Apache-2.0"
+        },
+        "model_type": {"const": "llama"},
+        "architecture": {"const": "LlamaForCausalLM"},
+        "num_hidden_layers": {
+          "type": "integer",
+          "const": 32
+        },
+        "hidden_size": {
+          "type": "integer",
+          "const": 960
+        },
+        "local_locator": {
+          "type": "string",
+          "const": "artifacts/models/smollm2-360m-f8027fd0"
+        },
+        "integrity_receipt_sha256": {"const": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3"},
+        "feasibility_receipt_sha256": {"const": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67"}
+      }
+    },
+    "tokenizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "fast_offsets_required"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "fast_offsets_required": {"const": true}
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "network_access",
+        "local_files_only",
+        "device",
+        "torch_dtype",
+        "generation"
+      ],
+      "properties": {
+        "network_access": {
+          "type": "boolean",
+          "const": false
+        },
+        "local_files_only": {
+          "type": "boolean",
+          "const": true
+        },
+        "device": {
+          "type": "string",
+          "const": "cpu"
+        },
+        "torch_dtype": {
+          "type": "string",
+          "const": "float32"
+        },
+        "generation": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "r1_benchmark_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "protocol_hash",
+        "freeze_manifest_hash",
+        "cases_sha256"
+      ],
+      "properties": {
+        "protocol_id": {
+          "type": "string",
+          "const": "a0-r1-tier-r1-v1.0"
+        },
+        "protocol_hash": {
+          "type": "string",
+          "const": "ed113d1c0bfdb44b57c879e2995b610d0ecf528fccedb37fc9b89093be083fbf"
+        },
+        "freeze_manifest_hash": {
+          "type": "string",
+          "const": "bedb9df1d6650ab0d4d7f9a255555e4dbe80b07b705b45534eeb290d76fe5fc9"
+        },
+        "cases_sha256": {
+          "type": "string",
+          "const": "479caee11dd62a978e8f01e9802db624b1714909264292b53067e97e10002541"
+        }
+      }
+    },
+    "primary_endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tuple_index",
+        "semantics",
+        "token_site",
+        "primary_view",
+        "surface_baseline_view",
+        "surface_baseline_token_site",
+        "multiplicity",
+        "is_max_statistic_selection"
+      ],
+      "properties": {
+        "tuple_index": {
+          "type": "integer",
+          "const": 32
+        },
+        "semantics": {"const": "final_transformer_block_output"},
+        "token_site": {
+          "type": "string",
+          "const": "mean_transformation_span"
+        },
+        "primary_view": {
+          "type": "string",
+          "const": "problem_plus_transformation"
+        },
+        "surface_baseline_view": {
+          "type": "string",
+          "const": "problem_only"
+        },
+        "surface_baseline_token_site": {"const": "sentinel"},
+        "multiplicity": {
+          "type": "integer",
+          "const": 1
+        },
+        "is_max_statistic_selection": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "sensitivity_endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "descriptive_tuple_indices",
+        "token_sites",
+        "views",
+        "may_replace_primary",
+        "interpretation"
+      ],
+      "properties": {
+        "descriptive_tuple_indices": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "enum": [0, 11, 21, 32]
+          }
+        },
+        "token_sites": {
+          "type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true,
+          "items": {"enum": ["sentinel", "final_transformation_token", "mean_transformation_span"]}
+        },
+        "views": {
+          "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true,
+          "items": {"enum": ["problem_only", "transformation_only", "problem_plus_transformation", "problem_plus_solution"]}
+        },
+        "may_replace_primary": {"const": false},
+        "interpretation": {
+          "type": "string",
+          "const": "descriptive_only"
+        }
+      }
+    },
+    "classifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "alpha", "solver", "standardization", "standardization_scope", "evaluation"],
+      "properties": {
+        "name": {"const": "l2_regularized_linear_least_squares"},
+        "alpha": {"const": 1.0},
+        "solver": {"const": "dual_kernel_closed_form"},
+        "standardization": {"const": true},
+        "standardization_scope": {"const": "within_train_folds"},
+        "evaluation": {"const": "family_grouped_leave_one_domain_out"}
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "critical_successes",
+        "primary_permutation_p_at_most",
+        "macro_f1_margin_at_least",
+        "family_successes_at_least",
+        "domain_direction_successes_minimum"
+      ],
+      "properties": {
+        "critical_successes": {
+          "type": "integer",
+          "const": 17
+        },
+        "primary_permutation_p_at_most": {
+          "type": "number",
+          "const": 0.05
+        },
+        "macro_f1_margin_at_least": {
+          "type": "number",
+          "const": 0.1
+        },
+        "family_successes_at_least": {
+          "type": "integer",
+          "const": 17
+        },
+        "domain_direction_successes_minimum": {
+          "type": "integer",
+          "const": 4
+        }
+      }
+    },
+    "permutations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed", "budget", "pairing", "correction"],
+      "properties": {
+        "seed": {
+          "type": "integer",
+          "const": 20260815
+        },
+        "budget": {
+          "type": "integer",
+          "const": 999
+        },
+        "pairing": {"const": "paired_within_family_swaps"},
+        "correction": {"const": "fixed_primary_no_multiplicity"}
+      }
+    },
+    "shortcut_refusal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "predictive_control_scope",
+        "macro_f1_at_or_above",
+        "margin_over_majority_at_or_above",
+        "predictive_rule",
+        "structural_rule",
+        "required_control_count"
+      ],
+      "properties": {
+        "predictive_control_scope": {"const": "aggregate"},
+        "macro_f1_at_or_above": {"const": 0.65},
+        "margin_over_majority_at_or_above": {"const": 0.1},
+        "predictive_rule": {"const": "non_interpretable_if_both_thresholds_reached"},
+        "structural_rule": {"const": "non_interpretable_if_any_required_control_status_is_not_pass"},
+        "required_control_count": {"const": 14}
+      }
+    },
+    "resource_envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maximum_peak_rss_bytes", "maximum_wall_seconds", "maximum_new_dense_output_bytes"],
+      "properties": {
+        "maximum_peak_rss_bytes": {
+          "type": "integer",
+          "const": 8589934592
+        },
+        "maximum_wall_seconds": {
+          "type": "integer",
+          "const": 1800
+        },
+        "maximum_new_dense_output_bytes": {"const": 67108864}
+      }
+    },
+    "negative_controls": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "bag_of_words_baselines",
+          "character_ngram_baselines",
+          "length_and_punctuation_baselines",
+          "style_and_template_baselines",
+          "provenance_classifiers",
+          "problem_only_label_prediction",
+          "leave_one_domain_out_surface_evaluation",
+          "duplicate_and_near_duplicate_detection",
+          "family_leakage_detection",
+          "random_label_controls",
+          "random_partition_controls",
+          "generic_action_taxonomy_controls",
+          "generic_transformation_taxonomy_controls",
+          "adjacent_principle_proxy_controls"
+        ]
+      }
+    },
+    "outcomes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "terminal",
+        "rules",
+        "outcome_map"
+      ],
+      "properties": {
+        "terminal": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]
+          }
+        },
+        "rules": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "positive",
+            "null",
+            "failed",
+            "non_interpretable",
+            "incompatible"
+          ],
+          "properties": {
+            "positive": {
+              "const": "all gates pass and primary_permutation_p <= 0.05 and macro_f1_margin_over_surface >= 0.10 and family_successes >= 17 and successful_domain_directions >= 4"
+            },
+            "null": {
+              "const": "all gates pass and the positive rule is false"
+            },
+            "failed": {
+              "const": "integrity, identity, execution, data, or receipt gate fails before valid statistic"
+            },
+            "non_interpretable": {
+              "const": "predictive aggregate macro_f1 >= 0.65 and margin_over_majority >= 0.10, or any required structural control status is not pass"
+            },
+            "incompatible": {
+              "const": "compatibility check fails or resource envelope violated"
+            }
+          }
+        },
+        "outcome_map": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "positive",
+            "null",
+            "failed",
+            "non_interpretable",
+            "incompatible"
+          ],
+          "properties": {
+            "positive": {
+              "const": "positive"
+            },
+            "null": {
+              "const": "null"
+            },
+            "failed": {
+              "const": "failed"
+            },
+            "non_interpretable": {
+              "const": "non_interpretable"
+            },
+            "incompatible": {
+              "const": "incompatible"
+            }
+          }
+        }
+      }
+    },
+    "sealed_execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_runs",
+        "sealed_targets_access",
+        "activation_may_read_target_content",
+        "analysis_target_reads",
+        "generation_allowed",
+        "retry_after_model_or_target_access",
+        "stopping_rule"
+      ],
+      "properties": {
+        "max_runs": {
+          "type": "integer",
+          "const": 1
+        },
+        "sealed_targets_access": {
+          "type": "string",
+          "const": "approval_required"
+        },
+        "activation_may_read_target_content": {"const": false},
+        "analysis_target_reads": {"const": 1},
+        "generation_allowed": {
+          "type": "boolean",
+          "const": false
+        },
+        "retry_after_model_or_target_access": {"const": "new_explicit_approval_required"},
+        "stopping_rule": {"const": "stop_after_first_terminal_attempt"}
+      }
+    },
+    "human_review": {
+      "type": "object", "additionalProperties": false,
+      "required": ["annotators", "experts", "llm_judges", "manual_adjudication"],
+      "properties": {
+        "annotators": {"const": false}, "experts": {"const": false},
+        "llm_judges": {"const": false}, "manual_adjudication": {"const": false}
+      }
+    },
+    "publication": {
+      "type": "object", "additionalProperties": false,
+      "required": ["publish_every_terminal_outcome", "sensitivity_may_rescue_primary", "model_substitution_after_output", "claim_promotion"],
+      "properties": {
+        "publish_every_terminal_outcome": {"const": true},
+        "sensitivity_may_rescue_primary": {"const": false},
+        "model_substitution_after_output": {"const": false},
+        "claim_promotion": {"const": false}
+      }
+    }
+  }
+}
