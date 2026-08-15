@@ -10,6 +10,14 @@ last_verified: 2026-08-15
 
 ## 2026-08-15
 
+- Merged the A0-R R1.4b harness in PR 40 at
+  `c5b28cd3ffca38a4bbdca076ba4bff306e653aa6`, then executed the frozen R1
+  endpoint once. The exploratory result is positive: 23/24 family successes,
+  macro-F1 0.624348 versus 0.499130 for the surface baseline, margin 0.125217,
+  six domain-direction successes, and permutation p = 0.002. The raw output's
+  clerical `r1_` prefix failed schema validation; R1.5 preserves it and records
+  a deterministic 54-label recovery with no metric changes and no additional
+  model or sealed-target access.
 - Merged A0-R R1.4a at `73d5e1cad5422d24209252257b54a46c24f8ee16`
   after exact-head qualification and hosted gates. The checkpoint binds the
   runtime, inputs, code, classifier, permutation, baseline, and domain rule;

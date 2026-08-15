@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r1-recovery-receipt.schema.json",
+  "title": "A0-R1 domain-prefix recovery receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "status",
+    "created_at",
+    "recovery_id",
+    "raw_result",
+    "recovered_result",
+    "transformation",
+    "access",
+    "metric_values_changed",
+    "schema_validation"
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "a0r1-recovery-receipt"
+    },
+    "empirical": {
+      "type": "boolean",
+      "const": true
+    },
+    "scientific_status": {
+      "type": "string",
+      "const": "exploratory"
+    },
+    "evidence_eligible": {
+      "type": "boolean",
+      "const": false
+    },
+    "expert_validated": {
+      "type": "boolean",
+      "const": false
+    },
+    "claim_ids": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {"type": "string"}
+    },
+    "status": {
+      "type": "string",
+      "const": "pass"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "recovery_id": {
+      "type": "string",
+      "const": "a0r1-domain-prefix-recovery-v1"
+    },
+    "raw_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": "statistical-result.raw.json"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "recovered_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": "statistical-result.json"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "transformation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "replacements_total", "domains", "code_sha256"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "exact_domain_prefix_removal"
+        },
+        "replacements_total": {
+          "type": "integer",
+          "const": 54
+        },
+        "domains": {
+          "type": "integer",
+          "const": 6
+        },
+        "code_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_output", "sealed_model_output", "sealed_targets"],
+      "properties": {
+        "model_output": {
+          "type": "string",
+          "const": "not_accessed"
+        },
+        "sealed_model_output": {
+          "type": "string",
+          "const": "not_accessed"
+        },
+        "sealed_targets": {
+          "type": "string",
+          "const": "not_accessed"
+        }
+      }
+    },
+    "metric_values_changed": {
+      "type": "boolean",
+      "const": false
+    },
+    "schema_validation": {
+      "type": "string",
+      "const": "pass"
+    }
+  }
+}
