@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-feasibility-receipt.schema.json",
+  "title": "A0-R2 bounded feasibility terminal receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "status", "created_at", "scientific_status", "empirical", "evidence_eligible", "expert_validated", "claim_ids", "contract_sha256", "integrity_receipt_sha256", "access"],
+  "properties": {
+    "artifact_class": {"const": "a0r2-feasibility-receipt"},
+    "status": {"enum": ["compatible", "incompatible", "failed"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "scientific_status": {"const": "instrumentation_only"},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "contract_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "integrity_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "revision", "license_id", "model_type", "architecture", "num_hidden_layers", "hidden_size", "local_locator"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "license_id": {"const": "Apache-2.0"}, "model_type": {"const": "llama"},
+        "architecture": {"const": "LlamaForCausalLM"}, "num_hidden_layers": {"const": 32},
+        "hidden_size": {"const": 960},
+        "local_locator": {"const": "artifacts/models/smollm2-360m-f8027fd0"}
+      }
+    },
+    "runtime": {
+      "type": "object", "additionalProperties": false,
+      "required": ["python_version", "platform", "torch_version", "transformers_version", "device", "torch_dtype", "network_access", "generation", "process_peak_rss_bytes", "maximum_peak_rss_bytes", "within_resource_envelope"],
+      "properties": {
+        "python_version": {"type": "string", "minLength": 1}, "platform": {"type": "string", "minLength": 1},
+        "torch_version": {"type": "string", "minLength": 1}, "transformers_version": {"type": "string", "minLength": 1},
+        "device": {"const": "cpu"}, "torch_dtype": {"const": "float32"},
+        "network_access": {"const": false}, "generation": {"const": false},
+        "process_peak_rss_bytes": {"type": "integer", "minimum": 1},
+        "maximum_peak_rss_bytes": {"const": 8589934592},
+        "within_resource_envelope": {"type": "boolean"}
+      }
+    },
+    "probe": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text_sha256", "token_count", "inference_passes", "output_content_retained"],
+      "properties": {
+        "text_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "token_count": {"type": "integer", "minimum": 1, "maximum": 128},
+        "inference_passes": {"const": 2}, "output_content_retained": {"const": false}
+      }
+    },
+    "compatibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["checks", "hidden_states_count", "primary_hidden_states_tuple_index", "final_hidden_shape", "logits_shape", "max_abs_repeat_difference", "compatible"],
+      "properties": {
+        "checks": {
+          "type": "object", "additionalProperties": false,
+          "required": ["fast_tokenizer_offsets", "hidden_states_count", "primary_tuple_index_available", "hidden_size", "logits_shape", "finite_hidden_states", "finite_logits", "repeatability"],
+          "properties": {
+            "fast_tokenizer_offsets": {"type": "boolean"}, "hidden_states_count": {"type": "boolean"},
+            "primary_tuple_index_available": {"type": "boolean"}, "hidden_size": {"type": "boolean"},
+            "logits_shape": {"type": "boolean"}, "finite_hidden_states": {"type": "boolean"},
+            "finite_logits": {"type": "boolean"}, "repeatability": {"type": "boolean"}
+          }
+        },
+        "hidden_states_count": {"type": "integer", "minimum": 1},
+        "primary_hidden_states_tuple_index": {"const": 32},
+        "final_hidden_shape": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "integer", "minimum": 1}},
+        "logits_shape": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "integer", "minimum": 1}},
+        "max_abs_repeat_difference": {"type": "number", "minimum": 0},
+        "compatible": {"type": "boolean"}
+      }
+    },
+    "timings_seconds": {
+      "type": "object", "additionalProperties": false,
+      "required": ["config_load", "tokenizer_load", "model_load", "forward_passes", "total"],
+      "properties": {
+        "config_load": {"type": "number", "minimum": 0}, "tokenizer_load": {"type": "number", "minimum": 0},
+        "model_load": {"type": "number", "minimum": 0},
+        "forward_passes": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number", "minimum": 0}},
+        "total": {"type": "number", "minimum": 0}
+      }
+    },
+    "failure": {
+      "type": "object", "additionalProperties": false,
+      "required": ["stage", "error_type", "error_digest"],
+      "properties": {
+        "stage": {"const": "bounded_feasibility"}, "error_type": {"type": "string", "minLength": 1},
+        "error_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "access": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_loaded", "feasibility_tested", "model_output_accessed", "model_output_content_retained", "sealed_targets_accessed"],
+      "properties": {
+        "model_loaded": {"enum": ["accessed", "not_accessed", "unknown"]},
+        "feasibility_tested": {"enum": ["accessed", "not_accessed", "unknown"]},
+        "model_output_accessed": {"enum": ["accessed", "not_accessed", "unknown"]},
+        "model_output_content_retained": {"enum": ["not_accessed", "unknown"]},
+        "sealed_targets_accessed": {"const": "not_accessed"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "failed"}}},
+      "then": {"required": ["failure"]},
+      "else": {"required": ["model", "runtime", "probe", "compatibility", "timings_seconds"]}
+    }
+  ]
+}

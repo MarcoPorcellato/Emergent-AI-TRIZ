@@ -168,9 +168,10 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
    PR 41 published the immutable R1.5 package at
    `05ba15a28442260c32951413c9128f0179573198`; exact-head repository and all
    seven hosted gates passed, while A0, H1, Wave 2, and all E0 claims remained
-   unchanged. The exact R2 snapshot is now acquired and integrity-verified;
-   only a separately approved bounded load/feasibility step may follow. Any
-   changed acquisition, material RAM/runtime use, or sealed run remains gated.
+   unchanged. The exact R2 snapshot is acquired and integrity-verified, and a
+   separately authorized bounded CPU feasibility tranche is now in delivery.
+   Its pre-load contract forbids generation, sealed targets, and scientific
+   inference. Any changed acquisition or sealed run remains separately gated.
 7. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
 8. Store independent raw ratings, adjudications, exclusions, and canonical human labels as separate immutable artifacts. Labs 03–05 consume canonical labels, never generator intent.
 9. Add a common empirical envelope without rewriting v1 fixtures, and separate pre-freeze candidate surface auditing from post-freeze Lab 03.
