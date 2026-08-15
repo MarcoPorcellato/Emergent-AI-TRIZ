@@ -30,6 +30,7 @@ DEFAULT_PARTITION_NAMES = ("calibration", "sealed")
 DEFAULT_PARTITION_SPLIT_FIELD = "split"
 DEFAULT_NEAR_DUPLICATE_THRESHOLD = 0.78
 DEFAULT_NGRAM_N = 3
+NON_SURFACE_RECEIPT_FIELDS = {"case_content_sha256", "target_content_sha256"}
 
 
 class A0R1IndependenceAuditError(RuntimeError):
@@ -361,6 +362,8 @@ def run_a0r1_independence_audit(
 
         for key, value in record.items():
             if key in PARTICIPANT_TEXT_FIELDS:
+                continue
+            if key in NON_SURFACE_RECEIPT_FIELDS:
                 continue
             if not isinstance(value, str):
                 continue

@@ -10,6 +10,12 @@ last_verified: 2026-08-15
 
 ## 2026-08-15
 
+- Completed the pre-freeze A0-R R1.2 corpus substrate: 48 independent families,
+  96 paired cases, physically separate 48-case calibration and sealed target
+  files, zero independence-audit violations against the 192-case A0 source,
+  and 14/14 passing shortcut controls. Added strict artifact schemas and
+  `make a0r1-verify` for byte-for-byte regeneration. No model output was
+  accessed and the protocol remains planned pending the R1.3 power freeze.
 - Started A0-R R1.1 with a planned protocol and strict schema fixing the
   same-model primary endpoint, power thresholds, E0 envelope, and immutable A0
   source anchors. Added a fail-closed independence auditor whose API keeps

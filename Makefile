@@ -61,6 +61,10 @@ a0-calibrate:
 	  --output-dir results/a0/calibration
 	@echo "A0 calibration passed. Sealed targets were not accessed."
 
+a0r1-verify:
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli a0r1-verify --root .
+	@echo "A0-R1 pre-output corpus and audits reproduced byte-for-byte; no model output was accessed."
+
 a0:
 	@test -x "$(LAB01_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
 	PYTHONPATH=$(PYTHONPATH) commit-ci-preflight guard exec \

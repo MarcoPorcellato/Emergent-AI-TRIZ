@@ -142,13 +142,10 @@ A0 exclusion hashes, status vocabulary, primary endpoint, sensitivity family,
 and positive/null/failed/non-interpretable rules are frozen before model output.
 
 **Current checkpoint — in delivery:** the planned protocol instance and its
-strict Draft 2020-12 schema now fix the same-model primary endpoint, statistical
-thresholds, epistemic envelope, and immutable A0 anchors. A separate
-fail-closed independence auditor compares candidate and A0 manifests, case
-files, calibration targets, and sealed targets without joining those physical
-target files. This checkpoint is not a protocol freeze: the independent corpus,
-its manifest-derived hashes, the audit report, and calibration evidence still
-have to be generated and reviewed before `protocol_status` may become `frozen`.
+strict Draft 2020-12 schema fix the same-model primary endpoint, statistical
+thresholds, epistemic envelope, immutable A0 anchors, and all 14 shortcut
+controls. The protocol is still `planned`: R1.3 must produce and verify the
+power receipt and freeze manifest before this exit can be marked complete.
 
 ### R1.2 — deterministic corpus and shortcut gate
 
@@ -156,12 +153,26 @@ have to be generated and reviewed before `protocol_status` may become `frozen`.
 sealed partitions, no identifier or text overlap with A0, grouped families, and
 terminal records for at least the full A0 14-control suite.
 
+**Current checkpoint — verified complete pre-freeze:** the independent
+generator produces 48 families and 96 paired cases across six domains, split as
+48 calibration and 48 sealed cases with targets stored in separate files. The
+independence audit compared them with all 192 published A0 cases and targets:
+status `pass`, zero violations. The calibration-only shortcut audit evaluated
+24 families / 48 cases and all 14 required controls passed. `make a0r1-verify`
+regenerates the four corpus files and four pre-output audit files byte-for-byte.
+No model output was accessed. This completes the R1.2 substrate but does not
+freeze the protocol or produce an A0-R result.
+
 ### R1.3 — power and permutation freeze
 
 **Exit evidence:** simulations report false-positive rate, power, minimum
 detectable effect, sample size, family threshold, domain-direction threshold,
 and a permutation budget with p-value resolution no weaker than A0. Calibration
 may select these values once; sealed output cannot change them.
+
+**Next action:** materialize the already declared exact-binomial calibration as
+a separately hashed receipt, bind it to the corpus and audit manifests, and
+change `protocol_status` only in the same reviewed freeze commit.
 
 ### R1.4 — exact-model activations and sealed inference
 
