@@ -3,7 +3,7 @@ type: master-plan
 title: Laboratory Master Plan
 description: Canonical evolution ledger and gated route from the verified laboratory foundation to falsifiable, reproducible Latent TRIZ experiments.
 status: canonical
-last_verified: 2026-08-14
+last_verified: 2026-08-15
 ---
 
 # Laboratory Master Plan
@@ -133,10 +133,13 @@ complete freeze, corpus, controls, activation, analysis, publication, and
 completion contract is defined in
 [A0 Automated Weak Hypothesis Exploration](./A0_AUTOMATED_WEAK_HYPOTHESIS.md).
 
-The A0 protocol must be merged before any sealed evaluation is observed. A0 is
-complete only when `make a0` reproduces a real exact-revision model run and
-publishes a positive, null, failed, or non-interpretable exploratory proxy result
-with immutable receipts.
+The A0 protocol is merged and frozen before any model output is observed. The
+implementation contract, exact-revision activation runner, statistical analyzer,
+schemas, and `make a0` wrapper are now saved on the isolated A0 delivery branch.
+The sealed runner is paused by the host resource coordinator; no activation or
+sealed result exists yet. A0 is complete only when `make a0` reproduces a real
+exact-revision model run and publishes a positive, null, failed, or
+non-interpretable exploratory proxy result with immutable receipts.
 
 **Current status — in delivery:** protocol `v1.0.3` is frozen before any
 model-backed sealed execution. A deterministic 96-family / 192-case label-free corpus is

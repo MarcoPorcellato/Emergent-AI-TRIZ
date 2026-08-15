@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate
+.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -60,6 +60,17 @@ a0-calibrate:
 	  --corpus-dir data/a0 \
 	  --output-dir results/a0/calibration
 	@echo "A0 calibration passed. Sealed targets were not accessed."
+
+a0:
+	@test -x "$(LAB01_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
+	PYTHONPATH=$(PYTHONPATH) commit-ci-preflight guard exec \
+	  --admission-timeout-seconds "$(LAB01_ADMISSION_TIMEOUT)" \
+	  --timeout-seconds 900 -- \
+	  "$(LAB01_PYTHON)" -m latent_triz.a0_runner \
+	  --root . \
+	  --model-root "$(LAB01_MODEL_ROOT)" \
+	  --stage all
+	@echo "A0 sealed result: results/a0/a0-v1.0.3-e93a9faa/statistical-result.json"
 
 preflight-plan:
 	commit-ci-preflight plan --config .commit-ci-preflight.toml

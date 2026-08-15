@@ -3,7 +3,7 @@ type: research-spec
 title: A0 Automated Weak Hypothesis Exploration
 description: Frozen-design contract for a fully automated, evidence-bounded proxy test before expert TRIZ validation.
 status: in_delivery
-last_verified: 2026-08-14
+last_verified: 2026-08-15
 protocol_version: v1.0.3
 ---
 
@@ -130,6 +130,19 @@ Before any result is observed, freeze:
 - success, null, and non-interpretable criteria.
 
 The freeze must produce a signed or hashed manifest.
+
+#### Current execution checkpoint
+
+The protocol freeze is complete at v1.0.3. The implementation-level
+operational contract is frozen before model output in
+experiments/a0-automated-weak-proxy/implementation.json, including the
+primary view, problem-only surface baseline, ridge preprocessing, sentinel
+text, hidden-state layer indexing, family-paired statistic, and shared
+permutation seed/budget. Its code and schemas are committed on the isolated
+A0 branch. The exact-model sealed runner is intentionally paused when the
+host resource coordinator reports a competing guarded workload; no activation
+or sealed result has been produced yet. The only permitted next action is
+make a0 after a fresh macos-v3 Admit with an empty queue.
 
 ### A0.3 — Deterministic counterfactual corpus
 
