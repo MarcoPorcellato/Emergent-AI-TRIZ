@@ -36,7 +36,7 @@ as a short pointer to this plan rather than duplicating its milestones.
 | Item | Verified state | Authoritative anchor |
 |---|---|---|
 | Public repository | `MarcoPorcellato/Latent-TRIZ` | GitHub repository and tracked `LICENSE` / `NOTICE` |
-| Protected `main` | `fc80976d3a256ed88e2d59f1a6f893e15154e3a0` | live GitHub state verified 2026-08-15 after PR 34 |
+| Protected `main` | `7986a643f5b74ef21bec2ee3347bc64b88d323db` | live GitHub state verified 2026-08-15 after PR 37 |
 | Required merge context | strict `merge-policy/gate` | active GitHub ruleset and `.github/expected-main-ruleset.json` |
 | Completed automated milestone | A0 sealed proxy exploration | PR 34, protocol `v1.0.3`, run `a0-v1.0.3-e93a9faa` |
 | Current authentic-TRIZ milestone | annotation ontology v1.2 | draft PR 30; live state must be rebased and requalified before delivery |
@@ -207,12 +207,14 @@ qualification, and immutable publication.
 automated proxy observation; it does not validate Segmentation or Inversion as
 TRIZ constructs.
 
-**Current status — in delivery:** R1.2 now has a deterministic independent
-48-family / 96-case corpus, physically separate calibration and sealed targets,
-a zero-violation comparison against the published A0 corpus, 14/14 passing
-shortcut controls, strict schemas, and byte-for-byte one-command verification.
-The protocol remains planned, and no model output or A0-R result exists. The
-next exit evidence is the R1.3 power receipt and immutable protocol freeze.
+**Current status — verified complete:** R1.2 now has a deterministic
+independent 48-family / 96-case corpus, physically separate calibration and
+sealed targets, a zero-violation comparison against the published A0 corpus,
+14/14 passing shortcut controls, strict schemas, and byte-for-byte one-command
+verification. R1.3 has frozen the protocol with a separately hashed power
+receipt and freeze manifest. No model output or A0-R result exists yet. The
+next exit evidence is the R1.4a implementation binding and deterministic
+pre-output tests; exact-model activation and sealed inference remain R1.4b.
 
 ### PR 30 — annotation ontology v1.2 implementation
 

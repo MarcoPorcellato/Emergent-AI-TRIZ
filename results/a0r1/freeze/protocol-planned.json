@@ -1,7 +1,7 @@
 {
   "artifact_class": "a0-r1-protocol",
   "protocol_id": "a0-r1-tier-r1-v1.0",
-  "protocol_status": "frozen",
+  "protocol_status": "planned",
   "empirical": true,
   "scientific_status": "exploratory",
   "evidence_eligible": false,
@@ -38,17 +38,8 @@
     "multiplicity": 1
   },
   "sensitivity_endpoints": {
-    "layers": [
-      0,
-      2,
-      4,
-      6
-    ],
-    "token_sites": [
-      "sentinel",
-      "final_transformation_token",
-      "mean_transformation_span"
-    ],
+    "layers": [0, 2, 4, 6],
+    "token_sites": ["sentinel", "final_transformation_token", "mean_transformation_span"],
     "views": [
       "problem_only",
       "transformation_only",
@@ -111,5 +102,5 @@
     "failed": "failed",
     "non_interpretable": "non_interpretable"
   },
-  "status": "frozen"
+  "status": "planned"
 }

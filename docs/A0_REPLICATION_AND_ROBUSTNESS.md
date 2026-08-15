@@ -141,11 +141,11 @@ underlying constructs remain unvalidated by experts.
 A0 exclusion hashes, status vocabulary, primary endpoint, sensitivity family,
 and positive/null/failed/non-interpretable rules are frozen before model output.
 
-**Current checkpoint — in delivery:** the planned protocol instance and its
-strict Draft 2020-12 schema fix the same-model primary endpoint, statistical
-thresholds, epistemic envelope, immutable A0 anchors, and all 14 shortcut
-controls. The protocol is still `planned`: R1.3 must produce and verify the
-power receipt and freeze manifest before this exit can be marked complete.
+**Current checkpoint — verified complete:** the planned protocol instance and
+its strict Draft 2020-12 schema fix the same-model primary endpoint,
+statistical thresholds, epistemic envelope, immutable A0 anchors, and all 14
+shortcut controls. R1.3 has now produced and verified the power receipt and
+freeze manifest, and the protocol is frozen before any model output.
 
 ### R1.2 — deterministic corpus and shortcut gate
 
@@ -160,19 +160,24 @@ independence audit compared them with all 192 published A0 cases and targets:
 status `pass`, zero violations. The calibration-only shortcut audit evaluated
 24 families / 48 cases and all 14 required controls passed. `make a0r1-verify`
 regenerates the four corpus files and four pre-output audit files byte-for-byte.
-No model output was accessed. This completes the R1.2 substrate but does not
-freeze the protocol or produce an A0-R result.
+No model output was accessed. This completes the R1.2 substrate and is frozen
+together with R1.3.
 
 ### R1.3 — power and permutation freeze
 
 **Exit evidence:** simulations report false-positive rate, power, minimum
 detectable effect, sample size, family threshold, domain-direction threshold,
-and a permutation budget with p-value resolution no weaker than A0. Calibration
-may select these values once; sealed output cannot change them.
+and a permutation budget with p-value resolution no weaker than A0.
+Calibration may select these values once; sealed output cannot change them.
 
-**Next action:** materialize the already declared exact-binomial calibration as
-a separately hashed receipt, bind it to the corpus and audit manifests, and
-change `protocol_status` only in the same reviewed freeze commit.
+**Current checkpoint — verified complete:** exact-binomial calibration was
+materialized as a separately hashed receipt, bound to the corpus and audit
+manifests, and frozen in the same reviewed commit. The recorded metrics are:
+  false-positive rate `0.03195732831954956`, power under family-success
+  probability `0.8`
+`0.9108287412264922`, minimum detectable effect `0.2597184664182352`, sample
+size `24`, 100000 deterministic simulations, minimum permutation p-value
+resolution `.001`, and no model or sealed-output access.
 
 ### R1.4 — exact-model activations and sealed inference
 
@@ -180,6 +185,15 @@ change `protocol_status` only in the same reviewed freeze commit.
 the activation export, index, environment, protocol, corpus, sealed-target, and
 code hashes link end to end; the primary endpoint runs once under the guarded
 resource contract.
+
+**Next action — R1.4a, before any model access:** publish a strict implementation
+binding for the frozen endpoint. It must fix the classifier regularization,
+permutation seed and swap scheme, hidden-state index semantics, sentinel and
+problem-only baseline site, domain-direction statistic, code hashes, and terminal
+`failed` / `non_interpretable` packaging. Then prove the R1-specific extractor
+and fixed-primary analysis with synthetic adapters and vectors. Only after that
+reviewed checkpoint may R1.4b activate the exact cached model under the guarded
+resource contract and open sealed targets once during terminal analysis.
 
 ### R1.5 — immutable publication
 

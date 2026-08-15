@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r1-freeze-manifest.schema.json",
+  "title": "A0-R1 frozen protocol manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "protocol_id",
+    "protocol_status",
+    "planned_protocol_snapshot_hash",
+    "frozen_protocol_hash",
+    "corpus_manifest_hash",
+    "preoutput_manifest_hash",
+    "power_hash",
+    "cases_sha256",
+    "calibration_targets_sha256",
+    "sealed_targets_sha256",
+    "independence_audit_sha256",
+    "shortcuts_sha256",
+    "summary_sha256",
+    "primary_endpoint",
+    "status",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "model_output_accessed",
+    "sealed_model_output_accessed"
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "a0-r1-protocol-freeze-manifest"
+    },
+    "protocol_id": {
+      "type": "string",
+      "pattern": "^a0-r1-tier-r1-v\\d+\\.\\d+$"
+    },
+    "protocol_status": {
+      "type": "string",
+      "const": "frozen"
+    },
+    "planned_protocol_snapshot_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "frozen_protocol_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "corpus_manifest_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "preoutput_manifest_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "power_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "cases_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "calibration_targets_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "sealed_targets_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "independence_audit_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "shortcuts_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "summary_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "primary_endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["layer", "token_site", "primary_view", "surface_baseline_view", "is_max_statistic_selection", "multiplicity"],
+      "properties": {
+        "layer": {
+          "type": "integer",
+          "const": 6
+        },
+        "token_site": {
+          "type": "string",
+          "const": "mean_transformation_span"
+        },
+        "primary_view": {
+          "type": "string",
+          "const": "problem_plus_transformation"
+        },
+        "surface_baseline_view": {
+          "type": "string",
+          "const": "problem_only"
+        },
+        "is_max_statistic_selection": {
+          "type": "boolean",
+          "const": false
+        },
+        "multiplicity": {
+          "type": "integer",
+          "const": 1
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "const": "frozen"
+    },
+    "empirical": {
+      "type": "boolean",
+      "const": true
+    },
+    "scientific_status": {
+      "type": "string",
+      "const": "exploratory"
+    },
+    "evidence_eligible": {
+      "type": "boolean",
+      "const": false
+    },
+    "expert_validated": {
+      "type": "boolean",
+      "const": false
+    },
+    "claim_ids": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "model_output_accessed": {
+      "type": "boolean",
+      "const": false
+    },
+    "sealed_model_output_accessed": {
+      "type": "boolean",
+      "const": false
+    }
+  }
+}

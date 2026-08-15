@@ -67,6 +67,10 @@ def main() -> int:
         ("schemas/a0-shortcut-audit.schema.json", "results/a0r1/preoutput/shortcuts.json"),
         ("schemas/a0r1-preoutput-summary.schema.json", "results/a0r1/preoutput/summary.json"),
         ("schemas/a0r1-preoutput-manifest.schema.json", "results/a0r1/preoutput/preoutput-manifest.json"),
+        ("schemas/a0r1-power.schema.json", "results/a0r1/freeze/power.json"),
+        ("schemas/a0r1-freeze-manifest.schema.json", "results/a0r1/freeze/freeze-manifest.json"),
+        ("schemas/a0r1-protocol.schema.json", "results/a0r1/freeze/protocol-planned.json"),
+        ("schemas/a0r1-protocol.schema.json", "results/a0r1/freeze/protocol-frozen.json"),
         ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),
         ("schemas/a0-case.schema.json", "data/a0/cases.jsonl"),
         ("schemas/a0-procedural-target.schema.json", "data/a0/procedural-targets/calibration-targets.jsonl"),
@@ -128,6 +132,8 @@ def main() -> int:
         "schemas/a0r1-independence-audit.schema.json",
         "schemas/a0r1-preoutput-summary.schema.json",
         "schemas/a0r1-preoutput-manifest.schema.json",
+        "schemas/a0r1-power.schema.json",
+        "schemas/a0r1-freeze-manifest.schema.json",
         "schemas/a0-corpus-manifest.schema.json",
         "schemas/a0-case.schema.json",
         "schemas/a0-procedural-target.schema.json",
@@ -144,6 +150,10 @@ def main() -> int:
         "results/a0r1/preoutput/shortcuts.json",
         "results/a0r1/preoutput/summary.json",
         "results/a0r1/preoutput/preoutput-manifest.json",
+        "results/a0r1/freeze/power.json",
+        "results/a0r1/freeze/freeze-manifest.json",
+        "results/a0r1/freeze/protocol-planned.json",
+        "results/a0r1/freeze/protocol-frozen.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))

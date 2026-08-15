@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0
+.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-freeze a0
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -64,6 +64,10 @@ a0-calibrate:
 a0r1-verify:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli a0r1-verify --root .
 	@echo "A0-R1 pre-output corpus and audits reproduced byte-for-byte; no model output was accessed."
+
+a0r1-freeze:
+	@echo "A0-R1 is frozen; verifying the immutable tracked package."
+	$(MAKE) a0r1-verify
 
 a0:
 	@test -x "$(LAB01_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
