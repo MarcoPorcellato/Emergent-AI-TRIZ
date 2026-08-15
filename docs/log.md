@@ -10,6 +10,11 @@ last_verified: 2026-08-15
 
 ## 2026-08-15
 
+- Began the no-human-review A0-R2 study preregistration from public main
+  `25c978d89a07fcd66194f8e0e333ebdae2f6bc08`. The planned study keeps one fixed
+  cross-model primary, freezes broad descriptive sensitivities and negative
+  controls before output, forbids sensitivity rescue and claim promotion, and
+  retains a separate explicit gate for one sealed/material execution.
 - Merged the A0-R2 feasibility contract through PR 44 at
   `da8f4bb0c07fe32ede438b13da80b89019cfb812`, then executed the one authorized
   CPU-only probe. The schema-valid receipt reports `compatible`, 33 hidden-state

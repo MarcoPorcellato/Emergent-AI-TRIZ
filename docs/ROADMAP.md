@@ -174,6 +174,11 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
    frozen envelope; the outer guard exited 70 with cleanup uncertain and is not
    reported as PASS. No generation or sealed target occurred. Any changed
    acquisition, rerun, or sealed execution remains separately gated.
+   The next delivery tranche preregisters and implements a no-human-review R2
+   study. Its only primary is final-block / mean-transformation-span /
+   problem-plus-transformation versus the problem-only sentinel baseline;
+   layers `[0,11,21,32]`, other sites/views, controls, depth profiles, and
+   cross-model comparisons are descriptive and cannot rescue that primary.
 7. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
 8. Store independent raw ratings, adjudications, exclusions, and canonical human labels as separate immutable artifacts. Labs 03–05 consume canonical labels, never generator intent.
 9. Add a common empirical envelope without rewriting v1 fixtures, and separate pre-freeze candidate surface auditing from post-freeze Lab 03.
