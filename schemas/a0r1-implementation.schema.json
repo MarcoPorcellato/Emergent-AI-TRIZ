@@ -1,0 +1,598 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r1-implementation.schema.json",
+  "title": "A0-R1 pre-output implementation contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "implementation_id",
+    "protocol_id",
+    "protocol_status",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "protocol",
+    "model",
+    "tokenizer",
+    "runtime",
+    "classifier",
+    "permutations",
+    "primary_endpoint",
+    "surface_baseline_view",
+    "surface_baseline_token_site",
+    "sentinel_text",
+    "sensitivity_view_definition",
+    "sensitivity_may_replace_primary",
+    "hidden_state_contract",
+    "domain_direction",
+    "outcome_rules",
+    "outcome_classes",
+    "token_site_applicability",
+    "implementation_code",
+    "model_output_accessed",
+    "sealed_model_output_accessed",
+    "status",
+    "epistemic_boundary"
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "a0-r1-implementation"
+    },
+    "implementation_id": {
+      "type": "string",
+      "pattern": "^a0-r1-tier-r1-v\\d+\\.\\d+-impl-v\\d+\\.\\d+$"
+    },
+    "protocol_id": {
+      "type": "string",
+      "pattern": "^a0-r1-tier-r1-v\\d+\\.\\d+$"
+    },
+    "protocol_status": {
+      "type": "string",
+      "const": "frozen"
+    },
+    "empirical": {
+      "type": "boolean",
+      "const": true
+    },
+    "scientific_status": {
+      "type": "string",
+      "const": "exploratory"
+    },
+    "evidence_eligible": {
+      "type": "boolean",
+      "const": false
+    },
+    "expert_validated": {
+      "type": "boolean",
+      "const": false
+    },
+    "claim_ids": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "protocol_status",
+        "source_protocol_run_id",
+        "run_model_revision",
+        "run_protocol_status",
+        "frozen_protocol_sha256",
+        "freeze_manifest_sha256",
+        "corpus_manifest_sha256",
+        "cases_sha256",
+        "sealed_targets_sha256",
+        "shortcuts_sha256",
+        "runtime_file_hash_binding"
+      ],
+      "properties": {
+        "protocol_id": {
+          "type": "string",
+          "const": "a0-r1-tier-r1-v1.0"
+        },
+        "protocol_status": {
+          "type": "string",
+          "const": "frozen"
+        },
+        "source_protocol_run_id": {
+          "type": "string",
+          "const": "a0-v1.0.3-e93a9faa"
+        },
+        "run_model_revision": {
+          "type": "string",
+          "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+        },
+        "run_protocol_status": {
+          "type": "string",
+          "enum": ["pass", "frozen_before_model_output"]
+        },
+        "frozen_protocol_sha256": {"$ref": "#/$defs/sha256"},
+        "freeze_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "corpus_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "cases_sha256": {"$ref": "#/$defs/sha256"},
+        "sealed_targets_sha256": {"$ref": "#/$defs/sha256"},
+        "shortcuts_sha256": {"$ref": "#/$defs/sha256"},
+        "runtime_file_hash_binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode", "policy"],
+          "properties": {
+            "mode": {
+              "type": "string",
+              "const": "exact"
+            },
+            "policy": {
+              "type": "string",
+              "const": "exact_model_and_runtime_file_hashes_required"
+            },
+            "model_identity": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "revision"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "const": "EleutherAI/pythia-70m-deduped"
+                },
+                "revision": {
+                  "type": "string",
+                  "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "revision", "cached"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "EleutherAI/pythia-70m-deduped"
+        },
+        "revision": {
+          "type": "string",
+          "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+        },
+        "cached": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "tokenizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "revision"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "EleutherAI/pythia-70m-deduped"
+        },
+        "revision": {
+          "type": "string",
+          "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+        },
+        "fast_tokenizer_required": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requires_interactive_model_server",
+        "runtime_device",
+        "binding_scope",
+        "model_runtime_hashes"
+      ],
+      "properties": {
+        "requires_interactive_model_server": {
+          "type": "boolean",
+          "const": false
+        },
+        "runtime_device": {
+          "type": "string",
+          "const": "cpu"
+        },
+        "binding_scope": {
+          "type": "string",
+          "const": "exact"
+        },
+        "model_runtime_hashes": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "size"],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "classifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "alpha", "solver", "standardization", "standardization_scope"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "l2_regularized_linear_least_squares"
+        },
+        "alpha": {
+          "type": "number",
+          "const": 1.0
+        },
+        "solver": {
+          "type": "string",
+          "const": "dual_kernel_closed_form"
+        },
+        "standardization": {
+          "type": "boolean",
+          "const": true
+        },
+        "standardization_scope": {
+          "type": "string",
+          "const": "within_train_folds"
+        }
+      }
+    },
+    "permutations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed", "budget", "pairing", "correction"],
+      "properties": {
+        "seed": {
+          "type": "integer",
+          "const": 20260815
+        },
+        "budget": {
+          "type": "integer",
+          "const": 999
+        },
+        "pairing": {
+          "type": "string",
+          "const": "paired_within_family_swaps"
+        },
+        "correction": {
+          "type": "string",
+          "const": "fixed_primary_no_multiplicity"
+        }
+      }
+    },
+    "primary_endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["layer", "token_site", "primary_view", "multiplicity"],
+      "properties": {
+        "layer": {
+          "type": "integer",
+          "const": 6
+        },
+        "token_site": {
+          "type": "string",
+          "const": "mean_transformation_span"
+        },
+        "primary_view": {
+          "type": "string",
+          "const": "problem_plus_transformation"
+        },
+        "multiplicity": {
+          "type": "integer",
+          "const": 1
+        }
+      }
+    },
+    "surface_baseline_view": {
+      "type": "string",
+      "const": "problem_only"
+    },
+    "surface_baseline_token_site": {
+      "type": "string",
+      "const": "sentinel"
+    },
+    "sentinel_text": {
+      "type": "string",
+      "const": "Analysis anchor:"
+    },
+    "sensitivity_view_definition": {
+      "type": "string",
+      "const": "max_family_successes"
+    },
+    "sensitivity_may_replace_primary": {
+      "type": "boolean",
+      "const": false
+    },
+    "hidden_state_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tuple_indexing", "embedding_offset_included", "token_indexing"],
+      "properties": {
+        "tuple_indexing": {
+          "type": "string",
+          "const": "hidden_states_tuple_index_including_embedding_at_zero"
+        },
+        "embedding_offset_included": {
+          "type": "boolean",
+          "const": true
+        },
+        "token_indexing": {
+          "type": "string",
+          "const": "fast_tokenizer_offsets"
+        }
+      }
+    },
+    "domain_direction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statistic", "minimum_successful_domains"],
+      "properties": {
+        "statistic": {
+          "type": "string",
+          "const": "mean_paired_primary_score_difference_strictly_positive_in_held_out_domain"
+        },
+        "minimum_successful_domains": {
+          "type": "integer",
+          "const": 4
+        }
+      }
+    },
+    "outcome_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["positive", "null", "failed", "non_interpretable"],
+      "properties": {
+        "positive": {
+          "type": "string",
+          "const": "all gates pass and primary permutation p <= 0.05 and macro_f1_margin >= 0.10 and family_successes >= 17 and successful_domain_directions >= 4"
+        },
+        "null": {
+          "type": "string",
+          "const": "all gates pass and positive rule is false"
+        },
+        "failed": {
+          "type": "string",
+          "const": "integrity, identity, or execution failure before valid statistic"
+        },
+        "non_interpretable": {
+          "type": "string",
+          "const": "shortcut controls reach or exceed refusal boundary"
+        }
+      }
+    },
+    "outcome_classes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["positive", "null", "failed", "non_interpretable"],
+      "properties": {
+        "positive": {
+          "type": "string",
+          "const": "positive"
+        },
+        "null": {
+          "type": "string",
+          "const": "null"
+        },
+        "failed": {
+          "type": "string",
+          "const": "failed"
+        },
+        "non_interpretable": {
+          "type": "string",
+          "const": "non_interpretable"
+        }
+      }
+    },
+    "token_site_applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "problem_only",
+        "transformation_only",
+        "problem_plus_transformation",
+        "problem_plus_solution"
+      ],
+      "properties": {
+        "problem_only": {
+          "type": "array",
+          "maxItems": 1,
+          "items": {
+            "type": "string",
+            "const": "sentinel"
+          }
+        },
+        "transformation_only": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "string",
+            "enum": ["sentinel", "final_transformation_token", "mean_transformation_span"]
+          }
+        },
+        "problem_plus_transformation": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "string",
+            "enum": ["sentinel", "final_transformation_token", "mean_transformation_span"]
+          }
+        },
+        "problem_plus_solution": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "string",
+            "enum": ["sentinel", "final_transformation_token", "mean_transformation_span"]
+          }
+        }
+      }
+    },
+    "implementation_code": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_state", "bound_code_files", "pending_code_binding"],
+      "properties": {
+        "binding_state": {
+          "type": "string",
+          "enum": ["bound", "pending"]
+        },
+        "bound_code_files": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "size"],
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          }
+        },
+        "pending_code_binding": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "binding_state": {
+                "const": "bound"
+              }
+            },
+            "required": ["binding_state"]
+          },
+          "then": {
+            "properties": {
+              "bound_code_files": {
+                "minItems": 1
+              },
+              "pending_code_binding": {
+                "maxItems": 0
+              }
+            },
+            "required": ["bound_code_files"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "binding_state": {
+                "const": "pending"
+              }
+            },
+            "required": ["binding_state"]
+          },
+          "then": {
+            "properties": {
+              "pending_code_binding": {
+                "minItems": 1
+              },
+              "bound_code_files": {
+                "maxItems": 0
+              }
+            },
+            "required": ["pending_code_binding"]
+          }
+        }
+      ]
+    },
+    "model_output_accessed": {
+      "type": "boolean",
+      "const": false
+    },
+    "sealed_model_output_accessed": {
+      "type": "boolean",
+      "const": false
+    },
+    "status": {
+      "type": "string",
+      "enum": ["frozen_before_model_output"]
+    },
+    "epistemic_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["empirical", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids"],
+      "properties": {
+        "empirical": {
+          "type": "boolean",
+          "const": true
+        },
+        "scientific_status": {
+          "type": "string",
+          "const": "exploratory"
+        },
+        "evidence_eligible": {
+          "type": "boolean",
+          "const": false
+        },
+        "expert_validated": {
+          "type": "boolean",
+          "const": false
+        },
+        "claim_ids": {
+          "type": "array",
+          "maxItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

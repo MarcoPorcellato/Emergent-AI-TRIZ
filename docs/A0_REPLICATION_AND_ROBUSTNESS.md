@@ -144,8 +144,8 @@ and positive/null/failed/non-interpretable rules are frozen before model output.
 **Current checkpoint — verified complete:** the planned protocol instance and
 its strict Draft 2020-12 schema fix the same-model primary endpoint,
 statistical thresholds, epistemic envelope, immutable A0 anchors, and all 14
-shortcut controls. R1.3 has now produced and verified the power receipt and
-freeze manifest, and the protocol is frozen before any model output.
+shortcut controls. R1.3 has now been merged and verified, and the protocol is
+frozen before any model output.
 
 ### R1.2 — deterministic corpus and shortcut gate
 
@@ -172,7 +172,8 @@ Calibration may select these values once; sealed output cannot change them.
 
 **Current checkpoint — verified complete:** exact-binomial calibration was
 materialized as a separately hashed receipt, bound to the corpus and audit
-manifests, and frozen in the same reviewed commit. The recorded metrics are:
+manifests, and frozen in the same reviewed commit. R1.3 is now merged and
+verified. The recorded metrics are:
   false-positive rate `0.03195732831954956`, power under family-success
   probability `0.8`
 `0.9108287412264922`, minimum detectable effect `0.2597184664182352`, sample
@@ -186,14 +187,18 @@ the activation export, index, environment, protocol, corpus, sealed-target, and
 code hashes link end to end; the primary endpoint runs once under the guarded
 resource contract.
 
-**Next action — R1.4a, before any model access:** publish a strict implementation
-binding for the frozen endpoint. It must fix the classifier regularization,
+**Current checkpoint — R1.4a in delivery:** the implementation binding is
+fixed around the frozen endpoint. It specifies the classifier regularization,
 permutation seed and swap scheme, hidden-state index semantics, sentinel and
-problem-only baseline site, domain-direction statistic, code hashes, and terminal
-`failed` / `non_interpretable` packaging. Then prove the R1-specific extractor
-and fixed-primary analysis with synthetic adapters and vectors. Only after that
-reviewed checkpoint may R1.4b activate the exact cached model under the guarded
-resource contract and open sealed targets once during terminal analysis.
+problem-only baseline site, domain-direction statistic, code hashes, and
+terminal `failed` / `non_interpretable` packaging. The R1-specific extractor
+and fixed-primary analysis are now exercised through synthetic adapters and
+synthetic vectors only; no actual model or sealed-target access occurs in this
+checkpoint.
+
+**Blocked next step — R1.4b:** exact-model activation and sealed inference may
+start only after review and qualification of the R1.4a checkpoint under the
+guarded resource contract.
 
 ### R1.5 — immutable publication
 

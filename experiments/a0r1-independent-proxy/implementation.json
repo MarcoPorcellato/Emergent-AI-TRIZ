@@ -1,0 +1,142 @@
+{
+  "artifact_class": "a0-r1-implementation",
+  "implementation_id": "a0-r1-tier-r1-v1.0-impl-v1.0",
+  "protocol_id": "a0-r1-tier-r1-v1.0",
+  "protocol_status": "frozen",
+  "empirical": true,
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "protocol": {
+    "protocol_id": "a0-r1-tier-r1-v1.0",
+    "protocol_status": "frozen",
+    "source_protocol_run_id": "a0-v1.0.3-e93a9faa",
+    "run_model_revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+    "run_protocol_status": "pass",
+    "frozen_protocol_sha256": "ed113d1c0bfdb44b57c879e2995b610d0ecf528fccedb37fc9b89093be083fbf",
+    "freeze_manifest_sha256": "bedb9df1d6650ab0d4d7f9a255555e4dbe80b07b705b45534eeb290d76fe5fc9",
+    "corpus_manifest_sha256": "46c5cdf796f2abad709deb3066cfadd5fc6e6a30f55a737b3408e0a15b065c06",
+    "cases_sha256": "479caee11dd62a978e8f01e9802db624b1714909264292b53067e97e10002541",
+    "sealed_targets_sha256": "e911a70279f5b141c35064da29c020557f69ee17dfed5adad6172ed3fe2db0e0",
+    "shortcuts_sha256": "566586fe571a99eadfbc3871eedec3dbf65b049f9f0311a7676f9625e22ac615",
+    "runtime_file_hash_binding": {
+      "mode": "exact",
+      "policy": "exact_model_and_runtime_file_hashes_required",
+      "model_identity": {
+        "name": "EleutherAI/pythia-70m-deduped",
+        "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+      }
+    }
+  },
+  "model": {
+    "name": "EleutherAI/pythia-70m-deduped",
+    "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+    "cached": true
+  },
+  "tokenizer": {
+    "name": "EleutherAI/pythia-70m-deduped",
+    "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+    "fast_tokenizer_required": true
+  },
+  "runtime": {
+    "requires_interactive_model_server": false,
+    "runtime_device": "cpu",
+    "binding_scope": "exact",
+    "model_runtime_hashes": [
+      {"path": "README.md", "sha256": "0b8eff9fd326d9089f00c4984db07f89a9dac674ae3191a9bc8ae128b8a37580", "size": 13677},
+      {"path": "config.json", "sha256": "002050231a9b1ec3ac77aa6b9b3bbdc4d923f4068a7dd33b8da72a9bd6ad9a43", "size": 567},
+      {"path": "model.safetensors", "sha256": "3da388330e4549156d76b58d6d268c63cd005e9336b4f4d2d378421e7b7a33fd", "size": 166029852},
+      {"path": "special_tokens_map.json", "sha256": "6f50ab5a5a509a1c309d6171f339b196a900dc9c99ad0408ff23bb615fdae7ad", "size": 99},
+      {"path": "tokenizer.json", "sha256": "c24618a1b3e6a38167beff1c72cffd126c3a66254347304b50547d12c5f25624", "size": 2113710},
+      {"path": "tokenizer_config.json", "sha256": "70e38394e494931c6f773ba41e19460dd4436526b852207367f04341b4066d3f", "size": 396}
+    ]
+  },
+  "classifier": {
+    "name": "l2_regularized_linear_least_squares",
+    "alpha": 1.0,
+    "solver": "dual_kernel_closed_form",
+    "standardization": true,
+    "standardization_scope": "within_train_folds"
+  },
+  "permutations": {
+    "seed": 20260815,
+    "budget": 999,
+    "pairing": "paired_within_family_swaps",
+    "correction": "fixed_primary_no_multiplicity"
+  },
+  "primary_endpoint": {
+    "layer": 6,
+    "token_site": "mean_transformation_span",
+    "primary_view": "problem_plus_transformation",
+    "multiplicity": 1
+  },
+  "surface_baseline_view": "problem_only",
+  "surface_baseline_token_site": "sentinel",
+  "sentinel_text": "Analysis anchor:",
+  "sensitivity_view_definition": "max_family_successes",
+  "sensitivity_may_replace_primary": false,
+  "hidden_state_contract": {
+    "tuple_indexing": "hidden_states_tuple_index_including_embedding_at_zero",
+    "embedding_offset_included": true,
+    "token_indexing": "fast_tokenizer_offsets"
+  },
+  "domain_direction": {
+    "statistic": "mean_paired_primary_score_difference_strictly_positive_in_held_out_domain",
+    "minimum_successful_domains": 4
+  },
+  "outcome_rules": {
+    "positive": "all gates pass and primary permutation p <= 0.05 and macro_f1_margin >= 0.10 and family_successes >= 17 and successful_domain_directions >= 4",
+    "null": "all gates pass and positive rule is false",
+    "failed": "integrity, identity, or execution failure before valid statistic",
+    "non_interpretable": "shortcut controls reach or exceed refusal boundary"
+  },
+  "outcome_classes": {
+    "positive": "positive",
+    "null": "null",
+    "failed": "failed",
+    "non_interpretable": "non_interpretable"
+  },
+  "token_site_applicability": {
+    "problem_only": [
+      "sentinel"
+    ],
+    "transformation_only": [
+      "sentinel",
+      "final_transformation_token",
+      "mean_transformation_span"
+    ],
+    "problem_plus_transformation": [
+      "sentinel",
+      "final_transformation_token",
+      "mean_transformation_span"
+    ],
+    "problem_plus_solution": [
+      "sentinel",
+      "final_transformation_token",
+      "mean_transformation_span"
+    ]
+  },
+  "implementation_code": {
+    "binding_state": "bound",
+    "bound_code_files": [
+      {"path": "src/latent_triz/a0_activation_sites.py", "sha256": "80374065df34cf77d9705a7f94fafb4112df259a353bc98d4ca87a6c69a30021", "size": 4763},
+      {"path": "src/latent_triz/a0r1_activations.py", "sha256": "7deac93e6f11e9e31af10f37061ebe13dc2eb70582cdad8d40fc7f845c7adc8e", "size": 27103},
+      {"path": "src/latent_triz/a0r1_analysis.py", "sha256": "6f7e2136e6d6fa46724ab3bac01216ddf62f5d9708d32a80fd4f35d4285d876a", "size": 36923},
+      {"path": "src/latent_triz/a0r1_execution.py", "sha256": "2fb968962df3abf13a5856ac7c1965bde3650ec1cab40247cff67b940af7da3f", "size": 6745},
+      {"path": "src/latent_triz/lab01_acquisition.py", "sha256": "31617c6a83cdf059ae0e6ac11c32526492918f2d091e56f60e7fe1f9e473e4c3", "size": 11520},
+      {"path": "src/latent_triz/lab01_transformers.py", "sha256": "6613bae9b663f296ca066f49279460771951708768dcccd0b4f105606cc5d3eb", "size": 10428}
+    ],
+    "pending_code_binding": []
+  },
+  "model_output_accessed": false,
+  "sealed_model_output_accessed": false,
+  "status": "frozen_before_model_output",
+  "epistemic_boundary": {
+    "empirical": true,
+    "scientific_status": "exploratory",
+    "evidence_eligible": false,
+    "expert_validated": false,
+    "claim_ids": []
+  }
+}
