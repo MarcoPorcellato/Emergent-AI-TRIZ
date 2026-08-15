@@ -138,13 +138,18 @@ complete only when `make a0` reproduces a real exact-revision model run and
 publishes a positive, null, failed, or non-interpretable exploratory proxy result
 with immutable receipts.
 
-**Current status — in delivery:** branch `agent/a0-foundation` is isolated
-from PR 30 and based on the verified `main` anchor. It contains the proposed
-adaptive protocol, strict case/target/manifest schemas, a deterministic
-96-family paired generator, and a temporary-safe `a0-corpus` command. This is
-not a protocol freeze or empirical result. Calibration, sealed access,
-activations, statistics, `make a0`, report integration, and publication remain
-open.
+**Current status — in delivery:** protocol `v1.0.3` is frozen before any
+model-backed sealed execution. A deterministic 96-family / 192-case label-free corpus is
+tracked in the freeze manifest, 14 shortcut controls have passed on 96 calibration
+cases, and calibration/sealed target files are physically separated.
+
+- deterministic design selected by power calibration:
+  4 problem families/domain, 24 problem families total (48 paired cases), 199 permutations, critical=19,
+  MDE 0.333212784429589
+- v1.0.1 pre-freeze prototype was rejected and redesigned pre-freeze as token-matched
+  unique role pairs
+- no model activations or TRIZ interpretation has been observed yet
+- immediate next dependency: exact activation extraction and sealed run analysis
 
 ### PR 30 — annotation ontology v1.2 implementation
 

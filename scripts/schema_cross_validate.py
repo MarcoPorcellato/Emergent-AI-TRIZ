@@ -45,6 +45,14 @@ VALIDATION_PAIRS = (
     ("schemas/lab05-config.schema.json", "experiments/lab05-candidate-directions/config.json"),
     ("schemas/lab05-result.schema.json", "results/lab05/candidate-directions/summary.json"),
     ("schemas/a0-protocol.schema.json", "experiments/a0-automated-weak-proxy/protocol.json"),
+    ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),
+    ("schemas/a0-case.schema.json", "data/a0/cases.jsonl"),
+    ("schemas/a0-procedural-target.schema.json", "data/a0/procedural-targets/calibration-targets.jsonl"),
+    ("schemas/a0-procedural-target.schema.json", "data/a0/sealed-targets/targets.jsonl"),
+    ("schemas/a0-power-calibration.schema.json", "results/a0/calibration/power.json"),
+    ("schemas/a0-shortcut-audit.schema.json", "results/a0/calibration/shortcuts.json"),
+    ("schemas/a0-calibration-summary.schema.json", "results/a0/calibration/summary.json"),
+    ("schemas/a0-freeze-manifest.schema.json", "results/a0/calibration/freeze-manifest.json"),
 )
 
 

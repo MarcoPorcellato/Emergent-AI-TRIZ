@@ -2,8 +2,9 @@
 type: research-spec
 title: A0 Automated Weak Hypothesis Exploration
 description: Frozen-design contract for a fully automated, evidence-bounded proxy test before expert TRIZ validation.
-status: proposed
+status: in_delivery
 last_verified: 2026-08-14
+protocol_version: v1.0.3
 ---
 
 # A0 Automated Weak Hypothesis Exploration
@@ -539,12 +540,18 @@ A0 is complete only when all of the following are true:
 
 ## Status note
 
-The A0 foundation is in delivery with a proposed adaptive protocol, strict
-schemas, a deterministic label-free corpus generator, and a bounded
-`a0-corpus` command. These artifacts are engineering readiness only: no
-protocol freeze, sealed corpus access, activation extraction, statistic, or
-result has occurred.
+Status is now `in_delivery` and protocol version `v1.0.3` is frozen before any model or sealed analysis.
 
-This document remains `proposed` until the protocol freeze is executed and recorded.
-After freeze, update only the status and the corresponding run manifests; do not rewrite the
-scientific contract based on the observed result.
+- Protocol freeze checkpoint completed before sealed execution.
+- Deterministic label-free corpus: 96 families, 192 cases.
+- Calibration and sealed targets are physically separated into dedicated target files.
+- Initial 96-family proposal in v1.0.1 was redesigned after failing shortcut calibration and was replaced pre-freeze with a token-matched unique role-pair design.
+- All 14 anti-shortcut controls passed on the 96 calibration cases used for selection and verification.
+- Exact power calibration parameters were fixed: 4 problem families/domain, 24 problem families total (48 paired cases), 199 permutations, critical threshold 19, MDE 0.333212784429589.
+- The immutable freeze record is `results/a0/calibration/freeze-manifest.json`.
+- `sealed_targets_accessed` is `false` in the freeze records.
+- No real model activations have been observed, and no TRIZ claim is made.
+- Next milestone: exact-model activation extraction, then sealed statistical inference.
+
+After freeze, contracts and manifests should only be updated for immutable audit-ready
+artifacts and run outputs, not for protocol reinterpretation of the observed result.

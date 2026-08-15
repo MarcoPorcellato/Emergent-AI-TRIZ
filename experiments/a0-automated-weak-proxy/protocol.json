@@ -1,6 +1,6 @@
 {
-  "protocol_id": "a0-automated-weak-proxy-v1.0.1",
-  "protocol_status": "proposed",
+  "protocol_id": "a0-automated-weak-proxy-v1.0.3",
+  "protocol_status": "frozen",
   "artifact_class": "automated-operator-proxy-exploration",
   "empirical": true,
   "scientific_status": "exploratory",
@@ -15,23 +15,23 @@
   "paired_syntax_templates": [
     {
       "template_id": "tpl_seg_inv_001",
-      "segmentation_like": "Local units act before the shared controller integrates their outputs.",
-      "inversion_like": "The shared controller acts before local units integrate its outputs."
+      "segmentation_like": "{local_role} signals before {collective_role} signals.",
+      "inversion_like": "{collective_role} signals before {local_role} signals."
     },
     {
       "template_id": "tpl_seg_inv_002",
-      "segmentation_like": "Each stage governs its own input while the central stage combines outcomes.",
-      "inversion_like": "The central stage governs each input while each stage combines outcomes."
+      "segmentation_like": "{local_role} responds before {collective_role} responds.",
+      "inversion_like": "{collective_role} responds before {local_role} responds."
     },
     {
       "template_id": "tpl_seg_inv_003",
-      "segmentation_like": "Parallel channels send resources toward the common endpoint.",
-      "inversion_like": "The common endpoint sends resources toward parallel channels."
+      "segmentation_like": "{local_role} activates before {collective_role} activates.",
+      "inversion_like": "{collective_role} activates before {local_role} activates."
     },
     {
       "template_id": "tpl_seg_inv_004",
-      "segmentation_like": "Component roles coordinate locally before system roles combine them.",
-      "inversion_like": "System roles coordinate locally before component roles combine them."
+      "segmentation_like": "{local_role} updates before {collective_role} updates.",
+      "inversion_like": "{collective_role} updates before {local_role} updates."
     }
   ],
   "model": {
@@ -67,6 +67,22 @@
     "maximum_false_positive_rate": 0.06,
     "target_effect_size": 0.35,
     "choose_smallest_deterministic_rule": "choose-smallest"
+  },
+  "frozen_analysis": {
+    "calibration_protocol_id": "a0-automated-weak-proxy-v1.0.2",
+    "calibration_protocol_hash": "cfe01731aafbe27d2f3262853a004492efc4ec14d4de95eb626bda91c6d9b153",
+    "calibration_freeze_candidate_sha256": "4992ecd73376df9678d81a4bc8e6e32c3d72a36194f0608ab806c31042d12796",
+    "calibration_status": "pass",
+    "shortcut_status": "pass",
+    "effect_definition": "family_level_macro_f1_margin_over_balanced_chance",
+    "power_method": "exact_family_blocked_binomial_max_statistic",
+    "selected_families_per_domain": 4,
+    "selected_family_count": 24,
+    "selected_permutation_budget": 199,
+    "critical_successes": 19,
+    "minimum_detectable_effect": 0.333212784429589,
+    "sealed_family_selection_rule": "lexicographic_family_id_first_n_within_each_domain",
+    "max_statistic_multiplicity": 12
   },
   "views": [
     "problem_only",

@@ -58,6 +58,14 @@ def main() -> int:
         ("schemas/lab05-config.schema.json", "experiments/lab05-candidate-directions/config.json"),
         ("schemas/lab05-result.schema.json", "results/lab05/candidate-directions/summary.json"),
         ("schemas/a0-protocol.schema.json", "experiments/a0-automated-weak-proxy/protocol.json"),
+        ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),
+        ("schemas/a0-case.schema.json", "data/a0/cases.jsonl"),
+        ("schemas/a0-procedural-target.schema.json", "data/a0/procedural-targets/calibration-targets.jsonl"),
+        ("schemas/a0-procedural-target.schema.json", "data/a0/sealed-targets/targets.jsonl"),
+        ("schemas/a0-power-calibration.schema.json", "results/a0/calibration/power.json"),
+        ("schemas/a0-shortcut-audit.schema.json", "results/a0/calibration/shortcuts.json"),
+        ("schemas/a0-calibration-summary.schema.json", "results/a0/calibration/summary.json"),
+        ("schemas/a0-freeze-manifest.schema.json", "results/a0/calibration/freeze-manifest.json"),
     )
     for schema, data in validation_pairs:
         validate(schema, data)
@@ -109,6 +117,10 @@ def main() -> int:
         "schemas/a0-corpus-manifest.schema.json",
         "schemas/a0-case.schema.json",
         "schemas/a0-procedural-target.schema.json",
+        "schemas/a0-power-calibration.schema.json",
+        "schemas/a0-shortcut-audit.schema.json",
+        "schemas/a0-calibration-summary.schema.json",
+        "schemas/a0-freeze-manifest.schema.json",
         "experiments/lab03-behavioral-baselines/config.json",
         "experiments/lab04-decodability/config.json",
         "experiments/lab05-candidate-directions/config.json",
@@ -136,10 +148,12 @@ def main() -> int:
         )
         manifest_path = a0_output / "manifest.json"
         cases_path = a0_output / "cases.jsonl"
-        targets_path = a0_output / "procedural-targets/targets.jsonl"
+        calibration_targets_path = a0_output / "procedural-targets/calibration-targets.jsonl"
+        sealed_targets_path = a0_output / "sealed-targets/targets.jsonl"
         validate("schemas/a0-corpus-manifest.schema.json", str(manifest_path))
         validate("schemas/a0-case.schema.json", str(cases_path))
-        validate("schemas/a0-procedural-target.schema.json", str(targets_path))
+        validate("schemas/a0-procedural-target.schema.json", str(calibration_targets_path))
+        validate("schemas/a0-procedural-target.schema.json", str(sealed_targets_path))
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         if manifest["empirical"] is not True:
             raise RuntimeError("A0 manifest must be empirical")
@@ -165,7 +179,8 @@ def main() -> int:
             raise RuntimeError("A0 manifest missing required split cases")
         for key, suffix in {
             "cases_jsonl": "cases.jsonl",
-            "targets_jsonl": "procedural-targets/targets.jsonl",
+            "calibration_targets_jsonl": "procedural-targets/calibration-targets.jsonl",
+            "sealed_targets_jsonl": "sealed-targets/targets.jsonl",
         }.items():
             path = a0_output / manifest["files"][key]["path"]
             if not path.is_file():
@@ -176,6 +191,32 @@ def main() -> int:
                 raise RuntimeError(f"A0 manifest file hash mismatch for {suffix}")
             if path.stat().st_size != manifest["files"][key]["size"]:
                 raise RuntimeError(f"A0 manifest file size mismatch for {suffix}")
+
+        for relative in (
+            "manifest.json",
+            "cases.jsonl",
+            "procedural-targets/calibration-targets.jsonl",
+            "sealed-targets/targets.jsonl",
+        ):
+            if (a0_output / relative).read_bytes() != (ROOT / "data/a0" / relative).read_bytes():
+                raise RuntimeError(f"tracked A0 corpus artifact is not deterministic: {relative}")
+
+        calibration_output = Path(directory) / "results" / "a0" / "calibration"
+        run(
+            PYTHON,
+            "-m",
+            "latent_triz.cli",
+            "a0-calibrate",
+            "--protocol",
+            "experiments/a0-automated-weak-proxy/protocol.json",
+            "--corpus-dir",
+            str(a0_output),
+            "--output-dir",
+            str(calibration_output),
+        )
+        for relative in ("power.json", "shortcuts.json", "summary.json", "freeze-manifest.json"):
+            if (calibration_output / relative).read_bytes() != (ROOT / "results/a0/calibration" / relative).read_bytes():
+                raise RuntimeError(f"tracked A0 calibration artifact is not deterministic: {relative}")
 
     with tempfile.TemporaryDirectory() as directory:
         temporary = Path(directory)

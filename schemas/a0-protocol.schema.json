@@ -23,6 +23,7 @@
     "target_families",
     "splits",
     "predeclared_calibration_rule",
+    "frozen_analysis",
     "views",
     "token_sites",
     "preregistered_layers",
@@ -236,6 +237,42 @@
           "type": "string",
           "enum": ["choose-smallest"]
         }
+      }
+    },
+    "frozen_analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calibration_protocol_id",
+        "calibration_protocol_hash",
+        "calibration_freeze_candidate_sha256",
+        "calibration_status",
+        "shortcut_status",
+        "effect_definition",
+        "power_method",
+        "selected_families_per_domain",
+        "selected_family_count",
+        "selected_permutation_budget",
+        "critical_successes",
+        "minimum_detectable_effect",
+        "sealed_family_selection_rule",
+        "max_statistic_multiplicity"
+      ],
+      "properties": {
+        "calibration_protocol_id": {"const": "a0-automated-weak-proxy-v1.0.2"},
+        "calibration_protocol_hash": {"const": "cfe01731aafbe27d2f3262853a004492efc4ec14d4de95eb626bda91c6d9b153"},
+        "calibration_freeze_candidate_sha256": {"const": "4992ecd73376df9678d81a4bc8e6e32c3d72a36194f0608ab806c31042d12796"},
+        "calibration_status": {"const": "pass"},
+        "shortcut_status": {"const": "pass"},
+        "effect_definition": {"const": "family_level_macro_f1_margin_over_balanced_chance"},
+        "power_method": {"const": "exact_family_blocked_binomial_max_statistic"},
+        "selected_families_per_domain": {"const": 4},
+        "selected_family_count": {"const": 24},
+        "selected_permutation_budget": {"const": 199},
+        "critical_successes": {"const": 19},
+        "minimum_detectable_effect": {"type": "number", "minimum": 0, "maximum": 0.35},
+        "sealed_family_selection_rule": {"const": "lexicographic_family_id_first_n_within_each_domain"},
+        "max_statistic_multiplicity": {"const": 12}
       }
     },
     "views": {
