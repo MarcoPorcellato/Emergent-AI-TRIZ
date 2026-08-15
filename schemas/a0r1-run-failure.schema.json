@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r1-run-failure.schema.json",
+  "title": "A0-R1 run failure",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "status",
+    "created_at",
+    "run_id",
+    "stage",
+    "exception_type",
+    "error_message_sha256",
+    "input_hashes",
+    "model_output",
+    "sealed_model_output",
+    "sealed_targets"
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "a0r1-run-failure"
+    },
+    "status": {
+      "type": "string",
+      "const": "failed"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,79}$"
+    },
+    "stage": {
+      "type": "string",
+      "enum": ["preflight", "activation", "analysis", "verification"]
+    },
+    "exception_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "error_message_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "input_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "implementation",
+        "shortcut",
+        "activation_receipt",
+        "representation_index",
+        "dense_vectors",
+        "sealed_targets"
+      ],
+      "properties": {
+        "protocol": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "implementation": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "shortcut": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "activation_receipt": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "representation_index": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "dense_vectors": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "sealed_targets": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "model_output": {
+      "type": "string",
+      "enum": ["not_accessed", "possibly_accessed", "accessed"]
+    },
+    "sealed_model_output": {
+      "type": "string",
+      "enum": ["not_accessed", "possibly_accessed", "accessed"]
+    },
+    "sealed_targets": {
+      "type": "string",
+      "enum": ["not_accessed", "possibly_accessed", "accessed"]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

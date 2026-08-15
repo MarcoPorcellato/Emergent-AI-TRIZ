@@ -187,18 +187,23 @@ the activation export, index, environment, protocol, corpus, sealed-target, and
 code hashes link end to end; the primary endpoint runs once under the guarded
 resource contract.
 
-**Current checkpoint — R1.4a in delivery:** the implementation binding is
-fixed around the frozen endpoint. It specifies the classifier regularization,
+**Verified checkpoint — R1.4a merged:** the implementation binding is fixed
+around the frozen endpoint. It specifies the classifier regularization,
 permutation seed and swap scheme, hidden-state index semantics, sentinel and
 problem-only baseline site, domain-direction statistic, code hashes, and
 terminal `failed` / `non_interpretable` packaging. The R1-specific extractor
 and fixed-primary analysis are now exercised through synthetic adapters and
 synthetic vectors only; no actual model or sealed-target access occurs in this
-checkpoint.
+checkpoint. PR 39 merged only after exact-head local qualification and hosted
+gates passed.
 
-**Blocked next step — R1.4b:** exact-model activation and sealed inference may
-start only after review and qualification of the R1.4a checkpoint under the
-guarded resource contract.
+**Current checkpoint — R1.4b pre-run harness in delivery:** exact-model
+activation and sealed inference remain blocked until the runner is included in
+the code-hash binding, reviewed, qualified, and merged under the guarded
+resource contract. Operational exceptions are recorded separately from
+statistical outcomes in an immutable `run-failure.json` receipt. Its access
+states are tri-state (`not_accessed`, `possibly_accessed`, or `accessed`) so an
+uncertain boundary can never be reported as a proven non-access.
 
 ### R1.5 — immutable publication
 
