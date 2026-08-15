@@ -209,10 +209,18 @@ recovery accessed neither model output nor sealed targets.
 
 ### R1.5 — immutable publication
 
-**Current checkpoint — in delivery:** the tracked package contains the raw and
-recovered results, recovery receipt, activation receipt, representation index,
-external dense locator, report, and publication manifest. All statements remain
-E0 exploratory proxy evidence and are not expert-validated TRIZ claims.
+**Current checkpoint — verified complete:** PR 41 published the tracked package
+on `main` at `05ba15a28442260c32951413c9128f0179573198`. It contains the raw
+and recovered results, recovery receipt, activation receipt, 96-record
+representation index, external dense locator, report, and publication
+manifest. The declared dense asset is 944,964 bytes with SHA-256
+`c49436ed505cbaea677a4f68e597714ef0dd75119a0640474ac1372fae1d2c20`.
+Package verification passes when that declared asset is supplied, and fails
+closed when it is absent or mismatched. The exact branch head passed the
+repository check and all hosted PR gates were terminally green before merge.
+The published A0 package remained byte-stable, all claim IDs remain absent,
+and H1 and Wave 2 were untouched. All statements remain E0 exploratory proxy
+evidence and are not expert-validated TRIZ claims.
 
 **Exit evidence:** one command creates or verifies the result, report,
 limitations, receipts, indexes, and hashes; a fresh clone plus declared external
@@ -221,8 +229,10 @@ when required, hosted aggregate, and review-thread gates are terminally green.
 
 ### R2 — cross-model replication
 
-**Dependency:** R1 is published and the user has approved the selected model
-acquisition and material resource use.
+**Current gate — explicit approval required:** R1 is terminally published.
+R2 may begin only after the user approves the selected exact model and
+tokenizer revision, applicable license or terms, download and disk budget, and
+material RAM/runtime use. No such approval is implied by R1 completion.
 
 **Exit evidence:** a separate frozen model-selection decision, exact acquisition
 receipt, architecture mapping, sealed run, and immutable result package.

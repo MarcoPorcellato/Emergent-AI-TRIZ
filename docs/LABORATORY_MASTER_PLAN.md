@@ -36,9 +36,9 @@ as a short pointer to this plan rather than duplicating its milestones.
 | Item | Verified state | Authoritative anchor |
 |---|---|---|
 | Public repository | `MarcoPorcellato/Latent-TRIZ` | GitHub repository and tracked `LICENSE` / `NOTICE` |
-| Protected `main` | `c5b28cd3ffca38a4bbdca076ba4bff306e653aa6` | live GitHub state verified 2026-08-15 after PR 40 |
+| Protected `main` | `05ba15a28442260c32951413c9128f0179573198` | live GitHub state verified 2026-08-15 after PR 41 |
 | Required merge context | strict `merge-policy/gate` | active GitHub ruleset and `.github/expected-main-ruleset.json` |
-| Completed automated milestone | A0 sealed proxy exploration | PR 34, protocol `v1.0.3`, run `a0-v1.0.3-e93a9faa` |
+| Completed automated milestone | A0-R Tier R1 same-model replication | PR 41, run `a0r1-v1.0.0-e93a9faa-r1` |
 | Current authentic-TRIZ milestone | annotation ontology v1.2 | draft PR 30; live state must be rebased and requalified before delivery |
 | Claim state | all registered claims remain E0 | `data/claims.jsonl` |
 | First dataset attempt | rejected for scientific freeze | retained Wave 1 surface-audit artifacts |
@@ -121,6 +121,7 @@ carried forward by assumption.
 | PR [#38](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/38) | A0-R R1.3 calibration and protocol freeze | exact power receipt, freeze manifest, and protocol lock; no model or sealed-output access |
 | PR [#39](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/39) | A0-R R1.4a implementation binding and deterministic pre-output tests | exact runtime/input/code/statistical contract; no model or sealed-target access |
 | PR [#40](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/40) | A0-R R1.4b guarded runner and failure receipts | exact-head qualified harness; model and sealed-target access remained blocked until merge |
+| PR [#41](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/41) | one-time R1 sealed execution, transparent clerical recovery, and immutable publication package | positive exploratory same-model replication; E0, evidence-ineligible, and not expert-validated |
 | PR [#32](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/32) | calibrated and frozen A0 protocol `v1.0.3` | freeze and controls, not evidence by themselves |
 | PR [#33](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/33) | hosted repository lane allowed to complete | CI policy correction only |
 | PR [#34](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/34) | exact-model activations, sealed analysis, immutable result package, `make a0`, HTML report, schemas, and receipts | positive exploratory proxy result; not expert-validated TRIZ evidence and not claim-eligible |
@@ -154,7 +155,7 @@ but it cannot unblock or replace any node in the authentic route:
 
 ```text
 A0 published result
-        -> independent procedural-corpus replication
+        -> independent procedural-corpus replication (R1 published)
         -> independent model-family replication
         -> robustness conclusion for automated proxies only
 ```
@@ -210,7 +211,7 @@ qualification, and immutable publication.
 automated proxy observation; it does not validate Segmentation or Inversion as
 TRIZ constructs.
 
-**Current status — verified complete:** R1.2 now has a deterministic
+**Current status — verified complete:** R1.2 has a deterministic
 independent 48-family / 96-case corpus, physically separate calibration and
 sealed targets, a zero-violation comparison against the published A0 corpus,
 14/14 passing shortcut controls, strict schemas, and byte-for-byte one-command
@@ -219,9 +220,15 @@ receipt and freeze manifest. R1.4a and R1.4b are merged and verified. The
 single sealed R1 run is complete with a positive exploratory fixed-primary
 result: 23/24 family successes, macro-F1 0.624348 versus 0.499130 for the
 problem-only surface baseline, margin 0.125217, six domain-direction successes,
-and permutation p = 0.002. R1.5 is the live publication checkpoint. It preserves
+and permutation p = 0.002. PR 41 completed R1.5 at
+`05ba15a28442260c32951413c9128f0179573198`: the immutable package preserves
 the raw schema-invalid output, the clerically recovered result, and a receipt
-proving that exactly 54 domain labels changed while metric values did not.
+proving that exactly 54 domain labels changed while metric values did not. The
+declared dense asset, one-command verifier, exact-head repository check, and
+all seven hosted checks passed. Published A0 remained byte-stable, all claims
+remain E0, and H1 and Wave 2 were untouched. The next automated milestone is
+R2, gated by explicit approval of its exact model acquisition, license or
+terms, disk budget, and material RAM/runtime use.
 
 ### PR 30 — annotation ontology v1.2 implementation
 
