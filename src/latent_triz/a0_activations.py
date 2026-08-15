@@ -49,6 +49,11 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _canonical_json_sha256(value: Mapping[str, Any]) -> str:
+    payload = json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 def _read_json(path: Path, label: str) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
@@ -218,7 +223,7 @@ def run_a0_activations(
         raise A0ActivationError("protocol is not frozen")
     if implementation.get("status") != "frozen_before_model_output":
         raise A0ActivationError("implementation contract is not frozen before model output")
-    if freeze.get("protocol_hash") != _sha256(protocol_path):
+    if freeze.get("protocol_hash") != _canonical_json_sha256(protocol):
         raise A0ActivationError("protocol hash does not match freeze manifest")
     if freeze.get("corpus_manifest_sha256") != _sha256(manifest_path):
         raise A0ActivationError("corpus manifest hash does not match freeze manifest")
@@ -346,7 +351,7 @@ def run_a0_activations(
             "created_at": created_at,
             "protocol": {
                 "id": protocol["protocol_id"],
-                "sha256": _sha256(protocol_path),
+                "sha256": _canonical_json_sha256(protocol),
                 "freeze_manifest_sha256": _sha256(freeze_path),
                 "implementation_sha256": _sha256(implementation_path),
             },

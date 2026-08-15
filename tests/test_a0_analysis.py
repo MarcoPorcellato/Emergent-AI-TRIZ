@@ -6,10 +6,20 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from latent_triz.a0_analysis import _family_successes, _macro_f1, _score_operator
+from latent_triz.a0_analysis import (
+    _canonical_json_sha256,
+    _family_successes,
+    _macro_f1,
+    _score_operator,
+)
 
 
 class A0AnalysisTests(unittest.TestCase):
+    def test_canonical_hash_ignores_json_formatting(self) -> None:
+        left = {"b": 2, "a": [1]}
+        right = {"a": [1], "b": 2}
+        self.assertEqual(_canonical_json_sha256(left), _canonical_json_sha256(right))
+
     def test_macro_f1_is_one_for_exact_predictions(self) -> None:
         self.assertEqual(_macro_f1([0, 1, 0, 1], [0, 1, 0, 1]), 1.0)
 

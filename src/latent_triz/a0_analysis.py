@@ -33,6 +33,11 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _canonical_json_sha256(value: Mapping[str, Any]) -> str:
+    payload = json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
 def _read_json(path: Path) -> dict[str, Any]:
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
@@ -182,7 +187,7 @@ def analyze_a0(
         raise A0AnalysisError("shortcut gate is not pass")
     if receipt.get("status") != "pass" or not receipt["corpus"].get("sealed_targets_accessed"):
         raise A0AnalysisError("activation receipt is not a valid sealed pass")
-    if receipt["protocol"]["sha256"] != _sha256(protocol_path):
+    if receipt["protocol"]["sha256"] != _canonical_json_sha256(protocol):
         raise A0AnalysisError("protocol receipt mismatch")
     if receipt["protocol"]["implementation_sha256"] != _sha256(implementation_path):
         raise A0AnalysisError("implementation receipt mismatch")
@@ -315,7 +320,7 @@ def analyze_a0(
         "status": "positive" if positive else "null",
         "protocol_id": protocol["protocol_id"],
         "input_hashes": {
-            "protocol": _sha256(protocol_path),
+            "protocol": _canonical_json_sha256(protocol),
             "implementation": _sha256(implementation_path),
             "shortcuts": _sha256(shortcut_path),
             "activation_receipt": _sha256(activation_receipt_path),
