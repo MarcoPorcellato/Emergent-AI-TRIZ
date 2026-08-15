@@ -1,0 +1,61 @@
+{
+  "implementation_id": "a0-activation-analysis-v1",
+  "status": "frozen_before_model_output",
+  "protocol_id": "a0-automated-weak-proxy-v1.0.3",
+  "run_id": "a0-v1.0.3-e93a9faa",
+  "run_timestamp_utc": "2026-08-15T00:45:00Z",
+  "primary_view": "problem_plus_transformation",
+  "surface_baseline_view": "problem_only",
+  "sensitivity_views": [
+    "transformation_only",
+    "problem_plus_solution"
+  ],
+  "sentinel_text": "Analysis anchor:",
+  "layer_index_semantics": "hidden_states_tuple_index_including_embedding_at_zero",
+  "classifier": {
+    "name": "l2_regularized_linear_least_squares",
+    "alpha": 1.0,
+    "preprocessing": "train_fold_zscore",
+    "decision_threshold": 0.0
+  },
+  "cross_validation": {
+    "method": "leave_one_domain_out",
+    "group": "problem_family_id"
+  },
+  "paired_family_success": "segmentation_like_score_strictly_greater_than_inversion_like_score",
+  "primary_aggregation": "maximum_family_success_count_across_the_12_preregistered_layer_site_combinations",
+  "surface_margin": "maximum_primary_macro_f1_minus_maximum_problem_only_sentinel_macro_f1",
+  "permutations": {
+    "budget": 199,
+    "seed": 20260814,
+    "scheme": "shared_independent_within_family_label_swaps",
+    "correction": "max_statistic_across_preregistered_layers_and_token_sites"
+  },
+  "token_site_applicability": {
+    "problem_only": [
+      "sentinel"
+    ],
+    "transformation_only": [
+      "sentinel",
+      "final_transformation_token",
+      "mean_transformation_span"
+    ],
+    "problem_plus_transformation": [
+      "sentinel",
+      "final_transformation_token",
+      "mean_transformation_span"
+    ],
+    "problem_plus_solution": [
+      "sentinel",
+      "final_transformation_token",
+      "mean_transformation_span"
+    ]
+  },
+  "epistemic_boundary": {
+    "empirical": true,
+    "scientific_status": "exploratory",
+    "evidence_eligible": false,
+    "expert_validated": false,
+    "claim_ids": []
+  }
+}

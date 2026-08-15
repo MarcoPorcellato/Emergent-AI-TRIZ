@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0-activation-receipt.schema.json",
+  "title": "A0 exact-model activation receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "status",
+    "created_at",
+    "protocol",
+    "corpus",
+    "model",
+    "tokenizer",
+    "environment",
+    "views",
+    "token_sites",
+    "layers",
+    "layer_index_semantics",
+    "records",
+    "dense_vectors",
+    "representation_index"
+  ],
+  "properties": {
+    "artifact_class": {"const": "a0-activation-receipt"},
+    "empirical": {"const": true},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "status": {"const": "pass"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sha256", "freeze_manifest_sha256", "implementation_sha256"],
+      "properties": {
+        "id": {"const": "a0-automated-weak-proxy-v1.0.3"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "freeze_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "implementation_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "corpus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_sha256",
+        "cases_sha256",
+        "sealed_targets_sha256",
+        "sealed_targets_accessed",
+        "selected_cases",
+        "selected_families"
+      ],
+      "properties": {
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "cases_sha256": {"$ref": "#/$defs/sha256"},
+        "sealed_targets_sha256": {"$ref": "#/$defs/sha256"},
+        "sealed_targets_accessed": {"const": true},
+        "selected_cases": {"const": 48},
+        "selected_families": {"const": 24}
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "runtime_files"],
+      "properties": {
+        "id": {"const": "EleutherAI/pythia-70m-deduped"},
+        "revision": {"const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"},
+        "runtime_files": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "items": {"$ref": "#/$defs/file"}
+        }
+      }
+    },
+    "tokenizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "class", "is_fast"],
+      "properties": {
+        "id": {"const": "EleutherAI/pythia-70m-deduped"},
+        "revision": {"const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"},
+        "class": {"type": "string", "minLength": 1},
+        "is_fast": {"const": true}
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["python", "implementation", "platform", "packages", "device", "dtype", "offline"],
+      "properties": {
+        "python": {"type": "string", "minLength": 1},
+        "implementation": {"type": "string", "minLength": 1},
+        "platform": {"type": "string", "minLength": 1},
+        "packages": {"type": "object", "minProperties": 4},
+        "device": {"const": "cpu"},
+        "dtype": {"const": "float32"},
+        "offline": {"const": true}
+      }
+    },
+    "views": {
+      "const": [
+        "problem_only",
+        "transformation_only",
+        "problem_plus_transformation",
+        "problem_plus_solution"
+      ]
+    },
+    "token_sites": {
+      "const": ["sentinel", "final_transformation_token", "mean_transformation_span"]
+    },
+    "layers": {"const": [0, 2, 4, 6]},
+    "layer_index_semantics": {"const": "hidden_states_tuple_index_including_embedding_at_zero"},
+    "records": {"const": 1920},
+    "dense_vectors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["locator", "sha256", "format", "bytes"],
+      "properties": {
+        "locator": {"type": "string", "pattern": "^artifacts/a0/[^/]+/activations\\.safetensors$"},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "format": {"const": "safetensors"},
+        "bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "representation_index": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"const": "representations-index.jsonl"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "sha256", "size"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "size": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

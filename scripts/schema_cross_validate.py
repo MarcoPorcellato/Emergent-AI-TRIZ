@@ -53,6 +53,9 @@ VALIDATION_PAIRS = (
     ("schemas/a0-shortcut-audit.schema.json", "results/a0/calibration/shortcuts.json"),
     ("schemas/a0-calibration-summary.schema.json", "results/a0/calibration/summary.json"),
     ("schemas/a0-freeze-manifest.schema.json", "results/a0/calibration/freeze-manifest.json"),
+    ("schemas/a0-activation-receipt.schema.json", "results/a0/a0-v1.0.3-e93a9faa/activation-receipt.json"),
+    ("schemas/a0-statistical-result.schema.json", "results/a0/a0-v1.0.3-e93a9faa/statistical-result.json"),
+    ("schemas/a0-publication-manifest.schema.json", "results/a0/a0-v1.0.3-e93a9faa/publication-manifest.json"),
 )
 
 
