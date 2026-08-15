@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-feasibility-guard-observation.schema.json",
+  "title": "A0-R2 post-run guard observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "created_at", "run_anchor_commit", "guard_status",
+    "guard_exit_code", "guard_error_stage", "feasibility_receipt_sha256",
+    "feasibility_receipt_status", "postrun_observation", "interpretation",
+    "rerun_performed", "scientific_status", "evidence_eligible"
+  ],
+  "properties": {
+    "artifact_class": {"const": "a0r2-feasibility-guard-observation"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "run_anchor_commit": {"const": "da8f4bb0c07fe32ede438b13da80b89019cfb812"},
+    "guard_status": {"const": "cleanup_uncertain"},
+    "guard_exit_code": {"const": 70},
+    "guard_error_stage": {"const": "completed_descendant_seal"},
+    "feasibility_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "feasibility_receipt_status": {"const": "compatible"},
+    "postrun_observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["admission_active", "queue_count", "matching_processes_observed", "resource_decision"],
+      "properties": {
+        "admission_active": {"const": false},
+        "queue_count": {"const": 0},
+        "matching_processes_observed": {"const": false},
+        "resource_decision": {"const": "admit"}
+      }
+    },
+    "interpretation": {"const": "postrun_observation_does_not_upgrade_guarded_run_to_pass"},
+    "rerun_performed": {"const": false},
+    "scientific_status": {"const": "instrumentation_only"},
+    "evidence_eligible": {"const": false}
+  }
+}

@@ -239,25 +239,36 @@ bounded file transfer: nine files, 727,058,433 bytes total, receipt status
 access flags remained false. This is instrumentation-only, evidence-ineligible,
 and makes no empirical claim.
 
-**Current delivery gate — bounded feasibility:** the operator subsequently
-authorized a test of the acquired model. Before any load, the repository freezes
+**Completed bounded feasibility checkpoint:** the operator subsequently
+authorized one test of the acquired model. Before any load, the repository froze
 `experiments/a0r2-independent-model/feasibility-contract.json`: local-only CPU
 float32, two inference passes over one fixed synthetic prompt, no generation,
 at most 128 prompt tokens, a 900-second wall envelope, and an 8 GiB peak-RSS
 reporting ceiling. The test may retain only shapes, finite-value checks,
 repeatability difference, timings, runtime versions, and memory measurements;
-it must not retain model output content.
+it must not retain model output content. PR 44 merged that contract at
+`da8f4bb0c07fe32ede438b13da80b89019cfb812` before the first load.
+
+The one authorized run produced a schema-valid `compatible` receipt: 25 prompt
+tokens, 33 hidden-state entries, final hidden shape `[1, 25, 960]`, finite
+hidden states and logits, repeatability difference `0.0`, 2,540,519,424 bytes
+peak RSS, and 3.813451875 seconds total runtime. It retained no output content
+and accessed no sealed target. The outer CCP guard nevertheless exited 70 with
+cleanup uncertain at `completed descendant seal`. Post-run inspection found
+admission inactive, an empty queue, no matching process, and resource decision
+`admit`; this does not retroactively qualify the guard as PASS. The run was not
+repeated.
 
 **Still not authorized:** sealed-target access, sealed R2 execution, scientific
 outcome inference, any additional model download, or any TRIZ claim promotion.
-The feasibility contract, runner, schemas, and synthetic tests must merge before
-the first real load. A compatible result authorizes only a later review of the
+The feasibility contract, runner, schemas, and synthetic tests merged before
+the first real load. This compatible result authorizes only a later review of the
 sealed-execution gate; it does not authorize that execution.
 
 **Exit evidence:** immutable contract and receipt hashes, exact snapshot
-verification, a CCP-guarded terminal feasibility receipt, and exact-head
-repository/hosted qualification. `compatible`, `incompatible`, and `failed` are
-all publishable terminal outcomes.
+verification, the terminal feasibility receipt, the separate guard observation,
+and exact-head repository/hosted qualification. The compatibility payload is
+terminal, while the outer guard remains explicitly `cleanup_uncertain`.
 
 ## Statistical and missing-data rules
 

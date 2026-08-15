@@ -233,9 +233,11 @@ terms, disk budget, and material RAM/runtime use. The subsequent authorized
 checkpoint produced a verified SmolLM2 acquisition dossier: nine runtime files,
 727,058,433 bytes total,
 integrity verified, no model load, and no sealed execution. The operator then
-authorized a bounded CPU feasibility test. Its contract/runner tranche must
-merge before the first load; the later run may publish compatibility, timing,
-and memory measurements only, while sealed execution remains gated.
+authorized one bounded CPU feasibility test. PR 44 merged its contract before
+the first load. The schema-valid payload reports runtime compatibility, 2.37
+GiB peak RSS, and 3.81 seconds total time; the outer guard separately remains
+`cleanup_uncertain` after exit 70 despite a clean post-run observation. No rerun
+is permitted, and sealed execution remains gated.
 
 ### PR 30 — annotation ontology v1.2 implementation
 

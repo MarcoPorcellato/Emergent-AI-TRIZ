@@ -10,6 +10,15 @@ last_verified: 2026-08-15
 
 ## 2026-08-15
 
+- Merged the A0-R2 feasibility contract through PR 44 at
+  `da8f4bb0c07fe32ede438b13da80b89019cfb812`, then executed the one authorized
+  CPU-only probe. The schema-valid receipt reports `compatible`, 33 hidden-state
+  entries, repeatability difference 0.0, 2,540,519,424 bytes peak RSS, and
+  3.813451875 seconds total time. The outer CCP guard exited 70 with cleanup
+  uncertain at `completed descendant seal`; a separate post-run observation
+  records an inactive admission gate, empty queue, no matching processes, and
+  no retroactive guarded PASS. The model was not rerun, no output content was
+  retained, and sealed targets remained untouched.
 - Merged the A0-R2 acquisition checkpoint through PR 43 at
   `5d4d96c16b56715203aa8a077b13d3b6cc550fc9` after publishing the exact-head
   CCP receipt and obtaining a green trusted aggregate. The external nine-file

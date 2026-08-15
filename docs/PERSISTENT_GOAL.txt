@@ -3,22 +3,22 @@ docs/LABORATORY_MASTER_PLAN.md, using its requirement checklist and linked
 phase specifications as the source of truth.
 
 Start from the last-known public anchor
-5d4d96c16b56715203aa8a077b13d3b6cc550fc9, but verify origin/main, open pull
+da8f4bb0c07fe32ede438b13da80b89019cfb812, but verify origin/main, open pull
 requests, the active ruleset, exact worktree state, and current evidence live
 before acting. Do not repeat delivered work.
 
 Treat A0-R Tier R1 as terminally published and verified. The SmolLM2 runtime
 acquisition is complete and verified, but it is instrumentation-only and
-evidence-ineligible. A bounded CPU float32 feasibility test is authorized and
-must follow the frozen pre-load contract in
-experiments/a0r2-independent-model/feasibility-contract.json. Preserve the published A0 and R1 packages
+evidence-ineligible. A bounded CPU float32 feasibility test has run once under
+the frozen pre-load contract in
+experiments/a0r2-independent-model/feasibility-contract.json. Its payload is
+compatible, while the outer guard is explicitly cleanup-uncertain. Preserve the published A0 and R1 packages
 byte-for-byte, all E0 claim levels, the separation from H1 and Wave 2, and
 every human or acquisition gate. Do not rerun either sealed model path, reopen
 sealed targets, generate model content, or promote any TRIZ claim.
 
-Merge and qualify the contract/runner tranche before the first real model load.
-Then execute exactly one CCP-guarded feasibility run and publish any terminal
-compatible, incompatible, or failed receipt. Stop afterward: sealed R2
+Publish and qualify the immutable feasibility receipt, guard observation, and
+human-readable report without rerunning the model. Stop afterward: sealed R2
 execution and sealed-target access remain separately approval-gated.
 
 Use deterministic tools first and delegate the largest safe, independent share
