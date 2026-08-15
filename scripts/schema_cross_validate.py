@@ -53,6 +53,7 @@ VALIDATION_PAIRS = (
     ("schemas/a0r1-independence-audit.schema.json", "results/a0r1/preoutput/independence.json"),
     ("schemas/a0-shortcut-audit.schema.json", "results/a0r1/preoutput/shortcuts.json"),
     ("schemas/a0r1-preoutput-summary.schema.json", "results/a0r1/preoutput/summary.json"),
+    ("schemas/a0r1-implementation.schema.json", "experiments/a0r1-independent-proxy/implementation.json"),
     ("schemas/a0r1-preoutput-manifest.schema.json", "results/a0r1/preoutput/preoutput-manifest.json"),
     ("schemas/a0r1-power.schema.json", "results/a0r1/freeze/power.json"),
     ("schemas/a0r1-freeze-manifest.schema.json", "results/a0r1/freeze/freeze-manifest.json"),

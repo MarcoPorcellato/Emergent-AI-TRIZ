@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r1-activation-receipt.schema.json",
+  "title": "A0-R1 activation receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "status",
+    "created_at",
+    "protocol",
+    "implementation",
+    "freeze",
+    "corpus",
+    "runtime",
+    "primary_contract",
+    "sealed_target_semantics_accessed",
+    "model_output_accessed",
+    "sealed_model_output_accessed",
+    "records",
+    "dense_vectors",
+    "representation_index"
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "a0r1-activation-receipt"
+    },
+    "empirical": {
+      "type": "boolean",
+      "const": true
+    },
+    "scientific_status": {
+      "type": "string",
+      "const": "exploratory"
+    },
+    "evidence_eligible": {
+      "type": "boolean",
+      "const": false
+    },
+    "expert_validated": {
+      "type": "boolean",
+      "const": false
+    },
+    "claim_ids": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "status": {
+      "type": "string",
+      "const": "pass"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "protocol_status", "hash", "snapshot_hash"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protocol_status": {
+          "type": "string",
+          "const": "frozen"
+        },
+        "hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "snapshot_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol_status", "status", "hash"],
+      "properties": {
+        "protocol_status": {
+          "type": "string",
+          "const": "frozen"
+        },
+        "status": {
+          "type": "string",
+          "const": "frozen_before_model_output"
+        },
+        "hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "freeze": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol_status", "status", "protocol_id", "hash"],
+      "properties": {
+        "protocol_status": {
+          "type": "string",
+          "const": "frozen"
+        },
+        "status": {
+          "type": "string",
+          "const": "frozen"
+        },
+        "protocol_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "corpus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_sha256",
+        "cases_sha256",
+        "sealed_targets_sha256",
+        "sealed_targets_accessed",
+        "selected_cases"
+      ],
+      "properties": {
+        "manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "cases_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sealed_targets_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sealed_targets_accessed": {
+          "type": "boolean",
+          "const": false
+        },
+        "selected_cases": {
+          "type": "integer",
+          "const": 48
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "revision", "files", "binding_hash"],
+      "properties": {
+        "model": {
+          "type": "string",
+          "const": "EleutherAI/pythia-70m-deduped"
+        },
+        "revision": {
+          "type": "string",
+          "const": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+        },
+        "files": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        },
+        "binding_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "primary_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "primary_view",
+        "primary_token_site",
+        "primary_layer",
+        "baseline_view",
+        "baseline_token_sites",
+        "multiplicity"
+      ],
+      "properties": {
+        "primary_view": {
+          "type": "string",
+          "const": "problem_plus_transformation"
+        },
+        "primary_token_site": {
+          "type": "string",
+          "const": "mean_transformation_span"
+        },
+        "primary_layer": {
+          "type": "integer",
+          "const": 6
+        },
+        "baseline_view": {
+          "type": "string",
+          "const": "problem_only"
+        },
+        "baseline_token_sites": {
+          "type": "array",
+          "const": ["sentinel"]
+        },
+        "multiplicity": {
+          "type": "integer",
+          "const": 1
+        }
+      }
+    },
+    "sealed_target_semantics_accessed": {
+      "type": "boolean",
+      "const": false
+    },
+    "model_output_accessed": {
+      "type": "boolean",
+      "const": true
+    },
+    "sealed_model_output_accessed": {
+      "type": "boolean",
+      "const": true
+    },
+    "records": {
+      "type": "integer",
+      "const": 96
+    },
+    "dense_vectors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "format", "bytes"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": "activations.json"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "format": {
+          "type": "string",
+          "const": "json-vectors"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "representation_index": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": "representations-index.jsonl"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "sha256", "size"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

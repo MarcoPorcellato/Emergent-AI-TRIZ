@@ -25,6 +25,7 @@ from .a0r1_corpus import A0R1CorpusError, generate_a0r1_corpus
 from .a0r1_preoutput import A0R1PreoutputError, run_a0r1_preoutput_audits
 from .a0r1_verify import A0R1VerifyError, verify_a0r1_foundation
 from .a0r1_freeze import A0R1FreezeError, run_a0r1_freeze
+from .a0r1_execution import A0R1ExecutionError, verify_a0r1_execution_contract
 from .validator import ValidationIssue, validate
 
 
@@ -196,6 +197,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     a0r1_freeze_parser.add_argument("--preoutput-dir", required=True)
     a0r1_freeze_parser.add_argument("--output-dir", required=True)
 
+    a0r1_execution_parser = subparsers.add_parser(
+        "a0r1-execution-verify",
+        help="Verify the frozen R1.4a implementation contract before model access",
+    )
+    a0r1_execution_parser.add_argument("--root", default=".")
+
     fingerprint_parser = subparsers.add_parser("fingerprint", help="Compute SHA-256 of a file")
     fingerprint_parser.add_argument("path", help="Path to file")
 
@@ -281,6 +288,8 @@ def main(argv: Optional[List[str]] = None) -> int:
             args.preoutput_dir,
             args.output_dir,
         )
+    if args.command == "a0r1-execution-verify":
+        return _run_a0r1_execution_verify(args.root)
     parser.error("Unknown command")
     return 1
 
@@ -826,6 +835,16 @@ def _run_a0r1_freeze(
         return 1
     print(stable_json_dumps(summary))
     return 0 if summary["status"] == "frozen" else 1
+
+
+def _run_a0r1_execution_verify(root: str) -> int:
+    try:
+        summary = verify_a0r1_execution_contract(root)
+    except (A0R1ExecutionError, OSError, ValueError) as exc:
+        _print_error(f"a0r1-execution-verify: {exc}")
+        return 1
+    print(stable_json_dumps(summary))
+    return 0
 
 
 def _write_json_output(payload: dict, output: str, dumper) -> int:

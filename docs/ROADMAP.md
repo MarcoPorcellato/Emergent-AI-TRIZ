@@ -158,9 +158,12 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
    [A0-R replication contract](./A0_REPLICATION_AND_ROBUSTNESS.md): first an
    independent procedural corpus with the cached exact model, then an
    independent model family only after acquisition approval. R1.2 and R1.3 are
-   now frozen and verified; the next gate is R1.4a implementation binding and
-   deterministic pre-output tests. Exact-model activation and sealed inference
-   follow only in R1.4b under the guarded resource contract.
+   now frozen, merged, and verified; R1.4a is the live implementation checkpoint with
+   fixed runtime/input/code hash binding, fixed
+   classifier/permutation/baseline/domain-statistic specification, and
+   synthetic-adapter / synthetic-vector tests only. Exact-model activation and
+   sealed inference remain blocked until R1.4a review and qualification under
+   the guarded resource contract.
 7. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
 8. Store independent raw ratings, adjudications, exclusions, and canonical human labels as separate immutable artifacts. Labs 03–05 consume canonical labels, never generator intent.
 9. Add a common empirical envelope without rewriting v1 fixtures, and separate pre-freeze candidate surface auditing from post-freeze Lab 03.

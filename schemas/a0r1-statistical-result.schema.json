@@ -1,0 +1,633 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r1-statistical-result.schema.json",
+  "title": "A0-R1 analytical result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "status",
+    "protocol_id",
+    "protocol_status",
+    "analysis_type",
+    "sealing_rule",
+    "shortcut_status",
+    "input_hashes",
+    "design",
+    "primary",
+    "surface_baseline",
+    "macro_f1_margin_over_surface",
+    "max_family_successes_observed",
+    "domain_direction_successes",
+    "domain_direction_success_count",
+    "primary_permutation_p",
+    "permutation_seed",
+    "permutation_budget",
+    "null_maxima",
+    "sensitivity",
+    "outcome_rule",
+    "outcome_deterministic",
+    "model_output_accessed",
+    "sealed_model_output_accessed",
+    "sealed_targets_accessed",
+    "primary_is_max_statistic_selection",
+    "outcome_description",
+    "non_interpretable_reason"
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "a0r1-analytical-result"
+    },
+    "empirical": {
+      "type": "boolean",
+      "const": true
+    },
+    "scientific_status": {
+      "type": "string",
+      "const": "exploratory"
+    },
+    "evidence_eligible": {
+      "type": "boolean",
+      "const": false
+    },
+    "expert_validated": {
+      "type": "boolean",
+      "const": false
+    },
+    "claim_ids": {
+      "type": "array",
+      "maxItems": 0,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["positive", "null", "failed", "non_interpretable"]
+    },
+    "protocol_id": {
+      "type": "string",
+      "pattern": "^a0-r1-tier-r1-v\\d+\\.\\d+$"
+    },
+    "protocol_status": {
+      "type": "string",
+      "enum": ["frozen", "unknown"]
+    },
+    "analysis_type": {
+      "type": "string",
+      "const": "fixed_primary"
+    },
+    "sealing_rule": {
+      "type": "string",
+      "const": "sealed_targets_opened_once_at_boundary"
+    },
+    "shortcut_status": {
+      "type": "string"
+    },
+    "input_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "implementation",
+        "shortcut",
+        "activation_receipt",
+        "representation_index",
+        "dense_vectors",
+        "sealed_targets"
+      ],
+      "properties": {
+        "protocol": {
+          "$ref": "#/$defs/sha256"
+        },
+        "implementation": {
+          "$ref": "#/$defs/sha256"
+        },
+        "shortcut": {
+          "$ref": "#/$defs/sha256"
+        },
+        "activation_receipt": {
+          "$ref": "#/$defs/sha256"
+        },
+        "representation_index": {
+          "$ref": "#/$defs/sha256"
+        },
+        "dense_vectors": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{64})?$"
+        },
+        "sealed_targets": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "design": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cases",
+        "families",
+        "domains",
+        "layer",
+        "token_site",
+        "primary_view",
+        "surface_view",
+        "surface_site",
+        "permutation_budget",
+        "seed",
+        "critical_successes",
+        "required_domain_directions"
+      ],
+      "properties": {
+        "cases": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "families": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "domains": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "layer": {
+          "type": "integer",
+          "const": 6
+        },
+        "token_site": {
+          "type": "string",
+          "const": "mean_transformation_span"
+        },
+        "primary_view": {
+          "type": "string",
+          "const": "problem_plus_transformation"
+        },
+        "surface_view": {
+          "type": "string",
+          "const": "problem_only"
+        },
+        "surface_site": {
+          "type": "string",
+          "const": "sentinel"
+        },
+        "permutation_budget": {
+          "type": "integer",
+          "const": 999
+        },
+        "seed": {
+          "type": "integer",
+          "const": 20260815
+        },
+        "critical_successes": {
+          "type": "integer",
+          "const": 17
+        },
+        "required_domain_directions": {
+          "type": "integer",
+          "const": 4
+        }
+      }
+    },
+    "primary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "family_successes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 24
+        },
+        "family_success_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scores": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "macro_f1": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "per_domain_accuracy": {
+          "type": "object",
+          "required": ["agriculture", "energy", "manufacturing", "medicine", "software", "transport"],
+          "additionalProperties": false,
+          "properties": {
+            "agriculture": {"type": "number", "minimum": 0, "maximum": 1},
+            "energy": {"type": "number", "minimum": 0, "maximum": 1},
+            "manufacturing": {"type": "number", "minimum": 0, "maximum": 1},
+            "medicine": {"type": "number", "minimum": 0, "maximum": 1},
+            "software": {"type": "number", "minimum": 0, "maximum": 1},
+            "transport": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        },
+        "domain_direction_successes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "surface_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "family_successes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 24
+        },
+        "family_success_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "macro_f1": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scores": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "per_domain_accuracy": {
+          "type": "object",
+          "required": ["agriculture", "energy", "manufacturing", "medicine", "software", "transport"],
+          "additionalProperties": false,
+          "properties": {
+            "agriculture": {"type": "number", "minimum": 0, "maximum": 1},
+            "energy": {"type": "number", "minimum": 0, "maximum": 1},
+            "manufacturing": {"type": "number", "minimum": 0, "maximum": 1},
+            "medicine": {"type": "number", "minimum": 0, "maximum": 1},
+            "software": {"type": "number", "minimum": 0, "maximum": 1},
+            "transport": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        },
+        "domain_direction_successes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "macro_f1_margin_over_surface": {
+      "type": "number",
+      "minimum": -1,
+      "maximum": 1
+    },
+    "max_family_successes_observed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 24
+    },
+    "domain_direction_successes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "domain_direction_success_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 6
+    },
+    "primary_permutation_p": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "permutation_seed": {
+      "type": "integer",
+      "const": 20260815
+    },
+    "permutation_budget": {
+      "type": "integer",
+      "const": 999
+    },
+    "null_maxima": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum", "median", "maximum", "sha256"],
+      "properties": {
+        "minimum": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 24
+        },
+        "median": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 24
+        },
+        "maximum": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "maximum": 24
+        },
+        "sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "sensitivity": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["combos", "paired_direction_delta_mean", "rescues_primary"],
+        "properties": {
+          "combos": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object"
+              }
+            }
+          },
+          "paired_direction_delta_mean": {
+            "type": "number"
+          },
+          "rescues_primary": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "outcome_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_statistic_p_at_most",
+        "macro_f1_margin_at_least",
+        "family_successes_at_least",
+        "domain_direction_successes_minimum"
+      ],
+      "properties": {
+        "max_statistic_p_at_most": {
+          "type": "number",
+          "const": 0.05
+        },
+        "macro_f1_margin_at_least": {
+          "type": "number",
+          "const": 0.1
+        },
+        "family_successes_at_least": {
+          "type": "integer",
+          "const": 17
+        },
+        "domain_direction_successes_minimum": {
+          "type": "integer",
+          "const": 4
+        }
+      }
+    },
+    "outcome_deterministic": {
+      "type": "boolean",
+      "const": true
+    },
+    "model_output_accessed": {
+      "type": "boolean"
+    },
+    "sealed_model_output_accessed": {
+      "type": "boolean"
+    },
+    "sealed_targets_accessed": {
+      "type": "boolean"
+    },
+    "primary_is_max_statistic_selection": {
+      "type": "boolean",
+      "const": false
+    },
+    "outcome_description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "non_interpretable_reason": {
+      "type": ["string", "null"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+        "status": {
+            "const": "positive"
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "required": [
+          "shortcut_status",
+          "design",
+          "primary",
+          "surface_baseline",
+          "max_family_successes_observed",
+          "domain_direction_successes",
+          "primary_permutation_p",
+          "model_output_accessed",
+          "sealed_model_output_accessed",
+          "sealed_targets_accessed"
+        ],
+        "properties": {
+          "design": {
+            "properties": {
+              "cases": {"const": 48},
+              "families": {"const": 24},
+              "domains": {"const": 6}
+            }
+          },
+          "primary": {
+            "required": [
+              "family_successes",
+              "family_success_rate",
+              "scores",
+              "macro_f1",
+              "per_domain_accuracy",
+              "domain_direction_successes"
+            ],
+            "properties": {
+              "family_successes": {"minimum": 17}
+            }
+          },
+        "surface_baseline": {
+          "required": [
+            "family_successes",
+            "family_success_rate",
+            "macro_f1",
+            "scores",
+            "per_domain_accuracy",
+            "domain_direction_successes"
+          ]
+          },
+          "max_family_successes_observed": {
+            "minimum": 17
+          },
+          "primary_permutation_p": {
+            "maximum": 0.05
+          },
+          "macro_f1_margin_over_surface": {
+            "minimum": 0.1
+          },
+          "domain_direction_success_count": {
+            "minimum": 4
+          },
+          "shortcut_status": {"const": "pass"},
+          "model_output_accessed": {"const": true},
+          "sealed_model_output_accessed": {"const": true},
+          "sealed_targets_accessed": {"const": true},
+          "non_interpretable_reason": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "null"
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "required": [
+          "design",
+          "primary",
+          "surface_baseline",
+          "max_family_successes_observed",
+          "domain_direction_successes",
+          "model_output_accessed",
+          "sealed_model_output_accessed",
+          "sealed_targets_accessed"
+        ],
+        "properties": {
+          "design": {
+            "properties": {
+              "cases": {"const": 48},
+              "families": {"const": 24},
+              "domains": {"const": 6}
+            }
+          },
+          "primary": {
+            "required": [
+              "family_success_rate",
+              "family_successes",
+              "scores",
+              "macro_f1",
+              "per_domain_accuracy",
+              "domain_direction_successes"
+            ]
+          },
+          "surface_baseline": {
+            "required": [
+              "family_successes",
+              "family_success_rate",
+              "macro_f1",
+              "scores",
+              "per_domain_accuracy",
+              "domain_direction_successes"
+            ]
+          },
+          "shortcut_status": {"const": "pass"},
+          "model_output_accessed": {"const": true},
+          "sealed_model_output_accessed": {"const": true},
+          "sealed_targets_accessed": {"const": true},
+          "non_interpretable_reason": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": ["failed", "non_interpretable"]
+          }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "primary": {
+            "const": {}
+          },
+          "surface_baseline": {
+            "const": {}
+          },
+          "domain_direction_successes": {
+            "const": {}
+          },
+          "sensitivity": {
+            "const": {}
+          },
+          "design": {
+            "properties": {
+              "cases": {"const": 0},
+              "families": {"const": 0},
+              "domains": {"const": 0}
+            }
+          },
+          "macro_f1_margin_over_surface": {"const": 0.0},
+          "max_family_successes_observed": {"const": 0},
+          "domain_direction_success_count": {"const": 0},
+          "primary_permutation_p": {"const": 1.0},
+          "null_maxima": {
+            "properties": {
+              "minimum": {"type": "null"},
+              "median": {"type": "null"},
+              "maximum": {"type": "null"},
+              "sha256": {"type": "null"}
+            }
+          },
+          "non_interpretable_reason": {
+            "type": ["string", "null"],
+            "minLength": 1
+          },
+          "model_output_accessed": {"const": false},
+          "sealed_model_output_accessed": {"const": false},
+          "sealed_targets_accessed": {"const": false}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "non_interpretable"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "non_interpretable_reason": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
