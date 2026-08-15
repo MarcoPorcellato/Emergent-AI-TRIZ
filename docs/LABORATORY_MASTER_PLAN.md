@@ -207,6 +207,12 @@ qualification, and immutable publication.
 automated proxy observation; it does not validate Segmentation or Inversion as
 TRIZ constructs.
 
+**Current status — in delivery:** R1.1 has a planned machine-readable protocol,
+strict schema, and physically separated fail-closed independence-audit
+substrate. No A0-R corpus, frozen protocol, model execution, or result exists
+yet; the next exit evidence is the deterministic independent corpus plus its
+terminal overlap and provenance audit.
+
 ### PR 30 — annotation ontology v1.2 implementation
 
 **Outcome**

@@ -1,0 +1,74 @@
+{
+  "artifact_class": "a0-r1-protocol",
+  "protocol_id": "a0-r1-tier-r1-v1.0",
+  "protocol_status": "planned",
+  "empirical": true,
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "protocol_type": "pre_output_replication",
+  "independence_audit": {
+    "source_protocol_id": "a0-automated-weak-proxy-v1.0.3",
+    "source_protocol_merge_sha": "fc80976d3a256ed88e2d59f1a6f893e15154e3a0",
+    "source_protocol_run_id": "a0-v1.0.3-e93a9faa",
+    "a0_case_text_reused": false,
+    "a0_template_ids_reused": false,
+    "a0_seed_reused": false
+  },
+  "model": {
+    "name": "EleutherAI/pythia-70m-deduped",
+    "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+    "cached": true
+  },
+  "tokenizer": {
+    "name": "EleutherAI/pythia-70m-deduped",
+    "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"
+  },
+  "runtime": {
+    "requires_interactive_model_server": false,
+    "runtime_device": "cpu"
+  },
+  "primary_endpoint": {
+    "layer": 6,
+    "token_site": "mean_transformation_span",
+    "primary_view": "problem_plus_transformation",
+    "surface_baseline_view": "problem_only",
+    "is_max_statistic_selection": false,
+    "multiplicity": 1
+  },
+  "thresholds": {
+    "critical_successes": 17,
+    "primary_permutation_p_at_most": 0.05,
+    "macro_f1_margin_at_least": 0.1,
+    "family_successes_at_least": 17,
+    "domain_direction_successes_minimum": 4
+  },
+  "calibration": {
+    "method": "exact_family_blocked_binomial_primary_endpoint",
+    "selection_mode": "deterministic_predeclared",
+    "deterministic_seed": 20260815,
+    "power": 0.8,
+    "maximum_false_positive_rate": 0.05,
+    "target_effect_size": 0.3,
+    "minimum_detectable_effect": 0.2597184664182352,
+    "selected_families_per_domain": 4,
+    "selected_family_count": 24,
+    "selected_permutation_budget": 999,
+    "critical_successes": 17,
+    "family_successes_at_least": 17
+  },
+  "outcome_rules": {
+    "positive": "all gates pass and primary_permutation_p <= 0.05 and macro_f1_margin_over_surface >= 0.10 and family_successes >= 17",
+    "null": "all gates pass and positive rule is false",
+    "failed": "integrity, identity, execution, data, or receipt gate fails before a valid statistic",
+    "non_interpretable": "shortcut controls reach or exceed refusal threshold"
+  },
+  "outcome_classes": {
+    "positive": "positive",
+    "null": "null",
+    "failed": "failed",
+    "non_interpretable": "non_interpretable"
+  },
+  "status": "planned"
+}
