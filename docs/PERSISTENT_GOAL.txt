@@ -3,12 +3,12 @@ docs/LABORATORY_MASTER_PLAN.md, using its requirement checklist and linked
 phase specifications as the source of truth.
 
 Start from the last-known public anchor
-4ea2bac84e78bbdad4d4911d309dead7a4b62cba, but verify origin/main, open pull
+7986a643f5b74ef21bec2ee3347bc64b88d323db, but verify origin/main, open pull
 requests, the active ruleset, exact worktree state, and current evidence live
 before acting. Do not repeat delivered work.
 
-Execute the next dependency-ordered milestone, currently A0-R Tier R1.3 power
-calibration and protocol freeze in
+Execute the next dependency-ordered milestone, currently A0-R Tier R1.4a
+implementation binding and deterministic pre-output tests in
 docs/A0_REPLICATION_AND_ROBUSTNESS.md, while preserving the published A0 run,
 all E0 claim levels, the separation from H1 and Wave 2, and every human or
 acquisition approval gate. Publish positive, null, failed, and

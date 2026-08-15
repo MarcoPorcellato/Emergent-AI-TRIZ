@@ -16,7 +16,7 @@ from latent_triz.cli import main
 class A0R1CliTests(unittest.TestCase):
     def setUp(self) -> None:
         self.root = Path(__file__).resolve().parents[1]
-        self.protocol = self.root / "experiments/a0r1-independent-proxy/protocol.json"
+        self.protocol = self.root / "results/a0r1/freeze/protocol-planned.json"
 
     def test_a0r1_corpus_and_preoutput_cli(self) -> None:
         with tempfile.TemporaryDirectory() as workdir:

@@ -14,9 +14,8 @@ from latent_triz.validator import validate
 
 
 class A0R1CorpusGeneratorTests(unittest.TestCase):
-    protocol_path = (
-        Path(__file__).resolve().parents[1] / "experiments" / "a0r1-independent-proxy" / "protocol.json"
-    )
+    repository_root = Path(__file__).resolve().parents[1]
+    protocol_path = repository_root / "results/a0r1/freeze/protocol-planned.json"
     target_fields = {"target_text", "operator_proxy_family", "ground_truth", "labels", "label"}
 
     @staticmethod
@@ -64,13 +63,13 @@ class A0R1CorpusGeneratorTests(unittest.TestCase):
             )
 
             manifest_schema = json.loads(
-                (self.protocol_path.parents[1].parent / "schemas/a0r1-corpus-manifest.schema.json").read_text(encoding="utf-8")
+                (self.repository_root / "schemas/a0r1-corpus-manifest.schema.json").read_text(encoding="utf-8")
             )
             case_schema = json.loads(
-                (self.protocol_path.parents[1].parent / "schemas/a0-case.schema.json").read_text(encoding="utf-8")
+                (self.repository_root / "schemas/a0-case.schema.json").read_text(encoding="utf-8")
             )
             target_schema = json.loads(
-                (self.protocol_path.parents[1].parent / "schemas/a0-procedural-target.schema.json").read_text(encoding="utf-8")
+                (self.repository_root / "schemas/a0-procedural-target.schema.json").read_text(encoding="utf-8")
             )
             self.assertEqual([], validate(manifest, manifest_schema))
             self.assertTrue(all(not validate(row, case_schema) for row in cases))
