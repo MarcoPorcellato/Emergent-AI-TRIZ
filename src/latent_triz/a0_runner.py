@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .a0_activations import A0ActivationError, run_a0_activations
 from .a0_analysis import A0AnalysisError, analyze_a0
+from .a0_report import A0ReportError, render_a0_report
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -58,7 +59,14 @@ def main(argv: list[str] | None = None) -> int:
                 f"(p={result['max_statistic_p']:.6f}, "
                 f"margin={result['macro_f1_margin_over_surface']:.6f})"
             )
-    except (A0ActivationError, A0AnalysisError, OSError, KeyError, ValueError) as exc:
+            report_path, _manifest_path = render_a0_report(
+                result_path=result_dir / "statistical-result.json",
+                output_dir=result_dir,
+                receipt_path=result_dir / "activation-receipt.json",
+                index_path=result_dir / "representations-index.jsonl",
+            )
+            print(f"a0-report: PASS ({report_path})")
+    except (A0ActivationError, A0AnalysisError, A0ReportError, OSError, KeyError, ValueError) as exc:
         print(f"a0-run: FAILED: {exc}")
         return 1
     return 0
