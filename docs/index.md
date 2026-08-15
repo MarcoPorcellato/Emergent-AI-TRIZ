@@ -3,7 +3,7 @@ type: documentation-index
 title: Documentation Index
 description: Maintained documentation portal for the Latent TRIZ open laboratory.
 status: canonical
-last_verified: 2026-08-14
+last_verified: 2026-08-15
 ---
 
 # Documentation Index
@@ -12,7 +12,9 @@ This is the **maintained** documentation bundle.
 
 - [Human portal](./README.md)
 - [Laboratory master plan](./LABORATORY_MASTER_PLAN.md)
+- [Persistent Codex execution goal](./PERSISTENT_GOAL.txt)
 - [A0 automated weak-hypothesis exploration](./A0_AUTOMATED_WEAK_HYPOTHESIS.md)
+- [A0 replication and robustness](./A0_REPLICATION_AND_ROBUSTNESS.md)
 - [Chronology log](./log.md)
 - [Reference collection](./reference/index.md)
 - [Decision records](./decisions/index.md)

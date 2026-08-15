@@ -3,13 +3,22 @@ type: chronology-log
 title: Documentation Chronology
 description: Time-ordered notes for maintained documentation and governance updates.
 status: canonical
-last_verified: 2026-08-14
+last_verified: 2026-08-15
 ---
 
 # Documentation Chronology
 
 ## 2026-08-15
 
+- Published the complete A0 sealed exploration through PR 34 at merge commit
+  `fc80976d3a256ed88e2d59f1a6f893e15154e3a0`. The frozen automated-proxy
+  result is positive with maximum-statistic p = 0.005, 24/24 paired-family
+  successes, and macro-F1 margin 0.188234 over the problem-only baseline.
+- Preserved the result boundary: exploratory, evidence-ineligible, not
+  expert-validated, empty claim links, and no promotion from E0.
+- Closed the stale A0 delivery notes, added the separate A0-R independent-corpus
+  and cross-model replication contract, and added a concise persistent goal
+  pointing to the canonical Laboratory Master Plan.
 - A0 protocol checkpoint `v1.0.3` was frozen before any model-backed or sealed
   execution. The deterministic label-free corpus is 96 families / 192 cases.
 - Calibration and sealed evaluation files were separated at manifest level, with
@@ -20,9 +29,10 @@ last_verified: 2026-08-14
 - Power-calibration parameters fixed as 4 problem families/domain, 24 problem
   families total (48 paired cases), 199 permutations, critical threshold 19,
   MDE 0.333212784429589.
-- No real model result has been produced yet; no TRIZ validation claim is made.
-- The next planned milestone is exact-model activation extraction and sealed
-  inference.
+- The later exact-model sealed run and publication are recorded above; no TRIZ
+  validation claim is made.
+- The next automated milestone is a separately frozen A0-R replication, not a
+  mutation or rerun-in-place of the published A0 result.
 
 ## 2026-08-14
 
