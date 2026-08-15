@@ -36,6 +36,9 @@ class A0ShortcutTests(unittest.TestCase):
             self.assertIn("overall", result["controls"])
             self.assertIn(result["controls"]["overall"]["status"], {"pass", "non_interpretable"})
             self.assertEqual(result["counts"]["total_cases"], 96)
+            random_labels = result["controls"]["random_label_controls"]
+            self.assertEqual(random_labels["aggregate"]["macro_f1"], 0.48825717492384)
+            self.assertEqual(random_labels["majority_macrof1"], 0.33333333333333)
             for control in (
                 "bag_of_words_baselines",
                 "character_ngram_baselines",

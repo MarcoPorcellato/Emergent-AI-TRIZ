@@ -40,6 +40,8 @@ _DEFAULT_A0_CONTROLS = (
     "adjacent_principle_proxy_controls",
 )
 
+_METRIC_DECIMAL_PLACES = 14
+
 
 def audit_a0_shortcuts(
     cases_path: str | Path,
@@ -951,7 +953,7 @@ def _build_report(
     protocol_threshold: float,
     protocol_margin: float,
 ) -> dict[str, Any]:
-    return {
+    report = {
         "artifact_class": "a0-shortcut-audit",
         "protocol_id": protocol.get("protocol_id", "unknown"),
         "empirical": True,
@@ -965,3 +967,19 @@ def _build_report(
         "shortcut_threshold": protocol_threshold,
         "margin_over_majority": protocol_margin,
     }
+    return _normalize_metric_floats(report)
+
+
+def _normalize_metric_floats(value: Any) -> Any:
+    """Quantize reported metrics so canonical JSON is stable across runtimes."""
+
+    if isinstance(value, float):
+        normalized = round(value, _METRIC_DECIMAL_PLACES)
+        return 0.0 if normalized == 0.0 else normalized
+    if isinstance(value, list):
+        return [_normalize_metric_floats(item) for item in value]
+    if isinstance(value, tuple):
+        return tuple(_normalize_metric_floats(item) for item in value)
+    if isinstance(value, Mapping):
+        return {key: _normalize_metric_floats(item) for key, item in value.items()}
+    return value
