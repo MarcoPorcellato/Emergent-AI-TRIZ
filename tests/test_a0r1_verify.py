@@ -16,6 +16,14 @@ class A0R1VerifyTests(unittest.TestCase):
     root = Path(__file__).resolve().parents[1]
     protocol = root / "experiments/a0r1-independent-proxy/protocol.json"
 
+    def _build_mutation_root(self) -> tempfile.TemporaryDirectory:
+        directory = tempfile.TemporaryDirectory()
+        root = Path(directory.name)
+        copytree(self.root / "data", root / "data")
+        copytree(self.root / "results", root / "results")
+        copytree(self.root / "experiments", root / "experiments")
+        return directory
+
     def test_tracked_foundation_reproduces_byte_for_byte(self) -> None:
         result = verify_a0r1_foundation(self.root)
         self.assertEqual("pass", result["status"])
@@ -40,27 +48,23 @@ class A0R1VerifyTests(unittest.TestCase):
                 _require_equal(expected, actual, ("artifact.json",))
 
     def test_frozen_protocol_requires_frozen_snapshot_match(self) -> None:
-        original = self.protocol.read_bytes()
-        frozen = (self.root / "results/a0r1/freeze/protocol-frozen.json").read_text(encoding="utf-8")
-        protocol = json.loads(frozen)
-        protocol["protocol_status"] = "frozen"
-        protocol["status"] = "frozen"
-        protocol["protocol_id"] = protocol["protocol_id"] + "-tamper"
-        try:
-            self.protocol.write_text(json.dumps(protocol, sort_keys=True), encoding="utf-8")
+        with self._build_mutation_root() as root_tmp:
+            root = Path(root_tmp)
+            protocol = (root / "results/a0r1/freeze/protocol-frozen.json").read_text(encoding="utf-8")
+            payload = json.loads(protocol)
+            payload["protocol_status"] = "frozen"
+            payload["status"] = "frozen"
+            payload["protocol_id"] = payload["protocol_id"] + "-tamper"
+            (root / "experiments/a0r1-independent-proxy/protocol.json").write_text(
+                json.dumps(payload, sort_keys=True), encoding="utf-8"
+            )
             with self.assertRaises(A0R1VerifyError):
-                verify_a0r1_foundation(self.root)
-        finally:
-            self.protocol.write_bytes(original)
+                verify_a0r1_foundation(root)
 
     def test_planned_protocol_paths_skip_freeze_artifact_verification(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
+        with self._build_mutation_root() as directory:
             root = Path(directory)
-            real_root = self.root
-            planned_protocol = real_root / "results/a0r1/freeze/protocol-planned.json"
-            copytree(real_root / "data", root / "data")
-            copytree(real_root / "results", root / "results")
-            copytree(real_root / "experiments", root / "experiments")
+            planned_protocol = self.root / "results/a0r1/freeze/protocol-planned.json"
 
             (root / "experiments/a0r1-independent-proxy/protocol.json").write_bytes(
                 planned_protocol.read_bytes()
@@ -72,25 +76,21 @@ class A0R1VerifyTests(unittest.TestCase):
             self.assertEqual(0, summary["freeze_files_verified"])
 
     def test_frozen_manifest_hash_mismatch_fails(self) -> None:
-        freeze_manifest = self.root / "results/a0r1/freeze/freeze-manifest.json"
-        original = freeze_manifest.read_text(encoding="utf-8")
-        payload = json.loads(original)
-        payload["planned_protocol_snapshot_hash"] = "0" * 64
-        try:
+        with self._build_mutation_root() as directory:
+            root = Path(directory)
+            freeze_manifest = root / "results/a0r1/freeze/freeze-manifest.json"
+            payload = json.loads(freeze_manifest.read_text(encoding="utf-8"))
+            payload["planned_protocol_snapshot_hash"] = "0" * 64
             freeze_manifest.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
             with self.assertRaises(A0R1VerifyError):
-                verify_a0r1_foundation(self.root)
-        finally:
-            freeze_manifest.write_text(original, encoding="utf-8")
+                verify_a0r1_foundation(root)
 
     def test_failed_freeze_manifest_never_verifies_as_pass(self) -> None:
-        freeze_manifest = self.root / "results/a0r1/freeze/freeze-manifest.json"
-        original = freeze_manifest.read_text(encoding="utf-8")
-        payload = json.loads(original)
-        payload["status"] = "failed"
-        try:
+        with self._build_mutation_root() as directory:
+            root = Path(directory)
+            freeze_manifest = root / "results/a0r1/freeze/freeze-manifest.json"
+            payload = json.loads(freeze_manifest.read_text(encoding="utf-8"))
+            payload["status"] = "failed"
             freeze_manifest.write_text(json.dumps(payload, sort_keys=True), encoding="utf-8")
             with self.assertRaises(A0R1VerifyError):
-                verify_a0r1_foundation(self.root)
-        finally:
-            freeze_manifest.write_text(original, encoding="utf-8")
+                verify_a0r1_foundation(root)
