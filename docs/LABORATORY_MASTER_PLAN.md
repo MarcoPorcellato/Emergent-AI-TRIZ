@@ -249,7 +249,12 @@ thresholds, strict single target read, failure publication, and
 descriptive-only cross-model concordance and resource-envelope refusal. Fifty-five focused synthetic tests
 currently pass, the execution contract verifies 11 code files and 9 runtime
 files without model load, and no real model load or sealed-target access
-occurred. R2.3 still requires explicit approval.
+occurred. R2.2 is locally qualified at exact head
+`e9df61830611cff2c3acf60ea1382cdf9968e1b8`: the full repository suite and the
+exact-head CCP repository check pass, and the clean receipt matches that head.
+This evidence remains unpublished, so `1f35ba353e792aa263db7449216e3172d0306798`
+is still the public anchor. R2.3 still requires explicit approval after the
+R2.2 receipt, branch, PR, and hosted gate are published and merged.
 
 ### PR 30 — annotation ontology v1.2 implementation
 

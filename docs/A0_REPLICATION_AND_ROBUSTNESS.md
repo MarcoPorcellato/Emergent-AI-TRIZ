@@ -269,7 +269,12 @@ fixed primary thresholds, strict single target read, failure publication, and
 descriptive-only cross-model concordance and resource-envelope refusal. Fifty-five focused synthetic tests
 currently pass, and the execution contract verifies 11 code files and 9
 runtime files without loading a model. No real model load or sealed-target
-access occurred in R2.2. R2.3 still requires explicit approval.
+access occurred in R2.2. The implementation is locally qualified at exact head
+`e9df61830611cff2c3acf60ea1382cdf9968e1b8`: the full repository suite and the
+exact-head CCP repository check pass, with a clean matching receipt. The head
+and receipt are not yet public, so R2.2 remains a publication checkpoint rather
+than a merged milestone. R2.3 still requires explicit approval after R2.2 is
+merged.
 
 **Automated-study direction:** the operator has requested the broadest useful
 SmolLM2 study that does not depend on human review. This authorizes preparation,
@@ -324,7 +329,8 @@ model output or sealed-target access.
 
 #### R2.2 — implementation and synthetic qualification
 
-In delivery: the R2-only adapter, activation, analysis, runner, report,
+Locally qualified, publication pending: the R2-only adapter, activation,
+analysis, runner, report,
 schemas, and tests are implemented against the offline/local-only SmolLM2 study
 path. Synthetic qualification currently passes 55 focused tests. The execution
 contract verifies 11 code files and 9 runtime files without loading a model.

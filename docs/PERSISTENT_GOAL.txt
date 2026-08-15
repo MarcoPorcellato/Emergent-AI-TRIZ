@@ -4,6 +4,13 @@ verified public anchor 1f35ba353e792aa263db7449216e3172d0306798, but verify
 origin/main, open pull requests, the active ruleset, exact worktree state, and
 current evidence live before acting.
 
+The qualified unpublished R2.2 implementation checkpoint is
+e9df61830611cff2c3acf60ea1382cdf9968e1b8 with a matching clean CCP PASS
+receipt. Treat that implementation commit as a resumable local checkpoint, not
+as public or merged evidence; any later documentation-only head still requires
+its own exact-head qualification, and publication remains a separate explicit
+gate.
+
 Treat A0-R Tier R1 and PR 46 as terminally published and verified. Keep the
 SmolLM2 R2.2 study fully local/offline and synthetic, with no real model load
 or sealed-target access until the separate R2.3 approval gate is explicitly
