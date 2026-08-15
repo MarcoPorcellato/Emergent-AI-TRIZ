@@ -10,6 +10,11 @@ last_verified: 2026-08-15
 
 ## 2026-08-15
 
+- Started A0-R R1.1 with a planned protocol and strict schema fixing the
+  same-model primary endpoint, power thresholds, E0 envelope, and immutable A0
+  source anchors. Added a fail-closed independence auditor whose API keeps
+  calibration and sealed targets physically separate. This is implementation
+  substrate, not a freeze or empirical result.
 - Published the complete A0 sealed exploration through PR 34 at merge commit
   `fc80976d3a256ed88e2d59f1a6f893e15154e3a0`. The frozen automated-proxy
   result is positive with maximum-statistic p = 0.005, 24/24 paired-family

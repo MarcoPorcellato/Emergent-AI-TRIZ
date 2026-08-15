@@ -2,7 +2,7 @@
 type: research-spec
 title: A0 Replication and Robustness
 description: Preregistered route for challenging the published A0 automated-proxy signal on independent procedural data and model families.
-status: planned
+status: in_delivery
 last_verified: 2026-08-15
 ---
 
@@ -140,6 +140,15 @@ underlying constructs remain unvalidated by experts.
 **Exit evidence:** a machine-readable protocol, independence manifest, explicit
 A0 exclusion hashes, status vocabulary, primary endpoint, sensitivity family,
 and positive/null/failed/non-interpretable rules are frozen before model output.
+
+**Current checkpoint — in delivery:** the planned protocol instance and its
+strict Draft 2020-12 schema now fix the same-model primary endpoint, statistical
+thresholds, epistemic envelope, and immutable A0 anchors. A separate
+fail-closed independence auditor compares candidate and A0 manifests, case
+files, calibration targets, and sealed targets without joining those physical
+target files. This checkpoint is not a protocol freeze: the independent corpus,
+its manifest-derived hashes, the audit report, and calibration evidence still
+have to be generated and reviewed before `protocol_status` may become `frozen`.
 
 ### R1.2 — deterministic corpus and shortcut gate
 

@@ -58,6 +58,7 @@ def main() -> int:
         ("schemas/lab05-config.schema.json", "experiments/lab05-candidate-directions/config.json"),
         ("schemas/lab05-result.schema.json", "results/lab05/candidate-directions/summary.json"),
         ("schemas/a0-protocol.schema.json", "experiments/a0-automated-weak-proxy/protocol.json"),
+        ("schemas/a0r1-protocol.schema.json", "experiments/a0r1-independent-proxy/protocol.json"),
         ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),
         ("schemas/a0-case.schema.json", "data/a0/cases.jsonl"),
         ("schemas/a0-procedural-target.schema.json", "data/a0/procedural-targets/calibration-targets.jsonl"),
@@ -114,6 +115,7 @@ def main() -> int:
         "schemas/lab05-config.schema.json",
         "schemas/lab05-result.schema.json",
         "schemas/a0-protocol.schema.json",
+        "schemas/a0r1-protocol.schema.json",
         "schemas/a0-corpus-manifest.schema.json",
         "schemas/a0-case.schema.json",
         "schemas/a0-procedural-target.schema.json",
@@ -124,6 +126,7 @@ def main() -> int:
         "experiments/lab03-behavioral-baselines/config.json",
         "experiments/lab04-decodability/config.json",
         "experiments/lab05-candidate-directions/config.json",
+        "experiments/a0r1-independent-proxy/protocol.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))
