@@ -10,6 +10,16 @@ last_verified: 2026-08-15
 
 ## 2026-08-15
 
+- Published the terminal A0-R R1 package through PR 41 at merge commit
+  `05ba15a28442260c32951413c9128f0179573198`. The immutable package retains
+  the raw output, deterministic 54-label clerical recovery, recovery receipt,
+  activation receipt, 96-record representation index, report, manifest, and
+  external dense-asset locator. The fixed primary remains positive exploratory
+  E0 evidence: 23/24 family successes, macro-F1 0.624348 versus 0.499130,
+  margin 0.125217, six domain-direction successes, and permutation p = 0.002.
+  Exact-head repository qualification and all seven hosted checks passed; A0
+  stayed byte-stable, claim IDs stayed empty, and H1/Wave 2 were untouched.
+  R2 model acquisition and material execution remain explicitly approval-gated.
 - Merged the A0-R R1.4b harness in PR 40 at
   `c5b28cd3ffca38a4bbdca076ba4bff306e653aa6`, then executed the frozen R1
   endpoint once. The exploratory result is positive: 23/24 family successes,
