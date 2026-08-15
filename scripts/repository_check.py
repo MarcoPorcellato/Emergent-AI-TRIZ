@@ -79,6 +79,7 @@ def main() -> int:
         ("schemas/a0r2-acquisition-contract.schema.json", "experiments/a0r2-independent-model/acquisition-contract.json"),
         ("schemas/a0r2-acquisition-receipt.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json"),
         ("schemas/a0r2-study-protocol.schema.json", "experiments/a0r2-independent-model/study-protocol.json"),
+        ("schemas/a0r2-implementation.schema.json", "experiments/a0r2-independent-model/implementation.json"),
         ("schemas/a0r2-feasibility-contract.schema.json", "experiments/a0r2-independent-model/feasibility-contract.json"),
         ("schemas/a0r2-feasibility-receipt.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json"),
         ("schemas/a0r2-feasibility-guard-observation.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/guard-observation.json"),
@@ -156,6 +157,12 @@ def main() -> int:
         "schemas/a0r2-feasibility-contract.schema.json",
         "schemas/a0r2-feasibility-receipt.schema.json",
         "schemas/a0r2-feasibility-guard-observation.schema.json",
+        "schemas/a0r2-study-protocol.schema.json",
+        "schemas/a0r2-implementation.schema.json",
+        "schemas/a0r2-activation-receipt.schema.json",
+        "schemas/a0r2-statistical-result.schema.json",
+        "schemas/a0r2-run-failure.schema.json",
+        "schemas/a0r2-publication-manifest.schema.json",
         "schemas/a0-corpus-manifest.schema.json",
         "schemas/a0-case.schema.json",
         "schemas/a0-procedural-target.schema.json",
@@ -179,6 +186,8 @@ def main() -> int:
         "results/a0r1/freeze/protocol-frozen.json",
         "experiments/a0r2-independent-model/acquisition-contract.json",
         "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json",
+        "experiments/a0r2-independent-model/study-protocol.json",
+        "experiments/a0r2-independent-model/implementation.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))

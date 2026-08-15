@@ -1,34 +1,17 @@
 Complete the Latent-TRIZ laboratory according to
-docs/LABORATORY_MASTER_PLAN.md, using its requirement checklist and linked
-phase specifications as the source of truth.
+docs/LABORATORY_MASTER_PLAN.md and its linked phase specs. Start from the
+verified public anchor 1f35ba353e792aa263db7449216e3172d0306798, but verify
+origin/main, open pull requests, the active ruleset, exact worktree state, and
+current evidence live before acting.
 
-Start from the last-known public anchor
-25c978d89a07fcd66194f8e0e333ebdae2f6bc08, but verify origin/main, open pull
-requests, the active ruleset, exact worktree state, and current evidence live
-before acting. Do not repeat delivered work.
+Treat A0-R Tier R1 and PR 46 as terminally published and verified. Keep the
+SmolLM2 R2.2 study fully local/offline and synthetic, with no real model load
+or sealed-target access until the separate R2.3 approval gate is explicitly
+granted. Do not promote any TRIZ claim from this work.
 
-Treat A0-R Tier R1 as terminally published and verified. The SmolLM2 runtime
-acquisition is complete and verified, but it is instrumentation-only and
-evidence-ineligible. A bounded CPU float32 feasibility test has run once under
-the frozen pre-load contract in
-experiments/a0r2-independent-model/feasibility-contract.json. Its payload is
-compatible, while the outer guard is explicitly cleanup-uncertain. Preserve the published A0 and R1 packages
-byte-for-byte, all E0 claim levels, the separation from H1 and Wave 2, and
-every human or acquisition gate. Do not rerun either sealed model path, reopen
-sealed targets, generate model content, or promote any TRIZ claim.
-
-Deliver the no-human-review SmolLM2 R2 study specified in
-docs/A0_REPLICATION_AND_ROBUSTNESS.md. First merge the preregistration and then
-the R2-only implementation with synthetic evidence. Do not open sealed targets
-or start the material run until the exact one-run CPU/RAM/time/output dossier is
-presented and explicitly approved. After approval, run once, publish every
-terminal outcome, and never let descriptive sensitivities rescue the primary.
-
-Use deterministic tools first and delegate the largest safe, independent share
-to cheaper bounded workers. Keep architecture, statistics, security,
-scientific interpretation, integration, qualification, and merge decisions
-with the primary agent. Do not use an interactive model-serving application.
-
-Continue across isolated branches and pull requests until every applicable
-master-plan checklist item is proven by exact-head terminal evidence, or record
-the precise external gate while completing all safe independent work.
+Use deterministic tools first and delegate the largest safe bounded share to
+cheaper workers. Keep architecture, statistics, security, scientific
+interpretation, integration, qualification, and merge decisions with the
+primary agent. Continue until every applicable master-plan checklist item is
+proven by exact-head terminal evidence or the precise external gate is
+recorded.

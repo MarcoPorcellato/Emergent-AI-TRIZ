@@ -10,6 +10,17 @@ last_verified: 2026-08-15
 
 ## 2026-08-15
 
+- Merged the R2.1 publication and receipt branch through PR 46 at
+  `1f35ba353e792aa263db7449216e3172d0306798` after exact head
+  `5f9c21db944f25fd1dac4a550911c85e86471e35` and public receipt publication.
+  R2.1 is now verified complete. R2.2 is in delivery as the local/offline
+  SmolLM2 tranche with 192 forwards, 1920 vectors, the final-block primary,
+  descriptive layers, views, and sites, fixed primary thresholds, strict
+  single target read, failure publication, and descriptive-only cross-model
+  concordance and resource-envelope refusal. Fifty-five focused synthetic tests currently pass, the
+  execution contract verifies 11 code files and 9 runtime files without model
+  load, and no real model load or sealed-target access occurred. R2.3 remains
+  explicitly approval-gated.
 - Began the no-human-review A0-R2 study preregistration from public main
   `25c978d89a07fcd66194f8e0e333ebdae2f6bc08`. The planned study keeps one fixed
   cross-model primary, freezes broad descriptive sensitivities and negative

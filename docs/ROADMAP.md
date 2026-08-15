@@ -137,6 +137,13 @@ The provisional model roles are now recorded in [ADR 0003](./decisions/0003-exp-
 
 The repository now exposes two offline readiness gates for that decision: `make model-preflight` checks the exact candidate manifest and `make dataset-audit` checks the development corpus against the current plan. Both are deterministic, no-download gates. The freeze step remains separate and must still be backed by operator receipts, local hashes, and an immutable run record.
 
+PR 46 merged the R2.1 publication and receipt branch at
+`1f35ba353e792aa263db7449216e3172d0306798` after exact head
+`5f9c21db944f25fd1dac4a550911c85e86471e35`. R2.1 is verified complete. R2.2
+is now the active local/offline SmolLM2 tranche with synthetic-only
+qualification, descriptive cross-model comparisons, and no real model load or
+sealed-target access yet. R2.3 remains a separate approval gate.
+
 ### Evidence profiles
 
 The public E0-E6 ladder remains the concise communication layer. Before claim promotion, each result will also carry a machine-readable evidence profile covering behavioral effect, lexical controls, cross-domain transfer, decodability, positive and negative interventions, dose response, capability preservation, independent/cross-model replication, and controlled training. The ladder level will be derived from satisfied profile fields rather than used as the sole description of evidence.
@@ -173,12 +180,14 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
    pre-load contract merged. The payload reports compatibility within the
    frozen envelope; the outer guard exited 70 with cleanup uncertain and is not
    reported as PASS. No generation or sealed target occurred. Any changed
-   acquisition, rerun, or sealed execution remains separately gated.
-   The next delivery tranche preregisters and implements a no-human-review R2
-   study. Its only primary is final-block / mean-transformation-span /
-   problem-plus-transformation versus the problem-only sentinel baseline;
-   layers `[0,11,21,32]`, other sites/views, controls, depth profiles, and
-   cross-model comparisons are descriptive and cannot rescue that primary.
+   acquisition, rerun, or sealed execution remains separately gated. PR 46
+   then merged the R2.1 publication and receipt branch at
+   `1f35ba353e792aa263db7449216e3172d0306798` after exact head
+   `5f9c21db944f25fd1dac4a550911c85e86471e35`. R2.1 is verified complete.
+   R2.2 is now in delivery as the local/offline SmolLM2 tranche with
+   synthetic-only qualification, descriptive cross-model comparisons, and no
+   real model load or sealed-target access yet. R2.3 remains a separate
+   approval gate.
 7. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
 8. Store independent raw ratings, adjudications, exclusions, and canonical human labels as separate immutable artifacts. Labs 03–05 consume canonical labels, never generator intent.
 9. Add a common empirical envelope without rewriting v1 fixtures, and separate pre-freeze candidate surface auditing from post-freeze Lab 03.

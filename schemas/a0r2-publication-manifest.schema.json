@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-publication-manifest.schema.json",
+  "title": "A0-R2 publication manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "created_at",
+    "protocol_id",
+    "status",
+    "scientific_status",
+    "empirical",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "terminal_status",
+    "protocol",
+    "publication",
+    "result",
+    "report"
+  ],
+  "properties": {
+    "artifact_class": {"const": "a0r2-publication-manifest"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "protocol_id": {"const": "a0r2-independent-model-v1.0.0"},
+    "status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]},
+    "scientific_status": {"const": "exploratory"},
+    "empirical": {"const": true},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "terminal_status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]},
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?:[^/\\s]+(?:/[^/\\s]+)*)$"
+        },
+        "sha256": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publish_every_terminal_outcome", "sensitivity_may_rescue_primary", "model_substitution_after_output", "claim_promotion"],
+      "properties": {
+        "publish_every_terminal_outcome": {"const": true},
+        "sensitivity_may_rescue_primary": {"const": false},
+        "model_substitution_after_output": {"const": false},
+        "claim_promotion": {"const": false}
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?:[^/\\s]+(?:/[^/\\s]+)*)$"
+        },
+        "sha256": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?:[^/\\s]+(?:/[^/\\s]+)*)$"
+        },
+        "sha256": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "index": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?:[^/\\s]+(?:/[^/\\s]+)*)$"
+        },
+        "sha256": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?:[^/\\s]+(?:/[^/\\s]+)*)$"
+        },
+        "sha256": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "dense": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "records", "hidden_size"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^artifacts/a0r2/[A-Za-z0-9._-]+/activations\\.json$"
+        },
+        "sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "records": {"const": 1920},
+        "hidden_size": {"const": 960}
+      }
+    }
+  }
+}
