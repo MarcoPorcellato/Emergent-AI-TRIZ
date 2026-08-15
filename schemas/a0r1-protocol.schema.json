@@ -19,6 +19,8 @@
     "tokenizer",
     "runtime",
     "primary_endpoint",
+    "sensitivity_endpoints",
+    "shortcut_evaluation",
     "thresholds",
     "calibration",
     "outcome_rules",
@@ -197,6 +199,91 @@
         "multiplicity": {
           "type": "integer",
           "const": 1
+        }
+      }
+    },
+    "sensitivity_endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["layers", "token_sites", "views", "may_replace_primary", "interpretation"],
+      "properties": {
+        "layers": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {"type": "integer", "enum": [0, 2, 4, 6]}
+        },
+        "token_sites": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": ["sentinel", "final_transformation_token", "mean_transformation_span"]
+          }
+        },
+        "views": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "problem_only",
+              "transformation_only",
+              "problem_plus_transformation",
+              "problem_plus_solution"
+            ]
+          }
+        },
+        "may_replace_primary": {"type": "boolean", "const": false},
+        "interpretation": {"type": "string", "const": "descriptive_only"}
+      }
+    },
+    "shortcut_evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "macro_f1_threshold",
+        "margin_over_majority",
+        "a0_controls"
+      ],
+      "properties": {
+        "macro_f1_threshold": {
+          "type": "number",
+          "const": 0.65
+        },
+        "margin_over_majority": {
+          "type": "number",
+          "const": 0.1
+        },
+        "a0_controls": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "bag_of_words_baselines",
+              "character_ngram_baselines",
+              "length_and_punctuation_baselines",
+              "style_and_template_baselines",
+              "provenance_classifiers",
+              "problem_only_label_prediction",
+              "leave_one_domain_out_surface_evaluation",
+              "duplicate_and_near_duplicate_detection",
+              "family_leakage_detection",
+              "random_label_controls",
+              "random_partition_controls",
+              "generic_action_taxonomy_controls",
+              "generic_transformation_taxonomy_controls",
+              "adjacent_principle_proxy_controls"
+            ]
+          }
         }
       }
     },

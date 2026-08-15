@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r1-corpus-manifest.schema.json",
+  "title": "A0-R1 corpus manifest contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "protocol_id",
+    "protocol_hash",
+    "generator_id",
+    "generator_source_sha256",
+    "seed",
+    "deterministic_seed",
+    "partitions",
+    "counts",
+    "neutral_domains",
+    "family_integrity",
+    "files",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "preregistered_layers",
+    "token_sites",
+    "views",
+    "license"
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "a0r1-corpus-manifest"
+    },
+    "protocol_id": {
+      "type": "string",
+      "pattern": "^a0-r1-tier-r1-v\\d+\\.\\d+$"
+    },
+    "protocol_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "generator_id": {
+      "type": "string",
+      "const": "latent-triz-a0-r1-corpus-v1"
+    },
+    "generator_source_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "seed": {
+      "type": "integer",
+      "const": 20260815
+    },
+    "deterministic_seed": {
+      "type": "integer",
+      "const": 20260815
+    },
+    "partitions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calibration_split", "sealed_split", "split_field"],
+      "properties": {
+        "calibration_split": {
+          "type": "string",
+          "const": "calibration"
+        },
+        "sealed_split": {
+          "type": "string",
+          "const": "sealed"
+        },
+        "split_field": {
+          "type": "string",
+          "const": "split"
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_cases",
+        "total_targets",
+        "families",
+        "domains",
+        "calibration_cases",
+        "sealed_cases"
+      ],
+      "properties": {
+        "total_cases": {
+          "type": "integer",
+          "const": 96
+        },
+        "total_targets": {
+          "type": "integer",
+          "const": 96
+        },
+        "families": {
+          "type": "integer",
+          "const": 48
+        },
+        "domains": {
+          "type": "integer",
+          "const": 6
+        },
+        "calibration_cases": {
+          "type": "integer",
+          "const": 48
+        },
+        "sealed_cases": {
+          "type": "integer",
+          "const": 48
+        }
+      }
+    },
+    "neutral_domains": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "family_integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "paired_records_by_family",
+        "uniform_split_by_family",
+        "family_split_sha256"
+      ],
+      "properties": {
+        "paired_records_by_family": {
+          "type": "boolean",
+          "const": true
+        },
+        "uniform_split_by_family": {
+          "type": "boolean",
+          "const": true
+        },
+        "family_split_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "files": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cases_jsonl", "calibration_targets_jsonl", "sealed_targets_jsonl"],
+      "properties": {
+        "cases_jsonl": {"$ref": "#/$defs/file"},
+        "calibration_targets_jsonl": {"$ref": "#/$defs/file"},
+        "sealed_targets_jsonl": {"$ref": "#/$defs/file"}
+      }
+    },
+    "preregistered_layers": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {"type": "integer", "enum": [0, 2, 4, 6]}
+    },
+    "token_sites": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["sentinel", "final_transformation_token", "mean_transformation_span"]
+      }
+    },
+    "views": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "problem_only",
+          "transformation_only",
+          "problem_plus_transformation",
+          "problem_plus_solution"
+        ]
+      }
+    },
+    "empirical": {"type": "boolean", "const": true},
+    "scientific_status": {"type": "string", "const": "exploratory"},
+    "evidence_eligible": {"type": "boolean", "const": false},
+    "expert_validated": {"type": "boolean", "const": false},
+    "claim_ids": {"type": "array", "maxItems": 0, "items": {"type": "string", "minLength": 1}},
+    "license": {"type": "string", "const": "Apache-2.0"}
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^[^/].*$"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "size": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

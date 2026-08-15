@@ -21,6 +21,9 @@ from .candidate_batch import CandidateBatchError, audit_candidate_batch
 from .annotation_audit import AnnotationAuditError, audit_annotations
 from .a0_corpus import A0CorpusError, generate_a0_corpus
 from .a0_calibration import A0CalibrationError, run_a0_calibration
+from .a0r1_corpus import A0R1CorpusError, generate_a0r1_corpus
+from .a0r1_preoutput import A0R1PreoutputError, run_a0r1_preoutput_audits
+from .a0r1_verify import A0R1VerifyError, verify_a0r1_foundation
 from .validator import ValidationIssue, validate
 
 
@@ -160,6 +163,28 @@ def main(argv: Optional[List[str]] = None) -> int:
     a0_calibration_parser.add_argument("--corpus-dir", required=True)
     a0_calibration_parser.add_argument("--output-dir", required=True)
 
+    a0r1_corpus_parser = subparsers.add_parser(
+        "a0r1-corpus",
+        help="Generate the independent A0-R1 procedural corpus",
+    )
+    a0r1_corpus_parser.add_argument("--protocol", required=True)
+    a0r1_corpus_parser.add_argument("--output-dir", required=True)
+
+    a0r1_preoutput_parser = subparsers.add_parser(
+        "a0r1-preoutput",
+        help="Run A0-R1 independence and calibration-only shortcut audits",
+    )
+    a0r1_preoutput_parser.add_argument("--protocol", required=True)
+    a0r1_preoutput_parser.add_argument("--candidate-corpus-dir", required=True)
+    a0r1_preoutput_parser.add_argument("--source-corpus-dir", required=True)
+    a0r1_preoutput_parser.add_argument("--output-dir", required=True)
+
+    a0r1_verify_parser = subparsers.add_parser(
+        "a0r1-verify",
+        help="Regenerate and verify the tracked A0-R1 pre-output foundation",
+    )
+    a0r1_verify_parser.add_argument("--root", default=".")
+
     fingerprint_parser = subparsers.add_parser("fingerprint", help="Compute SHA-256 of a file")
     fingerprint_parser.add_argument("path", help="Path to file")
 
@@ -226,6 +251,17 @@ def main(argv: Optional[List[str]] = None) -> int:
         return _run_a0_corpus(args.protocol, args.output_dir)
     if args.command == "a0-calibrate":
         return _run_a0_calibration(args.protocol, args.corpus_dir, args.output_dir)
+    if args.command == "a0r1-corpus":
+        return _run_a0r1_corpus(args.protocol, args.output_dir)
+    if args.command == "a0r1-preoutput":
+        return _run_a0r1_preoutput(
+            args.protocol,
+            args.candidate_corpus_dir,
+            args.source_corpus_dir,
+            args.output_dir,
+        )
+    if args.command == "a0r1-verify":
+        return _run_a0r1_verify(args.root)
     parser.error("Unknown command")
     return 1
 
@@ -709,6 +745,46 @@ def _run_a0_calibration(protocol: str, corpus_dir: str, output_dir: str) -> int:
         return 1
     print(stable_json_dumps(summary))
     return 0 if summary["status"] == "pass" else 1
+
+
+def _run_a0r1_corpus(protocol: str, output_dir: str) -> int:
+    try:
+        manifest = generate_a0r1_corpus(protocol, output_dir)
+    except (A0R1CorpusError, OSError) as exc:
+        _print_error(f"a0r1-corpus: {exc}")
+        return 1
+    print(stable_json_dumps(manifest))
+    return 0
+
+
+def _run_a0r1_preoutput(
+    protocol: str,
+    candidate_corpus_dir: str,
+    source_corpus_dir: str,
+    output_dir: str,
+) -> int:
+    try:
+        summary = run_a0r1_preoutput_audits(
+            protocol,
+            candidate_corpus_dir,
+            source_corpus_dir,
+            output_dir,
+        )
+    except (A0R1PreoutputError, OSError, ValueError) as exc:
+        _print_error(f"a0r1-preoutput: {exc}")
+        return 1
+    print(stable_json_dumps(summary))
+    return 0 if summary["status"] == "pass" else 1
+
+
+def _run_a0r1_verify(root: str) -> int:
+    try:
+        summary = verify_a0r1_foundation(root)
+    except (A0R1VerifyError, OSError, ValueError) as exc:
+        _print_error(f"a0r1-verify: {exc}")
+        return 1
+    print(stable_json_dumps(summary))
+    return 0
 
 
 def _write_json_output(payload: dict, output: str, dumper) -> int:

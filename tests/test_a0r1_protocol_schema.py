@@ -56,6 +56,38 @@ class A0R1ProtocolSchemaTests(unittest.TestCase):
                 "is_max_statistic_selection": False,
                 "multiplicity": 1,
             },
+            "sensitivity_endpoints": {
+                "layers": [0, 2, 4, 6],
+                "token_sites": ["sentinel", "final_transformation_token", "mean_transformation_span"],
+                "views": [
+                    "problem_only",
+                    "transformation_only",
+                    "problem_plus_transformation",
+                    "problem_plus_solution",
+                ],
+                "may_replace_primary": False,
+                "interpretation": "descriptive_only",
+            },
+            "shortcut_evaluation": {
+                "macro_f1_threshold": 0.65,
+                "margin_over_majority": 0.1,
+                "a0_controls": [
+                    "bag_of_words_baselines",
+                    "character_ngram_baselines",
+                    "length_and_punctuation_baselines",
+                    "style_and_template_baselines",
+                    "provenance_classifiers",
+                    "problem_only_label_prediction",
+                    "leave_one_domain_out_surface_evaluation",
+                    "duplicate_and_near_duplicate_detection",
+                    "family_leakage_detection",
+                    "random_label_controls",
+                    "random_partition_controls",
+                    "generic_action_taxonomy_controls",
+                    "generic_transformation_taxonomy_controls",
+                    "adjacent_principle_proxy_controls",
+                ],
+            },
             "thresholds": {
                 "critical_successes": 17,
                 "primary_permutation_p_at_most": 0.05,
@@ -133,3 +165,17 @@ class A0R1ProtocolSchemaTests(unittest.TestCase):
         issues = validate(protocol, self.schema)
         self.assertTrue(issues)
         self.assertTrue(any(issue.path.endswith("claim_ids") for issue in issues))
+
+    def test_a0r1_protocol_rejects_incomplete_shortcut_suite(self) -> None:
+        protocol = self._valid_protocol()
+        protocol["shortcut_evaluation"]["a0_controls"].pop()
+        issues = validate(protocol, self.schema)
+        self.assertTrue(issues)
+        self.assertTrue(any(issue.path.endswith("shortcut_evaluation.a0_controls") for issue in issues))
+
+    def test_a0r1_protocol_rejects_sensitivity_replacement(self) -> None:
+        protocol = self._valid_protocol()
+        protocol["sensitivity_endpoints"]["may_replace_primary"] = True
+        issues = validate(protocol, self.schema)
+        self.assertTrue(issues)
+        self.assertTrue(any(issue.path.endswith("sensitivity_endpoints.may_replace_primary") for issue in issues))

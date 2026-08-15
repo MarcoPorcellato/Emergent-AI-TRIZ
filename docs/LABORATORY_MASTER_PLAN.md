@@ -207,11 +207,12 @@ qualification, and immutable publication.
 automated proxy observation; it does not validate Segmentation or Inversion as
 TRIZ constructs.
 
-**Current status — in delivery:** R1.1 has a planned machine-readable protocol,
-strict schema, and physically separated fail-closed independence-audit
-substrate. No A0-R corpus, frozen protocol, model execution, or result exists
-yet; the next exit evidence is the deterministic independent corpus plus its
-terminal overlap and provenance audit.
+**Current status — in delivery:** R1.2 now has a deterministic independent
+48-family / 96-case corpus, physically separate calibration and sealed targets,
+a zero-violation comparison against the published A0 corpus, 14/14 passing
+shortcut controls, strict schemas, and byte-for-byte one-command verification.
+The protocol remains planned, and no model output or A0-R result exists. The
+next exit evidence is the R1.3 power receipt and immutable protocol freeze.
 
 ### PR 30 — annotation ontology v1.2 implementation
 

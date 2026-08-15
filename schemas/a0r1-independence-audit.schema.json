@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r1-independence-audit.schema.json",
+  "title": "A0-R1 independence audit report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "protocol_id",
+    "status",
+    "ready",
+    "counts",
+    "partitions",
+    "hashes",
+    "violations",
+    "empirical",
+    "scientific_status",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "pass"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "ready": {"const": true},
+          "violations": {"maxItems": 0}
+        }
+      },
+      "else": {
+        "properties": {
+          "ready": {"const": false},
+          "violations": {"minItems": 1}
+        }
+      }
+    }
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "a0-r1-independence-audit"
+    },
+    "protocol_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "fail"]
+    },
+    "ready": {
+      "type": "boolean"
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate", "source"],
+      "properties": {
+        "candidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cases", "targets", "case_partitions"],
+          "properties": {
+            "cases": {"type": "integer", "const": 96},
+            "targets": {"type": "integer", "const": 96},
+            "case_partitions": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["calibration", "sealed"],
+              "properties": {
+                "calibration": {"type": "integer", "const": 48},
+                "sealed": {"type": "integer", "const": 48}
+              }
+            }
+          }
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cases", "targets", "case_partitions"],
+          "properties": {
+            "cases": {"type": "integer", "const": 192},
+            "targets": {"type": "integer", "const": 192},
+            "case_partitions": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["calibration", "sealed"],
+              "properties": {
+                "calibration": {"type": "integer", "const": 96},
+                "sealed": {"type": "integer", "const": 96}
+              }
+            }
+          }
+        }
+      }
+    },
+    "partitions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_split_field",
+        "source_split_field",
+        "required_partitions",
+        "candidate_split_values",
+        "source_split_values"
+      ],
+      "properties": {
+        "candidate_split_field": {"type": "string", "minLength": 1},
+        "source_split_field": {"type": "string", "minLength": 1},
+        "required_partitions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["candidate", "source"],
+          "properties": {
+            "candidate": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["calibration", "sealed"],
+              "properties": {
+                "calibration": {"type": "string", "const": "calibration"},
+                "sealed": {"type": "string", "const": "sealed"}
+              }
+            },
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["calibration", "sealed"],
+              "properties": {
+                "calibration": {"type": "string", "const": "calibration"},
+                "sealed": {"type": "string", "const": "sealed"}
+              }
+            }
+          }
+        },
+        "candidate_split_values": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["calibration", "sealed"],
+          "properties": {
+            "calibration": {"type": "array", "items": {"type": "string"}},
+            "sealed": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "source_split_values": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["calibration", "sealed"],
+          "properties": {
+            "calibration": {"type": "array", "items": {"type": "string"}},
+            "sealed": {"type": "array", "items": {"type": "string"}}
+          }
+        }
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_manifest_sha256",
+        "source_manifest_sha256",
+        "candidate_cases_sha256",
+        "candidate_calibration_targets_sha256",
+        "candidate_sealed_targets_sha256",
+        "source_cases_sha256",
+        "source_calibration_targets_sha256",
+        "source_sealed_targets_sha256"
+      ],
+      "properties": {
+        "candidate_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "source_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "candidate_cases_sha256": {"$ref": "#/$defs/sha256"},
+        "candidate_calibration_targets_sha256": {"$ref": "#/$defs/sha256"},
+        "candidate_sealed_targets_sha256": {"$ref": "#/$defs/sha256"},
+        "source_cases_sha256": {"$ref": "#/$defs/sha256"},
+        "source_calibration_targets_sha256": {"$ref": "#/$defs/sha256"},
+        "source_sealed_targets_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "violations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "message"],
+        "properties": {
+          "code": {"type": "string", "minLength": 1},
+          "message": {"type": "string", "minLength": 1},
+          "case_id": {"type": "string", "minLength": 1},
+          "field": {"type": "string", "minLength": 1},
+          "field_value": {"type": "string", "minLength": 1},
+          "candidate_seed": {"type": "integer"},
+          "source_seed": {"type": "integer"},
+          "case_partition": {"type": "string"},
+          "expected_split": {"type": "string"},
+          "split_field": {"type": "string"},
+          "ids": {"type": "array", "items": {"type": "string"}},
+          "matches": {"type": "array", "items": {"type": "string"}},
+          "candidate_case_id": {"type": "string", "minLength": 1},
+          "source_case_id": {"type": "string", "minLength": 1},
+          "similarity": {"type": "number", "minimum": 0, "maximum": 1},
+          "target_fingerprint": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "line": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+    "empirical": {"type": "boolean", "const": true},
+    "scientific_status": {"type": "string", "const": "exploratory"},
+    "evidence_eligible": {"type": "boolean", "const": false},
+    "expert_validated": {"type": "boolean", "const": false},
+    "claim_ids": {"type": "array", "maxItems": 0, "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

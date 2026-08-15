@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r1-preoutput-manifest.schema.json",
+  "title": "A0-R1 pre-output manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "protocol_id",
+    "protocol_status",
+    "protocol_hash",
+    "candidate_corpus_manifest_sha256",
+    "source_corpus_manifest_sha256",
+    "protocol_summary",
+    "artifacts",
+    "counts",
+    "results",
+    "status"
+  ],
+  "properties": {
+    "artifact_class": {
+      "type": "string",
+      "const": "a0-r1-preoutput-manifest"
+    },
+    "protocol_id": {
+      "type": "string",
+      "pattern": "^a0-r1-tier-r1-v\\d+\\.\\d+$"
+    },
+    "protocol_status": {
+      "type": "string",
+      "const": "planned"
+    },
+    "protocol_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "candidate_corpus_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_corpus_manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "protocol_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_id",
+        "protocol_status",
+        "scientific_status",
+        "empirical",
+        "evidence_eligible",
+        "expert_validated",
+        "claim_ids"
+      ],
+      "properties": {
+        "protocol_id": {
+          "type": "string",
+          "pattern": "^a0-r1-tier-r1-v\\d+\\.\\d+$"
+        },
+        "protocol_status": {
+          "type": "string",
+          "const": "planned"
+        },
+        "scientific_status": {
+          "type": "string",
+          "const": "exploratory"
+        },
+        "empirical": {
+          "type": "boolean",
+          "const": true
+        },
+        "evidence_eligible": {
+          "type": "boolean",
+          "const": false
+        },
+        "expert_validated": {
+          "type": "boolean",
+          "const": false
+        },
+        "claim_ids": {
+          "type": "array",
+          "maxItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["independence.json", "shortcuts.json", "summary.json"],
+      "properties": {
+        "independence.json": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sha256"],
+          "properties": {
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "shortcuts.json": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sha256"],
+          "properties": {
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "summary.json": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sha256"],
+          "properties": {
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["independence", "shortcuts"],
+      "properties": {
+        "independence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["candidate", "source"],
+          "properties": {
+            "candidate": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["cases", "targets", "case_partitions"],
+              "properties": {
+                "cases": {"type": "integer", "const": 96},
+                "targets": {"type": "integer", "const": 96},
+                "case_partitions": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["calibration", "sealed"],
+                  "properties": {
+                    "calibration": {"type": "integer", "const": 48},
+                    "sealed": {"type": "integer", "const": 48}
+                  }
+                }
+              }
+            },
+            "source": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["cases", "targets", "case_partitions"],
+              "properties": {
+                "cases": {"type": "integer", "const": 192},
+                "targets": {"type": "integer", "const": 192},
+                "case_partitions": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["calibration", "sealed"],
+                  "properties": {
+                    "calibration": {"type": "integer", "const": 96},
+                    "sealed": {"type": "integer", "const": 96}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "shortcuts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["calibration_cases", "families", "sealed_cases", "total_cases"],
+          "properties": {
+            "calibration_cases": {"type": "integer", "const": 48},
+            "families": {"type": "integer", "const": 24},
+            "sealed_cases": {"type": "integer", "const": 0},
+            "total_cases": {"type": "integer", "const": 48}
+          }
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["independence_status", "shortcuts_status"],
+      "properties": {
+        "independence_status": {
+          "type": "string",
+          "enum": ["pass", "fail"]
+        },
+        "shortcuts_status": {
+          "type": "string",
+          "enum": ["pass", "failed", "non_interpretable"]
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "failed", "non_interpretable"]
+    }
+  }
+}
