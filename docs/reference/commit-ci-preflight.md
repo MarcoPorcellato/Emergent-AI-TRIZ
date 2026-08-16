@@ -14,11 +14,12 @@ jobs. The trusted classifier reads its policy from the base commit. Candidate
 checks receive only `contents: read`; the aggregate job receives only
 `statuses: write`, performs no checkout, and executes no candidate code.
 Unknown surfaces fail closed. Documentation-only pull requests stay
-lightweight. Code changes run the repository and schema checks on Python 3.11
-and 3.12.
-Scientific and governance changes additionally require an exact-head Commit CI
-Preflight (CCP) receipt. Scientific artifacts are parsed and dense model files
-are rejected: they must remain external and be referenced by a retained hash.
+lightweight. Code changes require an exact-head Commit CI Preflight (CCP) v2
+receipt for repository and schema checks on Python 3.11 and 3.12; those checks
+run in the locally admitted, immutable verification images rather than on
+GitHub-hosted candidate runners. Scientific artifacts remain parsed with
+trusted base-branch code and dense model files remain external, referenced by a
+retained hash.
 
 ## Local CCP contract
 
@@ -28,10 +29,12 @@ Python 3.11 and 3.12 coverage with independent runtime identity,
 configuration digests, image digests, freshness, check results, and receipt
 verification. V1 receipts remain valid historical evidence.
 
-The tracked `.commit-ci-preflight.toml` runs `make check` inside an immutable
-Python image with no network, one CPU, 256 MiB of memory, and 64 PIDs. The
-repository is mounted read-only. A successful run writes the ignored local
-receipt `.ccp/receipt.json`.
+The tracked `.commit-ci-preflight.toml` declares public GHCR Python 3.11 and
+3.12 images by immutable digest, with no network, one CPU, 1 GiB of memory,
+and 256 PIDs per runtime. It binds `repository_check.py` and
+`schema_cross_validate.py` to each runtime. The repository is mounted
+read-only. A successful matrix run writes the ignored local receipt
+`.ccp/receipt.json`.
 
 Run CCP only from an exact clean commit:
 
@@ -41,10 +44,10 @@ make preflight-run
 make preflight-verify
 ```
 
-The acceptance policy pins the project identity, configuration digest,
-required check, image digest, Apple Silicon macOS host, Docker-compatible
-runtime, and a maximum receipt age of 24 hours. When the classifier requires
-CCP, publish the receipt on the commit-bound
+The acceptance policy pins the project identity, outer and per-runtime
+configuration digests, required check-to-runtime assignments, image digests,
+Apple Silicon macOS host, Docker-compatible runtime, and a maximum receipt age
+of one hour. When the classifier requires CCP, publish the receipt on the commit-bound
 `ccp-evidence/<40-character-head-SHA>` branch. The trusted workflow verifies
 it against the base-branch policy.
 
@@ -86,25 +89,31 @@ Latent-TRIZ PR 51 merged the trusted-base runtime classification at
 `e249c4b42795b27d27d78a0b5c3526a38e7809de` was qualified with receipt branch
 `ccp-evidence/e249c4b42795b27d27d78a0b5c3526a38e7809de` (evidence commit
 `e4fb6c183483cedd12d9306c29938d1bdedae966`) and terminal run `31934684914`; observed Python 3.11 and CCP
-times were 2m44 and 42s. This is a routing milestone, not a cost result:
-runtime images are local builds, not immutable GHCR publications, and ordinary
-hosted candidate tests remain enabled.
+times were 2m44 and 42s. PR 50 then merged at
+`e6a634d52fcd153d6c78224fabb8df4713b18415`, publishing the immutable public
+GHCR verification images. PR 53 merged at
+`64892dd227f7256fe0dae204e501b2867ef4f905`, bridging the trusted verifier to
+CCP v2. This remains a routing implementation record, not a cost result: the
+matrix/workflow migration is staged until its own exact-head evidence is
+qualified and merged.
 
 | Changed surface | Required qualification |
 |---|---|
 | `docs/**` and public root documents only | documentation audit |
-| `src/**`, `schemas/**`, `scripts/**`, `tests/**`, dependencies | repository and schema checks on Python 3.11 and 3.12 |
-| `data/**`, `experiments/**`, `preregistrations/**`, `results/**` | repository check, scientific artifact audit, exact-head CCP |
+| `src/**`, `schemas/**`, `scripts/**`, `tests/**`, dependencies | exact-head CCP v2 receipt: repository and schema checks on Python 3.11 and 3.12 |
+| `data/**`, `experiments/**`, `preregistrations/**`, `results/**` | CCP v2 matrix receipt plus trusted scientific artifact audit |
 | model-backed result or dense artifact suffix | scientific gates plus external-artifact/hash policy |
-| workflow, policy, or unknown path | Python 3.11 and 3.12 plus exact-head CCP; unknown paths also receive the artifact audit |
+| workflow, policy, or unknown path | CCP v2 matrix receipt; unknown paths also receive the trusted artifact audit |
 
-Candidate test jobs use only `contents: read`. The artifact-audit job also
+GitHub runs only the trusted path classifier, the receipt verifier, the
+aggregate status, documentation audit for documentation-only changes, and the
+trusted scientific artifact audit where required. The receipt verifier does not
+check out, build, or execute candidate project code. The artifact-audit job
 uses only `contents: read` and parses candidate files with trusted base-branch
-code. The aggregate job has only `statuses: write`; it does not check out or
-execute the candidate. No job uses repository secrets or persists checkout
-credentials. The aggregator publishes only the required exact-head commit
-status. CCP verification runs only in the higher-risk lanes. Post-merge
-validation remains on both supported Python versions as defense in depth.
+code. No job uses repository secrets or persists checkout credentials. The
+aggregator publishes only the required exact-head commit status. The v2 matrix
+is the code-qualification path; hosted cost is measured only after the
+migration's terminal evidence exists.
 
 The active `main-protection` ruleset requires pull requests, linear squash
 history, resolved review threads, and `merge-policy/gate`. Review, protected

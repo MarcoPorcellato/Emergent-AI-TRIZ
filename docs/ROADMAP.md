@@ -142,9 +142,13 @@ merged at `044697dee9a0d678d30a4847d62ddf9b4970505b`) and Latent-TRIZ runtime
 classification (PR 51, merged at `39ad1965e82f5aa2f4671e38708e401774f176ec`).
 The source head `e249c4b42795b27d27d78a0b5c3526a38e7809de` was locally qualified with receipt branch
 `ccp-evidence/e249c4b42795b27d27d78a0b5c3526a38e7809de` and terminal run `31934684914` (Python 3.11 2m44;
-CCP 42s). Runtime images are locally built, not immutable GHCR artifacts;
-hosted candidate tests remain enabled. The migration is in delivery, so no
-hosted-cost reduction is claimed yet.
+CCP 42s). PR [#50](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/50)
+then merged at `e6a634d52fcd153d6c78224fabb8df4713b18415`, publishing immutable
+public GHCR verification images for Python 3.11 and 3.12. PR
+[#53](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/53) merged at
+`64892dd227f7256fe0dae204e501b2867ef4f905`, adding the trusted CCP v2 verifier
+bridge. The staged matrix/workflow migration remains unmerged, so hosted
+candidate tests remain active and no hosted-cost reduction is claimed yet.
 
 PR 46 merged the R2.1 publication and receipt branch at
 `1f35ba353e792aa263db7449216e3172d0306798` after exact head

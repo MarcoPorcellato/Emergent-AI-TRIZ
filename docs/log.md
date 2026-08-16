@@ -17,9 +17,12 @@ last_verified: 2026-08-16
 - Merged Latent-TRIZ PR 51 at `39ad1965e82f5aa2f4671e38708e401774f176ec`.
   Its exact source head `e249c4b42795b27d27d78a0b5c3526a38e7809de` was qualified by receipt branch
   `ccp-evidence/e249c4b42795b27d27d78a0b5c3526a38e7809de` (evidence commit `e4fb6c183483cedd12d9306c29938d1bdedae966`) and terminal run
-  `31934684914`; Python 3.11 took 2m44 and CCP 42s. Hosted tests remain active;
-  runtime images are local builds, not immutable GHCR publications, and no
-  cost saving is claimed yet.
+  `31934684914`; Python 3.11 took 2m44 and CCP 42s.
+- Merged PR 50 at `e6a634d52fcd153d6c78224fabb8df4713b18415`, publishing the
+  immutable public GHCR Python 3.11 and 3.12 verification images by digest.
+  Merged PR 53 at `64892dd227f7256fe0dae204e501b2867ef4f905`, bridging the
+  trusted CCP verifier to v2. The matrix/workflow migration remains staged, so
+  hosted candidate checks are still active and no cost saving is claimed yet.
 
 - Merged the trusted CCP timeout migration in two fail-closed steps. PR 48
   changed only the accepted configuration digest and merged at
