@@ -331,6 +331,13 @@ operator authorization must be recorded separately, bind the exact frozen
 protocol and corrected implementation, and be verified by the runner before
 any model import or target discovery.
 
+The sole R2.4 attempt subsequently reached a terminal pre-analysis failure:
+the locally loaded SmolLM2 adapter rejected the tokenizer return type before
+activation extraction. The sealed target file was not accessed. This is a
+published `failed` outcome, not a null result or evidence for any TRIZ claim;
+the one-run authorization forbids a retry, tuning, model substitution, or
+post-hoc protocol adjustment.
+
 ### PR 30 — annotation ontology v1.2 implementation
 
 **Outcome**
