@@ -1,21 +1,56 @@
-schema_version = "1.0"
+schema_version = "2.0"
 project = "MarcoPorcellato/Latent-TRIZ"
-
-[runtime]
-kind = "docker_compatible"
-image = "docker.io/library/python@sha256:399babc8b49529dabfd9c922f2b5eea81d611e4512e3ed250d75bd2e7683f4b0"
-cpu_count = 1
-memory_mib = 256
-pids_limit = 64
-network = false
 
 [receipt]
 output = ".ccp/receipt.json"
-freshness_seconds = 86400
+freshness_seconds = 3600
+
+[[runtimes]]
+id = "python311"
+kind = "docker_compatible"
+image = "ghcr.io/marcoporcellato/latent-triz-verify@sha256:25de19baba5938c80de18c930342ccdcdf3c6759051196c3c713bd3e434d2f0e"
+cpu_count = 1
+memory_mib = 1024
+pids_limit = 256
+network = false
+
+[[runtimes]]
+id = "python312"
+kind = "docker_compatible"
+image = "ghcr.io/marcoporcellato/latent-triz-verify@sha256:e984457d591121c52517027f49bb55371f68075caace763b8859db136e434dd0"
+cpu_count = 1
+memory_mib = 1024
+pids_limit = 256
+network = false
 
 [[checks]]
-id = "repository-check"
+id = "repository-check-py311"
+runtime_id = "python311"
 required = true
-argv = ["python3", "scripts/repository_check.py"]
+argv = ["python", "scripts/repository_check.py"]
 working_directory = "."
-timeout_seconds = 180
+timeout_seconds = 300
+
+[[checks]]
+id = "schema-cross-validate-py311"
+runtime_id = "python311"
+required = true
+argv = ["python", "scripts/schema_cross_validate.py"]
+working_directory = "."
+timeout_seconds = 300
+
+[[checks]]
+id = "repository-check-py312"
+runtime_id = "python312"
+required = true
+argv = ["python", "scripts/repository_check.py"]
+working_directory = "."
+timeout_seconds = 300
+
+[[checks]]
+id = "schema-cross-validate-py312"
+runtime_id = "python312"
+required = true
+argv = ["python", "scripts/schema_cross_validate.py"]
+working_directory = "."
+timeout_seconds = 300

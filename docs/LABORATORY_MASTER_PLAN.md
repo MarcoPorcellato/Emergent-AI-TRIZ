@@ -145,9 +145,21 @@ PR [#51](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/51) merged at
 `e249c4b42795b27d27d78a0b5c3526a38e7809de` was qualified by receipt branch
 `ccp-evidence/e249c4b42795b27d27d78a0b5c3526a38e7809de` (evidence commit
 `e4fb6c183483cedd12d9306c29938d1bdedae966`) and terminal run `31934684914` (Python 3.11 2m44; CCP 42s).
-Runtime images are locally built but not published as immutable GHCR artifacts;
-ordinary hosted tests remain enabled. No cost saving is claimed until the
-complete migration is measured, and no R2 boundary changed.
+PR [#50](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/50) merged at
+`e6a634d52fcd153d6c78224fabb8df4713b18415`, publishing immutable public GHCR
+verification images for Python 3.11 and 3.12; policy references use only their
+digests. PR [#53](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/53)
+merged at `64892dd227f7256fe0dae204e501b2867ef4f905`, adding the trusted CCP
+v2 verifier bridge. The initial matrix PR
+[#54](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/54), at head
+`c6874fdaa11aeebee079579b0a323146818be8fa`, was closed without merge because
+its v2 receipt could not yet be evaluated against the base's v1-only policy
+route. PR [#55](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/55) then
+merged the fail-closed v1/v2 policy selector at
+`28b6c5d309eb5e640c34945e598b3a1e8425d979`. The rebased matrix migration
+still requires one fresh exact-head v2 receipt, terminal trusted gates, merge,
+and a post-merge hosted-execution measurement. No cost saving is claimed in
+advance, and no R2 boundary changed.
 
 ## Current bottlenecks
 

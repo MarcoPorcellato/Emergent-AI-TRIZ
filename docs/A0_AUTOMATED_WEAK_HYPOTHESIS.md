@@ -454,7 +454,7 @@ Minimum gates:
 - no promotion from exploratory A0 to hypothesis claim without the documented gate.
 
 Before any official local guarded qualification, apply the installed
-[`macos-v3` resource-admission contract](./reference/commit-ci-preflight.md#installed-macos-v3-resource-admission).
+[`macos-v4` resource-admission contract](./reference/commit-ci-preflight.md#installed-macos-v4-resource-admission).
 Run both JSON status probes and start the runner only on `Admit` with no active
 or queued run. `Unknown` or `Deny` stops the attempt.
 
