@@ -1,0 +1,131 @@
+{
+  "artifact_class": "a0r2-sealed-execution-approval-dossier",
+  "dossier_id": "a0r2-sealed-execution-approval-v1",
+  "protocol_id": "a0r2-independent-model-v1.0.0",
+  "created_at": "2026-08-16T15:08:12Z",
+  "dossier_status": "approval_requested",
+  "operator_approval_granted": false,
+  "authorization_receipt_present": false,
+  "empirical": true,
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "repository": {
+    "public_base_commit": "e3386c92070168f4f232368b19fde8e961c8935e",
+    "r2_1_source_commit": "5f9c21db944f25fd1dac4a550911c85e86471e35",
+    "r2_1_merge_commit": "1f35ba353e792aa263db7449216e3172d0306798",
+    "r2_2_source_commit": "6a3ff0ebf3bbcc3eb16f8c443692b2aba71dac50",
+    "r2_2_merge_commit": "fa1e254ec373092278b1ab63f05504545e295b67"
+  },
+  "protocol": {
+    "path": "experiments/a0r2-independent-model/study-protocol.json",
+    "sha256": "383c2fe8a0d2baa893bc88326e3a5e18329691a90fd9bd1ea106602c8ee9bf3f",
+    "size": 6403,
+    "r1_declared_inputs": {
+      "r1_protocol_sha256": "ed113d1c0bfdb44b57c879e2995b610d0ecf528fccedb37fc9b89093be083fbf",
+      "r1_freeze_manifest_sha256": "bedb9df1d6650ab0d4d7f9a255555e4dbe80b07b705b45534eeb290d76fe5fc9",
+      "corpus_manifest_sha256": "46c5cdf796f2abad709deb3066cfadd5fc6e6a30f55a737b3408e0a15b065c06",
+      "cases_sha256": "479caee11dd62a978e8f01e9802db624b1714909264292b53067e97e10002541",
+      "sealed_targets_sha256": "e911a70279f5b141c35064da29c020557f69ee17dfed5adad6172ed3fe2db0e0",
+      "shortcuts_sha256": "566586fe571a99eadfbc3871eedec3dbf65b049f9f0311a7676f9625e22ac615",
+      "source": "frozen_study_protocol_declarations_no_target_reread"
+    }
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "license_id": "Apache-2.0",
+    "model_type": "llama",
+    "architecture": "LlamaForCausalLM",
+    "local_locator": "artifacts/models/smollm2-360m-f8027fd0",
+    "runtime_snapshot": {
+      "total_bytes": 727058433,
+      "files": [
+        {"name": "README.md", "sha256": "631f842e4a02262e07fc522ede86c816114541319dea53dbf86bac4539a24ac9", "size": 6623},
+        {"name": "config.json", "sha256": "34f7801487078de7e434e19162c497e5cc6ff397080e40e8586627cb68a5168a", "size": 689},
+        {"name": "generation_config.json", "sha256": "2056c988e990b0d13670f63f2f3b87b3b6d07edaf7a3416998ba27dab2d8a059", "size": 111},
+        {"name": "merges.txt", "sha256": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510", "size": 466391},
+        {"name": "model.safetensors", "sha256": "7aaff6661428bed033abba9522bec81938678642cca3181fe752b6ca9e1e540f", "size": 723674912},
+        {"name": "special_tokens_map.json", "sha256": "e786b595b9a23148bf1630df78d9037a048ea671e48bfd3549a1e3c233742bb3", "size": 831},
+        {"name": "tokenizer.json", "sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c", "size": 2104556},
+        {"name": "tokenizer_config.json", "sha256": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424", "size": 3658},
+        {"name": "vocab.json", "sha256": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79", "size": 800662}
+      ]
+    }
+  },
+  "run_contract": {
+    "run_id": "a0r2-v1.0.0-f8027fd0-r1",
+    "device": "cpu",
+    "dtype": "float32",
+    "local_only": true,
+    "network_access": false,
+    "generation_allowed": false,
+    "maximum_wall_seconds": 1800,
+    "maximum_peak_rss_bytes": 8589934592,
+    "maximum_new_dense_output_bytes": 67108864,
+    "maximum_material_runs": 1,
+    "activation_target_content_reads": 0,
+    "analysis_target_content_reads": 1,
+    "retry_after_model_or_target_access": "new_explicit_approval_required",
+    "stopping_rule": "stop_after_first_terminal_attempt"
+  },
+  "preconditions": {
+    "ccp_resource_decision": "admit_required",
+    "ccp_admission_active": false,
+    "ccp_queue_count": 0,
+    "output_destinations_must_be_absent": true,
+    "snapshot_integrity_reverification_required": true,
+    "approval_receipt_required": true
+  },
+  "access_history": {
+    "prior_feasibility_model_loaded": true,
+    "prior_feasibility_model_output_accessed": true,
+    "prior_feasibility_output_content_retained": false,
+    "prior_feasibility_sealed_targets_accessed": false,
+    "sealed_execution_attempted": false,
+    "sealed_targets_accessed_for_dossier": false
+  },
+  "guard_history": {
+    "feasibility_outer_guard_status": "cleanup_uncertain",
+    "feasibility_outer_exit_code": 70,
+    "post_run_resource_decision": "admit",
+    "post_run_admission_active": false,
+    "post_run_queue_count": 0,
+    "rerun_performed": false,
+    "retroactive_pass_forbidden": true
+  },
+  "primary_endpoint": {
+    "tuple_index": 32,
+    "semantics": "final_transformer_block_output",
+    "primary_view": "problem_plus_transformation",
+    "token_site": "mean_transformation_span",
+    "surface_baseline_view": "problem_only",
+    "surface_baseline_token_site": "sentinel",
+    "multiplicity": 1
+  },
+  "scientific_boundaries": {
+    "sensitivity_may_rescue_primary": false,
+    "model_substitution_after_output": false,
+    "human_review": false,
+    "llm_judge": false,
+    "protocol_change": false,
+    "tuning": false,
+    "claim_promotion": false,
+    "expert_reference_corpus": "excluded_from_r2_3_r3_exp_001_only"
+  },
+  "terminal_outcomes": ["positive", "null", "failed", "non_interpretable", "incompatible"],
+  "publication": {
+    "publish_every_terminal_outcome": true,
+    "maximum_positive_statement": "the frozen automated-proxy signal persisted across the two exact model families tested",
+    "general_triz_claim_allowed": false
+  },
+  "bindings": {
+    "implementation": {"path": "experiments/a0r2-independent-model/implementation.json", "sha256": "d97c55ded53e74245fba374ad63b502bb2f48eef04e2dfa6845a298034ffbabc", "size": 5523},
+    "acquisition_contract": {"path": "experiments/a0r2-independent-model/acquisition-contract.json", "sha256": "55ae5f8dffa4caef00d67e38f47c4793ccb716a054351bb752d277f0173df4e8", "size": 2530},
+    "feasibility_contract": {"path": "experiments/a0r2-independent-model/feasibility-contract.json", "sha256": "1d16a3fff857f2c42751332452746f41417579c45fe08c25e2a8e12ac68fd335", "size": 2629},
+    "integrity_receipt": {"path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json", "sha256": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3", "size": 4759},
+    "feasibility_receipt": {"path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json", "sha256": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67", "size": 2440},
+    "guard_observation": {"path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/guard-observation.json", "sha256": "d4f4a5f2c16329964f5728ad31a830f98f492e9ea75e435ad057794cddc54b45", "size": 775}
+  }
+}

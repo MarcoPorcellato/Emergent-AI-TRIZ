@@ -162,15 +162,20 @@ a demonstrated monetary saving. Phase G is complete.
 
 PR 46 merged the R2.1 publication and receipt branch at
 `1f35ba353e792aa263db7449216e3172d0306798` after exact head
-`5f9c21db944f25fd1dac4a550911c85e86471e35`. R2.1 is verified complete. R2.2
-is now the active local/offline SmolLM2 tranche with synthetic-only
-qualification, descriptive cross-model comparisons, and no real model load or
-sealed-target access yet. PRs 48 and 49 migrated the trusted CCP digest and
-180-second timeout in two base-authorized steps, ending at public anchor
+`5f9c21db944f25fd1dac4a550911c85e86471e35`. R2.1 and R2.2 are verified
+complete. R2.2 delivered the local/offline SmolLM2 implementation with
+synthetic-only qualification, descriptive cross-model comparisons, and no
+sealed execution or sealed-target access. PRs 48 and 49 migrated the trusted
+CCP digest and 180-second timeout in two base-authorized steps, ending at public anchor
 `85180041717f336de554300dda109731b48c6b95`. PR 47 subsequently merged the
 R2.2 implementation at `fa1e254ec373092278b1ab63f05504545e295b67`. R2.3
 model execution and sealed-target access remain a separate explicit approval
 gate.
+
+R2.3 is the active approval-request checkpoint. Its exact dossier fixes the
+already acquired model identity, one-run resource envelope, single target-read
+boundary, terminal publication duties, and exclusions before any material
+execution.
 
 The expert TRIZ reference-corpus foundation adds exact provenance for a
 forty-principle example set, Matrix 2003, a TRIZ tools relationship map, and a

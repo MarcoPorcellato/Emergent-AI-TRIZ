@@ -18,6 +18,7 @@ This is the **maintained** documentation bundle.
 - [Chronology log](./log.md)
 - [Reference collection](./reference/index.md)
 - [TRIZ expert reference corpus](./reference/triz-reference-corpus.md)
+- [A0-R2.3 sealed-execution approval dossier](./A0R2_SEALED_EXECUTION_APPROVAL.md)
 - [Decision records](./decisions/index.md)
 
 ## Core foundation documents
