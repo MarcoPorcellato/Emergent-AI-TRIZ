@@ -6,10 +6,12 @@ ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
 ARG PYTHON_SERIES
+ARG SOURCE_REVISION
 
 LABEL org.opencontainers.image.title="Latent-TRIZ verification runtime"
 LABEL org.opencontainers.image.description="Offline runtime for the repository and JSON Schema cross-validation gates."
 LABEL org.opencontainers.image.licenses="Apache-2.0"
+LABEL org.opencontainers.image.revision="${SOURCE_REVISION}"
 LABEL org.opencontainers.image.source="https://github.com/MarcoPorcellato/Latent-TRIZ"
 
 COPY requirements-schema.lock /opt/latent-triz/requirements-schema.lock

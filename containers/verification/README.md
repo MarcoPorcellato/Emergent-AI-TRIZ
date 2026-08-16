@@ -10,6 +10,7 @@ Builds must set both arguments to immutable values:
 ```text
 BASE_IMAGE=docker.io/library/python@sha256:<platform-specific-base-digest>
 PYTHON_SERIES=3.11 | 3.12
+SOURCE_REVISION=<exact-source-commit>
 ```
 
 Before an image can be used by CCP, publish its immutable arm64 manifest
