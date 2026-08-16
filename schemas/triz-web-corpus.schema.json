@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/triz-web-corpus.schema.json",
+  "title": "Latent-TRIZ official TRIZ Consulting web corpus",
+  "description": "Metadata-only catalog of provider-curated public web resources; it is not evidence or ground truth.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["corpus_version", "site_domain", "status", "rights_note", "resources"],
+  "properties": {
+    "corpus_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "site_domain": {"const": "www.triz-consulting.de"},
+    "status": {"const": "curated_public_metadata_only"},
+    "rights_note": {"type": "string", "minLength": 1},
+    "resources": {"type": "array", "minItems": 18, "maxItems": 18, "uniqueItems": true, "items": {"$ref": "#/$defs/resource"}}
+  },
+  "$defs": {
+    "resource": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "title", "url", "resource_kind", "coverage_topics", "scientific_roles", "authority_status", "citation_allowed", "repository_copy_tracked", "automatic_ground_truth", "r2_frozen_protocol_eligible", "future_tranche", "access_date", "note"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^triz-web-[a-z0-9-]+$"},
+        "title": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "format": "uri", "pattern": "^https://www\\.triz-consulting\\.de/"},
+        "resource_kind": {"type": "string", "enum": ["method_overview", "contradiction_matrix", "principles_reference", "tool_catalog", "interactive_tool", "software_overview", "use_cases", "ai_reference", "ariz_reference", "training_reference", "book_reference", "help_documentation"]},
+        "coverage_topics": {"type": "array", "minItems": 1, "items": {"type": "string", "enum": ["TRIZ_method", "inventive_principles", "contradictions", "physical_contradictions", "contradiction_matrix", "tools", "AI_TRIZ", "AI_prompt_design", "software", "use_cases", "function_model", "functional_analysis", "matrix_analysis", "ARIZ", "CECA_trimming", "tool_relationships", "practical_examples", "training"]}},
+        "scientific_roles": {"type": "array", "minItems": 1, "items": {"type": "string", "enum": ["prompt_design", "test_design", "interpretation_context", "taxonomy_context", "tool_relationship_context", "replication_context"]}},
+        "authority_status": {"const": "provider_curated_public"},
+        "citation_allowed": {"const": true},
+        "repository_copy_tracked": {"const": false},
+        "automatic_ground_truth": {"const": false},
+        "r2_frozen_protocol_eligible": {"const": false},
+        "future_tranche": {"const": "R3/EXP-001"},
+        "access_date": {"const": "2026-08-16"},
+        "note": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

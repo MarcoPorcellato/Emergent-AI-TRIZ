@@ -169,6 +169,31 @@ fell from 473 to 56 seconds. GitHub reported zero billable milliseconds for
 both public-repository samples, so this proves reduced hosted execution, not a
 monetary saving. No R2 boundary changed.
 
+### Phase H — expert TRIZ reference corpus foundation
+
+The laboratory now has a rights-aware reference layer for three supplied
+expert artifacts and a curated catalog of the official public resources at
+TRIZ Consulting Group: Robert Adunka's forty-principle teaching set, the
+Mann-Dewulf-Zlotin-Zusman Matrix 2003, Gregor Panitz's TRIZ tools relationship
+map, method and training indexes, practitioner tools, and application examples.
+The public repository tracks exact artifact hashes where local files were
+supplied, source metadata, page locators, authority status, rights status, and
+independently written principle summaries. It does not vendor third-party PDFs
+or treat expert recommendations as automatic ground truth.
+
+This phase improves construct coverage and future question design but does not
+change any A0-R2 evidence. The frozen R2.3 run remains byte- and rule-bound to
+its preregistration. The new corpus is reserved for a separately frozen
+R3/EXP-001 design with non-poolable `TRIZ-blinded` and `source-exposed` strata,
+source-family splits, lexical controls, negative controls, and independent
+labels.
+
+**Exit evidence:** strict source, web-corpus, and principle schemas; exact
+three-file hash receipts; forty ordered page-bound principle records; a curated
+official-site inventory; fail-closed rights and R2 exclusion tests; maintained
+reference documentation; repository qualification; reviewed PR and terminal
+merge gates.
+
 ## Current bottlenecks
 
 The laboratory now has one empirical automated-proxy result, while the authentic

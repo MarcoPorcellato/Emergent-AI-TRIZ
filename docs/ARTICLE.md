@@ -97,6 +97,14 @@ where:
 
 TRIZ made these transformations explicit, symbolic, teachable, and human-readable. [2,3]
 
+The laboratory also maintains a provenance-bound expert reference layer: an
+illustrated forty-principle teaching set by Robert Adunka, the 2003 update of
+the contradiction matrix by Mann, Dewulf, Zlotin, and Zusman, and a conceptual
+map of interactions among TRIZ tools attributed to Gregor Panitz. [21–23]
+These sources broaden construct coverage and future test design. They are not
+automatic ground truth and are kept separate from blinded tests of latent
+rediscovery.
+
 The question is whether neural networks may learn some of the same transformations in a completely different format: not as named rules, but as structures in activation space.
 
 ---
@@ -1042,3 +1050,12 @@ And I believe it is worth testing in public.
 
 **[20]** Propria Srl. “Ing. Marco Porcellato — Professional Profile.” Background on mechanical-engineering education, systematic-innovation thesis, patent work, TRIZ training, and MATRIZ Level 2 certification. Accessed August 13, 2026.  
 [https://www.propria.it/professionisti/marco-porcellato](https://www.propria.it/professionisti/marco-porcellato)
+
+**[21]** Adunka, Robert. *40 Inventive Principles with 132 Illustrated Examples*. TRIZ Consulting Group GmbH, 2023. Public author-hosted download; copyright retained. Accessed August 16, 2026.
+[Landing page](https://www.triz-consulting.de/2023/11/06/40-innovation-principles-in-132-illustrated-examples-for-free-download/?lang=en)
+
+**[22]** Mann, Darrell, Simon Dewulf, Boris Zlotin, and Alla Zusman. *Matrix 2003: Updating the TRIZ Contradiction Matrix*. CREAX Press, 2003. See also Mann and DeWulf, “Updating the Contradiction Matrix,” TRIZCON 2003.
+[Provider page](https://www.triz-consulting.de/about-triz/triz-matrix/?lang=en) · [TRIZCON paper](https://www.osaka-gu.ac.jp/php/nakagawa/TRIZ/eTRIZ/epapers/e2003Papers/eMannDeWulf0303/eMannMatrix030316.html)
+
+**[23]** Panitz, Gregor. *TRIZ Tools Overview with Main Interactions*. User-supplied reference artifact; publication date and canonical artifact URL not independently verified. Exact provenance and rights status are recorded in the repository reference registry.
+[Source registry](../data/triz-reference-sources.json) · [Professional site](https://inventissimo.de/)

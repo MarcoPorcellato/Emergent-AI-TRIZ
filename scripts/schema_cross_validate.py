@@ -81,6 +81,9 @@ VALIDATION_PAIRS = (
     ("schemas/a0-activation-receipt.schema.json", "results/a0/a0-v1.0.3-e93a9faa/activation-receipt.json"),
     ("schemas/a0-statistical-result.schema.json", "results/a0/a0-v1.0.3-e93a9faa/statistical-result.json"),
     ("schemas/a0-publication-manifest.schema.json", "results/a0/a0-v1.0.3-e93a9faa/publication-manifest.json"),
+    ("schemas/triz-reference-registry.schema.json", "data/triz-reference-sources.json"),
+    ("schemas/triz-principle-reference.schema.json", "data/triz-reference/principles.jsonl"),
+    ("schemas/triz-web-corpus.schema.json", "data/triz-consulting-web-corpus.json"),
 )
 
 

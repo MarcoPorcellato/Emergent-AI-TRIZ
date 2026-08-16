@@ -3,7 +3,7 @@ type: documentation-index
 title: Documentation Index
 description: Maintained documentation portal for the Latent TRIZ open laboratory.
 status: canonical
-last_verified: 2026-08-15
+last_verified: 2026-08-16
 ---
 
 # Documentation Index
@@ -17,6 +17,7 @@ This is the **maintained** documentation bundle.
 - [A0 replication and robustness](./A0_REPLICATION_AND_ROBUSTNESS.md)
 - [Chronology log](./log.md)
 - [Reference collection](./reference/index.md)
+- [TRIZ expert reference corpus](./reference/triz-reference-corpus.md)
 - [Decision records](./decisions/index.md)
 
 ## Core foundation documents

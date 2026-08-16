@@ -333,8 +333,7 @@ model output or sealed-target access.
 
 #### R2.2 — implementation and synthetic qualification
 
-Published branch, final qualification pending: the R2-only adapter, activation,
-analysis, runner, report,
+**Verified complete:** the R2-only adapter, activation, analysis, runner, report,
 schemas, and tests are implemented against the offline/local-only SmolLM2 study
 path. Synthetic qualification currently passes 55 focused tests. The execution
 contract verifies 11 code files and 9 runtime files without loading a model.
@@ -356,6 +355,11 @@ output, the already acquired nine-file snapshot only, and no retry after model
 or target access without a new explicit approval. These are conservative caps;
 the feasibility measurement was 2.37 GiB and 3.81 seconds for the synthetic
 probe.
+
+The expert TRIZ reference corpus added after the R2 freeze is ineligible for
+R2.3. It must not alter prompts, cases, targets, controls, thresholds,
+interpretation rules, or the one-run boundary. Its first experimental use
+belongs to a separately preregistered R3/EXP-001 tranche.
 
 #### R2.4 — one sealed automated run
 

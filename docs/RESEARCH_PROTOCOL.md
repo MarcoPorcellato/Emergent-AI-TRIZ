@@ -3,7 +3,7 @@ type: ResearchProtocol
 title: Latent TRIZ Research Protocol
 description: Experimental tracks, controls, evidence criteria, and reproducibility requirements for testing the hypothesis.
 status: canonical
-last_verified: 2026-08-12
+last_verified: 2026-08-16
 ---
 
 # Research protocol
@@ -140,6 +140,33 @@ Acceptance path before this batch can contribute to a frozen dataset:
 4. provenance is expanded beyond model-generated material to include human-authored, adapted, and historical sources;
 5. a split freeze is defined and checked for leakage across discovery, validation, held-out-domain, and sealed-novel partitions;
 6. the frozen dataset must satisfy the source-policy cap and the required split counts before confirmatory use.
+
+### 3.2 Expert TRIZ reference corpus and exposure strata
+
+The repository maintains a separate
+[`TRIZ expert reference corpus`](./reference/triz-reference-corpus.md) for
+construct definition and future test authoring. It registers an expert slide
+set covering all forty Inventive Principles, Matrix 2003, an expert map of
+TRIZ tool relationships, and a curated catalog of the official TRIZ Consulting
+Group resource pages.
+
+These sources are neither empirical data nor automatic ground truth. Every
+future source-informed item must record its source ID, page or table locator,
+derivation method, lexical exposure, and proximity to a canonical example.
+Matrix recommendations remain heuristic candidates, and tool-map relations
+remain an expert conceptual model until independently validated.
+
+Future evaluations must report two non-poolable strata:
+
+- `TRIZ-blinded`: no principle names, source wording, canonical examples,
+  matrix cells, or tool-map edges are exposed;
+- `source-exposed`: the reference material needed for retrieval or application
+  is deliberately supplied.
+
+The first tests transfer or rediscovery-like behaviour; the second tests
+competent retrieval and use. Neither stratum may be substituted for the other.
+The frozen A0-R2 corpus, targets, primary endpoint, controls, thresholds, and
+stopping rules predate this corpus and cannot be changed by it.
 
 ## 4. Model tracks
 
