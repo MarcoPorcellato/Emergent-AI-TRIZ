@@ -18,11 +18,14 @@ PR 47 merged the R2.2 implementation at
 `fa1e254ec373092278b1ab63f05504545e295b67`. This does not authorize R2.3.
 
 PR 62 merged the exact R2.3 approval dossier at
-`b9260cd9743d2afd5eb7fc79339e0687fa22689c`. Stop before model load, material
-execution, or sealed-target access until the operator grants the scope recorded
-in docs/A0R2_SEALED_EXECUTION_APPROVAL.md. After approval, record the exact
-authorization, permit exactly one guarded material attempt, and preserve its
-first terminal outcome.
+`b9260cd9743d2afd5eb7fc79339e0687fa22689c`. A subsequent technical hash read
+of the sealed-target file happened outside the analysis boundary; it emitted
+and retained no content, but is treated conservatively as consuming the
+original one-read scope. The operator has issued a replacement, one-run
+authorization with unchanged resource and scientific limits. First merge and
+qualify the corrective authorization receipt and runner gate. Only then, and
+only after CCP reports `Admit`, inactive admission, and an empty queue, permit
+exactly one guarded material attempt and preserve its first terminal outcome.
 
 Treat the expert TRIZ reference corpus as reference-only input for a future
 R3/EXP-001 preregistration. Do not use its wording, examples, matrix cells, or

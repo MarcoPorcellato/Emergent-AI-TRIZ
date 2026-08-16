@@ -18,6 +18,10 @@ from typing import Any, Mapping
 
 from .a0r2_activations import run_a0r2_activations
 from .a0r2_analysis import analyze_a0r2
+from .a0r2_authorization import (
+    AUTHORIZATION_PATH,
+    verify_a0r2_sealed_execution_authorization,
+)
 from .a0r2_execution import verify_a0r2_execution_contract
 from .a0r2_report import (
     ACTIVATION_RECEIPT_FILE,
@@ -73,6 +77,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--created-at", required=True)
     parser.add_argument("--stage", choices=STAGE_CHOICES, default="all")
     parser.add_argument("--model-root", default=None)
+    parser.add_argument("--authorization-receipt", default=str(AUTHORIZATION_PATH))
     return parser
 
 
@@ -360,6 +365,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.stage in {"activate", "all"}:
             if args.model_root is None:
                 raise A0R2RunnerError("--model-root is required for activation")
+            verify_a0r2_sealed_execution_authorization(root, args.authorization_receipt)
             verify_a0r2_execution_contract(root, model_root=Path(args.model_root))
         else:
             verify_a0r2_execution_contract(root)

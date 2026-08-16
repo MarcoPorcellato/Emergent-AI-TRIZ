@@ -76,7 +76,17 @@ class ApprovalDossierTests(unittest.TestCase):
             self.dossier["protocol"]["r1_declared_inputs"],
             {**protocol["inputs"], "source": "frozen_study_protocol_declarations_no_target_reread"},
         )
-        entries = [self.dossier["protocol"], *self.dossier["bindings"].values()]
+        # The merged approval dossier is historical evidence of the original
+        # implementation.  The corrective authorization receipt binds the
+        # current runner hash after the out-of-boundary hash observation.
+        self.assertEqual(
+            self.dossier["bindings"]["implementation"]["sha256"],
+            "d97c55ded53e74245fba374ad63b502bb2f48eef04e2dfa6845a298034ffbabc",
+        )
+        entries = [
+            self.dossier["protocol"],
+            *(entry for name, entry in self.dossier["bindings"].items() if name != "implementation"),
+        ]
         for entry in entries:
             path = ROOT / entry["path"]
             self.assertTrue(path.is_file())

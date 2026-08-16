@@ -1,0 +1,48 @@
+{
+  "access": {
+    "model_loaded": false,
+    "model_output_accessed": false,
+    "sealed_targets_accessed": false
+  },
+  "artifact_class": "a0r2-sealed-execution-authorization",
+  "bindings": {
+    "approval_dossier_sha256": "7d8aee9ef0cc2292df1453bc3765f592ee1b13849e9c3a0033c91cca5497d9fb",
+    "implementation_sha256": "8b74b55ce425ad5a912df7b5b3a77d5c8bc84023a24cb56adc32bcba4f1114d9",
+    "study_protocol_sha256": "383c2fe8a0d2baa893bc88326e3a5e18329691a90fd9bd1ea106602c8ee9bf3f"
+  },
+  "dossier": {
+    "dossier_id": "a0r2-sealed-execution-approval-v1",
+    "merged_commit": "b9260cd9743d2afd5eb7fc79339e0687fa22689c",
+    "path": "experiments/a0r2-independent-model/sealed-execution-approval-dossier.json",
+    "sha256": "7d8aee9ef0cc2292df1453bc3765f592ee1b13849e9c3a0033c91cca5497d9fb"
+  },
+  "prior_boundary_observation": {
+    "content_emitted": false,
+    "content_retained": false,
+    "event": "sealed_target_file_hash_read_outside_analysis_boundary",
+    "new_operator_authorization_required": true
+  },
+  "receipt_id": "a0r2-sealed-execution-authorization-v2",
+  "receipt_status": "authorized",
+  "recorded_at": "2026-08-16T15:51:42Z",
+  "scope": {
+    "analysis_target_content_reads": 1,
+    "device": "cpu",
+    "dtype": "float32",
+    "generation_allowed": false,
+    "local_only": true,
+    "maximum_material_runs": 1,
+    "maximum_new_dense_output_bytes": 67108864,
+    "maximum_peak_rss_bytes": 8589934592,
+    "maximum_wall_seconds": 1800,
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "model_substitution_allowed": false,
+    "network_access": false,
+    "protocol_change_allowed": false,
+    "publish_every_terminal_outcome": true,
+    "retry_after_model_or_target_access": "new_explicit_approval_required",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "tuning_allowed": false
+  },
+  "source": "explicit_operator_authorization"
+}

@@ -20,6 +20,11 @@ class A0R2RunnerTests(unittest.TestCase):
     def setUp(self) -> None:
         self.root = ROOT
         self.failure_schema = json.loads((self.root / "schemas/a0r2-run-failure.schema.json").read_text(encoding="utf-8"))
+        authorization_patch = patch.object(
+            runner, "verify_a0r2_sealed_execution_authorization", return_value={"status": "pass"}
+        )
+        authorization_patch.start()
+        self.addCleanup(authorization_patch.stop)
 
     @staticmethod
     def _write_json(path: Path, payload: object) -> None:
@@ -423,6 +428,33 @@ class A0R2RunnerTests(unittest.TestCase):
             self.assertEqual("compatibility", failure["failure"]["stage"])
             self.assertEqual("not_accessed", failure["access"]["model_output_accessed"])
             self.assertEqual("not_accessed", failure["access"]["sealed_targets_accessed"])
+
+    def test_authorization_failure_skips_contract_activation_and_targets(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            fixture = self._fixture(root)
+            with (
+                patch.object(
+                    runner,
+                    "verify_a0r2_sealed_execution_authorization",
+                    side_effect=RuntimeError("authorization absent"),
+                ),
+                patch.object(runner, "verify_a0r2_execution_contract") as mock_contract,
+                patch.object(runner, "run_a0r2_activations") as mock_activation,
+                patch.object(runner, "_discover_targets_path") as mock_targets,
+            ):
+                status = runner.main(
+                    [
+                        "--root", str(root), "--run-id", fixture["run_id"].name,
+                        "--created-at", "2026-08-15T19:00:00Z",
+                        "--model-root", str(fixture["model_root"]), "--stage", "activate",
+                    ]
+                )
+
+            self.assertNotEqual(0, status)
+            mock_contract.assert_not_called()
+            mock_activation.assert_not_called()
+            mock_targets.assert_not_called()
 
     def test_activation_failure_reports_possibly_accessed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-approval-dossier-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0r2-execution-verify a0r2-run a0r2-run-verify a0r2-publication-verify a0
+.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-approval-dossier-verify a0r2-authorization-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0r2-execution-verify a0r2-run a0r2-run-verify a0r2-publication-verify a0
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -12,6 +12,7 @@ A0R2_PYTHON ?= .venv/bin/python
 A0R2_CREATED_AT ?=
 A0R2_ADMISSION_TIMEOUT ?= 30
 A0R2_RUN_ID ?= a0r2-v1.0.0-f8027fd0-r1
+A0R2_AUTHORIZATION_RECEIPT ?= results/a0r2/preexecution/smollm2-360m-f8027fd0/sealed-execution-authorization.json
 
 LAB_SUITE_OUTPUT ?= artifacts/lab/index.html
 ANNOTATION_RATER_ID ?= local_rater
@@ -36,6 +37,7 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/triz-principle-reference.schema.json data/triz-reference/principles.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/triz-web-corpus.schema.json data/triz-consulting-web-corpus.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2-sealed-execution-approval-dossier.schema.json experiments/a0r2-independent-model/sealed-execution-approval-dossier.json
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2-sealed-execution-authorization.schema.json results/a0r2/preexecution/smollm2-360m-f8027fd0/sealed-execution-authorization.json
 	python3 -c 'import json; json.load(open("schemas/blinded-annotation-audit.schema.json"))'
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/candidates/wave1-model-generated.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-config.schema.json experiments/lab03-behavioral-baselines/config.json
@@ -48,7 +50,7 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli claims-audit --registry data/claims.jsonl --root .
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json tests/fixtures/case_valid.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/pilot/cases.jsonl
-	for path in schemas/case.schema.json schemas/study.schema.json schemas/run.schema.json schemas/dataset-registry.schema.json schemas/claim.schema.json schemas/triz-reference-registry.schema.json schemas/triz-principle-reference.schema.json schemas/triz-web-corpus.schema.json schemas/a0r2-sealed-execution-approval-dossier.schema.json data/registry.json data/triz-reference-sources.json data/triz-consulting-web-corpus.json experiments/a0r2-independent-model/sealed-execution-approval-dossier.json experiments/000-template/manifest.json experiments/000-template/run.json; do python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "$$path" || (echo "latent-triz: $$path:0:0: invalid JSON"; exit 1); done
+	for path in schemas/case.schema.json schemas/study.schema.json schemas/run.schema.json schemas/dataset-registry.schema.json schemas/claim.schema.json schemas/triz-reference-registry.schema.json schemas/triz-principle-reference.schema.json schemas/triz-web-corpus.schema.json schemas/a0r2-sealed-execution-approval-dossier.schema.json schemas/a0r2-sealed-execution-authorization.schema.json data/registry.json data/triz-reference-sources.json data/triz-consulting-web-corpus.json experiments/a0r2-independent-model/sealed-execution-approval-dossier.json results/a0r2/preexecution/smollm2-360m-f8027fd0/sealed-execution-authorization.json experiments/000-template/manifest.json experiments/000-template/run.json; do python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "$$path" || (echo "latent-triz: $$path:0:0: invalid JSON"; exit 1); done
 
 docs-audit:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli docs-audit --profile docs/okf-profile.toml --root . --as-of-date "$$(python3 -c 'from datetime import date; print(date.today().isoformat())')"
@@ -132,7 +134,13 @@ a0r2-approval-dossier-verify:
 	PYTHONPATH=$(PYTHONPATH) "$(A0R2_PYTHON)" -m latent_triz.cli validate \
 	  --schema schemas/a0r2-sealed-execution-approval-dossier.schema.json \
 	  experiments/a0r2-independent-model/sealed-execution-approval-dossier.json
-	@echo "A0-R2.3 approval dossier verified; authorization remains absent and no target was opened."
+	@echo "A0-R2.3 historical approval dossier verified; no target was opened."
+
+a0r2-authorization-verify:
+	@test -x "$(A0R2_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
+	PYTHONPATH=$(PYTHONPATH) "$(A0R2_PYTHON)" -m unittest tests.test_a0r2_authorization
+	PYTHONPATH=$(PYTHONPATH) "$(A0R2_PYTHON)" -c 'from latent_triz.a0r2_authorization import verify_a0r2_sealed_execution_authorization; verify_a0r2_sealed_execution_authorization(".")'
+	@echo "A0-R2.3 corrective authorization verified; no model or target was accessed."
 
 a0r2-feasibility-run:
 	@test -x "$(A0R2_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
@@ -161,7 +169,7 @@ a0r2-run:
 	  --timeout-seconds 1800 -- \
 	  "$(A0R2_PYTHON)" -m latent_triz.a0r2_runner \
 	  --root . --run-id "$(A0R2_RUN_ID)" --created-at "$(A0R2_CREATED_AT)" \
-	  --model-root "$(A0R2_MODEL_ROOT)" --stage all
+	  --model-root "$(A0R2_MODEL_ROOT)" --authorization-receipt "$(A0R2_AUTHORIZATION_RECEIPT)" --stage all
 
 a0r2-run-verify:
 	@test -x "$(A0R2_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-sealed-execution-authorization.schema.json",
+  "title": "A0-R2.3 sealed-execution authorization receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "receipt_id", "receipt_status", "recorded_at", "source", "dossier", "prior_boundary_observation", "bindings", "scope", "access"],
+  "properties": {
+    "artifact_class": {"const": "a0r2-sealed-execution-authorization"},
+    "receipt_id": {"const": "a0r2-sealed-execution-authorization-v2"},
+    "receipt_status": {"const": "authorized"},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "source": {"const": "explicit_operator_authorization"},
+    "dossier": {
+      "type": "object", "additionalProperties": false,
+      "required": ["dossier_id", "merged_commit", "path", "sha256"],
+      "properties": {
+        "dossier_id": {"const": "a0r2-sealed-execution-approval-v1"},
+        "merged_commit": {"const": "b9260cd9743d2afd5eb7fc79339e0687fa22689c"},
+        "path": {"const": "experiments/a0r2-independent-model/sealed-execution-approval-dossier.json"},
+        "sha256": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "prior_boundary_observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["event", "content_emitted", "content_retained", "new_operator_authorization_required"],
+      "properties": {
+        "event": {"const": "sealed_target_file_hash_read_outside_analysis_boundary"},
+        "content_emitted": {"const": false}, "content_retained": {"const": false},
+        "new_operator_authorization_required": {"const": true}
+      }
+    },
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["approval_dossier_sha256", "implementation_sha256", "study_protocol_sha256"],
+      "properties": {
+        "approval_dossier_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "implementation_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "study_protocol_sha256": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_id", "revision", "device", "dtype", "local_only", "network_access", "generation_allowed", "maximum_wall_seconds", "maximum_peak_rss_bytes", "maximum_new_dense_output_bytes", "maximum_material_runs", "analysis_target_content_reads", "publish_every_terminal_outcome", "tuning_allowed", "model_substitution_allowed", "protocol_change_allowed", "retry_after_model_or_target_access"],
+      "properties": {
+        "model_id": {"const": "HuggingFaceTB/SmolLM2-360M"}, "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "device": {"const": "cpu"}, "dtype": {"const": "float32"}, "local_only": {"const": true}, "network_access": {"const": false}, "generation_allowed": {"const": false},
+        "maximum_wall_seconds": {"const": 1800}, "maximum_peak_rss_bytes": {"const": 8589934592}, "maximum_new_dense_output_bytes": {"const": 67108864},
+        "maximum_material_runs": {"const": 1}, "analysis_target_content_reads": {"const": 1}, "publish_every_terminal_outcome": {"const": true},
+        "tuning_allowed": {"const": false}, "model_substitution_allowed": {"const": false}, "protocol_change_allowed": {"const": false},
+        "retry_after_model_or_target_access": {"const": "new_explicit_approval_required"}
+      }
+    },
+    "access": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_loaded", "model_output_accessed", "sealed_targets_accessed"],
+      "properties": {"model_loaded": {"const": false}, "model_output_accessed": {"const": false}, "sealed_targets_accessed": {"const": false}}
+    }
+  }
+}
