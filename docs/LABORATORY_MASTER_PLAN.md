@@ -364,6 +364,16 @@ new explicit one-attempt authorization. All frozen scientific inputs,
 statistics, thresholds, model identity, resource ceilings, no-tuning rule, and
 single target-read boundary remain unchanged.
 
+### A0-R2-C2 — singleton-batch shape correction
+
+C2 is the only allowed continuation of C1: it is a separately preregistered,
+namespaced correction that removes a singleton batch dimension from Llama
+hidden-state layers only after strict shape validation. It is not a C1 retry.
+The C2 contract binds the C1 terminal package, retains all frozen scientific
+inputs and resource limits, and requires synthetic shape qualification,
+exact-head review, a new explicit authorization, then one guarded material
+attempt with terminal publication.
+
 ### PR 30 — annotation ontology v1.2 implementation
 
 **Outcome**

@@ -454,6 +454,18 @@ were not accessed, and no activation bundle or statistical result exists. The
 terminal status is `failed`; the C1 authorization is consumed and any C2
 correction requires a fresh preregistration and explicit operator approval.
 
+#### A0-R2-C2 — singleton-batch shape correction
+
+**Current checkpoint — pre-output C2 contract, approval not yet granted:** C2
+preserves the C1 terminal package and changes only the handling of the Llama
+singleton batch dimension. New namespaced code maps a validated
+`[1, token, 960]` hidden-state layer to `[token, 960]`, while rejecting any
+other batch size, token count, hidden size, malformed nesting, or non-finite
+value. The frozen model, corpus, targets, prompts, endpoints, statistics,
+thresholds, resource envelope, and no-claim boundary do not change. C2 needs a
+merged exact-head qualification and a new one-attempt operator authorization
+before model or target access.
+
 ## Statistical and missing-data rules
 
 - The R1 primary endpoint is fixed from A0 and is not selected from R1 output.

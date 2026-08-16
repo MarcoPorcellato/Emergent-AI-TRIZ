@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-approval-dossier-verify a0r2-authorization-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0r2-execution-verify a0r2-run a0r2-run-verify a0r2-publication-verify a0r2c1-contract-verify a0r2c1-run a0
+.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-approval-dossier-verify a0r2-authorization-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0r2-execution-verify a0r2-run a0r2-run-verify a0r2-publication-verify a0r2c1-contract-verify a0r2c1-run a0r2c2-contract-verify a0r2c2-run a0
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -15,6 +15,8 @@ A0R2_RUN_ID ?= a0r2-v1.0.0-f8027fd0-r1
 A0R2_AUTHORIZATION_RECEIPT ?= results/a0r2/preexecution/smollm2-360m-f8027fd0/sealed-execution-authorization.json
 A0R2C1_RUN_ID ?= a0r2c1-v1.0.0-f8027fd0-r1
 A0R2C1_AUTHORIZATION_RECEIPT ?= results/a0r2c1/preexecution/sealed-execution-authorization.json
+A0R2C2_RUN_ID ?= a0r2c2-v1.0.0-f8027fd0-r1
+A0R2C2_AUTHORIZATION_RECEIPT ?= results/a0r2c2/preexecution/sealed-execution-authorization.json
 
 LAB_SUITE_OUTPUT ?= artifacts/lab/index.html
 ANNOTATION_RATER_ID ?= local_rater
@@ -43,6 +45,8 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2c1-correction-contract.schema.json experiments/a0r2c1-tokenizer-correction/contract.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2c1-tokenizer-compatibility.schema.json results/a0r2c1/preexecution/tokenizer-compatibility.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2c1-sealed-execution-authorization.schema.json results/a0r2c1/preexecution/sealed-execution-authorization.json
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2c2-correction-contract.schema.json experiments/a0r2c2-shape-correction/contract.json
+	python3 -c 'import json; json.load(open("schemas/a0r2c2-sealed-execution-authorization.schema.json"))'
 	python3 -c 'import json; json.load(open("schemas/blinded-annotation-audit.schema.json"))'
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/candidates/wave1-model-generated.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-config.schema.json experiments/lab03-behavioral-baselines/config.json
@@ -202,6 +206,20 @@ a0r2c1-run:
 	  --root . --run-id "$(A0R2C1_RUN_ID)" --created-at "$(A0R2_CREATED_AT)" \
 	  --model-root "$(A0R2_MODEL_ROOT)" --authorization-receipt "$(A0R2C1_AUTHORIZATION_RECEIPT)" --stage all
 
+a0r2c2-contract-verify:
+	PYTHONPATH=$(PYTHONPATH) python3 -c 'from latent_triz.a0r2c2_authorization import verify_a0r2c2_contract; verify_a0r2c2_contract(".")'
+	@echo "A0-R2-C2 correction contract verified; no model or sealed target was accessed."
+
+a0r2c2-run:
+	@test -x "$(A0R2_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
+	@test -n "$(A0R2_CREATED_AT)" || (echo "A0R2_CREATED_AT must be set"; exit 2)
+	PYTHONPATH=$(PYTHONPATH) commit-ci-preflight guard exec \
+	  --admission-timeout-seconds "$(A0R2_ADMISSION_TIMEOUT)" \
+	  --timeout-seconds 1800 -- \
+	  "$(A0R2_PYTHON)" -m latent_triz.a0r2c2_runner \
+	  --root . --run-id "$(A0R2C2_RUN_ID)" --created-at "$(A0R2_CREATED_AT)" \
+	  --model-root "$(A0R2_MODEL_ROOT)" --authorization-receipt "$(A0R2C2_AUTHORIZATION_RECEIPT)" --stage all
+
 a0:
 	@test -x "$(LAB01_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
 	PYTHONPATH=$(PYTHONPATH) commit-ci-preflight guard exec \
@@ -220,7 +238,7 @@ preflight-run:
 	commit-ci-preflight run --config .commit-ci-preflight.toml --repository . --generation 1
 
 preflight-verify:
-	commit-ci-preflight verify --receipt .ccp/receipt.json --policy .commit-ci-policy.toml --expected-commit "$$(git rev-parse HEAD)"
+	commit-ci-preflight verify --receipt .ccp/receipt.json --policy .commit-ci-policy-v2.toml --expected-commit "$$(git rev-parse HEAD)"
 
 model-preflight:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli model-preflight --manifest experiments/001-stage1-pilot/model-candidates.jsonl

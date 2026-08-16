@@ -1,15 +1,14 @@
-Preserve and publish the terminal A0-R2-C1 SmolLM2 execution package from
-public main 8b1a693e832bc753dfee8cbded947eadc1be03cc. The one C1 attempt loaded
-the exact model and then failed during rank-three Llama hidden-state
-normalization, before sealed-target analysis. Its authorization is consumed.
+Complete the separately preregistered A0-R2-C2 SmolLM2 shape correction in
+docs/A0R2C2_SHAPE_CORRECTION.md from the live public main anchor. Preserve C1
+as an immutable terminal failure; C2 is not a retry under the consumed C1
+authorization.
 
-Publish the authorization receipt, failure receipt, report, and manifest with
-their exact hashes and fail-closed verification. Do not retry C1, tune,
-substitute a model, change frozen protocol/statistics, or access sealed targets
-under the consumed authorization.
+Change only the validated singleton Llama batch-axis normalization in new
+C2-namespaced code. Keep exact model/revision, corpus, sealed targets, prompts,
+sites, statistics, thresholds, resource caps, no-network/no-generation policy,
+no-tuning rule, and terminal-publication policy unchanged.
 
-Any future C2 path must be separately preregistered, synthetically and
-runtime-qualified, exact-head merged, and explicitly authorized before a model
-load or target read. Keep the prior A0-R2 and C1 packages byte-stable; do not
-promote a TRIZ claim from either failure. Use deterministic tools first and
-delegate only bounded low-risk work to cheaper workers.
+Merge and exact-head qualify the C2 contract before requesting a new explicit
+one-attempt authorization. Do not load a model or read targets until that
+authorization is recorded and CCP reports resource Admit, inactive admission,
+and an empty queue. Publish every terminal outcome without claim promotion.
