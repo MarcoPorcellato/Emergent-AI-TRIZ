@@ -150,10 +150,15 @@ public GHCR verification images for Python 3.11 and 3.12. PR
 bridge. The initial matrix PR #54 at
 `c6874fdaa11aeebee079579b0a323146818be8fa` was closed without merge because
 the base still routed only the v1 policy. PR #55 then merged the fail-closed
-v1/v2 selector at `28b6c5d309eb5e640c34945e598b3a1e8425d979`. The rebased
-matrix/workflow migration remains pending a fresh exact-head receipt, terminal
-gates, merge, and post-merge measurement, so no hosted-cost reduction is
-claimed yet.
+v1/v2 selector at `28b6c5d309eb5e640c34945e598b3a1e8425d979`. PR #56 merged
+the fresh exact-head matrix qualification at
+`1457e2c4e5e6affba75266fc0b62e7375f8e16fa`. Post-merge PR #57 merged at
+`9ef86ec22a46422eb586fbe29085cc0b05672ea8`; run `31949031711` created no
+hosted Python candidate lane. Against pre-migration run `31948392224`, hosted
+run wall time fell from 237 to 71 seconds and summed successful-job intervals
+from 473 to 56 seconds. Both timing responses reported zero billable
+milliseconds, so the verified outcome is reduced hosted execution rather than
+a demonstrated monetary saving. Phase G is complete.
 
 PR 46 merged the R2.1 publication and receipt branch at
 `1f35ba353e792aa263db7449216e3172d0306798` after exact head
@@ -162,9 +167,10 @@ is now the active local/offline SmolLM2 tranche with synthetic-only
 qualification, descriptive cross-model comparisons, and no real model load or
 sealed-target access yet. PRs 48 and 49 migrated the trusted CCP digest and
 180-second timeout in two base-authorized steps, ending at public anchor
-`85180041717f336de554300dda109731b48c6b95`. PR 47 is rebased onto that
-contract and awaits a fresh exact-head receipt and terminal hosted gate. R2.3
-remains a separate approval gate.
+`85180041717f336de554300dda109731b48c6b95`. PR 47 subsequently merged the
+R2.2 implementation at `fa1e254ec373092278b1ab63f05504545e295b67`. R2.3
+model execution and sealed-target access remain a separate explicit approval
+gate.
 
 ### Evidence profiles
 

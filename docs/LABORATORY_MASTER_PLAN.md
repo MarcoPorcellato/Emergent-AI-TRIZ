@@ -135,7 +135,7 @@ transformation span. Energy and transport remained at 0.5 accuracy in that
 combination, the corpus is procedural, and only one small model revision was
 tested. Those limits are part of the result, not optional caveats.
 
-### Phase G — cost-aware receipt routing (in delivery)
+### Phase G — cost-aware receipt routing (verified complete)
 
 CCP PR [#37](https://github.com/MarcoPorcellato/commit-ci-preflight/pull/37)
 merged at `044697dee9a0d678d30a4847d62ddf9b4970505b`, adding v2 multi-runtime
@@ -156,10 +156,18 @@ v2 verifier bridge. The initial matrix PR
 its v2 receipt could not yet be evaluated against the base's v1-only policy
 route. PR [#55](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/55) then
 merged the fail-closed v1/v2 policy selector at
-`28b6c5d309eb5e640c34945e598b3a1e8425d979`. The rebased matrix migration
-still requires one fresh exact-head v2 receipt, terminal trusted gates, merge,
-and a post-merge hosted-execution measurement. No cost saving is claimed in
-advance, and no R2 boundary changed.
+`28b6c5d309eb5e640c34945e598b3a1e8425d979`. PR
+[#56](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/56) then qualified
+the rebased matrix head `c913ea5b89bc6feb261560ebfd80bb5bc2d23080` with a fresh
+v2 receipt and merged at `1457e2c4e5e6affba75266fc0b62e7375f8e16fa`.
+Post-merge PR [#57](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/57),
+head `f5dbd54c20eca05cc7cc4c5e03b3dc3cce243092`, merged at
+`9ef86ec22a46422eb586fbe29085cc0b05672ea8` after run `31949031711` created
+no hosted Python candidate job. Compared with pre-migration run `31948392224`,
+run wall time fell from 237 to 71 seconds and summed successful-job intervals
+fell from 473 to 56 seconds. GitHub reported zero billable milliseconds for
+both public-repository samples, so this proves reduced hosted execution, not a
+monetary saving. No R2 boundary changed.
 
 ## Current bottlenecks
 

@@ -103,9 +103,10 @@ CCP v2. PR 54's initial matrix attempt at
 the base policy route still accepted only v1. PR 55 merged the fail-closed
 schema selector and parallel v2 policy at
 `28b6c5d309eb5e640c34945e598b3a1e8425d979`. Historical v1 policy and
-receipts remain distinct. This is still not a cost result: the rebased matrix
-must receive fresh exact-head evidence, merge, and then be measured from a
-post-merge pull request.
+receipts remain distinct. PR 56 merged the fresh matrix qualification at
+`1457e2c4e5e6affba75266fc0b62e7375f8e16fa`; PR 57 then measured the
+post-migration route and merged at
+`9ef86ec22a46422eb586fbe29085cc0b05672ea8`.
 
 | Changed surface | Required qualification |
 |---|---|
@@ -122,8 +123,13 @@ check out, build, or execute candidate project code. The artifact-audit job
 uses only `contents: read` and parses candidate files with trusted base-branch
 code. No job uses repository secrets or persists checkout credentials. The
 aggregator publishes only the required exact-head commit status. The v2 matrix
-is the code-qualification path; hosted cost is measured only after the
-migration's terminal evidence exists.
+is the code-qualification path. In pre-migration run `31948392224`, hosted
+Python 3.11 and 3.12 jobs were present; run wall time was 237 seconds and
+summed successful-job intervals were 473 seconds. Post-migration run
+`31949031711` created neither Python job; wall time was 71 seconds and summed
+successful-job intervals were 56 seconds. GitHub's timing API returned zero
+billable milliseconds for both public-repository runs. The measured result is
+therefore lower hosted execution, not demonstrated monetary savings.
 
 The active `main-protection` ruleset requires pull requests, linear squash
 history, resolved review threads, and `merge-policy/gate`. Review, protected
