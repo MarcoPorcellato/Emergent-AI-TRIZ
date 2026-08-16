@@ -394,6 +394,15 @@ the analysis boundary. Preserve any partial artifact and publish every terminal
 outcome. Verification may be repeated only when it performs no model load and
 opens no sealed target.
 
+**Terminal execution record:** the single authorized attempt ran from merged
+`main` at `9a2269650380864af4932cd0403c806eb57837a1` on 2026-08-16. SmolLM2
+loaded locally under the CCP guard, then the adapter rejected the tokenizer
+return type with `A0R2AdapterError` before activation extraction or analysis.
+The terminal package is therefore `failed`; it records model output as
+`possibly_accessed` and sealed targets as `not_accessed`. No retry, tuning,
+model substitution, protocol revision, target read, or statistical result is
+permitted under this authorization.
+
 #### R2.5 — immutable publication
 
 Publish the statistical result, receipt, representation index, external dense
@@ -402,6 +411,11 @@ and manifest. Verification from a fresh clone plus the declared external asset
 must fail closed on every missing or mutated dependency. A positive result may
 say only that the frozen automated-proxy signal persisted across the two exact
 model families tested.
+
+For a pre-activation terminal failure, no representation index or external dense
+asset exists; the failure receipt, report, and manifest are the complete
+immutable package. The package verifier must continue to reject a fabricated
+mixed failure/activation package.
 
 ## Statistical and missing-data rules
 

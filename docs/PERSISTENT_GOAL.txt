@@ -27,6 +27,15 @@ qualify the corrective authorization receipt and runner gate. Only then, and
 only after CCP reports `Admit`, inactive admission, and an empty queue, permit
 exactly one guarded material attempt and preserve its first terminal outcome.
 
+That single attempt has now occurred on merged `main`
+`9a2269650380864af4932cd0403c806eb57837a1`. It is terminal `failed` before
+activation extraction because the SmolLM2 adapter rejected the tokenizer return
+type. The failure receipt records model output `possibly_accessed` and sealed
+targets `not_accessed`. Do not retry, tune, substitute a model, change the
+protocol, or read the targets under this authorization. Publish and verify the
+immutable failure package, including report and manifest, then record R2.3-R2.5
+as terminally closed without a TRIZ claim.
+
 Treat the expert TRIZ reference corpus as reference-only input for a future
 R3/EXP-001 preregistration. Do not use its wording, examples, matrix cells, or
 tool relationships to alter the frozen R2.3 protocol or interpret its output.
