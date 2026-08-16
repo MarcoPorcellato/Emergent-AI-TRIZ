@@ -1,0 +1,100 @@
+{
+  "artifact_class": "a0r2-implementation",
+  "implementation_id": "a0r2-independent-model-v1.0.0-impl-v1.0",
+  "protocol_id": "a0r2-independent-model-v1.0.0",
+  "created_at": "2026-08-15T21:07:22Z",
+  "status": "frozen_before_model_output",
+  "empirical": true,
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "bindings": {
+    "study_protocol_sha256": "383c2fe8a0d2baa893bc88326e3a5e18329691a90fd9bd1ea106602c8ee9bf3f",
+    "integrity_receipt_sha256": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3",
+    "feasibility_receipt_sha256": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67"
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "model_type": "llama",
+    "architecture": "LlamaForCausalLM",
+    "num_hidden_layers": 32,
+    "hidden_size": 960,
+    "local_locator": "artifacts/models/smollm2-360m-f8027fd0"
+  },
+  "runtime_files": [
+    {"name": "README.md", "sha256": "631f842e4a02262e07fc522ede86c816114541319dea53dbf86bac4539a24ac9", "size": 6623},
+    {"name": "config.json", "sha256": "34f7801487078de7e434e19162c497e5cc6ff397080e40e8586627cb68a5168a", "size": 689},
+    {"name": "generation_config.json", "sha256": "2056c988e990b0d13670f63f2f3b87b3b6d07edaf7a3416998ba27dab2d8a059", "size": 111},
+    {"name": "merges.txt", "sha256": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510", "size": 466391},
+    {"name": "model.safetensors", "sha256": "7aaff6661428bed033abba9522bec81938678642cca3181fe752b6ca9e1e540f", "size": 723674912},
+    {"name": "special_tokens_map.json", "sha256": "e786b595b9a23148bf1630df78d9037a048ea671e48bfd3549a1e3c233742bb3", "size": 831},
+    {"name": "tokenizer.json", "sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c", "size": 2104556},
+    {"name": "tokenizer_config.json", "sha256": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424", "size": 3658},
+    {"name": "vocab.json", "sha256": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79", "size": 800662}
+  ],
+  "classifier": {
+    "name": "l2_regularized_linear_least_squares",
+    "alpha": 1.0,
+    "solver": "dual_kernel_closed_form",
+    "standardization_scope": "within_train_folds",
+    "evaluation": "family_grouped_leave_one_domain_out"
+  },
+  "permutations": {
+    "seed": 20260815,
+    "budget": 999,
+    "pairing": "paired_within_family_swaps",
+    "correction": "fixed_primary_no_multiplicity"
+  },
+  "primary_endpoint": {
+    "tuple_index": 32,
+    "semantics": "final_transformer_block_output",
+    "token_site": "mean_transformation_span",
+    "primary_view": "problem_plus_transformation",
+    "surface_baseline_view": "problem_only",
+    "surface_baseline_token_site": "sentinel",
+    "multiplicity": 1
+  },
+  "sensitivity_endpoints": {
+    "tuple_indices": [0, 11, 21, 32],
+    "descriptive_only": true,
+    "may_replace_primary": false
+  },
+  "descriptive_cross_model": {
+    "enabled": true,
+    "interpretation": "descriptive_only",
+    "may_affect_primary": false,
+    "r1_result_path": "results/a0r1/a0r1-v1.0.0-e93a9faa-r1/statistical-result.json",
+    "r1_result_sha256": "a2ad1ed0148a332fe85cb42ee2f3295e042d277d772353ebd84ccd2e255a6738",
+    "case_order": "lexicographic_case_id_shared_with_r1",
+    "metrics": ["pearson_score_correlation", "spearman_score_correlation", "score_sign_agreement", "family_outcome_agreement", "domain_direction_sign_agreement"]
+  },
+  "shortcut_refusal": {
+    "macro_f1_at_or_above": 0.65,
+    "margin_over_majority_at_or_above": 0.1,
+    "required_control_count": 14
+  },
+  "implementation_code": {
+    "binding_state": "bound",
+    "bound_code_files": [
+      {"path": "src/latent_triz/a0_activation_sites.py", "sha256": "80374065df34cf77d9705a7f94fafb4112df259a353bc98d4ca87a6c69a30021", "size": 4763},
+      {"path": "src/latent_triz/a0r1_analysis.py", "sha256": "6f7e2136e6d6fa46724ab3bac01216ddf62f5d9708d32a80fd4f35d4285d876a", "size": 36923},
+      {"path": "src/latent_triz/a0r2_acquisition.py", "sha256": "221ec4e2697b7da211f24cda34c19a6db3b552f87a5ca0539ea34fe345510d02", "size": 19790},
+      {"path": "src/latent_triz/a0r2_adapter.py", "sha256": "fc8c35a5cd35fd4c5cb61a4d2617012f81edd835f8df78446b87d2df8a50ed42", "size": 9945},
+      {"path": "src/latent_triz/a0r2_activations.py", "sha256": "d7fb23abc548f90c36cff866bdd86dd55368f7ecb613e232be028f71fc1dd03f", "size": 33388},
+      {"path": "src/latent_triz/a0r2_analysis.py", "sha256": "fadceaa1a0260d1f78a96f8c346810f69500ff6a7d288f583cac92ccc938a3e6", "size": 30679},
+      {"path": "src/latent_triz/a0r2_comparison.py", "sha256": "6cfc8472bf44e971d5aadf3a6f1b51c9b95f8770c5cb3c8f04fe2acce5cc6e7b", "size": 4663},
+      {"path": "src/latent_triz/a0r2_execution.py", "sha256": "99cbc6da688eaa7138c3b13b4d2f264c15e767fb5aa83399d80edb3f8300f57e", "size": 9158},
+      {"path": "src/latent_triz/a0r2_report.py", "sha256": "c7cde3ea9b65f6e3c335e60d836b73897e7811281bcc5895f816447af26212a8", "size": 28127},
+      {"path": "src/latent_triz/a0r2_runner.py", "sha256": "4f1ac8caae5da3ba7077aea0d132a7e1551600aa5645860c68530a0fd2d49fdd", "size": 14965},
+      {"path": "src/latent_triz/validator.py", "sha256": "7d3bec9bbfb4960f70f3b18395d7e75cc928e032a25fbec3897c88e48ebeff91", "size": 15621}
+    ],
+    "pending_code_binding": []
+  },
+  "access": {
+    "model_loaded": false,
+    "model_output_accessed": false,
+    "sealed_targets_accessed": false
+  }
+}

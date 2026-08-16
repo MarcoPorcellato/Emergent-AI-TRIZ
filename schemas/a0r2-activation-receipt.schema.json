@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-activation-receipt.schema.json",
+  "title": "A0-R2 activation receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "status",
+    "created_at",
+    "scientific_status",
+    "empirical",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "protocol_id",
+    "model",
+    "runtime",
+    "activation",
+    "access",
+    "input_hashes",
+    "output_bundle"
+  ],
+  "properties": {
+    "artifact_class": {"const": "a0r2-activation-receipt"},
+    "status": {"const": "pass"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "scientific_status": {"const": "exploratory"},
+    "empirical": {"const": true},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "protocol_id": {"const": "a0r2-independent-model-v1.0.0"},
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "license_id", "model_type", "architecture", "num_hidden_layers", "hidden_size", "local_locator"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "license_id": {"const": "Apache-2.0"},
+        "model_type": {"const": "llama"},
+        "architecture": {"const": "LlamaForCausalLM"},
+        "num_hidden_layers": {"const": 32},
+        "hidden_size": {"const": 960},
+        "local_locator": {"const": "artifacts/models/smollm2-360m-f8027fd0"}
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["device", "torch_dtype", "network_access", "local_files_only", "generation", "fast_offsets_required"],
+      "properties": {
+        "device": {"const": "cpu"},
+        "torch_dtype": {"const": "float32"},
+        "network_access": {"const": false},
+        "local_files_only": {"const": true},
+        "generation": {"const": false},
+        "fast_offsets_required": {"const": true}
+      }
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tuple_index",
+        "primary_semantics",
+        "token_site",
+        "primary_view",
+        "surface_baseline_view",
+        "surface_baseline_token_site",
+        "hidden_states_count",
+        "hidden_size",
+        "output_content_retained"
+      ],
+      "properties": {
+        "tuple_index": {"const": 32},
+        "primary_semantics": {"const": "final_transformer_block_output"},
+        "token_site": {"const": "mean_transformation_span"},
+        "primary_view": {"const": "problem_plus_transformation"},
+        "surface_baseline_view": {"const": "problem_only"},
+        "surface_baseline_token_site": {"const": "sentinel"},
+        "hidden_states_count": {"const": 33},
+        "hidden_size": {"const": 960},
+        "output_content_retained": {"const": true}
+      }
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_loaded", "model_output_accessed", "sealed_targets_accessed", "claim_promotion"],
+      "properties": {
+        "model_loaded": {"const": true},
+        "model_output_accessed": {"const": true},
+        "sealed_targets_accessed": {"const": false},
+        "claim_promotion": {"const": false}
+      }
+    },
+    "input_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol_sha256",
+        "r1_protocol_sha256",
+        "r1_freeze_manifest_sha256",
+        "corpus_manifest_sha256",
+        "cases_sha256",
+        "sealed_targets_sha256",
+        "shortcuts_sha256",
+        "integrity_receipt_sha256",
+        "feasibility_receipt_sha256"
+      ],
+      "properties": {
+        "protocol_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "r1_protocol_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "r1_freeze_manifest_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "corpus_manifest_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "cases_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "sealed_targets_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "shortcuts_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "integrity_receipt_sha256": {"pattern": "^[0-9a-f]{64}$"},
+        "feasibility_receipt_sha256": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "output_bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reports", "dense_locator", "artifact_hashes", "records", "hidden_size", "exact_head"],
+      "properties": {
+        "reports": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?:[^/\\s]+(?:/[^/\\s]+)*)$"
+          }
+        },
+        "dense_locator": {
+          "type": "string",
+          "pattern": "^artifacts/a0r2/[A-Za-z0-9._-]+/activations\\.json$"
+        },
+        "artifact_hashes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["summary_sha256", "index_sha256", "dense_sha256"],
+          "properties": {
+            "summary_sha256": {"pattern": "^[0-9a-f]{64}$"},
+            "index_sha256": {"pattern": "^[0-9a-f]{64}$"},
+            "dense_sha256": {"pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        "records": {"const": 1920},
+        "hidden_size": {"const": 960},
+        "exact_head": {"pattern": "^[0-9a-f]{40}$"}
+      }
+    }
+  }
+}

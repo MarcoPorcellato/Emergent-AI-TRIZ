@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0
+.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0r2-execution-verify a0r2-run a0r2-run-verify a0r2-publication-verify a0
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -11,6 +11,7 @@ A0R2_MODEL_ROOT ?= artifacts/models/smollm2-360m-f8027fd0
 A0R2_PYTHON ?= .venv/bin/python
 A0R2_CREATED_AT ?=
 A0R2_ADMISSION_TIMEOUT ?= 30
+A0R2_RUN_ID ?= a0r2-v1.0.0-f8027fd0-r1
 
 LAB_SUITE_OUTPUT ?= artifacts/lab/index.html
 ANNOTATION_RATER_ID ?= local_rater
@@ -135,6 +136,32 @@ a0r2-feasibility-run:
 a0r2-feasibility-verify:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.a0r2_feasibility --root . --verify-only
 	@echo "A0-R2 bounded feasibility receipt verified; no model was loaded."
+
+a0r2-execution-verify:
+	PYTHONPATH=$(PYTHONPATH) python3 -c 'from latent_triz.a0r2_execution import verify_a0r2_execution_contract; verify_a0r2_execution_contract(".")'
+	@echo "A0-R2 frozen implementation contract verified; no model or sealed target was accessed."
+
+a0r2-run:
+	@test -x "$(A0R2_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
+	@test -n "$(A0R2_CREATED_AT)" || (echo "A0R2_CREATED_AT must be set"; exit 2)
+	PYTHONPATH=$(PYTHONPATH) commit-ci-preflight guard exec \
+	  --admission-timeout-seconds "$(A0R2_ADMISSION_TIMEOUT)" \
+	  --timeout-seconds 1800 -- \
+	  "$(A0R2_PYTHON)" -m latent_triz.a0r2_runner \
+	  --root . --run-id "$(A0R2_RUN_ID)" --created-at "$(A0R2_CREATED_AT)" \
+	  --model-root "$(A0R2_MODEL_ROOT)" --stage all
+
+a0r2-run-verify:
+	@test -x "$(A0R2_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)
+	PYTHONPATH=$(PYTHONPATH) "$(A0R2_PYTHON)" -m latent_triz.a0r2_runner \
+	  --root . --run-id "$(A0R2_RUN_ID)" \
+	  --created-at "$(or $(A0R2_CREATED_AT),2000-01-01T00:00:00Z)" --stage verify
+
+a0r2-publication-verify:
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.a0r2_report \
+	  --package-dir "results/a0r2/$(A0R2_RUN_ID)" \
+	  --external-dense-dir "artifacts/a0r2/$(A0R2_RUN_ID)" --verify-only
+	@echo "A0-R2 immutable package verified; no model or sealed target was accessed."
 
 a0:
 	@test -x "$(LAB01_PYTHON)" || (echo "Run make lab01-setup first"; exit 2)

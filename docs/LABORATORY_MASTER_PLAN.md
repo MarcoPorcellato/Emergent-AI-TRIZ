@@ -3,7 +3,7 @@ type: master-plan
 title: Laboratory Master Plan
 description: Canonical evolution ledger and gated route from the verified laboratory foundation to falsifiable, reproducible Latent TRIZ experiments.
 status: canonical
-last_verified: 2026-08-15
+last_verified: 2026-08-16
 ---
 
 # Laboratory Master Plan
@@ -239,12 +239,25 @@ GiB peak RSS, and 3.81 seconds total time; the outer guard separately remains
 `cleanup_uncertain` after exit 70 despite a clean post-run observation. No rerun
 is permitted, and sealed execution remains gated.
 
-The next authorized delivery tranche is the fully automated SmolLM2 R2 study
-defined in `docs/A0_REPLICATION_AND_ROBUSTNESS.md`. It reuses the frozen R1
-corpus and statistics, maps the semantic final block to SmolLM2 tuple index 32,
-and expands only descriptive controls and sensitivities. Preregistration and
-synthetic implementation may proceed without human review; the exact one-run
-sealed-data and material envelope remains a separate approval checkpoint.
+PR 46 then merged the R2.1 publication and receipt branch at
+`1f35ba353e792aa263db7449216e3172d0306798` after exact head
+`5f9c21db944f25fd1dac4a550911c85e86471e35` and public receipt publication.
+R2.1 is now verified complete. The active SmolLM2 R2.2 tranche is fully
+automated, local/offline, and synthetic: 192 forwards, 1920 vectors, the
+final-block primary, descriptive layers, views, and sites, fixed primary
+thresholds, strict single target read, failure publication, and
+descriptive-only cross-model concordance and resource-envelope refusal. Fifty-five focused synthetic tests
+currently pass, the execution contract verifies 11 code files and 9 runtime
+files without model load, and no real model load or sealed-target access
+occurred. The implementation was locally qualified before publication, then
+opened as PR 47. Its first hosted run exposed a fail-closed configuration-digest
+bootstrap conflict rather than a receipt-integrity defect. PR 48 migrated only
+the trusted digest at `afd4b56ae84a944dc4cd60486caabce9b9452f75`; PR 49 then
+activated only the 180-second timeout at
+`85180041717f336de554300dda109731b48c6b95`. Both prerequisite PRs used
+base-policy exact-head receipts and terminal green gates. PR 47 is now rebased
+onto that public anchor and requires a fresh exact-head receipt and hosted gate
+before merge. R2.3 still requires separate explicit approval after R2.2 merges.
 
 ### PR 30 — annotation ontology v1.2 implementation
 

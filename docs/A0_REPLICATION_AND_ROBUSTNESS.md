@@ -3,7 +3,7 @@ type: research-spec
 title: A0 Replication and Robustness
 description: Preregistered route for challenging the published A0 automated-proxy signal on independent procedural data and model families.
 status: in_delivery
-last_verified: 2026-08-15
+last_verified: 2026-08-16
 ---
 
 # A0 Replication and Robustness
@@ -236,8 +236,8 @@ of 1 GiB and integrity receipt production. The acquisition completed as a
 bounded file transfer: nine files, 727,058,433 bytes total, receipt status
 `integrity_verified`, and weights SHA-256
 `7aaff6661428bed033abba9522bec81938678642cca3181fe752b6ca9e1e540f`. All
-access flags remained false. This is instrumentation-only, evidence-ineligible,
-and makes no empirical claim.
+access flags remained false. This remains instrumentation-only and
+evidence-ineligible; it makes no empirical claim and does not load the model.
 
 **Completed bounded feasibility checkpoint:** the operator subsequently
 authorized one test of the acquired model. Before any load, the repository froze
@@ -258,6 +258,26 @@ cleanup uncertain at `completed descendant seal`. Post-run inspection found
 admission inactive, an empty queue, no matching process, and resource decision
 `admit`; this does not retroactively qualify the guard as PASS. The run was not
 repeated.
+
+PR 46 then merged the R2.1 publication and receipt branch at
+`1f35ba353e792aa263db7449216e3172d0306798` after exact head
+`5f9c21db944f25fd1dac4a550911c85e86471e35` and public receipt publication. The
+R2.1 preregistration is now verified complete. R2.2 is the active delivery
+tranche: it uses the local/offline SmolLM2 adapter path, 192 forwards and 1920
+vectors, the final-block primary plus descriptive layers, views, and sites,
+fixed primary thresholds, strict single target read, failure publication, and
+descriptive-only cross-model concordance and resource-envelope refusal. Fifty-five focused synthetic tests
+currently pass, and the execution contract verifies 11 code files and 9
+runtime files without loading a model. No real model load or sealed-target
+access occurred in R2.2. PR 47 published the implementation and its first
+receipt, but the hosted verifier correctly rejected a simultaneous timeout and
+acceptance-digest change against the trusted base policy. PR 48 migrated only
+the accepted digest at `afd4b56ae84a944dc4cd60486caabce9b9452f75`; PR 49 then
+activated only the 180-second timeout at
+`85180041717f336de554300dda109731b48c6b95`. Both prerequisite PRs used
+base-policy exact-head receipts and terminal green gates. PR 47 is rebased onto
+that public anchor and still requires a fresh exact-head receipt and terminal
+hosted gate. R2.3 remains separately approval-gated after R2.2 merge.
 
 **Automated-study direction:** the operator has requested the broadest useful
 SmolLM2 study that does not depend on human review. This authorizes preparation,
@@ -299,7 +319,7 @@ terminal, while the outer guard remains explicitly `cleanup_uncertain`.
 
 #### R2.1 — pre-output preregistration
 
-**In delivery:** freeze a strict machine-readable protocol that binds the R1
+**Verified complete:** the strict machine-readable protocol binds the R1
 corpus, sealed-target, shortcut, protocol, and freeze hashes; the exact SmolLM2
 revision and integrity/feasibility receipts; the final-block architecture
 mapping; the primary endpoint; all descriptive sensitivities; terminal outcome
@@ -312,12 +332,15 @@ model output or sealed-target access.
 
 #### R2.2 — implementation and synthetic qualification
 
-Add R2-only adapter, activation, analysis, runner, report, schemas, and tests.
-Do not edit the hash-bound R1 implementation. Synthetic adapters must prove 33
-hidden-state entries, tuple index 32, dimension 960, offline/local-only loading,
-finite vectors, no generation, zero target reads during activation, exactly one
-verified target read at analysis, deterministic statistics, atomic no-overwrite
-publication, and fail-closed access receipts.
+Published branch, final qualification pending: the R2-only adapter, activation,
+analysis, runner, report,
+schemas, and tests are implemented against the offline/local-only SmolLM2 study
+path. Synthetic qualification currently passes 55 focused tests. The execution
+contract verifies 11 code files and 9 runtime files without loading a model.
+The tranche keeps the final-block primary, descriptive layers, views, and
+sites; fixed primary thresholds; strict single target read; failure
+publication; and descriptive-only cross-model concordance. No real model load
+or sealed-target access occurs in this checkpoint.
 
 **Exit evidence:** code hashes bound into the reviewed implementation contract;
 all synthetic terminal classes and artifact mutations tested; exact-head gates
@@ -326,10 +349,10 @@ merged before material execution.
 #### R2.3 — explicit sealed-execution gate
 
 Present one exact approval dossier after R2.1 and R2.2 merge. The proposed
-envelope is one local-only CPU float32 run, no network or generation, at most 30
-minutes wall time, at most 8 GiB peak RSS, at most 64 MiB of new dense output,
-the already acquired nine-file snapshot only, and no retry after model or
-target access without a new explicit approval. These are conservative caps;
+envelope is one local-only CPU float32 run, no network or generation, at most
+30 minutes wall time, at most 8 GiB peak RSS, at most 64 MiB of new dense
+output, the already acquired nine-file snapshot only, and no retry after model
+or target access without a new explicit approval. These are conservative caps;
 the feasibility measurement was 2.37 GiB and 3.81 seconds for the synthetic
 probe.
 

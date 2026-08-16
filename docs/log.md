@@ -3,13 +3,45 @@ type: chronology-log
 title: Documentation Chronology
 description: Time-ordered notes for maintained documentation and governance updates.
 status: canonical
-last_verified: 2026-08-15
+last_verified: 2026-08-16
 ---
 
 # Documentation Chronology
 
+## 2026-08-16
+
+- Merged the trusted CCP timeout migration in two fail-closed steps. PR 48
+  changed only the accepted configuration digest and merged at
+  `afd4b56ae84a944dc4cd60486caabce9b9452f75` after a receipt produced by the
+  existing 120-second plan passed the base policy. PR 49 then changed only the
+  repository-check timeout to 180 seconds and merged at
+  `85180041717f336de554300dda109731b48c6b95` after its new-plan receipt passed
+  the already public policy. Both PRs passed Python 3.11, Python 3.12, exact-head
+  CCP, aggregate, and review-thread gates. No candidate policy authorized its
+  own receipt, and no model or sealed target was accessed.
+- Rebased PR 47 onto the migrated public CCP contract. The R2.2 implementation
+  remains pre-output and requires a fresh exact-head receipt plus terminal
+  hosted gates before merge. R2.3 remains separately approval-gated.
+
 ## 2026-08-15
 
+- Qualified the complete R2.2 implementation locally at exact head
+  `e9df61830611cff2c3acf60ea1382cdf9968e1b8`. The full repository suite and
+  exact-head CCP repository check pass, and the clean receipt matches that
+  head. No model or sealed target was accessed. The branch and receipt remain
+  unpublished, so this is a resumable local checkpoint rather than merged
+  evidence; R2.3 remains approval-gated.
+- Merged the R2.1 publication and receipt branch through PR 46 at
+  `1f35ba353e792aa263db7449216e3172d0306798` after exact head
+  `5f9c21db944f25fd1dac4a550911c85e86471e35` and public receipt publication.
+  R2.1 is now verified complete. R2.2 is in delivery as the local/offline
+  SmolLM2 tranche with 192 forwards, 1920 vectors, the final-block primary,
+  descriptive layers, views, and sites, fixed primary thresholds, strict
+  single target read, failure publication, and descriptive-only cross-model
+  concordance and resource-envelope refusal. Fifty-five focused synthetic tests currently pass, the
+  execution contract verifies 11 code files and 9 runtime files without model
+  load, and no real model load or sealed-target access occurred. R2.3 remains
+  explicitly approval-gated.
 - Began the no-human-review A0-R2 study preregistration from public main
   `25c978d89a07fcd66194f8e0e333ebdae2f6bc08`. The planned study keeps one fixed
   cross-model primary, freezes broad descriptive sensitivities and negative

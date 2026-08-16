@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-implementation.schema.json",
+  "title": "A0-R2 frozen implementation contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "implementation_id", "protocol_id", "created_at", "status",
+    "empirical", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids",
+    "bindings", "model", "runtime_files", "classifier", "permutations", "primary_endpoint",
+    "sensitivity_endpoints", "descriptive_cross_model", "shortcut_refusal", "implementation_code", "access"
+  ],
+  "properties": {
+    "artifact_class": {"const": "a0r2-implementation"},
+    "implementation_id": {"const": "a0r2-independent-model-v1.0.0-impl-v1.0"},
+    "protocol_id": {"const": "a0r2-independent-model-v1.0.0"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "status": {"const": "frozen_before_model_output"},
+    "empirical": {"const": true},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["study_protocol_sha256", "integrity_receipt_sha256", "feasibility_receipt_sha256"],
+      "properties": {
+        "study_protocol_sha256": {"$ref": "#/$defs/sha256"},
+        "integrity_receipt_sha256": {"const": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3"},
+        "feasibility_receipt_sha256": {"const": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67"}
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "model_type", "architecture", "num_hidden_layers", "hidden_size", "local_locator"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "model_type": {"const": "llama"},
+        "architecture": {"const": "LlamaForCausalLM"},
+        "num_hidden_layers": {"const": 32},
+        "hidden_size": {"const": 960},
+        "local_locator": {"const": "artifacts/models/smollm2-360m-f8027fd0"}
+      }
+    },
+    "runtime_files": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "sha256", "size"],
+        "properties": {
+          "name": {"enum": ["README.md", "config.json", "generation_config.json", "merges.txt", "model.safetensors", "special_tokens_map.json", "tokenizer.json", "tokenizer_config.json", "vocab.json"]},
+          "sha256": {"$ref": "#/$defs/sha256"},
+          "size": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+    "classifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "alpha", "solver", "standardization_scope", "evaluation"],
+      "properties": {
+        "name": {"const": "l2_regularized_linear_least_squares"},
+        "alpha": {"const": 1.0},
+        "solver": {"const": "dual_kernel_closed_form"},
+        "standardization_scope": {"const": "within_train_folds"},
+        "evaluation": {"const": "family_grouped_leave_one_domain_out"}
+      }
+    },
+    "permutations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seed", "budget", "pairing", "correction"],
+      "properties": {
+        "seed": {"const": 20260815},
+        "budget": {"const": 999},
+        "pairing": {"const": "paired_within_family_swaps"},
+        "correction": {"const": "fixed_primary_no_multiplicity"}
+      }
+    },
+    "primary_endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tuple_index", "semantics", "token_site", "primary_view", "surface_baseline_view", "surface_baseline_token_site", "multiplicity"],
+      "properties": {
+        "tuple_index": {"const": 32},
+        "semantics": {"const": "final_transformer_block_output"},
+        "token_site": {"const": "mean_transformation_span"},
+        "primary_view": {"const": "problem_plus_transformation"},
+        "surface_baseline_view": {"const": "problem_only"},
+        "surface_baseline_token_site": {"const": "sentinel"},
+        "multiplicity": {"const": 1}
+      }
+    },
+    "sensitivity_endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tuple_indices", "descriptive_only", "may_replace_primary"],
+      "properties": {
+        "tuple_indices": {"const": [0, 11, 21, 32]},
+        "descriptive_only": {"const": true},
+        "may_replace_primary": {"const": false}
+      }
+    },
+    "descriptive_cross_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled", "interpretation", "may_affect_primary", "r1_result_path",
+        "r1_result_sha256", "case_order", "metrics"
+      ],
+      "properties": {
+        "enabled": {"const": true},
+        "interpretation": {"const": "descriptive_only"},
+        "may_affect_primary": {"const": false},
+        "r1_result_path": {"const": "results/a0r1/a0r1-v1.0.0-e93a9faa-r1/statistical-result.json"},
+        "r1_result_sha256": {"const": "a2ad1ed0148a332fe85cb42ee2f3295e042d277d772353ebd84ccd2e255a6738"},
+        "case_order": {"const": "lexicographic_case_id_shared_with_r1"},
+        "metrics": {
+          "const": ["pearson_score_correlation", "spearman_score_correlation", "score_sign_agreement", "family_outcome_agreement", "domain_direction_sign_agreement"]
+        }
+      }
+    },
+    "shortcut_refusal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["macro_f1_at_or_above", "margin_over_majority_at_or_above", "required_control_count"],
+      "properties": {
+        "macro_f1_at_or_above": {"const": 0.65},
+        "margin_over_majority_at_or_above": {"const": 0.1},
+        "required_control_count": {"const": 14}
+      }
+    },
+    "implementation_code": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_state", "bound_code_files", "pending_code_binding"],
+      "properties": {
+        "binding_state": {"const": "bound"},
+        "bound_code_files": {
+          "type": "array",
+          "minItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "size"],
+            "properties": {
+              "path": {"type": "string", "pattern": "^src/latent_triz/[a-z0-9_]+\\.py$"},
+              "sha256": {"$ref": "#/$defs/sha256"},
+              "size": {"type": "integer", "minimum": 1}
+            }
+          }
+        },
+        "pending_code_binding": {"type": "array", "maxItems": 0}
+      }
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_loaded", "model_output_accessed", "sealed_targets_accessed"],
+      "properties": {
+        "model_loaded": {"const": false},
+        "model_output_accessed": {"const": false},
+        "sealed_targets_accessed": {"const": false}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

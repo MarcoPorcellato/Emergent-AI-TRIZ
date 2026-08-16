@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-run-failure.schema.json",
+  "title": "A0-R2 run failure receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class",
+    "status",
+    "created_at",
+    "scientific_status",
+    "empirical",
+    "evidence_eligible",
+    "expert_validated",
+    "claim_ids",
+    "protocol_id",
+    "model",
+    "failure",
+    "access",
+    "reports"
+  ],
+  "properties": {
+    "artifact_class": {"const": "a0r2-run-failure"},
+    "status": {"enum": ["failed", "incompatible"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "scientific_status": {"const": "exploratory"},
+    "empirical": {"const": true},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "protocol_id": {"const": "a0r2-independent-model-v1.0.0"},
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "license_id", "model_type", "architecture", "num_hidden_layers", "hidden_size", "local_locator"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "license_id": {"const": "Apache-2.0"},
+        "model_type": {"const": "llama"},
+        "architecture": {"const": "LlamaForCausalLM"},
+        "num_hidden_layers": {"const": 32},
+        "hidden_size": {"const": 960},
+        "local_locator": {"const": "artifacts/models/smollm2-360m-f8027fd0"}
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stage", "failure_kind", "failure_digest"],
+      "properties": {
+        "stage": {"enum": ["integrity", "identity", "execution", "data", "receipt", "compatibility", "publication"]},
+        "failure_kind": {"type": "string", "minLength": 1},
+        "failure_digest": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_loaded", "model_output_accessed", "sealed_targets_accessed", "claim_promotion"],
+      "properties": {
+        "model_loaded": {"type": "boolean"},
+        "model_output_accessed": {"enum": ["not_accessed", "accessed", "possibly_accessed"]},
+        "sealed_targets_accessed": {"enum": ["not_accessed", "accessed", "possibly_accessed"]},
+        "claim_promotion": {"const": false}
+      }
+    },
+    "reports": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^(?:[^/\\s][^\\s]*)(?:/[^/\\s][^\\s]*)*$"
+      }
+    }
+  }
+}
