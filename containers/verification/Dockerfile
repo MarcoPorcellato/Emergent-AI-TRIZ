@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-#
 # Build this image only from an immutable Python base reference. The published
 # resulting digest, not a mutable tag, is what CCP policies accept at runtime.
 ARG BASE_IMAGE
