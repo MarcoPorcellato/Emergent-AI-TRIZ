@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  CCP_SOURCE_COMMIT: 17737e002a079124d9ce1cb458bd64ab229aa9d8
+  CCP_SOURCE_COMMIT: 044697dee9a0d678d30a4847d62ddf9b4970505b
   POLICY_CONTEXT: merge-policy/gate
 
 jobs:
