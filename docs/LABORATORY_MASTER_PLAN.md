@@ -319,12 +319,17 @@ passed its refreshed exact-head receipt and hosted gates and merged at
 `fa1e254ec373092278b1ab63f05504545e295b67`. R2.3 still requires separate
 explicit approval.
 
-The R2.3 approval-request checkpoint now has one canonical human-readable
+The R2.3 approval-request checkpoint has one canonical human-readable
 dossier and a strict machine-readable counterpart. They bind the exact
 SmolLM2 snapshot and receipts, the frozen R1/R2 inputs, conservative resource
 ceilings, one material attempt, one analysis-boundary target read, all terminal
-publication classes, and the no-claim boundary. Their status remains
-`approval_requested`; neither artifact records or implies operator approval.
+publication classes, and the no-claim boundary. The original dossier remains
+historical `approval_requested`. A later technical target-file hash read outside
+the analysis boundary was treated conservatively as consuming its one-read
+scope, despite retaining or emitting no target content. The replacement
+operator authorization must be recorded separately, bind the exact frozen
+protocol and corrected implementation, and be verified by the runner before
+any model import or target discovery.
 
 ### PR 30 — annotation ontology v1.2 implementation
 

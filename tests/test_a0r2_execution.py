@@ -17,7 +17,7 @@ class A0R2ExecutionTests(unittest.TestCase):
     def test_frozen_contract_verifies_without_model_or_target_access(self) -> None:
         result = verify_a0r2_execution_contract(ROOT)
         self.assertEqual("pass", result["status"])
-        self.assertEqual(11, result["code_files_verified"])
+        self.assertEqual(12, result["code_files_verified"])
         self.assertEqual(9, result["runtime_files_bound"])
         self.assertEqual(0, result["runtime_files_verified"])
         self.assertFalse(result["model_output_accessed"])

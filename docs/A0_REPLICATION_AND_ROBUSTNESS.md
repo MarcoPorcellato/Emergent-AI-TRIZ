@@ -356,7 +356,7 @@ or target access without a new explicit approval. These are conservative caps;
 the feasibility measurement was 2.37 GiB and 3.81 seconds for the synthetic
 probe.
 
-**Current checkpoint — dossier published, approval not granted:** the human-readable
+**Current checkpoint — corrective authorization recorded, pre-run qualification pending:** the human-readable
 [`A0-R2.3 sealed-execution approval dossier`](./A0R2_SEALED_EXECUTION_APPROVAL.md)
 and its strict machine-readable request bind the exact model snapshot,
 pre-output contracts, declared R1 input hashes, prior feasibility and guard
@@ -371,8 +371,15 @@ PR 62 published the request from exact source head
 `ccp-evidence/28f0b2596a273212dfc0712aaa00b5887ecce83a` at evidence commit
 `880700a31a3f3f2a3ca639d1ab7b12a02c69ba82`; hosted run `31955588854`
 attempt 2 passed the exact-head receipt, trusted scientific audit, aggregate,
-and required `merge-policy/gate`. The remaining R2.3 dependency is the exact
-operator approval statement; no material action may precede it.
+and required `merge-policy/gate`. A technical hash calculation of the sealed
+target file occurred outside the planned analysis boundary without emitting or
+retaining its content. It therefore consumed the original one-read scope under
+the laboratory's conservative access rule. The operator subsequently issued a
+new explicit, one-run authorization with the unchanged scientific and resource
+limits. Its tracked corrective receipt binds the original dossier, the frozen
+protocol, and the exact implementation hash, and the runner verifies it before
+the contract, shortcut gate, model import, or target discovery. No material
+action may precede qualification of that corrective gate.
 
 The expert TRIZ reference corpus added after the R2 freeze is ineligible for
 R2.3. It must not alter prompts, cases, targets, controls, thresholds,
