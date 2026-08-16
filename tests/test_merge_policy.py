@@ -39,6 +39,16 @@ class MergePolicyTests(unittest.TestCase):
         self.assertTrue(decision.require_ccp)
         self.assertTrue(decision.require_python_311)
 
+    def test_runtime_definition_requires_ccp_without_scientific_artifact_audit(self) -> None:
+        decision = classify_paths([
+            ".dockerignore", "containers/verification/Dockerfile",
+        ])
+        self.assertEqual(decision.categories, ("runtime",))
+        self.assertTrue(decision.require_repository_check)
+        self.assertTrue(decision.require_python_311)
+        self.assertTrue(decision.require_ccp)
+        self.assertFalse(decision.require_scientific_audit)
+
     def test_model_artifact_is_highest_risk(self) -> None:
         decision = classify_paths([
             "results/lab01/model-representations/summary.json",

@@ -19,6 +19,8 @@ GOVERNANCE_ROOT_FILES = {
     "Makefile", "pyproject.toml",
 }
 CODE_PREFIXES = ("schemas/", "scripts/", "src/", "tests/")
+RUNTIME_PREFIXES = ("containers/",)
+RUNTIME_ROOT_FILES = {".dockerignore"}
 SCIENTIFIC_PREFIXES = (
     "artifacts/", "data/", "experiments/", "preregistrations/", "results/",
 )
@@ -112,6 +114,8 @@ def _categories_for_path(path: str) -> set[str]:
         categories.add("governance")
     if path.startswith(CODE_PREFIXES) or path in {"Makefile", "pyproject.toml"} or _is_requirement(path):
         categories.add("code")
+    if path.startswith(RUNTIME_PREFIXES) or path in RUNTIME_ROOT_FILES:
+        categories.add("runtime")
     if path.startswith(SCIENTIFIC_PREFIXES):
         categories.add("scientific")
     if path.startswith(MODEL_BACKED_PREFIXES) or PurePosixPath(path).suffix.lower() in DENSE_ARTIFACT_SUFFIXES:
@@ -136,13 +140,16 @@ def classify_paths(files: Iterable[ChangedFile | str]) -> PolicyDecision:
     governance_or_unknown = bool(categories.intersection({"governance", "unknown"}))
     scientific = "scientific" in categories
     model_backed = "model_backed" in categories
-    require_python_311 = bool(categories.intersection({"code", "governance", "unknown"}))
+    runtime = "runtime" in categories
+    require_python_311 = bool(
+        categories.intersection({"code", "governance", "runtime", "unknown"})
+    )
     return PolicyDecision(
         categories=tuple(sorted(categories)),
         docs_only=docs_only,
         require_repository_check=not docs_only,
         require_python_311=require_python_311,
-        require_ccp=scientific or governance_or_unknown,
+        require_ccp=scientific or governance_or_unknown or runtime,
         require_scientific_audit=scientific or "unknown" in categories,
         require_model_artifact_audit=model_backed,
         paths=tuple(sorted(item.path for item in normalized_files)),
