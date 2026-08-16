@@ -1,0 +1,6 @@
+*
+!requirements-schema.lock
+!containers/
+!containers/verification/
+!containers/verification/Dockerfile
+!containers/verification/README.md
