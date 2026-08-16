@@ -17,7 +17,7 @@ COPY requirements-schema.lock /opt/latent-triz/requirements-schema.lock
 RUN test -n "${PYTHON_SERIES}" \
     && python -c "import sys; expected='${PYTHON_SERIES}'; actual=f'{sys.version_info.major}.{sys.version_info.minor}'; assert actual == expected, (actual, expected)" \
     && python -m pip install --disable-pip-version-check --no-cache-dir --requirement /opt/latent-triz/requirements-schema.lock \
-    && python -c "import jsonschema; assert jsonschema.__version__ == '4.26.0'"
+    && python -c "from importlib.metadata import version; assert version('jsonschema') == '4.26.0'"
 
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PYTHONDONTWRITEBYTECODE=1
