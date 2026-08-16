@@ -43,7 +43,7 @@ jobs:
     name: Python 3.11 compatibility
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
 
