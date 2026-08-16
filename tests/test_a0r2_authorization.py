@@ -2,15 +2,16 @@ from __future__ import annotations
 
 import json
 import sys
-import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from latent_triz.a0r2_authorization import (  # noqa: E402
+from latent_triz import a0r2_authorization as authorization  # noqa: E402
+from latent_triz.a0r2_authorization import (
     A0R2AuthorizationError,
     verify_a0r2_sealed_execution_authorization,
 )
@@ -27,21 +28,31 @@ class A0R2AuthorizationTests(unittest.TestCase):
         receipt_path = ROOT / "results/a0r2/preexecution/smollm2-360m-f8027fd0/sealed-execution-authorization.json"
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         receipt["bindings"]["study_protocol_sha256"] = "0" * 64
-        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
-            path = Path(directory) / "authorization.json"
-            path.write_text(json.dumps(receipt), encoding="utf-8")
+        original_read_json = authorization._read_json
+
+        def read_json(path: Path, label: str):
+            if path.resolve() == receipt_path.resolve():
+                return receipt
+            return original_read_json(path, label)
+
+        with patch.object(authorization, "_read_json", side_effect=read_json):
             with self.assertRaisesRegex(A0R2AuthorizationError, "binding mismatch"):
-                verify_a0r2_sealed_execution_authorization(ROOT, path)
+                verify_a0r2_sealed_execution_authorization(ROOT)
 
     def test_scope_mutation_fails_closed(self) -> None:
         receipt_path = ROOT / "results/a0r2/preexecution/smollm2-360m-f8027fd0/sealed-execution-authorization.json"
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
         receipt["scope"]["generation_allowed"] = True
-        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
-            path = Path(directory) / "authorization.json"
-            path.write_text(json.dumps(receipt), encoding="utf-8")
+        original_read_json = authorization._read_json
+
+        def read_json(path: Path, label: str):
+            if path.resolve() == receipt_path.resolve():
+                return receipt
+            return original_read_json(path, label)
+
+        with patch.object(authorization, "_read_json", side_effect=read_json):
             with self.assertRaisesRegex(A0R2AuthorizationError, "schema validation"):
-                verify_a0r2_sealed_execution_authorization(ROOT, path)
+                verify_a0r2_sealed_execution_authorization(ROOT)
 
 
 if __name__ == "__main__":
