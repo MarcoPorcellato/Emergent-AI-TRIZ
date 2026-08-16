@@ -444,6 +444,16 @@ thresholds, resource limits, or publication rules. The probe loaded no model
 and accessed no sealed target. C1 must be merged and exact-head qualified
 before a new exact operator authorization may permit one material attempt.
 
+**Terminal C1 execution record:** the one authorized C1 attempt ran from
+public main `8b1a693e832bc753dfee8cbded947eadc1be03cc`. SmolLM2 loaded locally,
+then the shared activation normalizer attempted to coerce a nested Llama
+hidden-state token vector to `float`. The normalizer assumed a rank-two
+`[token, hidden]` shape, while the runtime retained rank three
+`[batch, token, hidden]`. The run stopped before analysis, the sealed targets
+were not accessed, and no activation bundle or statistical result exists. The
+terminal status is `failed`; the C1 authorization is consumed and any C2
+correction requires a fresh preregistration and explicit operator approval.
+
 ## Statistical and missing-data rules
 
 - The R1 primary endpoint is fixed from A0 and is not selected from R1 output.

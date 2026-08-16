@@ -353,12 +353,16 @@ qualification. A tokenizer-only local receipt already confirms the exact
 runtime returns aligned IDs, offsets, and attention values in a valid
 `BatchEncoding`; it loaded no model and accessed no sealed target.
 
-The next sequence is: merge and exact-head qualify the pre-output C1 contract;
-record a new explicit one-attempt authorization; run only after CCP reports
-resource `Admit`, inactive admission, and an empty queue; then publish and
-verify every terminal outcome. All scientific inputs, statistics, thresholds,
-model identity, resource ceilings, no-tuning rule, and single target-read
-boundary remain unchanged.
+The C1 contract merged and exact-head qualification passed. The authorized C1
+execution then loaded SmolLM2 but failed before analysis because the shared
+activation normalizer treated the rank-three Llama hidden-state tensor as a
+rank-two token matrix. The sealed targets were not accessed; no signal estimate
+exists. The C1 terminal package is therefore published as `failed`, and its
+authorization is consumed. Any C2 attempt requires a separately preregistered
+shape-normalization correction, full synthetic/runtime qualification, and a
+new explicit one-attempt authorization. All frozen scientific inputs,
+statistics, thresholds, model identity, resource ceilings, no-tuning rule, and
+single target-read boundary remain unchanged.
 
 ### PR 30 — annotation ontology v1.2 implementation
 
