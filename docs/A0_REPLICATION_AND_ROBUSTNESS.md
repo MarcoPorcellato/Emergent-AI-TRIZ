@@ -3,7 +3,7 @@ type: research-spec
 title: A0 Replication and Robustness
 description: Preregistered route for challenging the published A0 automated-proxy signal on independent procedural data and model families.
 status: in_delivery
-last_verified: 2026-08-15
+last_verified: 2026-08-16
 ---
 
 # A0 Replication and Robustness
@@ -269,12 +269,15 @@ fixed primary thresholds, strict single target read, failure publication, and
 descriptive-only cross-model concordance and resource-envelope refusal. Fifty-five focused synthetic tests
 currently pass, and the execution contract verifies 11 code files and 9
 runtime files without loading a model. No real model load or sealed-target
-access occurred in R2.2. The implementation is locally qualified at exact head
-`e9df61830611cff2c3acf60ea1382cdf9968e1b8`: the full repository suite and the
-exact-head CCP repository check pass, with a clean matching receipt. The head
-and receipt are not yet public, so R2.2 remains a publication checkpoint rather
-than a merged milestone. R2.3 still requires explicit approval after R2.2 is
-merged.
+access occurred in R2.2. PR 47 published the implementation and its first
+receipt, but the hosted verifier correctly rejected a simultaneous timeout and
+acceptance-digest change against the trusted base policy. PR 48 migrated only
+the accepted digest at `afd4b56ae84a944dc4cd60486caabce9b9452f75`; PR 49 then
+activated only the 180-second timeout at
+`85180041717f336de554300dda109731b48c6b95`. Both prerequisite PRs used
+base-policy exact-head receipts and terminal green gates. PR 47 is rebased onto
+that public anchor and still requires a fresh exact-head receipt and terminal
+hosted gate. R2.3 remains separately approval-gated after R2.2 merge.
 
 **Automated-study direction:** the operator has requested the broadest useful
 SmolLM2 study that does not depend on human review. This authorizes preparation,
@@ -316,7 +319,7 @@ terminal, while the outer guard remains explicitly `cleanup_uncertain`.
 
 #### R2.1 — pre-output preregistration
 
-**In delivery:** freeze a strict machine-readable protocol that binds the R1
+**Verified complete:** the strict machine-readable protocol binds the R1
 corpus, sealed-target, shortcut, protocol, and freeze hashes; the exact SmolLM2
 revision and integrity/feasibility receipts; the final-block architecture
 mapping; the primary endpoint; all descriptive sensitivities; terminal outcome
@@ -329,7 +332,7 @@ model output or sealed-target access.
 
 #### R2.2 — implementation and synthetic qualification
 
-Locally qualified, publication pending: the R2-only adapter, activation,
+Published branch, final qualification pending: the R2-only adapter, activation,
 analysis, runner, report,
 schemas, and tests are implemented against the offline/local-only SmolLM2 study
 path. Synthetic qualification currently passes 55 focused tests. The execution

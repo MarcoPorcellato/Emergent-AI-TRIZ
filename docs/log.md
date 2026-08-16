@@ -3,10 +3,25 @@ type: chronology-log
 title: Documentation Chronology
 description: Time-ordered notes for maintained documentation and governance updates.
 status: canonical
-last_verified: 2026-08-15
+last_verified: 2026-08-16
 ---
 
 # Documentation Chronology
+
+## 2026-08-16
+
+- Merged the trusted CCP timeout migration in two fail-closed steps. PR 48
+  changed only the accepted configuration digest and merged at
+  `afd4b56ae84a944dc4cd60486caabce9b9452f75` after a receipt produced by the
+  existing 120-second plan passed the base policy. PR 49 then changed only the
+  repository-check timeout to 180 seconds and merged at
+  `85180041717f336de554300dda109731b48c6b95` after its new-plan receipt passed
+  the already public policy. Both PRs passed Python 3.11, Python 3.12, exact-head
+  CCP, aggregate, and review-thread gates. No candidate policy authorized its
+  own receipt, and no model or sealed target was accessed.
+- Rebased PR 47 onto the migrated public CCP contract. The R2.2 implementation
+  remains pre-output and requires a fresh exact-head receipt plus terminal
+  hosted gates before merge. R2.3 remains separately approval-gated.
 
 ## 2026-08-15
 

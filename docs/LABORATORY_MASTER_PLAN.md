@@ -3,7 +3,7 @@ type: master-plan
 title: Laboratory Master Plan
 description: Canonical evolution ledger and gated route from the verified laboratory foundation to falsifiable, reproducible Latent TRIZ experiments.
 status: canonical
-last_verified: 2026-08-15
+last_verified: 2026-08-16
 ---
 
 # Laboratory Master Plan
@@ -249,12 +249,15 @@ thresholds, strict single target read, failure publication, and
 descriptive-only cross-model concordance and resource-envelope refusal. Fifty-five focused synthetic tests
 currently pass, the execution contract verifies 11 code files and 9 runtime
 files without model load, and no real model load or sealed-target access
-occurred. R2.2 is locally qualified at exact head
-`e9df61830611cff2c3acf60ea1382cdf9968e1b8`: the full repository suite and the
-exact-head CCP repository check pass, and the clean receipt matches that head.
-This evidence remains unpublished, so `1f35ba353e792aa263db7449216e3172d0306798`
-is still the public anchor. R2.3 still requires explicit approval after the
-R2.2 receipt, branch, PR, and hosted gate are published and merged.
+occurred. The implementation was locally qualified before publication, then
+opened as PR 47. Its first hosted run exposed a fail-closed configuration-digest
+bootstrap conflict rather than a receipt-integrity defect. PR 48 migrated only
+the trusted digest at `afd4b56ae84a944dc4cd60486caabce9b9452f75`; PR 49 then
+activated only the 180-second timeout at
+`85180041717f336de554300dda109731b48c6b95`. Both prerequisite PRs used
+base-policy exact-head receipts and terminal green gates. PR 47 is now rebased
+onto that public anchor and requires a fresh exact-head receipt and hosted gate
+before merge. R2.3 still requires separate explicit approval after R2.2 merges.
 
 ### PR 30 — annotation ontology v1.2 implementation
 
