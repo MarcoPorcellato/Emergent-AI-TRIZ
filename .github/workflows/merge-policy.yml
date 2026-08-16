@@ -162,8 +162,15 @@ jobs:
         env:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          set -euo pipefail
           cargo build --locked --release --manifest-path verifier/Cargo.toml --bin commit-ci-preflight
-          verifier/target/release/commit-ci-preflight verify --receipt evidence/.ccp/receipt.json --policy trusted/.commit-ci-policy.toml --expected-commit "$HEAD_SHA"
+          schema_version="$(jq -er '.receipt.schema_version' evidence/.ccp/receipt.json)"
+          case "$schema_version" in
+            1.0) policy="trusted/.commit-ci-policy.toml" ;;
+            2.0) policy="trusted/.commit-ci-policy-v2.toml" ;;
+            *) echo "unsupported CCP receipt schema: $schema_version" >&2; exit 1 ;;
+          esac
+          verifier/target/release/commit-ci-preflight verify --receipt evidence/.ccp/receipt.json --policy "$policy" --expected-commit "$HEAD_SHA"
 
   gate:
     name: Publish trusted aggregate
