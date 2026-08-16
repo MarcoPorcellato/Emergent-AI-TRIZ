@@ -338,6 +338,12 @@ published `failed` outcome, not a null result or evidence for any TRIZ claim;
 the one-run authorization forbids a retry, tuning, model substitution, or
 post-hoc protocol adjustment.
 
+R2.3–R2.5 are closed at public `main` commit
+`1112bc31e388c5c6857ecfd96542466cf613ea52`: the exact immutable failure package
+and its fresh-clone, local CCP, and hosted-gate evidence are published. This
+milestone supplies no comparative signal and authorizes no retry. A future R3
+or corrective effort starts from a separate preregistration and approval gate.
+
 ### PR 30 — annotation ontology v1.2 implementation
 
 **Outcome**

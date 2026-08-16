@@ -36,6 +36,14 @@ protocol, or read the targets under this authorization. Publish and verify the
 immutable failure package, including report and manifest, then record R2.3-R2.5
 as terminally closed without a TRIZ claim.
 
+R2.3–R2.5 are now terminally closed at public `main`
+`1112bc31e388c5c6857ecfd96542466cf613ea52`. PR 64 supplied the corrective
+authorization gate; PR 65 published the first and only run's immutable
+pre-analysis failure package after fresh-clone, exact-head CCP, and hosted-gate
+verification. No R2 signal estimate exists. Do not retry or reinterpret this
+result; any future work requires a separate preregistration and explicit
+operator approval.
+
 Treat the expert TRIZ reference corpus as reference-only input for a future
 R3/EXP-001 preregistration. Do not use its wording, examples, matrix cells, or
 tool relationships to alter the frozen R2.3 protocol or interpret its output.
