@@ -10,6 +10,15 @@ last_verified: 2026-08-16
 
 ## 2026-08-16
 
+- Published and merged the non-authorizing R2.3 approval dossier through PR 62
+  at `b9260cd9743d2afd5eb7fc79339e0687fa22689c`, from exact source head
+  `28f0b2596a273212dfc0712aaa00b5887ecce83a`. Evidence branch
+  `ccp-evidence/28f0b2596a273212dfc0712aaa00b5887ecce83a` points to receipt
+  commit `880700a31a3f3f2a3ca639d1ab7b12a02c69ba82`; run `31955588854`
+  attempt 2 passed the trusted scientific, exact-head CCP, aggregate, and
+  required status gates. The dossier still records
+  `operator_approval_granted=false`; no model load, material execution, or
+  sealed-target access was authorized or performed.
 - Closed the CCP multi-runtime v2 prerequisite at PR 37 merge commit
   `044697dee9a0d678d30a4847d62ddf9b4970505b`. The contract supports exact-head
   Python 3.11/3.12 local coverage with independently bound runtime and image

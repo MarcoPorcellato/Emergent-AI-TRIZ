@@ -356,7 +356,7 @@ or target access without a new explicit approval. These are conservative caps;
 the feasibility measurement was 2.37 GiB and 3.81 seconds for the synthetic
 probe.
 
-**Current checkpoint — approval requested, not granted:** the human-readable
+**Current checkpoint — dossier published, approval not granted:** the human-readable
 [`A0-R2.3 sealed-execution approval dossier`](./A0R2_SEALED_EXECUTION_APPROVAL.md)
 and its strict machine-readable request bind the exact model snapshot,
 pre-output contracts, declared R1 input hashes, prior feasibility and guard
@@ -364,6 +364,15 @@ receipts, resource ceilings, one-run boundary, single analysis target read,
 terminal publication rules, and claim limit. The request records
 `operator_approval_granted=false`. Publishing or verifying the dossier does not
 authorize a model load, material run, or sealed-target access.
+
+PR 62 published the request from exact source head
+`28f0b2596a273212dfc0712aaa00b5887ecce83a` and merged at
+`b9260cd9743d2afd5eb7fc79339e0687fa22689c`. Its commit-bound CCP evidence is
+`ccp-evidence/28f0b2596a273212dfc0712aaa00b5887ecce83a` at evidence commit
+`880700a31a3f3f2a3ca639d1ab7b12a02c69ba82`; hosted run `31955588854`
+attempt 2 passed the exact-head receipt, trusted scientific audit, aggregate,
+and required `merge-policy/gate`. The remaining R2.3 dependency is the exact
+operator approval statement; no material action may precede it.
 
 The expert TRIZ reference corpus added after the R2 freeze is ineligible for
 R2.3. It must not alter prompts, cases, targets, controls, thresholds,
