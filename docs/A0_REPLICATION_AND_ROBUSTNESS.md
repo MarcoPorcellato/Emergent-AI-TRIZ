@@ -417,6 +417,15 @@ asset exists; the failure receipt, report, and manifest are the complete
 immutable package. The package verifier must continue to reject a fabricated
 mixed failure/activation package.
 
+**R2.3–R2.5 closeout:** PR 64 merged the corrective authorization gate at
+`9a2269650380864af4932cd0403c806eb57837a1`. PR 65 then published the first and
+only terminal execution package at `1112bc31e388c5c6857ecfd96542466cf613ea52`.
+The source package passed fresh-clone verification; its exact-head CCP receipt
+and hosted `merge-policy/gate` were terminal PASS. This closes R2.3–R2.5 as a
+published failed outcome, without an R2 signal estimate or a general TRIZ
+claim. Any future corrective execution requires a newly preregistered protocol
+and explicit operator authorization.
+
 ## Statistical and missing-data rules
 
 - The R1 primary endpoint is fixed from A0 and is not selected from R1 output.
