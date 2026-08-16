@@ -27,8 +27,16 @@ last_verified: 2026-08-16
   evaluated by the base's v1-only policy route. This was a routing dependency,
   not a runner or scientific result. PR 55 then merged the fail-closed v1/v2
   policy selector at `28b6c5d309eb5e640c34945e598b3a1e8425d979`. The rebased
-  matrix migration still requires a fresh exact-head receipt, terminal gates,
-  merge, and post-merge cost measurement.
+  matrix migration was then qualified once at head
+  `c913ea5b89bc6feb261560ebfd80bb5bc2d23080` and merged by PR 56 at
+  `1457e2c4e5e6affba75266fc0b62e7375f8e16fa`.
+- Merged post-migration PR 57 at
+  `9ef86ec22a46422eb586fbe29085cc0b05672ea8`. Run `31949031711` created no
+  Python 3.11/3.12 candidate jobs: classifier took 8 seconds, receipt verifier
+  45 seconds, and aggregate 3 seconds. Run wall time was 71 seconds and summed
+  successful-job intervals were 56 seconds, versus 237 and 473 seconds in
+  pre-migration run `31948392224`. GitHub reported zero billable milliseconds
+  for both runs; no monetary saving is inferred.
 
 - Merged the trusted CCP timeout migration in two fail-closed steps. PR 48
   changed only the accepted configuration digest and merged at
@@ -39,9 +47,9 @@ last_verified: 2026-08-16
   the already public policy. Both PRs passed Python 3.11, Python 3.12, exact-head
   CCP, aggregate, and review-thread gates. No candidate policy authorized its
   own receipt, and no model or sealed target was accessed.
-- Rebased PR 47 onto the migrated public CCP contract. The R2.2 implementation
-  remains pre-output and requires a fresh exact-head receipt plus terminal
-  hosted gates before merge. R2.3 remains separately approval-gated.
+- Merged PR 47 at `fa1e254ec373092278b1ab63f05504545e295b67`. The R2.2
+  implementation is public; R2.3 model execution and sealed-target access
+  remain separately approval-gated.
 
 ## 2026-08-15
 
