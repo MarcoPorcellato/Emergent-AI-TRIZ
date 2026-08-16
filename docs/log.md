@@ -10,6 +10,17 @@ last_verified: 2026-08-16
 
 ## 2026-08-16
 
+- Closed the CCP multi-runtime v2 prerequisite at PR 37 merge commit
+  `044697dee9a0d678d30a4847d62ddf9b4970505b`. The contract supports exact-head
+  Python 3.11/3.12 local coverage with independently bound runtime and image
+  digests; historical v1 receipts remain preserved.
+- Merged Latent-TRIZ PR 51 at `39ad1965e82f5aa2f4671e38708e401774f176ec`.
+  Its exact source head `e249c4b42795b27d27d78a0b5c3526a38e7809de` was qualified by receipt branch
+  `ccp-evidence/e249c4b42795b27d27d78a0b5c3526a38e7809de` (evidence commit `e4fb6c183483cedd12d9306c29938d1bdedae966`) and terminal run
+  `31934684914`; Python 3.11 took 2m44 and CCP 42s. Hosted tests remain active;
+  runtime images are local builds, not immutable GHCR publications, and no
+  cost saving is claimed yet.
+
 - Merged the trusted CCP timeout migration in two fail-closed steps. PR 48
   changed only the accepted configuration digest and merged at
   `afd4b56ae84a944dc4cd60486caabce9b9452f75` after a receipt produced by the

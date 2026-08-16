@@ -36,7 +36,7 @@ as a short pointer to this plan rather than duplicating its milestones.
 | Item | Verified state | Authoritative anchor |
 |---|---|---|
 | Public repository | `MarcoPorcellato/Latent-TRIZ` | GitHub repository and tracked `LICENSE` / `NOTICE` |
-| Protected `main` | `05ba15a28442260c32951413c9128f0179573198` | live GitHub state verified 2026-08-15 after PR 41 |
+| Protected `main` | `39ad1965e82f5aa2f4671e38708e401774f176ec` | live GitHub state after PR 51; verify again before the next mutation |
 | Required merge context | strict `merge-policy/gate` | active GitHub ruleset and `.github/expected-main-ruleset.json` |
 | Completed automated milestone | A0-R Tier R1 same-model replication | PR 41, run `a0r1-v1.0.0-e93a9faa-r1` |
 | Current authentic-TRIZ milestone | annotation ontology v1.2 | draft PR 30; live state must be rebased and requalified before delivery |
@@ -134,6 +134,20 @@ macro-F1 = 0.687364, problem-only surface macro-F1 = 0.499130, and margin =
 transformation span. Energy and transport remained at 0.5 accuracy in that
 combination, the corpus is procedural, and only one small model revision was
 tested. Those limits are part of the result, not optional caveats.
+
+### Phase G — cost-aware receipt routing (in delivery)
+
+CCP PR [#37](https://github.com/MarcoPorcellato/commit-ci-preflight/pull/37)
+merged at `044697dee9a0d678d30a4847d62ddf9b4970505b`, adding v2 multi-runtime
+receipts with exact per-runtime configuration and digest binding. Latent-TRIZ
+PR [#51](https://github.com/MarcoPorcellato/Latent-TRIZ/pull/51) merged at
+`39ad1965e82f5aa2f4671e38708e401774f176ec`; exact source head
+`e249c4b42795b27d27d78a0b5c3526a38e7809de` was qualified by receipt branch
+`ccp-evidence/e249c4b42795b27d27d78a0b5c3526a38e7809de` (evidence commit
+`e4fb6c183483cedd12d9306c29938d1bdedae966`) and terminal run `31934684914` (Python 3.11 2m44; CCP 42s).
+Runtime images are locally built but not published as immutable GHCR artifacts;
+ordinary hosted tests remain enabled. No cost saving is claimed until the
+complete migration is measured, and no R2 boundary changed.
 
 ## Current bottlenecks
 

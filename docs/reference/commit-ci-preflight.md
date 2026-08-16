@@ -3,7 +3,7 @@ type: Reference
 title: Stable merge policy and Commit CI Preflight
 description: Path-aware GitHub qualification with exact-head CCP evidence for scientific changes.
 status: active
-last_verified: 2026-08-14
+last_verified: 2026-08-16
 ---
 
 # Stable merge policy and Commit CI Preflight
@@ -21,6 +21,12 @@ Preflight (CCP) receipt. Scientific artifacts are parsed and dense model files
 are rejected: they must remain external and be referenced by a retained hash.
 
 ## Local CCP contract
+
+CCP PR 37 merged at `044697dee9a0d678d30a4847d62ddf9b4970505b` adds the v2
+multi-runtime receipt contract. One exact-head local qualification can attest
+Python 3.11 and 3.12 coverage with independent runtime identity,
+configuration digests, image digests, freshness, check results, and receipt
+verification. V1 receipts remain valid historical evidence.
 
 The tracked `.commit-ci-preflight.toml` runs `make check` inside an immutable
 Python image with no network, one CPU, 256 MiB of memory, and 64 PIDs. The
@@ -74,6 +80,15 @@ evidence; never relabel them as `macos-v3`. The still-draft upstream CCP PR 34
 is not part of the installed contract.
 
 ## Stable path and risk contract
+
+Latent-TRIZ PR 51 merged the trusted-base runtime classification at
+`39ad1965e82f5aa2f4671e38708e401774f176ec`. Its exact source head
+`e249c4b42795b27d27d78a0b5c3526a38e7809de` was qualified with receipt branch
+`ccp-evidence/e249c4b42795b27d27d78a0b5c3526a38e7809de` (evidence commit
+`e4fb6c183483cedd12d9306c29938d1bdedae966`) and terminal run `31934684914`; observed Python 3.11 and CCP
+times were 2m44 and 42s. This is a routing milestone, not a cost result:
+runtime images are local builds, not immutable GHCR publications, and ordinary
+hosted candidate tests remain enabled.
 
 | Changed surface | Required qualification |
 |---|---|
