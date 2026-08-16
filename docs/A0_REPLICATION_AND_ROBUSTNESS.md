@@ -262,8 +262,8 @@ repeated.
 PR 46 then merged the R2.1 publication and receipt branch at
 `1f35ba353e792aa263db7449216e3172d0306798` after exact head
 `5f9c21db944f25fd1dac4a550911c85e86471e35` and public receipt publication. The
-R2.1 preregistration is now verified complete. R2.2 is the active delivery
-tranche: it uses the local/offline SmolLM2 adapter path, 192 forwards and 1920
+R2.1 preregistration is now verified complete. R2.2 is public and verified
+complete as a local/offline SmolLM2 implementation with 192 forwards and 1920
 vectors, the final-block primary plus descriptive layers, views, and sites,
 fixed primary thresholds, strict single target read, failure publication, and
 descriptive-only cross-model concordance and resource-envelope refusal. Fifty-five focused synthetic tests
