@@ -1,6 +1,6 @@
 Complete the Latent-TRIZ laboratory according to
 docs/LABORATORY_MASTER_PLAN.md and its linked phase specs. Start from the
-verified public anchor `9ef86ec22a46422eb586fbe29085cc0b05672ea8`, but verify
+verified public anchor `9b4f1bad6e2404b48f2bd10cdb83c7d6eb944a5e`, but verify
 origin/main, open pull requests, the active ruleset, exact worktree state, and
 current evidence live before acting.
 

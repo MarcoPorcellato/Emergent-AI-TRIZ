@@ -276,8 +276,8 @@ is permitted, and sealed execution remains gated.
 PR 46 then merged the R2.1 publication and receipt branch at
 `1f35ba353e792aa263db7449216e3172d0306798` after exact head
 `5f9c21db944f25fd1dac4a550911c85e86471e35` and public receipt publication.
-R2.1 is now verified complete. The active SmolLM2 R2.2 tranche is fully
-automated, local/offline, and synthetic: 192 forwards, 1920 vectors, the
+R2.1 is now verified complete. The SmolLM2 R2.2 implementation is public and
+verified complete as a fully automated, local/offline, synthetic tranche: 192 forwards, 1920 vectors, the
 final-block primary, descriptive layers, views, and sites, fixed primary
 thresholds, strict single target read, failure publication, and
 descriptive-only cross-model concordance and resource-envelope refusal. Fifty-five focused synthetic tests
@@ -289,9 +289,10 @@ bootstrap conflict rather than a receipt-integrity defect. PR 48 migrated only
 the trusted digest at `afd4b56ae84a944dc4cd60486caabce9b9452f75`; PR 49 then
 activated only the 180-second timeout at
 `85180041717f336de554300dda109731b48c6b95`. Both prerequisite PRs used
-base-policy exact-head receipts and terminal green gates. PR 47 is now rebased
-onto that public anchor and requires a fresh exact-head receipt and hosted gate
-before merge. R2.3 still requires separate explicit approval after R2.2 merges.
+base-policy exact-head receipts and terminal green gates. PR 47 subsequently
+passed its refreshed exact-head receipt and hosted gates and merged at
+`fa1e254ec373092278b1ab63f05504545e295b67`. R2.3 still requires separate
+explicit approval.
 
 ### PR 30 — annotation ontology v1.2 implementation
 
