@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2c1-correction-contract.schema.json",
+  "title": "A0-R2-C1 tokenizer correction contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "contract_id", "contract_status", "created_at", "operator_approval_granted", "scientific_status", "empirical", "evidence_eligible", "claim_ids", "predecessor", "correction", "invariants", "run_contract", "implementation_code"],
+  "properties": {
+    "artifact_class": {"const": "a0r2c1-tokenizer-correction-contract"},
+    "contract_id": {"const": "a0r2c1-tokenizer-correction-v1"},
+    "contract_status": {"const": "approval_requested"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "operator_approval_granted": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "empirical": {"const": true},
+    "evidence_eligible": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "predecessor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["public_main", "study_protocol", "terminal_failure", "publication_manifest", "tokenizer_compatibility"],
+      "properties": {
+        "public_main": {"const": "acbea218666da4d431b7f4c09d214891284d3235"},
+        "study_protocol": {"$ref": "#/$defs/binding"},
+        "terminal_failure": {"$ref": "#/$defs/binding"},
+        "publication_manifest": {"$ref": "#/$defs/binding"},
+        "tokenizer_compatibility": {"$ref": "#/$defs/binding"}
+      }
+    },
+    "correction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["failure_kind", "root_cause", "original_runtime_type", "original_predicate", "corrected_predicate", "semantic_delta"],
+      "properties": {
+        "failure_kind": {"const": "A0R2AdapterError"},
+        "root_cause": {"const": "valid_BatchEncoding_rejected_because_it_is_Mapping_but_not_dict"},
+        "original_runtime_type": {"const": "transformers.tokenization_utils_base.BatchEncoding"},
+        "original_predicate": {"const": "isinstance(encoded, dict)"},
+        "corrected_predicate": {"const": "isinstance(encoded, collections.abc.Mapping)"},
+        "semantic_delta": {"const": "tokenizer_container_interface_only"}
+      }
+    },
+    "invariants": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_revision_unchanged", "study_protocol_unchanged", "cases_unchanged", "targets_unchanged", "statistics_unchanged", "thresholds_unchanged", "no_tuning", "no_model_substitution", "no_claim_promotion"],
+      "properties": {
+        "model_revision_unchanged": {"const": true}, "study_protocol_unchanged": {"const": true}, "cases_unchanged": {"const": true}, "targets_unchanged": {"const": true}, "statistics_unchanged": {"const": true}, "thresholds_unchanged": {"const": true}, "no_tuning": {"const": true}, "no_model_substitution": {"const": true}, "no_claim_promotion": {"const": true}
+      }
+    },
+    "run_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["run_id", "model_id", "revision", "device", "dtype", "local_only", "network_access", "generation_allowed", "maximum_wall_seconds", "maximum_peak_rss_bytes", "maximum_new_dense_output_bytes", "maximum_material_runs", "analysis_target_content_reads", "retry_after_model_or_target_access", "publish_every_terminal_outcome"],
+      "properties": {
+        "run_id": {"const": "a0r2c1-v1.0.0-f8027fd0-r1"}, "model_id": {"const": "HuggingFaceTB/SmolLM2-360M"}, "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"}, "device": {"const": "cpu"}, "dtype": {"const": "float32"}, "local_only": {"const": true}, "network_access": {"const": false}, "generation_allowed": {"const": false}, "maximum_wall_seconds": {"const": 1800}, "maximum_peak_rss_bytes": {"const": 8589934592}, "maximum_new_dense_output_bytes": {"const": 67108864}, "maximum_material_runs": {"const": 1}, "analysis_target_content_reads": {"const": 1}, "retry_after_model_or_target_access": {"const": "new_explicit_approval_required"}, "publish_every_terminal_outcome": {"const": true}
+      }
+    },
+    "implementation_code": {
+      "type": "array", "minItems": 3, "maxItems": 3,
+      "items": {"$ref": "#/$defs/code_binding"}
+    }
+  },
+  "$defs": {
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "size"],
+      "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"pattern": "^[0-9a-f]{64}$"}, "size": {"type": "integer", "minimum": 1}}
+    },
+    "code_binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "size"],
+      "properties": {"path": {"pattern": "^src/latent_triz/a0r2c1_[a-z_]+\\.py$"}, "sha256": {"pattern": "^[0-9a-f]{64}$"}, "size": {"type": "integer", "minimum": 1}}
+    }
+  }
+}

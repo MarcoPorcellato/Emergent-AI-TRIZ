@@ -1,61 +1,20 @@
-Complete the Latent-TRIZ laboratory according to
-docs/LABORATORY_MASTER_PLAN.md and its linked phase specs. Start from the
-verified public anchor `b9260cd9743d2afd5eb7fc79339e0687fa22689c`, but verify
-origin/main, open pull requests, the active ruleset, exact worktree state, and
-current evidence live before acting.
+Complete the isolated A0-R2-C1 SmolLM2 tokenizer correction described in
+docs/A0R2C1_TOKENIZER_CORRECTION.md, starting from verified public main
+acbea218666da4d431b7f4c09d214891284d3235.
 
-CCP PR 37 merged at `044697dee9a0d678d30a4847d62ddf9b4970505b` and Latent-TRIZ
-PR 51 merged at `39ad1965e82f5aa2f4671e38708e401774f176ec`; PR 51's exact
-source head `e249c4b42795b27d27d78a0b5c3526a38e7809de` has terminal local and
-hosted evidence. Immutable GHCR runtime images (PR 50, `e6a634d`) and the
-trusted CCP v2 verifier bridge (PR 53, `64892dd`) are merged. The dual-policy
-bridge (PR 55, `28b6c5d`), matrix migration (PR 56, `1457e2c`), and
-post-merge measurement (PR 57, `9ef86ec`) complete Phase G. Preserve exact
-runtime and policy digests; do not reintroduce hosted Python candidate lanes
-without a reviewed policy change.
+Preserve the published A0-R2 failure package byte-for-byte. Change only the
+tokenizer output contract from concrete dict to collections.abc.Mapping in new
+C1-namespaced code. Keep the exact model revision, corpus, sealed targets,
+prompts, representation sites, statistics, thresholds, resource caps,
+single-read rule, no-tuning rule, and terminal-publication policy unchanged.
 
-PR 47 merged the R2.2 implementation at
-`fa1e254ec373092278b1ab63f05504545e295b67`. This does not authorize R2.3.
+Current checkpoint: tokenizer-only compatibility is proven without model load
+or target access; the C1 pre-output contract and implementation are being
+qualified. Stop before any model load or sealed-target access until the exact
+merged C1 contract receives a separate explicit operator authorization.
 
-PR 62 merged the exact R2.3 approval dossier at
-`b9260cd9743d2afd5eb7fc79339e0687fa22689c`. A subsequent technical hash read
-of the sealed-target file happened outside the analysis boundary; it emitted
-and retained no content, but is treated conservatively as consuming the
-original one-read scope. The operator has issued a replacement, one-run
-authorization with unchanged resource and scientific limits. First merge and
-qualify the corrective authorization receipt and runner gate. Only then, and
-only after CCP reports `Admit`, inactive admission, and an empty queue, permit
-exactly one guarded material attempt and preserve its first terminal outcome.
-
-That single attempt has now occurred on merged `main`
-`9a2269650380864af4932cd0403c806eb57837a1`. It is terminal `failed` before
-activation extraction because the SmolLM2 adapter rejected the tokenizer return
-type. The failure receipt records model output `possibly_accessed` and sealed
-targets `not_accessed`. Do not retry, tune, substitute a model, change the
-protocol, or read the targets under this authorization. Publish and verify the
-immutable failure package, including report and manifest, then record R2.3-R2.5
-as terminally closed without a TRIZ claim.
-
-R2.3–R2.5 are now terminally closed at public `main`
-`1112bc31e388c5c6857ecfd96542466cf613ea52`. PR 64 supplied the corrective
-authorization gate; PR 65 published the first and only run's immutable
-pre-analysis failure package after fresh-clone, exact-head CCP, and hosted-gate
-verification. No R2 signal estimate exists. Do not retry or reinterpret this
-result; any future work requires a separate preregistration and explicit
-operator approval.
-
-Treat the expert TRIZ reference corpus as reference-only input for a future
-R3/EXP-001 preregistration. Do not use its wording, examples, matrix cells, or
-tool relationships to alter the frozen R2.3 protocol or interpret its output.
-
-Treat A0-R Tier R1 and PR 46 as terminally published and verified. Keep the
-SmolLM2 R2.2 study fully local/offline and synthetic, with no real model load
-or sealed-target access until the separate R2.3 approval gate is explicitly
-granted. Do not promote any TRIZ claim from this work.
-
-Use deterministic tools first and delegate the largest safe bounded share to
-cheaper workers. Keep architecture, statistics, security, scientific
-interpretation, integration, qualification, and merge decisions with the
-primary agent. Continue until every applicable master-plan checklist item is
-proven by exact-head terminal evidence or the precise external gate is
-recorded.
+After authorization, require commit-ci-preflight resource Admit with admission
+inactive and queue empty, execute exactly once, and publish every terminal
+outcome. Use deterministic tools first and delegate bounded low-risk work to
+cheaper workers; retain scientific, security, integration, qualification, and
+merge decisions with the primary agent.

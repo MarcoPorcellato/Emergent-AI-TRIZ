@@ -1,0 +1,87 @@
+{
+  "artifact_class": "a0r2c1-tokenizer-correction-contract",
+  "claim_ids": [],
+  "contract_id": "a0r2c1-tokenizer-correction-v1",
+  "contract_status": "approval_requested",
+  "correction": {
+    "corrected_predicate": "isinstance(encoded, collections.abc.Mapping)",
+    "failure_kind": "A0R2AdapterError",
+    "original_predicate": "isinstance(encoded, dict)",
+    "original_runtime_type": "transformers.tokenization_utils_base.BatchEncoding",
+    "root_cause": "valid_BatchEncoding_rejected_because_it_is_Mapping_but_not_dict",
+    "semantic_delta": "tokenizer_container_interface_only"
+  },
+  "created_at": "2026-08-16T17:15:00Z",
+  "empirical": true,
+  "evidence_eligible": false,
+  "implementation_code": [
+    {
+      "path": "src/latent_triz/a0r2c1_adapter.py",
+      "sha256": "e1032641fbcab80e8c3a72adc5cfbd5b3ebe7cb61d977e93a40d5b87ec3091ff",
+      "size": 4055
+    },
+    {
+      "path": "src/latent_triz/a0r2c1_authorization.py",
+      "sha256": "4da4269246f590e18a8e31d3350409d6e880f556450b11d9f3682fd414ca09c5",
+      "size": 6628
+    },
+    {
+      "path": "src/latent_triz/a0r2c1_runner.py",
+      "sha256": "18542dbfe0bfe0ea9c83fd67c2022b7490c243bc8f40a8241504fcf980508914",
+      "size": 1826
+    }
+  ],
+  "invariants": {
+    "cases_unchanged": true,
+    "model_revision_unchanged": true,
+    "no_claim_promotion": true,
+    "no_model_substitution": true,
+    "no_tuning": true,
+    "statistics_unchanged": true,
+    "study_protocol_unchanged": true,
+    "targets_unchanged": true,
+    "thresholds_unchanged": true
+  },
+  "operator_approval_granted": false,
+  "predecessor": {
+    "public_main": "acbea218666da4d431b7f4c09d214891284d3235",
+    "publication_manifest": {
+      "path": "results/a0r2/a0r2-v1.0.0-f8027fd0-r1/publication-manifest.json",
+      "sha256": "559adc22ebb74c49b8faeaabbf10a51608a5d1494d89ce41adca1d7b607f0930",
+      "size": 820
+    },
+    "study_protocol": {
+      "path": "experiments/a0r2-independent-model/study-protocol.json",
+      "sha256": "383c2fe8a0d2baa893bc88326e3a5e18329691a90fd9bd1ea106602c8ee9bf3f",
+      "size": 6403
+    },
+    "terminal_failure": {
+      "path": "results/a0r2/a0r2-v1.0.0-f8027fd0-r1/run-failure.json",
+      "sha256": "d31a3081857fe9845ab197024a713b92ffdcf6b78bb34a26db2d8bbf2d435144",
+      "size": 846
+    },
+    "tokenizer_compatibility": {
+      "path": "results/a0r2c1/preexecution/tokenizer-compatibility.json",
+      "sha256": "239e5ec24f933c4194a72f1540d4c3b54e442d31ebdeaadd57bfda527cc98e7b",
+      "size": 999
+    }
+  },
+  "run_contract": {
+    "analysis_target_content_reads": 1,
+    "device": "cpu",
+    "dtype": "float32",
+    "generation_allowed": false,
+    "local_only": true,
+    "maximum_material_runs": 1,
+    "maximum_new_dense_output_bytes": 67108864,
+    "maximum_peak_rss_bytes": 8589934592,
+    "maximum_wall_seconds": 1800,
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "network_access": false,
+    "publish_every_terminal_outcome": true,
+    "retry_after_model_or_target_access": "new_explicit_approval_required",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "run_id": "a0r2c1-v1.0.0-f8027fd0-r1"
+  },
+  "scientific_status": "exploratory"
+}

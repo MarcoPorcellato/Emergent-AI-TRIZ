@@ -72,6 +72,8 @@ VALIDATION_PAIRS = (
     ("schemas/a0r2-implementation.schema.json", "experiments/a0r2-independent-model/implementation.json"),
     ("schemas/a0r2-feasibility-receipt.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json"),
     ("schemas/a0r2-feasibility-guard-observation.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/guard-observation.json"),
+    ("schemas/a0r2c1-correction-contract.schema.json", "experiments/a0r2c1-tokenizer-correction/contract.json"),
+    ("schemas/a0r2c1-tokenizer-compatibility.schema.json", "results/a0r2c1/preexecution/tokenizer-compatibility.json"),
     ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),
     ("schemas/a0-case.schema.json", "data/a0/cases.jsonl"),
     ("schemas/a0-procedural-target.schema.json", "data/a0/procedural-targets/calibration-targets.jsonl"),
