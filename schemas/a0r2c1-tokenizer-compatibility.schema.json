@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2c1-tokenizer-compatibility.schema.json",
+  "title": "A0-R2-C1 tokenizer-only compatibility receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "status", "recorded_at", "model", "runtime", "probe", "observation", "access"],
+  "properties": {
+    "artifact_class": {"const": "a0r2c1-tokenizer-compatibility"},
+    "status": {"const": "pass"},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "revision"],
+      "properties": {"id": {"const": "HuggingFaceTB/SmolLM2-360M"}, "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"}}
+    },
+    "runtime": {
+      "type": "object", "additionalProperties": false,
+      "required": ["transformers_version", "local_files_only", "network_access"],
+      "properties": {"transformers_version": {"const": "5.15.0"}, "local_files_only": {"const": true}, "network_access": {"const": false}}
+    },
+    "probe": {
+      "type": "object", "additionalProperties": false,
+      "required": ["text_sha256", "tokenizer_class", "encoded_class", "keys", "token_count", "attention_count", "offset_count"],
+      "properties": {
+        "text_sha256": {"const": "ab63b7d63974c1289c1762a2d8e779d55bc922c80a6708ac49f01ebfdcbb4ea1"},
+        "tokenizer_class": {"const": "transformers.models.gpt2.tokenization_gpt2.GPT2Tokenizer"},
+        "encoded_class": {"const": "transformers.tokenization_utils_base.BatchEncoding"},
+        "keys": {"const": ["attention_mask", "input_ids", "offset_mapping"]},
+        "token_count": {"const": 5}, "attention_count": {"const": 5}, "offset_count": {"const": 5}
+      }
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["is_dict", "is_mapping", "root_cause_confirmed"],
+      "properties": {"is_dict": {"const": false}, "is_mapping": {"const": true}, "root_cause_confirmed": {"const": true}}
+    },
+    "access": {
+      "type": "object", "additionalProperties": false,
+      "required": ["tokenizer_loaded", "model_loaded", "model_output_accessed", "sealed_targets_accessed"],
+      "properties": {"tokenizer_loaded": {"const": true}, "model_loaded": {"const": false}, "model_output_accessed": {"const": false}, "sealed_targets_accessed": {"const": false}}
+    }
+  }
+}

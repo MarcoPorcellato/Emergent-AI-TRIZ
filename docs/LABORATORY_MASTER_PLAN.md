@@ -344,6 +344,22 @@ and its fresh-clone, local CCP, and hosted-gate evidence are published. This
 milestone supplies no comparative signal and authorizes no retry. A future R3
 or corrective effort starts from a separate preregistration and approval gate.
 
+### A0-R2-C1 — corrective SmolLM2 result path
+
+The immutable A0-R2 failure is preserved. A separate C1 tranche corrects only
+the tokenizer container contract (`dict` to `collections.abc.Mapping`) and
+adds the realistic regression coverage missing from feasibility and synthetic
+qualification. A tokenizer-only local receipt already confirms the exact
+runtime returns aligned IDs, offsets, and attention values in a valid
+`BatchEncoding`; it loaded no model and accessed no sealed target.
+
+The next sequence is: merge and exact-head qualify the pre-output C1 contract;
+record a new explicit one-attempt authorization; run only after CCP reports
+resource `Admit`, inactive admission, and an empty queue; then publish and
+verify every terminal outcome. All scientific inputs, statistics, thresholds,
+model identity, resource ceilings, no-tuning rule, and single target-read
+boundary remain unchanged.
+
 ### PR 30 — annotation ontology v1.2 implementation
 
 **Outcome**

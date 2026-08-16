@@ -426,6 +426,24 @@ published failed outcome, without an R2 signal estimate or a general TRIZ
 claim. Any future corrective execution requires a newly preregistered protocol
 and explicit operator authorization.
 
+#### A0-R2-C1 — isolated tokenizer correction
+
+**Current checkpoint — pre-output correction, approval not yet granted:** the
+published R2 failure remains immutable and terminal under its consumed
+authorization. The failure was an adapter container-type defect, not a null
+scientific result: Transformers returned a valid `BatchEncoding`, which is a
+`collections.abc.Mapping` but not a concrete `dict`. The feasibility path did
+not exercise this adapter predicate, and the synthetic tokenizer returned only
+a plain `dict`; therefore the defect was predictable but not covered.
+
+The separately versioned [A0-R2-C1 correction dossier](./A0R2C1_TOKENIZER_CORRECTION.md)
+binds a tokenizer-only receipt and changes only the accepted container
+interface from `dict` to `Mapping`. It does not modify the frozen model,
+revision, corpus, targets, prompts, representation sites, statistics,
+thresholds, resource limits, or publication rules. The probe loaded no model
+and accessed no sealed target. C1 must be merged and exact-head qualified
+before a new exact operator authorization may permit one material attempt.
+
 ## Statistical and missing-data rules
 
 - The R1 primary endpoint is fixed from A0 and is not selected from R1 output.
