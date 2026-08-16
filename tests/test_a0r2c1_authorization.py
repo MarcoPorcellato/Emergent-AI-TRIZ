@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import json
 import hashlib
-import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -11,6 +9,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from latent_triz import a0r2c1_authorization as authorization_module  # noqa: E402
 from latent_triz.a0r2c1_authorization import (  # noqa: E402
     A0R2C1AuthorizationError,
     verify_a0r2c1_authorization,
@@ -19,6 +18,7 @@ from latent_triz.a0r2c1_authorization import (  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SYNTHETIC_RECEIPT = ROOT / "results/a0r2c1/preexecution/synthetic-authorization.json"
 
 
 def _valid_authorization_payload() -> dict[str, object]:
@@ -35,13 +35,22 @@ def _valid_authorization_payload() -> dict[str, object]:
     }
 
 
+def _verify_payload(payload: dict[str, object]) -> dict[str, object]:
+    original_json = authorization_module._json
+
+    def synthetic_json(path: Path, label: str) -> dict[str, object]:
+        if path == SYNTHETIC_RECEIPT:
+            return payload
+        return original_json(path, label)
+
+    with patch.object(authorization_module, "_json", side_effect=synthetic_json):
+        return verify_a0r2c1_authorization(ROOT, SYNTHETIC_RECEIPT)
+
+
 class A0R2C1AuthorizationTests(unittest.TestCase):
     def test_public_c1_contract_and_authorization_verify(self) -> None:
         contract = verify_a0r2c1_contract(ROOT)
-        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
-            receipt_path = Path(directory) / "authorization.json"
-            receipt_path.write_text(json.dumps(_valid_authorization_payload()), encoding="utf-8")
-            receipt = verify_a0r2c1_authorization(ROOT, receipt_path)
+        receipt = _verify_payload(_valid_authorization_payload())
         self.assertEqual("pass", contract["status"])
         self.assertEqual("pass", receipt["status"])
         self.assertFalse(receipt["model_output_accessed"])
@@ -54,11 +63,8 @@ class A0R2C1AuthorizationTests(unittest.TestCase):
     def test_mutated_authorization_fails_schema_before_material_access(self) -> None:
         payload = _valid_authorization_payload()
         payload["scope"]["run_id"] = "not-the-frozen-run"
-        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
-            mutated = Path(directory) / "authorization.json"
-            mutated.write_text(json.dumps(payload), encoding="utf-8")
-            with self.assertRaisesRegex(A0R2C1AuthorizationError, "schema validation"):
-                verify_a0r2c1_authorization(ROOT, mutated)
+        with self.assertRaisesRegex(A0R2C1AuthorizationError, "schema validation"):
+            _verify_payload(payload)
 
     def test_contract_does_not_open_sealed_targets(self) -> None:
         with patch("latent_triz.a0r2c1_authorization._sha256") as digest:
