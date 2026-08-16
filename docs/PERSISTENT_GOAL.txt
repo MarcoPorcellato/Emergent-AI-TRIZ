@@ -1,14 +1,18 @@
 Complete the Latent-TRIZ laboratory according to
 docs/LABORATORY_MASTER_PLAN.md and its linked phase specs. Start from the
-verified public anchor `39ad1965e82f5aa2f4671e38708e401774f176ec`, but verify
+verified public anchor `28b6c5d309eb5e640c34945e598b3a1e8425d979`, but verify
 origin/main, open pull requests, the active ruleset, exact worktree state, and
 current evidence live before acting.
 
 CCP PR 37 merged at `044697dee9a0d678d30a4847d62ddf9b4970505b` and Latent-TRIZ
 PR 51 merged at `39ad1965e82f5aa2f4671e38708e401774f176ec`; PR 51's exact
-source head `e249c4b42795b27d27d78a0b5c3526a38e7809de` has terminal local and hosted evidence, but runtime
-images are not immutable GHCR artifacts and hosted candidate tests remain
-enabled. Measure cost only after the full migration.
+source head `e249c4b42795b27d27d78a0b5c3526a38e7809de` has terminal local and
+hosted evidence. Immutable GHCR runtime images (PR 50, `e6a634d`) and the
+trusted CCP v2 verifier bridge (PR 53, `64892dd`) are now merged. Qualify and
+merge the staged matrix routing through the dual-policy bridge merged by PR 55
+at `28b6c5d`. Do not reuse PR 54 head `c6874fd` or its receipt after rebase:
+produce one fresh exact-head v2 receipt, then measure hosted execution and
+cost from a post-merge PR. No savings are assumed in advance.
 
 PR 47 contains the published R2.2 implementation branch. PRs 48 and 49 migrated
 the trusted CCP digest and 180-second timeout in two base-authorized steps. PR 47
