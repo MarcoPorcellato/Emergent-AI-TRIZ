@@ -15,6 +15,11 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from latent_triz.cli import _run_validate
+
+
 PYTHON = sys.executable
 ENV = dict(os.environ, PYTHONPATH=str(ROOT / "src"))
 
@@ -24,7 +29,8 @@ def run(*args: str) -> None:
 
 
 def validate(schema: str, data: str) -> None:
-    run(PYTHON, "-m", "latent_triz.cli", "validate", "--schema", schema, data)
+    if _run_validate(schema, (data,)) != 0:
+        raise RuntimeError(f"schema validation failed: {schema} -> {data}")
 
 
 def main() -> int:
