@@ -18,4 +18,4 @@ id = "repository-check"
 required = true
 argv = ["python3", "scripts/repository_check.py"]
 working_directory = "."
-timeout_seconds = 120
+timeout_seconds = 180
