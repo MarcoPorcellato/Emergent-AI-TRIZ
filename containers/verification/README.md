@@ -13,6 +13,9 @@ PYTHON_SERIES=3.11 | 3.12
 SOURCE_REVISION=<exact-source-commit>
 ```
 
+The Dockerfile default is a pinned Python 3.11 base solely so static Docker
+parsers have a valid `FROM`; a release build must still pass all three values.
+
 Before an image can be used by CCP, publish its immutable arm64 manifest
 digest, record the exact base digest and lockfile hash in the image publication
 receipt, and bind the resulting image reference in both the v2 CCP
