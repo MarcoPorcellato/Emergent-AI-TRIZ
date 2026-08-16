@@ -1,0 +1,30 @@
+{
+  "access": {
+    "model_loaded": false,
+    "model_output_accessed": false,
+    "sealed_targets_accessed": false
+  },
+  "artifact_class": "a0r2c1-sealed-execution-authorization",
+  "bindings": {
+    "contract_sha256": "752114567bb1741b6dd5ddc49ecb765d299a1ab5f4c31017a1003f8105fee75b"
+  },
+  "receipt_id": "a0r2c1-sealed-execution-authorization-v1",
+  "receipt_status": "authorized",
+  "recorded_at": "2026-08-16T22:55:21Z",
+  "scope": {
+    "analysis_target_content_reads": 1,
+    "generation_allowed": false,
+    "local_only": true,
+    "maximum_material_runs": 1,
+    "maximum_new_dense_output_bytes": 67108864,
+    "maximum_peak_rss_bytes": 8589934592,
+    "maximum_wall_seconds": 1800,
+    "network_access": false,
+    "no_model_substitution": true,
+    "no_protocol_change": true,
+    "no_tuning": true,
+    "publish_every_terminal_outcome": true,
+    "run_id": "a0r2c1-v1.0.0-f8027fd0-r1"
+  },
+  "source": "explicit_operator_authorization"
+}

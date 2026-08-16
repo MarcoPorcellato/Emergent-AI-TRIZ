@@ -42,6 +42,7 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2-sealed-execution-authorization.schema.json results/a0r2/preexecution/smollm2-360m-f8027fd0/sealed-execution-authorization.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2c1-correction-contract.schema.json experiments/a0r2c1-tokenizer-correction/contract.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2c1-tokenizer-compatibility.schema.json results/a0r2c1/preexecution/tokenizer-compatibility.json
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/a0r2c1-sealed-execution-authorization.schema.json results/a0r2c1/preexecution/sealed-execution-authorization.json
 	python3 -c 'import json; json.load(open("schemas/blinded-annotation-audit.schema.json"))'
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/candidates/wave1-model-generated.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-config.schema.json experiments/lab03-behavioral-baselines/config.json

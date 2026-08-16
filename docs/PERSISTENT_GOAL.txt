@@ -1,20 +1,15 @@
-Complete the isolated A0-R2-C1 SmolLM2 tokenizer correction described in
-docs/A0R2C1_TOKENIZER_CORRECTION.md, starting from verified public main
-acbea218666da4d431b7f4c09d214891284d3235.
+Preserve and publish the terminal A0-R2-C1 SmolLM2 execution package from
+public main 8b1a693e832bc753dfee8cbded947eadc1be03cc. The one C1 attempt loaded
+the exact model and then failed during rank-three Llama hidden-state
+normalization, before sealed-target analysis. Its authorization is consumed.
 
-Preserve the published A0-R2 failure package byte-for-byte. Change only the
-tokenizer output contract from concrete dict to collections.abc.Mapping in new
-C1-namespaced code. Keep the exact model revision, corpus, sealed targets,
-prompts, representation sites, statistics, thresholds, resource caps,
-single-read rule, no-tuning rule, and terminal-publication policy unchanged.
+Publish the authorization receipt, failure receipt, report, and manifest with
+their exact hashes and fail-closed verification. Do not retry C1, tune,
+substitute a model, change frozen protocol/statistics, or access sealed targets
+under the consumed authorization.
 
-Current checkpoint: tokenizer-only compatibility is proven without model load
-or target access; the C1 pre-output contract and implementation are being
-qualified. Stop before any model load or sealed-target access until the exact
-merged C1 contract receives a separate explicit operator authorization.
-
-After authorization, require commit-ci-preflight resource Admit with admission
-inactive and queue empty, execute exactly once, and publish every terminal
-outcome. Use deterministic tools first and delegate bounded low-risk work to
-cheaper workers; retain scientific, security, integration, qualification, and
-merge decisions with the primary agent.
+Any future C2 path must be separately preregistered, synthetically and
+runtime-qualified, exact-head merged, and explicitly authorized before a model
+load or target read. Keep the prior A0-R2 and C1 packages byte-stable; do not
+promote a TRIZ claim from either failure. Use deterministic tools first and
+delegate only bounded low-risk work to cheaper workers.

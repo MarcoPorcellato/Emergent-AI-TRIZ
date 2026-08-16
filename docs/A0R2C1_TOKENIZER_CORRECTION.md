@@ -1,6 +1,6 @@
 # A0-R2-C1 tokenizer correction and approval request
 
-Status: pre-output contract prepared; material execution is not authorized.
+Status: terminal failed; the single authorized material execution is consumed.
 
 ## What failed
 
@@ -49,10 +49,19 @@ at most 1,800 seconds, 8,589,934,592 bytes peak RSS, and 67,108,864 bytes of new
 dense output. It permits exactly one sealed-target content read at the analysis
 boundary and requires publication of every terminal outcome.
 
-## Remaining gate
+## Terminal execution record
 
-The contract deliberately records `operator_approval_granted=false`. Before
-any new model load or target access, the contract and implementation must be
-merged and exact-head qualified. A separate operator authorization must then
-name that merged contract and authorize the single C1 attempt. A new receipt
-will bind that authorization before the runner can proceed.
+The operator authorized one C1 execution from public main
+`8b1a693e832bc753dfee8cbded947eadc1be03cc`. The authorization receipt bound
+the correction contract and all declared resource limits. SmolLM2 loaded
+locally, but activation extraction terminated before target analysis with a
+`TypeError`: the shared normalizer expected rows shaped `[token, hidden]`,
+while a Llama hidden-state tensor retains the leading batch dimension
+`[batch, token, hidden]` and supplied a token vector where a scalar was
+expected. The terminal receipt records model output as `possibly_accessed` and
+sealed targets as `not_accessed`.
+
+This is a published failed execution, not a null result and not evidence for or
+against the hypothesis. The single C1 authorization is consumed. Any C2
+correction must be separately preregistered, qualified, and explicitly
+authorized before another model load or target access.
