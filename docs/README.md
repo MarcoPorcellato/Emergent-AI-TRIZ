@@ -3,7 +3,7 @@ type: human-portal
 title: Documentation Human Portal
 description: Curated entry point for contributors and reviewers to navigate maintained repository documentation.
 status: canonical
-last_verified: 2026-08-15
+last_verified: 2026-08-16
 ---
 
 # Documentation Human Portal
@@ -24,6 +24,7 @@ Use this navigation when preparing proposals, reviews, or PRs.
 - [Main documentation index](./index.md)
 - [Foundation chronology](./log.md)
 - [Reference collection](./reference/index.md)
+- [TRIZ expert reference corpus](./reference/triz-reference-corpus.md)
 - [Decision ledger](./decisions/index.md)
 - [ADR 0001 — Official lab foundation](./decisions/0001-official-lab-foundation.md)
 

@@ -172,6 +172,15 @@ R2.2 implementation at `fa1e254ec373092278b1ab63f05504545e295b67`. R2.3
 model execution and sealed-target access remain a separate explicit approval
 gate.
 
+The expert TRIZ reference-corpus foundation adds exact provenance for a
+forty-principle example set, Matrix 2003, a TRIZ tools relationship map, and a
+curated inventory of the official TRIZ Consulting Group method, tool, training,
+and application resources. It improves future construct and question coverage
+while remaining reference-only, evidence-ineligible, and excluded from frozen
+R2.3. Its first experimental role is a separately preregistered R3/EXP-001
+comparison of `TRIZ-blinded` transfer against `source-exposed` retrieval and
+use.
+
 ### Evidence profiles
 
 The public E0-E6 ladder remains the concise communication layer. Before claim promotion, each result will also carry a machine-readable evidence profile covering behavioral effect, lexical controls, cross-domain transfer, decodability, positive and negative interventions, dose response, capability preservation, independent/cross-model replication, and controlled training. The ladder level will be derived from satisfied profile fields rather than used as the sole description of evidence.

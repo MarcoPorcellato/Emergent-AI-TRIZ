@@ -32,6 +32,9 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/dataset-annotation.schema.json data/pilot/dataset-annotations.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/annotation-guide.schema.json experiments/001-stage1-pilot/annotation-guide.json
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/candidate-batch.schema.json data/candidates/wave1-manifest.json
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/triz-reference-registry.schema.json data/triz-reference-sources.json
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/triz-principle-reference.schema.json data/triz-reference/principles.jsonl
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/triz-web-corpus.schema.json data/triz-consulting-web-corpus.json
 	python3 -c 'import json; json.load(open("schemas/blinded-annotation-audit.schema.json"))'
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/candidates/wave1-model-generated.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/lab03-config.schema.json experiments/lab03-behavioral-baselines/config.json
@@ -44,7 +47,7 @@ validate:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli claims-audit --registry data/claims.jsonl --root .
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json tests/fixtures/case_valid.jsonl
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli validate --schema schemas/case.schema.json data/pilot/cases.jsonl
-	for path in schemas/case.schema.json schemas/study.schema.json schemas/run.schema.json schemas/dataset-registry.schema.json schemas/claim.schema.json data/registry.json experiments/000-template/manifest.json experiments/000-template/run.json; do python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "$$path" || (echo "latent-triz: $$path:0:0: invalid JSON"; exit 1); done
+	for path in schemas/case.schema.json schemas/study.schema.json schemas/run.schema.json schemas/dataset-registry.schema.json schemas/claim.schema.json schemas/triz-reference-registry.schema.json schemas/triz-principle-reference.schema.json schemas/triz-web-corpus.schema.json data/registry.json data/triz-reference-sources.json data/triz-consulting-web-corpus.json experiments/000-template/manifest.json experiments/000-template/run.json; do python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "$$path" || (echo "latent-triz: $$path:0:0: invalid JSON"; exit 1); done
 
 docs-audit:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli docs-audit --profile docs/okf-profile.toml --root . --as-of-date "$$(python3 -c 'from datetime import date; print(date.today().isoformat())')"

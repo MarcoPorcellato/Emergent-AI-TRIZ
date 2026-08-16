@@ -3,7 +3,7 @@ type: reference-collection
 title: Reference Collection
 description: Canonical pointers for artifact flow, schemas, and operational references.
 status: canonical
-last_verified: 2026-08-14
+last_verified: 2026-08-16
 ---
 
 # Reference Collection
@@ -13,6 +13,7 @@ last_verified: 2026-08-14
 - [Stage 1 blinded pilot](../STAGE1_PILOT.md)
 - [Commit CI Preflight adoption](commit-ci-preflight.md)
 - [Fail-closed schema validation](schema-validation.md)
+- [TRIZ expert reference corpus](triz-reference-corpus.md)
 - [Lab architecture](../LAB_ARCHITECTURE.md)
 - [Laboratory master plan](../LABORATORY_MASTER_PLAN.md)
 - [A0 automated weak-hypothesis exploration](../A0_AUTOMATED_WEAK_HYPOTHESIS.md)
@@ -30,6 +31,9 @@ last_verified: 2026-08-14
 - [Data contract](../../data/README.md)
 - [Wave 1 candidate batch](../../data/candidates/README.md)
 - [Machine-readable claim registry](../../data/claims.jsonl)
+- [TRIZ reference-source registry](../../data/triz-reference-sources.json)
+- [Forty-principle reference summaries](../../data/triz-reference/principles.jsonl)
+- [Curated TRIZ Consulting public-web corpus](../../data/triz-consulting-web-corpus.json)
 - [Stage 1 blinded pilot](../STAGE1_PILOT.md)
 - [Research protocol](../RESEARCH_PROTOCOL.md)
 - [Roadmap](../ROADMAP.md)
@@ -43,6 +47,9 @@ last_verified: 2026-08-14
 
 - [Case schema](../../schemas/case.schema.json)
 - [Dataset registry schema](../../schemas/dataset-registry.schema.json)
+- [TRIZ reference registry schema](../../schemas/triz-reference-registry.schema.json)
+- [TRIZ principle reference schema](../../schemas/triz-principle-reference.schema.json)
+- [TRIZ public-web corpus schema](../../schemas/triz-web-corpus.schema.json)
 - [Study schema](../../schemas/study.schema.json)
 - [Run schema](../../schemas/run.schema.json)
 - [Pilot packet schema](../../schemas/pilot-packet.schema.json)

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/triz-principle-reference.schema.json",
+  "title": "TRIZ inventive-principle reference record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["principle_number", "canonical_name", "source_id", "source_page", "abstract_operator", "example_summary", "exposure_class", "scientific_role", "automatic_ground_truth", "r2_frozen_protocol_eligible", "future_tranche"],
+  "properties": {
+    "principle_number": {"type": "integer", "minimum": 1, "maximum": 40},
+    "canonical_name": {"type": "string", "minLength": 1},
+    "source_id": {"const": "triz-ref-inventive-principles-2023"},
+    "source_page": {"type": "integer", "minimum": 1, "maximum": 40},
+    "abstract_operator": {"type": "string", "minLength": 10},
+    "example_summary": {"type": "string", "minLength": 10},
+    "exposure_class": {"const": "source_derived_reference"},
+    "scientific_role": {"const": "authoring_reference_only"},
+    "automatic_ground_truth": {"const": false},
+    "r2_frozen_protocol_eligible": {"const": false},
+    "future_tranche": {"const": "R3/EXP-001"}
+  }
+}
