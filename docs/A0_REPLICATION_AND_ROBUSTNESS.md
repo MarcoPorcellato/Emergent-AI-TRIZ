@@ -275,9 +275,10 @@ acceptance-digest change against the trusted base policy. PR 48 migrated only
 the accepted digest at `afd4b56ae84a944dc4cd60486caabce9b9452f75`; PR 49 then
 activated only the 180-second timeout at
 `85180041717f336de554300dda109731b48c6b95`. Both prerequisite PRs used
-base-policy exact-head receipts and terminal green gates. PR 47 is rebased onto
-that public anchor and still requires a fresh exact-head receipt and terminal
-hosted gate. R2.3 remains separately approval-gated after R2.2 merge.
+base-policy exact-head receipts and terminal green gates. PR 47 subsequently
+passed its refreshed exact-head receipt and hosted gates and merged at
+`fa1e254ec373092278b1ab63f05504545e295b67`. R2.2 is therefore public and
+verified complete. R2.3 remains separately approval-gated.
 
 **Automated-study direction:** the operator has requested the broadest useful
 SmolLM2 study that does not depend on human review. This authorizes preparation,

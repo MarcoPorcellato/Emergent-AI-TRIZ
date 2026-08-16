@@ -212,11 +212,12 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
    then merged the R2.1 publication and receipt branch at
    `1f35ba353e792aa263db7449216e3172d0306798` after exact head
    `5f9c21db944f25fd1dac4a550911c85e86471e35`. R2.1 is verified complete.
-   R2.2 is now in delivery as the local/offline SmolLM2 tranche with
-   synthetic-only qualification, descriptive cross-model comparisons, and no
-   real model load or sealed-target access yet. PRs 48 and 49 migrated the
+   R2.2 is public and verified complete as the local/offline SmolLM2 tranche
+   with synthetic-only qualification, descriptive cross-model comparisons,
+   and no real model load or sealed-target access. PRs 48 and 49 migrated the
    trusted CCP digest and timeout without candidate-policy self-authorization;
-   PR 47 is rebased and awaiting its refreshed exact-head gates. R2.3 remains a
+   PR 47 then passed its refreshed exact-head receipt and hosted gates and
+   merged at `fa1e254ec373092278b1ab63f05504545e295b67`. R2.3 remains a
    separate approval gate.
 7. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
 8. Store independent raw ratings, adjudications, exclusions, and canonical human labels as separate immutable artifacts. Labs 03–05 consume canonical labels, never generator intent.
