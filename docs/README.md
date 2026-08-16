@@ -25,6 +25,7 @@ Use this navigation when preparing proposals, reviews, or PRs.
 - [Foundation chronology](./log.md)
 - [Reference collection](./reference/index.md)
 - [TRIZ expert reference corpus](./reference/triz-reference-corpus.md)
+- [A0-R2.3 sealed-execution approval dossier](./A0R2_SEALED_EXECUTION_APPROVAL.md)
 - [Decision ledger](./decisions/index.md)
 - [ADR 0001 — Official lab foundation](./decisions/0001-official-lab-foundation.md)
 

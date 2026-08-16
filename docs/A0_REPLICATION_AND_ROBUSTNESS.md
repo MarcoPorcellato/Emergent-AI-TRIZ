@@ -356,6 +356,15 @@ or target access without a new explicit approval. These are conservative caps;
 the feasibility measurement was 2.37 GiB and 3.81 seconds for the synthetic
 probe.
 
+**Current checkpoint — approval requested, not granted:** the human-readable
+[`A0-R2.3 sealed-execution approval dossier`](./A0R2_SEALED_EXECUTION_APPROVAL.md)
+and its strict machine-readable request bind the exact model snapshot,
+pre-output contracts, declared R1 input hashes, prior feasibility and guard
+receipts, resource ceilings, one-run boundary, single analysis target read,
+terminal publication rules, and claim limit. The request records
+`operator_approval_granted=false`. Publishing or verifying the dossier does not
+authorize a model load, material run, or sealed-target access.
+
 The expert TRIZ reference corpus added after the R2 freeze is ineligible for
 R2.3. It must not alter prompts, cases, targets, controls, thresholds,
 interpretation rules, or the one-run boundary. Its first experimental use

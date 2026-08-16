@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-sealed-execution-approval-dossier.schema.json",
+  "title": "A0-R2 sealed-execution approval dossier",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "dossier_id", "protocol_id", "created_at",
+    "dossier_status", "operator_approval_granted",
+    "authorization_receipt_present", "empirical", "scientific_status",
+    "evidence_eligible", "expert_validated", "claim_ids", "repository",
+    "protocol", "model", "run_contract", "preconditions", "access_history",
+    "guard_history", "primary_endpoint", "scientific_boundaries",
+    "terminal_outcomes", "publication", "bindings"
+  ],
+  "properties": {
+    "artifact_class": {"const": "a0r2-sealed-execution-approval-dossier"},
+    "dossier_id": {"const": "a0r2-sealed-execution-approval-v1"},
+    "protocol_id": {"const": "a0r2-independent-model-v1.0.0"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "dossier_status": {"const": "approval_requested"},
+    "operator_approval_granted": {"const": false},
+    "authorization_receipt_present": {"const": false},
+    "empirical": {"const": true},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public_base_commit", "r2_1_source_commit", "r2_1_merge_commit", "r2_2_source_commit", "r2_2_merge_commit"],
+      "properties": {
+        "public_base_commit": {"const": "e3386c92070168f4f232368b19fde8e961c8935e"},
+        "r2_1_source_commit": {"const": "5f9c21db944f25fd1dac4a550911c85e86471e35"},
+        "r2_1_merge_commit": {"const": "1f35ba353e792aa263db7449216e3172d0306798"},
+        "r2_2_source_commit": {"const": "6a3ff0ebf3bbcc3eb16f8c443692b2aba71dac50"},
+        "r2_2_merge_commit": {"const": "fa1e254ec373092278b1ab63f05504545e295b67"}
+      }
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "size", "r1_declared_inputs"],
+      "properties": {
+        "path": {"const": "experiments/a0r2-independent-model/study-protocol.json"},
+        "sha256": {"const": "383c2fe8a0d2baa893bc88326e3a5e18329691a90fd9bd1ea106602c8ee9bf3f"},
+        "size": {"const": 6403},
+        "r1_declared_inputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["r1_protocol_sha256", "r1_freeze_manifest_sha256", "corpus_manifest_sha256", "cases_sha256", "sealed_targets_sha256", "shortcuts_sha256", "source"],
+          "properties": {
+            "r1_protocol_sha256": {"const": "ed113d1c0bfdb44b57c879e2995b610d0ecf528fccedb37fc9b89093be083fbf"},
+            "r1_freeze_manifest_sha256": {"const": "bedb9df1d6650ab0d4d7f9a255555e4dbe80b07b705b45534eeb290d76fe5fc9"},
+            "corpus_manifest_sha256": {"const": "46c5cdf796f2abad709deb3066cfadd5fc6e6a30f55a737b3408e0a15b065c06"},
+            "cases_sha256": {"const": "479caee11dd62a978e8f01e9802db624b1714909264292b53067e97e10002541"},
+            "sealed_targets_sha256": {"const": "e911a70279f5b141c35064da29c020557f69ee17dfed5adad6172ed3fe2db0e0"},
+            "shortcuts_sha256": {"const": "566586fe571a99eadfbc3871eedec3dbf65b049f9f0311a7676f9625e22ac615"},
+            "source": {"const": "frozen_study_protocol_declarations_no_target_reread"}
+          }
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision", "license_id", "model_type", "architecture", "local_locator", "runtime_snapshot"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "license_id": {"const": "Apache-2.0"},
+        "model_type": {"const": "llama"},
+        "architecture": {"const": "LlamaForCausalLM"},
+        "local_locator": {"const": "artifacts/models/smollm2-360m-f8027fd0"},
+        "runtime_snapshot": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["total_bytes", "files"],
+          "properties": {
+            "total_bytes": {"const": 727058433},
+            "files": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  {"name": "README.md", "sha256": "631f842e4a02262e07fc522ede86c816114541319dea53dbf86bac4539a24ac9", "size": 6623},
+                  {"name": "config.json", "sha256": "34f7801487078de7e434e19162c497e5cc6ff397080e40e8586627cb68a5168a", "size": 689},
+                  {"name": "generation_config.json", "sha256": "2056c988e990b0d13670f63f2f3b87b3b6d07edaf7a3416998ba27dab2d8a059", "size": 111},
+                  {"name": "merges.txt", "sha256": "0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510", "size": 466391},
+                  {"name": "model.safetensors", "sha256": "7aaff6661428bed033abba9522bec81938678642cca3181fe752b6ca9e1e540f", "size": 723674912},
+                  {"name": "special_tokens_map.json", "sha256": "e786b595b9a23148bf1630df78d9037a048ea671e48bfd3549a1e3c233742bb3", "size": 831},
+                  {"name": "tokenizer.json", "sha256": "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c", "size": 2104556},
+                  {"name": "tokenizer_config.json", "sha256": "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424", "size": 3658},
+                  {"name": "vocab.json", "sha256": "82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79", "size": 800662}
+                ]
+              },
+              "minItems": 9,
+              "maxItems": 9,
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+    "run_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "device", "dtype", "local_only", "network_access", "generation_allowed", "maximum_wall_seconds", "maximum_peak_rss_bytes", "maximum_new_dense_output_bytes", "maximum_material_runs", "activation_target_content_reads", "analysis_target_content_reads", "retry_after_model_or_target_access", "stopping_rule"],
+      "properties": {
+        "run_id": {"const": "a0r2-v1.0.0-f8027fd0-r1"},
+        "device": {"const": "cpu"},
+        "dtype": {"const": "float32"},
+        "local_only": {"const": true},
+        "network_access": {"const": false},
+        "generation_allowed": {"const": false},
+        "maximum_wall_seconds": {"const": 1800},
+        "maximum_peak_rss_bytes": {"const": 8589934592},
+        "maximum_new_dense_output_bytes": {"const": 67108864},
+        "maximum_material_runs": {"const": 1},
+        "activation_target_content_reads": {"const": 0},
+        "analysis_target_content_reads": {"const": 1},
+        "retry_after_model_or_target_access": {"const": "new_explicit_approval_required"},
+        "stopping_rule": {"const": "stop_after_first_terminal_attempt"}
+      }
+    },
+    "preconditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ccp_resource_decision", "ccp_admission_active", "ccp_queue_count", "output_destinations_must_be_absent", "snapshot_integrity_reverification_required", "approval_receipt_required"],
+      "properties": {
+        "ccp_resource_decision": {"const": "admit_required"},
+        "ccp_admission_active": {"const": false},
+        "ccp_queue_count": {"const": 0},
+        "output_destinations_must_be_absent": {"const": true},
+        "snapshot_integrity_reverification_required": {"const": true},
+        "approval_receipt_required": {"const": true}
+      }
+    },
+    "access_history": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prior_feasibility_model_loaded", "prior_feasibility_model_output_accessed", "prior_feasibility_output_content_retained", "prior_feasibility_sealed_targets_accessed", "sealed_execution_attempted", "sealed_targets_accessed_for_dossier"],
+      "properties": {
+        "prior_feasibility_model_loaded": {"const": true},
+        "prior_feasibility_model_output_accessed": {"const": true},
+        "prior_feasibility_output_content_retained": {"const": false},
+        "prior_feasibility_sealed_targets_accessed": {"const": false},
+        "sealed_execution_attempted": {"const": false},
+        "sealed_targets_accessed_for_dossier": {"const": false}
+      }
+    },
+    "guard_history": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["feasibility_outer_guard_status", "feasibility_outer_exit_code", "post_run_resource_decision", "post_run_admission_active", "post_run_queue_count", "rerun_performed", "retroactive_pass_forbidden"],
+      "properties": {
+        "feasibility_outer_guard_status": {"const": "cleanup_uncertain"},
+        "feasibility_outer_exit_code": {"const": 70},
+        "post_run_resource_decision": {"const": "admit"},
+        "post_run_admission_active": {"const": false},
+        "post_run_queue_count": {"const": 0},
+        "rerun_performed": {"const": false},
+        "retroactive_pass_forbidden": {"const": true}
+      }
+    },
+    "primary_endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tuple_index", "semantics", "primary_view", "token_site", "surface_baseline_view", "surface_baseline_token_site", "multiplicity"],
+      "properties": {
+        "tuple_index": {"const": 32},
+        "semantics": {"const": "final_transformer_block_output"},
+        "primary_view": {"const": "problem_plus_transformation"},
+        "token_site": {"const": "mean_transformation_span"},
+        "surface_baseline_view": {"const": "problem_only"},
+        "surface_baseline_token_site": {"const": "sentinel"},
+        "multiplicity": {"const": 1}
+      }
+    },
+    "scientific_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sensitivity_may_rescue_primary", "model_substitution_after_output", "human_review", "llm_judge", "protocol_change", "tuning", "claim_promotion", "expert_reference_corpus"],
+      "properties": {
+        "sensitivity_may_rescue_primary": {"const": false},
+        "model_substitution_after_output": {"const": false},
+        "human_review": {"const": false},
+        "llm_judge": {"const": false},
+        "protocol_change": {"const": false},
+        "tuning": {"const": false},
+        "claim_promotion": {"const": false},
+        "expert_reference_corpus": {"const": "excluded_from_r2_3_r3_exp_001_only"}
+      }
+    },
+    "terminal_outcomes": {
+      "const": ["positive", "null", "failed", "non_interpretable", "incompatible"]
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publish_every_terminal_outcome", "maximum_positive_statement", "general_triz_claim_allowed"],
+      "properties": {
+        "publish_every_terminal_outcome": {"const": true},
+        "maximum_positive_statement": {"const": "the frozen automated-proxy signal persisted across the two exact model families tested"},
+        "general_triz_claim_allowed": {"const": false}
+      }
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implementation", "acquisition_contract", "feasibility_contract", "integrity_receipt", "feasibility_receipt", "guard_observation"],
+      "properties": {
+        "implementation": {"$ref": "#/$defs/binding_implementation"},
+        "acquisition_contract": {"$ref": "#/$defs/binding_acquisition_contract"},
+        "feasibility_contract": {"$ref": "#/$defs/binding_feasibility_contract"},
+        "integrity_receipt": {"$ref": "#/$defs/binding_integrity_receipt"},
+        "feasibility_receipt": {"$ref": "#/$defs/binding_feasibility_receipt"},
+        "guard_observation": {"$ref": "#/$defs/binding_guard_observation"}
+      }
+    }
+  },
+  "$defs": {
+    "binding_implementation": {"$ref": "#/$defs/binding_base", "properties": {"path": {"const": "experiments/a0r2-independent-model/implementation.json"}, "sha256": {"const": "d97c55ded53e74245fba374ad63b502bb2f48eef04e2dfa6845a298034ffbabc"}, "size": {"const": 5523}}},
+    "binding_acquisition_contract": {"$ref": "#/$defs/binding_base", "properties": {"path": {"const": "experiments/a0r2-independent-model/acquisition-contract.json"}, "sha256": {"const": "55ae5f8dffa4caef00d67e38f47c4793ccb716a054351bb752d277f0173df4e8"}, "size": {"const": 2530}}},
+    "binding_feasibility_contract": {"$ref": "#/$defs/binding_base", "properties": {"path": {"const": "experiments/a0r2-independent-model/feasibility-contract.json"}, "sha256": {"const": "1d16a3fff857f2c42751332452746f41417579c45fe08c25e2a8e12ac68fd335"}, "size": {"const": 2629}}},
+    "binding_integrity_receipt": {"$ref": "#/$defs/binding_base", "properties": {"path": {"const": "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json"}, "sha256": {"const": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3"}, "size": {"const": 4759}}},
+    "binding_feasibility_receipt": {"$ref": "#/$defs/binding_base", "properties": {"path": {"const": "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json"}, "sha256": {"const": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67"}, "size": {"const": 2440}}},
+    "binding_guard_observation": {"$ref": "#/$defs/binding_base", "properties": {"path": {"const": "results/a0r2/preexecution/smollm2-360m-f8027fd0/guard-observation.json"}, "sha256": {"const": "d4f4a5f2c16329964f5728ad31a830f98f492e9ea75e435ad057794cddc54b45"}, "size": {"const": 775}}},
+    "binding_base": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "size"], "properties": {"path": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.)"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "size": {"type": "integer", "minimum": 1}}}
+  }
+}

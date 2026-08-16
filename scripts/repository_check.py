@@ -85,6 +85,7 @@ def main() -> int:
         ("schemas/a0r2-acquisition-contract.schema.json", "experiments/a0r2-independent-model/acquisition-contract.json"),
         ("schemas/a0r2-acquisition-receipt.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json"),
         ("schemas/a0r2-study-protocol.schema.json", "experiments/a0r2-independent-model/study-protocol.json"),
+        ("schemas/a0r2-sealed-execution-approval-dossier.schema.json", "experiments/a0r2-independent-model/sealed-execution-approval-dossier.json"),
         ("schemas/a0r2-implementation.schema.json", "experiments/a0r2-independent-model/implementation.json"),
         ("schemas/a0r2-feasibility-contract.schema.json", "experiments/a0r2-independent-model/feasibility-contract.json"),
         ("schemas/a0r2-feasibility-receipt.schema.json", "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json"),
@@ -167,6 +168,7 @@ def main() -> int:
         "schemas/a0r2-feasibility-receipt.schema.json",
         "schemas/a0r2-feasibility-guard-observation.schema.json",
         "schemas/a0r2-study-protocol.schema.json",
+        "schemas/a0r2-sealed-execution-approval-dossier.schema.json",
         "schemas/a0r2-implementation.schema.json",
         "schemas/triz-reference-registry.schema.json",
         "data/triz-reference-sources.json",
@@ -201,6 +203,7 @@ def main() -> int:
         "experiments/a0r2-independent-model/acquisition-contract.json",
         "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json",
         "experiments/a0r2-independent-model/study-protocol.json",
+        "experiments/a0r2-independent-model/sealed-execution-approval-dossier.json",
         "experiments/a0r2-independent-model/implementation.json",
     )
     for path in json_files:
