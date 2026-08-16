@@ -137,6 +137,15 @@ The provisional model roles are now recorded in [ADR 0003](./decisions/0003-exp-
 
 The repository now exposes two offline readiness gates for that decision: `make model-preflight` checks the exact candidate manifest and `make dataset-audit` checks the development corpus against the current plan. Both are deterministic, no-download gates. The freeze step remains separate and must still be backed by operator receipts, local hashes, and an immutable run record.
 
+The receipt-routing foundation now includes CCP multi-runtime v2 (PR 37,
+merged at `044697dee9a0d678d30a4847d62ddf9b4970505b`) and Latent-TRIZ runtime
+classification (PR 51, merged at `39ad1965e82f5aa2f4671e38708e401774f176ec`).
+The source head `e249c4b42795b27d27d78a0b5c3526a38e7809de` was locally qualified with receipt branch
+`ccp-evidence/e249c4b42795b27d27d78a0b5c3526a38e7809de` and terminal run `31934684914` (Python 3.11 2m44;
+CCP 42s). Runtime images are locally built, not immutable GHCR artifacts;
+hosted candidate tests remain enabled. The migration is in delivery, so no
+hosted-cost reduction is claimed yet.
+
 PR 46 merged the R2.1 publication and receipt branch at
 `1f35ba353e792aa263db7449216e3172d0306798` after exact head
 `5f9c21db944f25fd1dac4a550911c85e86471e35`. R2.1 is verified complete. R2.2
