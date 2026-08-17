@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "https://latent-triz.org/schemas/exp001-r3-tool-edge.schema.json", "title": "EXP-001 R3 Panitz tool edge", "type": "object", "additionalProperties": false,
+  "required": ["edge_id", "source_id", "from_tool", "to_tool", "edge_status", "locator", "rights", "selection_allowed", "abstention_allowed"],
+  "properties": {"edge_id": {"type": "string", "pattern": "^panitz-edge-[a-z0-9-]+$"}, "source_id": {"const": "triz-ref-tools-overview-panitz"}, "from_tool": {"type": "string", "minLength": 1}, "to_tool": {"type": "string", "minLength": 1}, "edge_status": {"enum": ["supported", "uncertain", "not_established"]}, "locator": {"type": "string", "minLength": 1}, "rights": {"type": "object", "additionalProperties": false, "required": ["status", "locator_only"], "properties": {"status": {"const": "user_attributed_unverified"}, "locator_only": {"const": true}}}, "selection_allowed": {"type": "boolean"}, "abstention_allowed": {"const": true}},
+  "allOf": [{"if": {"properties": {"edge_status": {"enum": ["uncertain", "not_established"]}}}, "then": {"properties": {"selection_allowed": {"const": false}}}}, {"if": {"properties": {"edge_status": {"const": "supported"}}}, "then": {"properties": {"selection_allowed": {"const": true}}}}]
+}

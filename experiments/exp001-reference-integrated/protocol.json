@@ -1,0 +1,70 @@
+{
+  "artifact_class": "exp001-r3-protocol",
+  "protocol_id": "exp001-reference-integrated-r3-v1.0.0",
+  "protocol_status": "ready_for_review",
+  "created_at": "2026-08-17T00:00:00Z",
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "reference_scope": "reference_task_only",
+  "source_registry": {
+    "sources_sha256": "a3bd9283b7e73ebd723bcfab8edb9599161e37a47686b6c25e652158d2158273",
+    "principles_sha256": "7baa3b74f7a5ee7ca5fe9303baf64361a5cbcdfea0cb0c539e00bb74db764249",
+    "web_corpus_sha256": "e397160adfc60c534d16b5cd934deddb3e3500bb8f99f7fef26a2b6d4c2eff46",
+    "corpus_document_sha256": "92429183119e463090df170f4ec29bf0f0e43ee531f47898c8071325a3b7435f",
+    "principle_authoring_coverage": {"minimum": 40, "observed": 40},
+    "source_pdf_redistribution": "prohibited"
+  },
+  "strata": {
+    "TRIZ-blinded-transfer": {
+      "purpose": "held_out_domain_transfer_against_lexical_matched_control",
+      "source_text_or_names_allowed": false,
+      "canonical_examples_allowed": false,
+      "pool_with_other_stratum": false
+    },
+    "source-exposed-competence": {
+      "purpose": "bounded_reference_interpretation_and_use",
+      "source_text_or_names_allowed": "independently_authored_bounded_context_only",
+      "canonical_examples_allowed": false,
+      "pool_with_other_stratum": false
+    }
+  },
+  "fixture_inputs": {
+    "items": "fixtures/items.jsonl",
+    "matrix_cells": "fixtures/matrix-cells.jsonl",
+    "tool_edges": "fixtures/tool-edges.jsonl",
+    "source_exposures": "fixtures/source-exposures.jsonl",
+    "sealed_targets": "not_created_before_freeze_and_authorization"
+  },
+  "controls": [
+    "lexical_matched_non_triz_control",
+    "near_neighbour_principle",
+    "matrix_direction_swap",
+    "matrix_non_recommended_option",
+    "unsupported_tool_edge",
+    "explicit_abstention",
+    "source_family_holdout",
+    "problem_family_holdout",
+    "leave_one_domain_out"
+  ],
+  "statistics": {
+    "primary": "not_frozen_until_items_targets_and_implementation_are_hash_bound",
+    "no_pooling": true,
+    "sensitivity_may_replace_primary": false,
+    "human_or_llm_judging": false
+  },
+  "model_boundary": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "network_access": false,
+    "generation": false,
+    "load_authorization": "required_after_protocol_freeze",
+    "sealed_target_reads": "forbidden_before_new_explicit_authorization"
+  },
+  "publication": {
+    "publish_every_terminal_outcome": true,
+    "general_triz_claim_promotion": false,
+    "claim_ids_must_remain_empty": true
+  }
+}

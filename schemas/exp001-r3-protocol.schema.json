@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-r3-protocol.schema.json",
+  "title": "EXP-001 R3 reference-integrated no-model protocol",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "protocol_status", "created_at", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids", "reference_scope", "source_registry", "strata", "fixture_inputs", "controls", "statistics", "model_boundary", "publication"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-protocol"},
+    "protocol_id": {"const": "exp001-reference-integrated-r3-v1.0.0"},
+    "protocol_status": {"enum": ["ready_for_review", "frozen"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "reference_scope": {"const": "reference_task_only"},
+    "source_registry": {"type": "object", "additionalProperties": false, "required": ["sources_sha256", "principles_sha256", "web_corpus_sha256", "corpus_document_sha256", "principle_authoring_coverage", "source_pdf_redistribution"], "properties": {"sources_sha256": {"$ref": "#/$defs/sha256"}, "principles_sha256": {"$ref": "#/$defs/sha256"}, "web_corpus_sha256": {"$ref": "#/$defs/sha256"}, "corpus_document_sha256": {"$ref": "#/$defs/sha256"}, "principle_authoring_coverage": {"type": "object", "additionalProperties": false, "required": ["minimum", "observed"], "properties": {"minimum": {"const": 40}, "observed": {"const": 40}}}, "source_pdf_redistribution": {"const": "prohibited"}}},
+    "strata": {"type": "object", "additionalProperties": false, "required": ["TRIZ-blinded-transfer", "source-exposed-competence"], "properties": {"TRIZ-blinded-transfer": {"$ref": "#/$defs/stratum"}, "source-exposed-competence": {"$ref": "#/$defs/stratum"}}},
+    "fixture_inputs": {"type": "object", "additionalProperties": false, "required": ["items", "matrix_cells", "tool_edges", "source_exposures", "sealed_targets"], "properties": {"items": {"const": "fixtures/items.jsonl"}, "matrix_cells": {"const": "fixtures/matrix-cells.jsonl"}, "tool_edges": {"const": "fixtures/tool-edges.jsonl"}, "source_exposures": {"const": "fixtures/source-exposures.jsonl"}, "sealed_targets": {"enum": ["not_created_before_freeze_and_authorization", "sealed-targets.jsonl"]}}},
+    "controls": {"type": "array", "minItems": 9, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "statistics": {"type": "object", "additionalProperties": false, "required": ["primary", "no_pooling", "sensitivity_may_replace_primary", "human_or_llm_judging"], "properties": {"primary": {"type": "string", "minLength": 1}, "no_pooling": {"const": true}, "sensitivity_may_replace_primary": {"const": false}, "human_or_llm_judging": {"const": false}}},
+    "model_boundary": {"type": "object", "additionalProperties": false, "required": ["model_id", "revision", "network_access", "generation", "load_authorization", "sealed_target_reads"], "properties": {"model_id": {"const": "HuggingFaceTB/SmolLM2-360M"}, "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"}, "network_access": {"const": false}, "generation": {"const": false}, "load_authorization": {"const": "required_after_protocol_freeze"}, "sealed_target_reads": {"const": "forbidden_before_new_explicit_authorization"}}},
+    "publication": {"type": "object", "additionalProperties": false, "required": ["publish_every_terminal_outcome", "general_triz_claim_promotion", "claim_ids_must_remain_empty"], "properties": {"publish_every_terminal_outcome": {"const": true}, "general_triz_claim_promotion": {"const": false}, "claim_ids_must_remain_empty": {"const": true}}}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "stratum": {"type": "object", "additionalProperties": false, "required": ["purpose", "source_text_or_names_allowed", "canonical_examples_allowed", "pool_with_other_stratum"], "properties": {"purpose": {"type": "string", "minLength": 1}, "source_text_or_names_allowed": {}, "canonical_examples_allowed": {"const": false}, "pool_with_other_stratum": {"const": false}}}}
+}

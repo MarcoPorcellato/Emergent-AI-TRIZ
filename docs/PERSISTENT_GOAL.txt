@@ -1,6 +1,12 @@
 Complete `docs/EXP001_REFERENCE_INTEGRATED.md` from verified public main
-`f60afc8d9f2803a6a988f26f6c520dd72659080a`, verifying the live repository,
+`db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c`, verifying the live repository,
 ruleset, source corpus, artifacts, and receipts before acting.
+
+R3.0 is in delivery on branch `agent/exp001-r3-reference-freeze`: a strict
+no-model protocol, sparse externally-referenced Matrix 2003 fixture, and
+rights-aware Panitz edge fixture are being prepared. Do not call this a frozen
+study until paired items, split/contamination receipts, implementation hash
+bindings, synthetic qualification, and an exact approval dossier exist.
 
 Prepare and freeze a new R3/EXP-001 TRIZ reference-integrated study without
 changing any A0-R2/C3 bytes. Keep `TRIZ-blinded-transfer` and

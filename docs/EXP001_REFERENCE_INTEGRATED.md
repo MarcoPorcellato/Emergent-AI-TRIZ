@@ -39,9 +39,11 @@ TRIZ.
 
 ## 2. Verified anchors
 
-The live starting anchor is public `main` commit
-`f60afc8d9f2803a6a988f26f6c520dd72659080a` (verify `origin/main` before every
-mutation). The current reference layer is:
+The verified starting anchor is public `main` commit
+`db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c` (PR #74; verify `origin/main`
+before every mutation). The prior `f60afc8d9f2803a6a988f26f6c520dd72659080a`
+anchor remains the immutable A0-R2/C3 publication input, not the R3 delivery
+base. The current reference layer is:
 
 | Artifact | SHA-256 | Scientific status |
 |---|---|---|
@@ -122,6 +124,12 @@ open sealed targets, or alter A0-R2.
 
 **Exit evidence:** schema cross-validation, source/hash audit, rights audit,
 clean worktree, and a reviewable protocol diff.
+
+**Current status (2026-08-17):** in delivery. The no-model protocol and strict
+record schemas may be reviewed and qualified, but it is not frozen while the
+paired item set, split receipt, implementation binding, and terminal
+statistics remain incomplete. This status authorizes neither a model load nor
+sealed-target access.
 
 ### R3.1 — independent fixture construction and contamination audit
 
@@ -240,4 +248,3 @@ the checkpoint.
 - [ ] Exact-head receipt and hosted gates are terminally green.
 - [ ] Fresh clone passes with the declared external asset and rejects missing or mutated assets.
 - [ ] Main, chronology, persistent goal, and this specification agree on status.
-

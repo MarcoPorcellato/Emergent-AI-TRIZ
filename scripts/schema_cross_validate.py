@@ -90,6 +90,9 @@ VALIDATION_PAIRS = (
     ("schemas/a0-publication-manifest.schema.json", "results/a0/a0-v1.0.3-e93a9faa/publication-manifest.json"),
     ("schemas/triz-reference-registry.schema.json", "data/triz-reference-sources.json"),
     ("schemas/triz-principle-reference.schema.json", "data/triz-reference/principles.jsonl"),
+    ("schemas/exp001-r3-protocol.schema.json", "experiments/exp001-reference-integrated/protocol.json"),
+    ("schemas/exp001-r3-matrix-cell.schema.json", "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl"),
+    ("schemas/exp001-r3-tool-edge.schema.json", "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl"),
     ("schemas/triz-web-corpus.schema.json", "data/triz-consulting-web-corpus.json"),
 )
 
