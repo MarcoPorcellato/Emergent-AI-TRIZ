@@ -74,15 +74,16 @@ def _score(adapter: ChoiceScoringAdapter, rendered: str, record_id: str, label: 
 def execute_public_responses(
     records: Sequence[Mapping[str, Any]], adapter: ChoiceScoringAdapter
 ) -> list[dict[str, Any]]:
-    """Score exactly 72 public records, four labels per record.
+    """Score the declared non-empty public inventory, four labels per record.
 
     Validation and rendering occur for the complete inventory before any
     adapter call.  A failure is fail-closed: partial rows are never returned.
     The output contains only record IDs, scores, and a digest of the rendered
     prompt; it cannot contain raw targets or expected answers.
     """
-    if isinstance(records, (str, bytes, bytearray)) or not isinstance(records, Sequence) or len(records) != 72:
-        raise R3ResponseExecutionError("response execution requires exactly 72 records")
+    if isinstance(records, (str, bytes, bytearray)) or not isinstance(records, Sequence) or not records:
+        raise R3ResponseExecutionError("response execution requires a non-empty record inventory")
+    declared_count = len(records)
     rendered: list[tuple[str, str]] = []
     seen: set[str] = set()
     for record in records:
@@ -104,8 +105,8 @@ def execute_public_responses(
             })
     except R3ResponseExecutionError:
         raise
-    if len(rows) != 72:
-        raise R3ResponseExecutionError("execution did not produce exactly 72 rows")
+    if len(rows) != declared_count or {row["record_id"] for row in rows} != seen:
+        raise R3ResponseExecutionError("execution did not produce exact declared inventory coverage")
     return rows
 
 

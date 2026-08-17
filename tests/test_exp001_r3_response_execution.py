@@ -23,6 +23,22 @@ def _records():
     ]
 
 
+def _records_count(count):
+    return [
+        {
+            "record_id": f"r-{index:02d}",
+            "prompt": f"Choose the best response for case {index}.",
+            "options": [
+                {"id": "A", "description": "First neutral description."},
+                {"id": "B", "description": "Second neutral description."},
+                {"id": "C", "description": "Third neutral description."},
+                {"id": "D", "description": "Fourth neutral description."},
+            ],
+        }
+        for index in range(count)
+    ]
+
+
 class FakeAdapter:
     def __init__(self):
         self.calls = []
@@ -48,8 +64,16 @@ class R3ResponseExecutionTests(unittest.TestCase):
     def test_rejects_wrong_inventory_before_adapter_calls(self):
         adapter = FakeAdapter()
         with self.assertRaises(R3ResponseExecutionError):
-            execute_public_responses(_records()[:-1], adapter)
+            execute_public_responses([], adapter)
         self.assertEqual(adapter.calls, [])
+
+    def test_scores_eighty_five_record_declared_inventory(self):
+        adapter = FakeAdapter()
+        records = _records_count(85)
+        rows = execute_public_responses(records, adapter)
+        self.assertEqual(len(rows), 85)
+        self.assertEqual(len(adapter.calls), 340)
+        self.assertEqual({row["record_id"] for row in rows}, {record["record_id"] for record in records})
 
     def test_rejects_malformed_options_before_adapter_calls(self):
         records = _records()
