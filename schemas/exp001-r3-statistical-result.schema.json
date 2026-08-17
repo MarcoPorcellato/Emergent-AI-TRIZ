@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/exp001-r3-statistical-result.schema.json",
+  "title": "EXP-001 R3 statistical result",
+  "type": "object", "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "status", "scientific_status", "empirical", "evidence_eligible", "expert_validated", "claim_ids", "design", "primary", "input_hashes", "interpretation"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-statistical-result"}, "protocol_id": {"const": "exp001-reference-integrated-r3-v1.0.0"},
+    "status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]}, "scientific_status": {"const": "exploratory"}, "empirical": {"const": true}, "evidence_eligible": {"const": false}, "expert_validated": {"const": false}, "claim_ids": {"type": "array", "maxItems": 0},
+    "design": {"type": "object", "additionalProperties": false, "required": ["units", "domains", "families", "replicates", "permutation_count", "bootstrap_count"], "properties": {"units": {"const": 24}, "domains": {"const": 6}, "families": {"const": 12}, "replicates": {"const": 2}, "permutation_count": {"const": 64}, "bootstrap_count": {"const": 10000}}},
+    "primary": {"type": "object", "additionalProperties": false, "required": ["metric", "mean_delta", "p_value", "bootstrap_lower", "all_domain_deltas_positive"], "properties": {"metric": {"const": "transfer_minus_lexical_control"}, "mean_delta": {"type": "number"}, "p_value": {"type": "number", "minimum": 0, "maximum": 1}, "bootstrap_lower": {"type": "number"}, "all_domain_deltas_positive": {"type": "boolean"}}},
+    "input_hashes": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "interpretation": {"type": "string", "minLength": 1}
+  }
+}
