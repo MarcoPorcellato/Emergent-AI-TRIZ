@@ -12,6 +12,7 @@ from typing import Any
 
 from .validator import validate
 from .exp001_r3_fixture_builder import FixtureBuilderError, build_public_record_stubs
+from .exp001_r3_primary_fixture import Exp001PrimaryFixtureError, build_primary_records
 
 
 class Exp001ContractError(ValueError):
@@ -33,6 +34,7 @@ _FIXTURES = {
     "option_sets": "fixtures/option-sets.jsonl",
     "split_receipt": "fixtures/split-receipt.json",
     "analysis_plan": "analysis-plan.json",
+    "primary_units": "fixtures/primary-units.jsonl",
 }
 _SCHEMAS = {
     "items": "exp001-r3-item.schema.json",
@@ -43,6 +45,7 @@ _SCHEMAS = {
     "option_sets": "exp001-r3-option-set.schema.json",
     "split_receipt": "exp001-r3-split-receipt.schema.json",
     "analysis_plan": "exp001-r3-analysis-plan.schema.json",
+    "primary_units": "exp001-r3-primary-unit.schema.json",
 }
 
 
@@ -197,6 +200,12 @@ def verify_contract(root: str | Path) -> dict[str, Any]:
         raise Exp001ContractError("analysis plan must preserve the exact primary test")
     if analysis_plan.get("target_values_present") is not False:
         raise Exp001ContractError("analysis plan cannot contain target values")
+    try:
+        primary_records = build_primary_records(loaded["primary_units"])
+    except Exp001PrimaryFixtureError as exc:
+        raise Exp001ContractError("primary-unit inventory is not constructible") from exc
+    if len(primary_records) != 72:
+        raise Exp001ContractError("primary-unit expansion drift")
     return {"status": "verified", "principles": 40, "web_resources": 18,
             "items": len(items), "matrix_cells": len(loaded["matrix_cells"]),
             "tool_edges": len(loaded["tool_edges"]), "source_exposures": len(loaded["source_exposures"]),

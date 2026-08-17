@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-r3-sealed-target.schema.json",
+  "title": "EXP-001 R3 sealed response key record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_id", "expected_choice"],
+  "properties": {
+    "record_id": {"type": "string", "pattern": "^exp001-r3-[a-z0-9-]+-(?:transfer-blinded|lexical-control|transfer-exposed)$"},
+    "expected_choice": {"enum": ["A", "B", "C", "D"]}
+  }
+}
