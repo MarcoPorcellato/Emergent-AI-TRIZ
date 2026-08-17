@@ -7,6 +7,7 @@ ML runtime.  The adapter exposes finite forward outputs only; it never calls
 """
 from __future__ import annotations
 
+from contextlib import nullcontext
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any, Callable
@@ -48,6 +49,26 @@ def _shape(value: Any) -> tuple[int, ...]:
     raise R3ModelAdapterError("model logits must expose a rank-3 shape")
 
 
+def _plain(value: Any, name: str) -> Any:
+    """Detach tensor-like values before dependency-free contract validation."""
+    try:
+        detach = getattr(value, "detach", None)
+        cpu = detach().cpu() if callable(detach) else getattr(value, "cpu", lambda: value)()
+        tolist = getattr(cpu, "tolist", None)
+        if callable(tolist):
+            return tolist()
+    except Exception as exc:
+        raise R3ModelAdapterError(f"could not normalize {name}") from exc
+    return value
+
+
+def _plain_batch(batch: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "input_ids": _plain(batch["input_ids"], "input_ids"),
+        "attention_mask": _plain(batch["attention_mask"], "attention_mask"),
+    }
+
+
 def _config_check(config: Any) -> None:
     if getattr(config, "model_type", None) != MODEL_TYPE:
         raise R3ModelAdapterError("unexpected model_type")
@@ -57,6 +78,24 @@ def _config_check(config: Any) -> None:
         raise R3ModelAdapterError("unexpected hidden_size")
     if MODEL_ARCHITECTURE not in list(getattr(config, "architectures", []) or []):
         raise R3ModelAdapterError("unexpected model architecture")
+
+
+def _runtime_check(model: Any, torch_module: Any) -> None:
+    """Reject a loaded runtime that is not explicitly CPU float32."""
+    parameters = getattr(model, "parameters", None)
+    if not callable(parameters):
+        return  # Synthetic fakes need not emulate a parameter iterator.
+    try:
+        observed = list(parameters())
+    except Exception as exc:
+        raise R3ModelAdapterError("could not inspect model parameters") from exc
+    if not observed:
+        raise R3ModelAdapterError("loaded model has no parameters")
+    for parameter in observed:
+        if getattr(getattr(parameter, "device", None), "type", None) != "cpu":
+            raise R3ModelAdapterError("model parameter is not on CPU")
+        if getattr(parameter, "dtype", None) != torch_module.float32:
+            raise R3ModelAdapterError("model parameter is not float32")
 
 
 class SmolLM2R3Adapter:
@@ -102,6 +141,7 @@ class SmolLM2R3Adapter:
             raise R3ModelAdapterError(f"local model load failed: {exc}") from exc
         if hasattr(model, "to"):
             model.to(torch.device("cpu"))
+        _runtime_check(model, torch)
         return cls(tokenizer, model, torch)
 
     def forward(self, prompt: str) -> dict[str, Any]:
@@ -114,14 +154,17 @@ class SmolLM2R3Adapter:
             )
             if not isinstance(batch, Mapping):
                 raise R3ModelAdapterError("tokenizer output must implement Mapping")
-            # Validate the public shape without assuming BatchEncoding is dict.
-            ids = validate_tokenizer_batch(batch)
+            # Validate a detached copy. BatchEncoding tensors are intentionally
+            # passed unchanged to the model below, but they are not Sequences.
+            ids = validate_tokenizer_batch(_plain_batch(batch))
             input_ids = batch["input_ids"]
             attention_mask = batch["attention_mask"]
-            outputs = self.model(
-                input_ids=input_ids, attention_mask=attention_mask,
-                output_hidden_states=True, use_cache=False, return_dict=True,
-            )
+            no_grad = getattr(self.torch, "inference_mode", None) or getattr(self.torch, "no_grad", None)
+            with (no_grad() if callable(no_grad) else nullcontext()):
+                outputs = self.model(
+                    input_ids=input_ids, attention_mask=attention_mask,
+                    output_hidden_states=False, use_cache=False, return_dict=True,
+                )
         except R3ResponseAdapterError as exc:
             raise R3ModelAdapterError(str(exc)) from exc
         except R3ModelAdapterError:
@@ -133,8 +176,59 @@ class SmolLM2R3Adapter:
         if len(shape) != 3 or shape[0] != 1 or shape[1] != len(ids["input_ids"]):
             raise R3ModelAdapterError("logits must have shape [1, token_count, vocab]")
         return {"input_ids": ids["input_ids"], "attention_mask": ids["attention_mask"],
-                "logits": logits, "hidden_states": getattr(outputs, "hidden_states", None),
+                "logits": logits,
                 "model_output_accessed": True, "generation_used": False}
+
+    def score_prompt_choice(self, rendered_prompt: str, label: str) -> float:
+        """Teacher-force one answer label without target access or generation.
+
+        The full sequence must retain the exact token prefix of the public
+        rendered prompt. A tokenizer that merges across this boundary is an
+        incompatibility, rather than an occasion to adjust a score post hoc.
+        """
+        if not isinstance(rendered_prompt, str) or not rendered_prompt:
+            raise R3ModelAdapterError("rendered_prompt must be a non-empty string")
+        if label not in {"A", "B", "C", "D"}:
+            raise R3ModelAdapterError("choice label must be one of A/B/C/D")
+        continuation = f" {label}"
+        full_prompt = rendered_prompt + continuation
+        try:
+            token_args = {"add_special_tokens": True, "return_attention_mask": True, "return_tensors": "pt"}
+            prefix_batch = self.tokenizer(rendered_prompt, **token_args)
+            full_batch = self.tokenizer(full_prompt, **token_args)
+            if not isinstance(prefix_batch, Mapping) or not isinstance(full_batch, Mapping):
+                raise R3ModelAdapterError("tokenizer output must implement Mapping")
+            prefix = validate_tokenizer_batch(_plain_batch(prefix_batch))
+            full = validate_tokenizer_batch(_plain_batch(full_batch))
+            prefix_ids = prefix["input_ids"]
+            full_ids = full["input_ids"]
+            if len(full_ids) <= len(prefix_ids) or full_ids[:len(prefix_ids)] != prefix_ids:
+                raise R3ModelAdapterError("tokenizer prefix drift at answer boundary")
+            continuation_ids = full_ids[len(prefix_ids):]
+            if not continuation_ids:
+                raise R3ModelAdapterError("choice continuation must contain at least one token")
+            no_grad = getattr(self.torch, "inference_mode", None) or getattr(self.torch, "no_grad", None)
+            with (no_grad() if callable(no_grad) else nullcontext()):
+                outputs = self.model(
+                    input_ids=full_batch["input_ids"], attention_mask=full_batch["attention_mask"],
+                    output_hidden_states=False, use_cache=False, return_dict=True,
+                )
+            logits = outputs.get("logits") if isinstance(outputs, Mapping) else getattr(outputs, "logits", None)
+            shape = _shape(logits)
+            if len(shape) != 3 or shape[0] != 1 or shape[1] != len(full_ids):
+                raise R3ModelAdapterError("logits must match the full teacher-forced sequence")
+            positions = list(range(len(prefix_ids) - 1, len(full_ids) - 1))
+            vocab_size = getattr(getattr(self.model, "config", None), "vocab_size", None)
+            return self.score_choice(
+                _plain(logits, "logits"), continuation_ids,
+                target_positions=positions, vocab_size=vocab_size,
+            )
+        except R3ResponseAdapterError as exc:
+            raise R3ModelAdapterError(str(exc)) from exc
+        except R3ModelAdapterError:
+            raise
+        except Exception as exc:
+            raise R3ModelAdapterError(f"teacher-forced scoring failed: {exc}") from exc
 
     @staticmethod
     def score_choice(logits: Any, choice_token_ids: Sequence[int], **kwargs: Any) -> float:
