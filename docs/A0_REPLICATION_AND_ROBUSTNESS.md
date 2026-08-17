@@ -472,7 +472,7 @@ target access as `possibly_accessed`; no statistical result exists, no claim is
 promoted, and the C2 authorization is consumed. Any future model run requires
 a separately preregistered protocol and explicit authorization.
 
-#### A0-R2-C3 — analysis-only index metadata recovery
+#### A0-R2-C3 — analysis-only index metadata recovery (terminal positive package)
 
 **Current checkpoint — C3.0 complete; C3.1 corrective isolation in delivery:** the published C2 failure digest
 resolves deterministically to `activation dtype drift`. The 1,920 historical
@@ -489,10 +489,22 @@ The detailed C3 contract is
 [A0-R2-C3 analysis-only metadata recovery](./A0R2C3_ANALYSIS_ONLY_RECOVERY.md).
 The [SmolLM2 runtime contract](./reference/smollm2-runtime-contract.md)
 separately makes the official tokenizer, Llama shape, and export-metadata
-requirements executable before future analysis.
-Only C3.0 synthetic qualification is currently authorized. A fresh explicit
-operator authorization remains mandatory before one later analysis-boundary
-sealed-target read; C2's authorization remains consumed.
+requirements executable before future analysis. C3.0 synthetic qualification
+and C3.1 corrective isolation are complete. The explicit authorization is
+recorded in `results/a0r2c3/preexecution/analysis-authorization.json`, bound to
+contract SHA-256
+`52ae7b6eaca17296f5e2f4032d3396bbfb6bcff563b43ae2017fc8c3998ece87`.
+
+After a fresh CCP `Admit`/empty-queue check, the one analysis-only run completed
+from merged main `bf1ca349993f8359dab6b4bc4d83ec10d956058e` on 2026-08-17. It
+opened the sealed targets once at the analysis boundary, loaded no model,
+generated no output, and produced the terminal `positive` exploratory package
+at `results/a0r2/a0r2c3-analysis-only-v1.0.0-f8027fd0-r1/`. The primary
+permutation p-value is `0.001000`, macro-F1 margin over surface is `0.147686`,
+family successes are `24`, and successful held-out domain directions are `6`.
+These are automated E0 proxy results only; claim IDs remain empty and no
+general TRIZ claim is permitted. Fresh-clone verification and exact-head
+publication remain the final R2.5 gates.
 
 ## Statistical and missing-data rules
 
