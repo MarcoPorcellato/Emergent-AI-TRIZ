@@ -30,7 +30,7 @@ class Exp001R3TerminalSchemaTests(unittest.TestCase):
             self.assertTrue(validate(mutation, schema("exp001-r3-execution-receipt.schema.json")))
 
     def test_response_index_rejects_raw_prompt_and_target(self):
-        value = {"artifact_class": "exp001-r3-response-index", "protocol_id": PROTOCOL_ID, "record_count": 72, "records": [{"record_id": "exp001-r3-domain-01-transfer-blinded", "scores": {"A": 1.0, "B": 0.0, "C": 0.0, "D": 0.0}, "prompt_sha256": HEX}]}
+        value = {"artifact_class": "exp001-r3-response-index", "protocol_id": PROTOCOL_ID, "record_count": 85, "records": [{"record_id": "exp001-r3-domain-01-transfer-blinded", "scores": {"A": 1.0, "B": 0.0, "C": 0.0, "D": 0.0}, "prompt_sha256": HEX}]}
         sch = schema("exp001-r3-response-index.schema.json")
         self.assertEqual([], validate(value, sch))
         for forbidden in ("prompt", "expected_choice", "target"):

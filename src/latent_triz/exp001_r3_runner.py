@@ -25,9 +25,11 @@ _STRATA = {"TRIZ-blinded-transfer", "source-exposed-competence"}
 
 
 def _record_ids(records: Sequence[Mapping[str, Any]]) -> set[str]:
-    if len(records) != 72:
-        raise Exp001RunnerError("analysis boundary requires exactly 72 public records")
+    if len(records) != 85:
+        raise Exp001RunnerError("analysis boundary requires exactly 85 public records")
     identifiers: set[str] = set()
+    primary = 0
+    secondary: dict[str, int] = {}
     for record in records:
         if not isinstance(record, Mapping):
             raise Exp001RunnerError("public record must be an object")
@@ -36,7 +38,21 @@ def _record_ids(records: Sequence[Mapping[str, Any]]) -> set[str]:
             raise Exp001RunnerError("public record IDs must be unique non-empty strings")
         if record.get("stratum") not in _STRATA:
             raise Exp001RunnerError("public record has an unknown stratum")
+        if isinstance(record.get("unit_id"), str) and record.get("unit_id"):
+            primary += 1
+        endpoint_id = record.get("endpoint_id")
+        if endpoint_id is not None:
+            if endpoint_id not in {"matrix_direction_and_nonrecommendation", "tool_edge_and_abstention"}:
+                raise Exp001RunnerError("public record has an unknown secondary endpoint")
+            if record.get("stratum") != "TRIZ-blinded-transfer":
+                raise Exp001RunnerError("secondary record must be TRIZ-blinded-transfer")
+            secondary[endpoint_id] = secondary.get(endpoint_id, 0) + 1
         identifiers.add(record_id)
+    if primary != 72 or secondary != {
+        "matrix_direction_and_nonrecommendation": 9,
+        "tool_edge_and_abstention": 4,
+    }:
+        raise Exp001RunnerError("record inventory must contain 72 primary and 13 secondary records")
     return identifiers
 
 
@@ -91,18 +107,30 @@ def run_analysis_boundary(
     targets = target_reader(records)
     if not isinstance(targets, Sequence) or isinstance(targets, (str, bytes)):
         raise Exp001RunnerError("sealed target reader must return a sequence")
+    primary_records = [record for record in records if isinstance(record.get("unit_id"), str) and record.get("unit_id")]
+    primary_ids = {record["record_id"] for record in primary_records}
+    target_by_id = {target["record_id"]: target["expected_choice"] for target in targets}
+    # The legacy key validator owns the semantic/position checks for the
+    # 72-record primary. Secondary rows have a deliberately different shape;
+    # bind them here while retaining exact whole-inventory coverage.
+    if set(target_by_id) != public_ids:
+        raise Exp001RunnerError("sealed target key must bind exactly the public records")
     try:
-        validate_sealed_target_key(records, targets)
+        validate_sealed_target_key(
+            primary_records,
+            [target for target in targets if target.get("record_id") in primary_ids],
+        )
     except Exception as exc:
         raise Exp001RunnerError("sealed target key validation failed") from exc
 
-    target_by_id = {target["record_id"]: target["expected_choice"] for target in targets}
     record_by_id = {record["record_id"]: record for record in records}
     units: dict[str, dict[str, Any]] = {}
     for record_id, record in record_by_id.items():
         # Exposed competence is a separate descriptive stratum and is never
         # merged into the transfer-vs-control primary endpoint.
         if record.get("stratum") != "TRIZ-blinded-transfer":
+            continue
+        if record.get("endpoint_id") is not None:
             continue
         condition = record.get("condition")
         if condition not in {"transfer", "lexical_control"}:
@@ -120,12 +148,27 @@ def run_analysis_boundary(
         raise Exp001RunnerError("primary boundary must produce exactly 24 complete non-pooled units")
     scored_units = [{"unit_id": unit_id, **value} for unit_id, value in units.items()]
     result = analyze_primary(scored_units, analysis_plan)
+    secondary_summaries: dict[str, dict[str, Any]] = {}
+    for endpoint_id in ("matrix_direction_and_nonrecommendation", "tool_edge_and_abstention"):
+        endpoint_records = [record for record in records if record.get("endpoint_id") == endpoint_id]
+        correct = 0
+        for record in endpoint_records:
+            scores = response_by_id[record["record_id"]]["scores"]
+            predicted = max(_CHOICES, key=lambda choice: float(scores[choice]))
+            correct += int(predicted == target_by_id[record["record_id"]])
+        secondary_summaries[endpoint_id] = {
+            "record_count": len(endpoint_records),
+            "argmax_matches": correct,
+            "accuracy": correct / len(endpoint_records) if endpoint_records else None,
+            "pooling_prohibited": True,
+        }
     return {
         "analysis": result,
         "access": {"sealed_target_reader_calls": 1, "sealed_targets_accessed": True},
         "public_record_count": len(records),
         "response_row_count": len(responses),
         "primary_unit_count": len(scored_units),
+        "secondary_summaries": secondary_summaries,
         "exposed_rows_excluded_from_primary": sum(
             1 for record in records if record.get("stratum") == "source-exposed-competence"
         ),
