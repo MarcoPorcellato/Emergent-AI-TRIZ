@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/exp001-r3-run-failure.schema.json",
+  "title": "EXP-001 R3 terminal failure",
+  "type": "object", "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "status", "scientific_status", "empirical", "evidence_eligible", "expert_validated", "claim_ids", "failure", "access"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-run-failure"},
+    "protocol_id": {"const": "exp001-reference-integrated-r3-v1.0.0"},
+    "status": {"enum": ["failed", "non_interpretable", "incompatible"]},
+    "scientific_status": {"const": "exploratory"}, "empirical": {"const": true},
+    "evidence_eligible": {"const": false}, "expert_validated": {"const": false}, "claim_ids": {"type": "array", "maxItems": 0},
+    "failure": {"type": "object", "additionalProperties": false, "required": ["stage", "failure_kind", "failure_digest"], "properties": {"stage": {"enum": ["identity", "compatibility", "execution", "data", "analysis", "publication"]}, "failure_kind": {"type": "string", "minLength": 1}, "failure_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}},
+    "access": {"type": "object", "additionalProperties": false, "required": ["model_loaded", "model_output_accessed", "sealed_targets_accessed", "target_reads"], "properties": {"model_loaded": {"type": "boolean"}, "model_output_accessed": {"enum": ["not_accessed", "accessed", "possibly_accessed"]}, "sealed_targets_accessed": {"enum": ["not_accessed", "accessed", "possibly_accessed"]}, "target_reads": {"type": "integer", "minimum": 0, "maximum": 1}}}
+  }
+}

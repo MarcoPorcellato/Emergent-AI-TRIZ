@@ -134,7 +134,8 @@ def _validate_common(root: Path, protocol_path: Path, result_path: Path, receipt
     result = _json(root / result_path, "statistical result")
     receipt = _json(root / receipt_path, "execution receipt")
     _check_schema(protocol, _schema(root, "exp001-r3-protocol.schema.json"), "protocol")
-    _check_schema(result, _schema(root, "exp001-r3-statistical-result.schema.json"), "statistical result")
+    result_schema = "exp001-r3-statistical-result.schema.json" if result.get("artifact_class") == "exp001-r3-statistical-result" else "exp001-r3-run-failure.schema.json"
+    _check_schema(result, _schema(root, result_schema), "terminal result")
     _check_schema(receipt, _schema(root, "exp001-r3-execution-receipt.schema.json"), "execution receipt")
     response = None if response_path is None else _json(root / response_path, "response index")
     if response is not None:
