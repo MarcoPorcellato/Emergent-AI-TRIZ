@@ -456,15 +456,16 @@ correction requires a fresh preregistration and explicit operator approval.
 
 #### A0-R2-C2 — singleton-batch shape correction
 
-**Current checkpoint — pre-output C2 contract, approval not yet granted:** C2
-preserves the C1 terminal package and changes only the handling of the Llama
-singleton batch dimension. New namespaced code maps a validated
-`[1, token, 960]` hidden-state layer to `[token, 960]`, while rejecting any
-other batch size, token count, hidden size, malformed nesting, or non-finite
-value. The frozen model, corpus, targets, prompts, endpoints, statistics,
-thresholds, resource envelope, and no-claim boundary do not change. C2 needs a
-merged exact-head qualification and a new one-attempt operator authorization
-before model or target access.
+**Terminal C2 execution record:** C2 preserved the C1 terminal package and
+changed only the handling of the Llama singleton batch dimension. The one
+explicitly authorized execution ran from public main
+`183cb20654dbdac0d7ad2ce97f184e3286b03a14` after exact-head qualification.
+It successfully extracted 1,920 indexed 960-dimensional representations with
+33 hidden-state entries, then failed with `A0R2AnalysisError` at the data
+stage. The failure receipt conservatively records model output and sealed
+target access as `possibly_accessed`; no statistical result exists, no claim is
+promoted, and the C2 authorization is consumed. Any future model run requires
+a separately preregistered protocol and explicit authorization.
 
 ## Statistical and missing-data rules
 

@@ -1,6 +1,6 @@
 # A0-R2-C2 Llama hidden-state shape correction
 
-Status: pre-output contract prepared; material execution is not authorized.
+Status: terminal failed package pending publication; no further C2 execution is authorized.
 
 ## Predecessor and root cause
 
@@ -35,3 +35,18 @@ malformed nesting. The C2 contract binds the C1 terminal failure and manifest
 by hash. It must be merged and exact-head qualified before an operator can
 authorize one C2 run. A new authorization is mandatory because C1 already
 loaded the model.
+
+## Terminal C2 execution
+
+The one explicitly authorized C2 run used the exact local SmolLM2 snapshot on
+CPU float32 with network and generation disabled. Activation extraction passed:
+it produced 1,920 indexed 960-dimensional representations across the frozen
+views and the 33 expected hidden-state entries. The terminal analysis then
+failed with `A0R2AnalysisError` at the data stage. The failure receipt records
+model output and sealed-target access as `possibly_accessed`, so the C2 attempt
+is consumed and cannot be retried, tuned, or substituted under this contract.
+
+No statistical result or TRIZ claim follows from this terminal failure. The
+activation receipt, representation index, external dense-asset locator and
+hash, failure receipt, report, and publication manifest are retained for
+recovery and independent inspection.
