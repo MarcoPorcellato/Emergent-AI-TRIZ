@@ -157,6 +157,15 @@ scored.
 lexical-overlap report, source-family/domain split report, matrix double-check
 receipt, tool-edge status receipt, and synthetic power/permutation calibration.
 
+**Checkpoint (2026-08-18):** the public target-free inventory and split binding
+are mechanically verified through local commit `60c39e1`; 14 targeted R3 tests
+and schema parity validation pass. A no-model statistical audit found that the
+ten-pair inventory is insufficient for the declared alpha .05 held-out-domain
+primary: it contains only four primary domains, only one matched lexical
+control, and placeholder options. R3.1 therefore remains in delivery. The
+inventory must be expanded and the score/test frozen before a model may be
+loaded. See `docs/EXP001_R3_RESTART_HANDOFF.md` for the exact recovery state.
+
 ### R3.2 — statistical and implementation freeze
 
 Freeze one primary: blinded held-out-domain transfer versus the lexical-matched
