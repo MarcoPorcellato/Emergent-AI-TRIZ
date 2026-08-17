@@ -165,6 +165,14 @@ teacher-forced scoring that rejects tensor, prefix, architecture, or generation
 contract drift. R3.1 remains in delivery: Matrix and Panitz secondary fixtures
 still require execution-ready public records, and no protocol is frozen.
 
+**Operational decision pending freeze:** preserve the 72-record primary
+inventory unchanged and add 13 separately scored secondary records: nine
+Matrix 2003 checks (three verified cells × forward, reversed-direction and
+non-recommendation controls) plus four Panitz edge checks. The combined single
+model invocation will therefore score 85 records × four teacher-forced labels.
+Secondary outcomes are descriptive, source-family separated and cannot alter
+the primary terminal classification.
+
 ### R3.2 — statistical and implementation freeze
 
 Freeze one primary: blinded held-out-domain transfer versus the lexical-matched
