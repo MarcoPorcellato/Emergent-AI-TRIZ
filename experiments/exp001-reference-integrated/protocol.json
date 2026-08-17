@@ -37,6 +37,7 @@
     "source_exposures": "fixtures/source-exposures.jsonl",
     "control_plan": "fixtures/control-plan.json",
     "option_sets": "fixtures/option-sets.jsonl",
+    "split_receipt": "fixtures/split-receipt.json",
     "sealed_targets": "not_created_before_freeze_and_authorization"
   },
   "controls": [
