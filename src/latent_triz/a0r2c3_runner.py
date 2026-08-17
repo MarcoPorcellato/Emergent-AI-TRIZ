@@ -9,9 +9,9 @@ from pathlib import Path
 from typing import Any
 
 from . import a0r2_runner as base_runner
-from .a0r2_report import generate_a0r2_report, verify_a0r2_publication
 from .a0r2c3_analysis import analyze_a0r2c3
 from .a0r2c3_authorization import AUTHORIZATION_PATH, verify_a0r2c3_authorization, verify_a0r2c3_contract
+from .a0r2c3_report import generate_a0r2c3_report, verify_a0r2c3_publication
 
 
 RUN_ID = "a0r2c3-analysis-only-v1.0.0-f8027fd0-r1"
@@ -71,22 +71,23 @@ def _run_all(root: Path, args: argparse.Namespace) -> None:
             output_path=package_dir / "statistical-result.json",
             shortcut_path=root / "results" / "a0r1" / "preoutput" / "shortcuts.json",
         )
-        generate_a0r2_report(
+        generate_a0r2c3_report(
             package_dir=package_dir.relative_to(root),
             external_dense_dir=source_dir.relative_to(root),
             created_at=args.created_at,
             allow_external_dense_reuse=True,
         )
-        verify_a0r2_publication(
+        verify_a0r2c3_publication(
             package_dir=package_dir.relative_to(root),
             external_dense_dir=source_dir.relative_to(root),
             allow_external_dense_reuse=True,
         )
     except Exception as exc:
-        for name in ("activation-receipt.json", "representations-index.jsonl"):
-            (package_dir / name).unlink(missing_ok=True)
+        # These are immutable C2 source records, copied before the one C3
+        # analysis attempt.  Preserve them even when C3 ends terminally: they
+        # describe the existing evidence being analysed, not new C3 output.
         base_runner._write_failure(root, RUN_ID, _failure_payload(args.created_at, exc))
-        generate_a0r2_report(
+        generate_a0r2c3_report(
             package_dir=package_dir.relative_to(root),
             external_dense_dir=source_dir.relative_to(root),
             created_at=args.created_at,
@@ -103,7 +104,7 @@ def main(argv: list[str] | None = None) -> int:
     verify_a0r2c3_contract(root)
     if args.stage == "verify":
         source_dir = _source_activation_dir(root)
-        verify_a0r2_publication(
+        verify_a0r2c3_publication(
             package_dir=(Path("results") / "a0r2" / RUN_ID),
             external_dense_dir=source_dir.relative_to(root),
             allow_external_dense_reuse=True,

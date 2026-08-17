@@ -469,14 +469,16 @@ a separately preregistered protocol and explicit authorization.
 
 #### A0-R2-C3 — analysis-only index metadata recovery
 
-**Current checkpoint — C3.0 complete; C3.1 in delivery:** the published C2 failure digest
+**Current checkpoint — C3.0 complete; C3.1 corrective isolation in delivery:** the published C2 failure digest
 resolves deterministically to `activation dtype drift`. The 1,920 historical
 C2 index rows omit `dtype`, while the activation receipt independently binds
 the run to CPU `float32`; the analyzer rejects the omission before target
 content is read. C3 is constrained to an in-memory, exact-index-hash metadata
 recovery and a prospective analysis-only path over the immutable C2 activation
 bundle. It must not load or query a model, generate output, alter the source
-index/dense bytes, tune statistics, or substitute any input.
+index/dense bytes, tune statistics, or substitute any input. The frozen R2
+activation, analysis, and report modules remain byte-identical to their bound
+implementation receipt; C3-only behavior is separately namespaced and bound.
 
 The detailed C3 contract is
 [A0-R2-C3 analysis-only metadata recovery](./A0R2C3_ANALYSIS_ONLY_RECOVERY.md).

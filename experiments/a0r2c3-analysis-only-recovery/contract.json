@@ -15,12 +15,12 @@
   "empirical": true,
   "evidence_eligible": false,
   "implementation_code": [
-    {"path": "src/latent_triz/a0r2_analysis.py", "sha256": "98b5d297b8ee1310e7bb700a0706bbd48c633b12f294dabc7059b5094074f6a9", "size": 31139},
-    {"path": "src/latent_triz/a0r2_activations.py", "sha256": "5cfd47a077687196faa7d22ecde478e1fbc34576c74d51cfef1e8928ba6e35c0", "size": 36211},
-    {"path": "src/latent_triz/a0r2_report.py", "sha256": "8317cf2b82812c353e4d4a3d5638e76f1b8b81841db21945cb715149e4f90b88", "size": 28737},
-    {"path": "src/latent_triz/a0r2c3_analysis.py", "sha256": "4356d461c35a7b18de73e2e73f3a85783ad5b1f88963fbcf31646648aa093f9e", "size": 2459},
+    {"path": "src/latent_triz/a0r2_analysis.py", "sha256": "fadceaa1a0260d1f78a96f8c346810f69500ff6a7d288f583cac92ccc938a3e6", "size": 30679},
+    {"path": "src/latent_triz/a0r2_report.py", "sha256": "c7cde3ea9b65f6e3c335e60d836b73897e7811281bcc5895f816447af26212a8", "size": 28127},
+    {"path": "src/latent_triz/a0r2c3_analysis.py", "sha256": "f0dc9ece6494db322bd1a306e807321fe0628755a8d3df8704127b76f809390c", "size": 4158},
     {"path": "src/latent_triz/a0r2c3_authorization.py", "sha256": "c01a81c073399bf428f6693fe52bcfd020cef6c2413d8cb2f32148801b79bc6a", "size": 5812},
-    {"path": "src/latent_triz/a0r2c3_runner.py", "sha256": "0f8ceb48bc66cbf1da1b26056191dbd5b99a4ed7aba21f391078d03265bb6a47", "size": 4659}
+    {"path": "src/latent_triz/a0r2c3_report.py", "sha256": "45751a0630c57c2df8ef7bd3d3b209cf1ea8ca471e7509af59337e455682719c", "size": 19150},
+    {"path": "src/latent_triz/a0r2c3_runner.py", "sha256": "6c6363cab9dd2004ecd83946a5b1e066bfac921afca35d83345f71f0c52b9f93", "size": 4764}
   ],
   "invariants": {"model_load_forbidden": true, "model_substitution_forbidden": true, "network_forbidden": true, "generation_forbidden": true, "no_claim_promotion": true, "no_tuning": true, "source_activation_bytes_unchanged": true, "statistics_unchanged": true, "targets_unchanged": true},
   "operator_approval_granted": false,

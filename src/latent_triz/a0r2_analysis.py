@@ -14,7 +14,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
-from typing import Any, Callable, Mapping, Sequence
+from typing import Any, Mapping, Sequence
 
 from .a0r1_analysis import _combo_metrics, _family_permutation_null, _family_successes, _run_sensitivity, _score_operator
 from .a0r2_comparison import compare_frozen_scores
@@ -356,7 +356,6 @@ def analyze_a0r2(
     output_path: str | Path,
     shortcut_path: str | Path | None = None,
     r1_result_path: str | Path | None = None,
-    index_row_normalizer: Callable[[list[dict[str, Any]], Mapping[str, Any]], list[dict[str, Any]]] | None = None,
 ) -> dict[str, Any]:
     try:
         import numpy as np
@@ -385,12 +384,6 @@ def analyze_a0r2(
     _validate_protocol(protocol)
     _validate_shortcuts(shortcuts)
     _validate_activation_receipt(receipt, protocol)
-
-    # A caller may supply a separately preregistered, deterministic recovery
-    # for a known legacy index-metadata omission.  It runs before the sealed
-    # target boundary and never changes the source index bytes or its hash.
-    if index_row_normalizer is not None:
-        index_rows = index_row_normalizer(index_rows, receipt)
 
     receipt_sha256 = _sha256(activation_receipt_path)
     _require(_sha256(shortcut_path) == protocol["inputs"]["shortcuts_sha256"], "shortcut hash mismatch")

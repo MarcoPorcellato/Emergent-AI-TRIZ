@@ -382,10 +382,13 @@ The C2 failure is now reproducibly attributable to the missing per-row
 `dtype` metadata required by the analyzer. The canonical
 [SmolLM2 runtime contract](./reference/smollm2-runtime-contract.md) now binds
 the official tokenizer and hidden-state API facts to synthetic and
-pre-analysis export checks. C3 may not rerun SmolLM2: it is an
-analysis-only correction that preserves the exact C2 activation receipt, index,
-and dense-asset hash and can add `float32` only in memory under an exact-index
-binding. C3.0 synthetic qualification is in delivery. Its next external gate
+pre-analysis export checks for future versioned writers. C3 may not rerun
+SmolLM2: it is an analysis-only correction that preserves the exact C2
+activation receipt, index, and dense-asset hash and can add `float32` only in
+memory under an exact-index binding. It must keep the original byte-bound R2
+modules unchanged and use separately namespaced C3 recovery/publication code.
+C3.0 synthetic qualification is complete and C3.1 corrective isolation is in
+delivery. Its next external gate
 is a new preregistered contract, then a separate explicit authorization for one
 sealed-target read and no model load. See
 [A0-R2-C3 analysis-only metadata recovery](./A0R2C3_ANALYSIS_ONLY_RECOVERY.md).

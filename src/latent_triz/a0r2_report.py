@@ -270,19 +270,15 @@ def generate_a0r2_report(
     package_dir: str | Path,
     external_dense_dir: str | Path,
     created_at: str,
-    allow_external_dense_reuse: bool = False,
 ) -> tuple[Path, Path]:
     package_dir = _must_be_relative("package_dir", package_dir)
     external_dense_dir = _must_be_relative("external_dense_dir", external_dense_dir)
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z", created_at):
         raise A0R2ReportError("created_at must be an explicit UTC timestamp")
 
-    default_external = Path("artifacts") / "a0r2" / package_dir.name
-    expected_external = external_dense_dir
-    if expected_external.parent != Path("artifacts") / "a0r2" or not expected_external.name:
-        raise A0R2ReportError("external dense directory must be a direct artifacts/a0r2 child")
-    if expected_external != default_external and not allow_external_dense_reuse:
-        raise A0R2ReportError("external dense directory does not match run id")
+    expected_external = Path("artifacts") / "a0r2" / package_dir.name
+    if external_dense_dir != expected_external:
+        raise A0R2ReportError("external dense directory must be artifacts/a0r2/<run_id>")
 
     if not package_dir.is_dir():
         raise A0R2ReportError(f"package directory missing: {package_dir}")
@@ -466,15 +462,11 @@ def verify_a0r2_publication(
     *,
     package_dir: str | Path,
     external_dense_dir: str | Path,
-    allow_external_dense_reuse: bool = False,
 ) -> dict[str, Any]:
     package_dir = _must_be_relative("package_dir", package_dir)
     external_dense_dir = _must_be_relative("external_dense_dir", external_dense_dir)
-    default_external = Path("artifacts") / "a0r2" / package_dir.name
-    expected_external = external_dense_dir
-    if expected_external.parent != Path("artifacts") / "a0r2" or not expected_external.name:
-        raise A0R2ReportError("external dense directory must be a direct artifacts/a0r2 child")
-    if expected_external != default_external and not allow_external_dense_reuse:
+    expected_external = Path("artifacts") / "a0r2" / package_dir.name
+    if external_dense_dir != expected_external:
         raise A0R2ReportError("external dense directory does not match run id")
 
     manifest_path = package_dir / MANIFEST_FILE

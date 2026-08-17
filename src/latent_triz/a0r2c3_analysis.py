@@ -8,9 +8,11 @@ unchanged frozen statistical procedure to :mod:`a0r2_analysis`.
 from __future__ import annotations
 
 from collections.abc import Mapping
+from pathlib import Path
 from typing import Any
 
-from .a0r2_analysis import A0R2AnalysisError, analyze_a0r2
+from . import a0r2_analysis as base_analysis
+from .a0r2_analysis import A0R2AnalysisError
 
 
 EXPECTED_C2_INDEX_SHA256 = "baa78647fcc01c1d71cf27ef1c1fd83c6e38feb2a9a54a58fab87f245c63fc58"
@@ -54,8 +56,49 @@ def normalize_c2_index_dtype(
 
 
 def analyze_a0r2c3(**kwargs: Any) -> dict[str, Any]:
-    """Run the frozen A0-R2 analysis with only the C3 in-memory recovery."""
+    """Run frozen A0-R2 analysis with one C3-only in-memory index recovery.
+
+    The historical analyzer remains byte-identical to its frozen R2 binding.
+    This wrapper temporarily narrows its private index reader only for the
+    exact C2 representation index; target rows retain the original reader and
+    remain unopened until the historical analyzer reaches its analysis gate.
+    """
 
     if "index_row_normalizer" in kwargs:
         raise A0R2C3AnalysisError("C3 index recovery cannot be overridden")
-    return analyze_a0r2(index_row_normalizer=normalize_c2_index_dtype, **kwargs)
+    try:
+        expected_index_path = Path(kwargs["activation_index_path"]).resolve()
+    except (KeyError, TypeError) as exc:
+        raise A0R2C3AnalysisError("C3 activation index path is required") from exc
+
+    original_reader = base_analysis._read_jsonl
+    normalized_once = False
+
+    def _c3_reader(path: Path) -> list[dict[str, Any]]:
+        nonlocal normalized_once
+        rows = original_reader(path)
+        if Path(path).resolve() != expected_index_path:
+            return rows
+        if normalized_once:
+            raise A0R2C3AnalysisError("C3 activation index was read more than once")
+        normalized_once = True
+        return normalize_c2_index_dtype(rows, _activation_receipt(kwargs))
+
+    base_analysis._read_jsonl = _c3_reader
+    try:
+        result = base_analysis.analyze_a0r2(**kwargs)
+    finally:
+        base_analysis._read_jsonl = original_reader
+    if not normalized_once:
+        raise A0R2C3AnalysisError("C3 activation index was not read")
+    return result
+
+
+def _activation_receipt(kwargs: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Read only the already-bound receipt before the historical target gate."""
+
+    receipt_path = kwargs.get("activation_receipt_path")
+    if receipt_path is None:
+        raise A0R2C3AnalysisError("C3 activation receipt path is required")
+    receipt = base_analysis._read_json(Path(receipt_path).resolve())
+    return receipt

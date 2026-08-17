@@ -53,18 +53,18 @@ No target content may be opened until all applicable pre-target stages pass.
    installed tokenizer/model behavior under the frozen feasibility contract.
    The existing receipt records 33 states and final shape `[1,25,960]`; it is
    a compatibility observation, not a substitute for future exact-head checks.
-5. **Pre-analysis export gate.** Before the analysis module can be invoked,
-   require every representation-index record to have the published schema and
-   a matching dense vector/hash. In particular, `dtype` must be `float32`,
-   `hidden_states_count` 33, `hidden_size` 960 and tuple index one of
-   `0, 11, 21, 32`. The writer performs this validation before atomically
-   publishing its bundle; a defect therefore stops with targets unopened.
+5. **Pre-analysis export gate.** Before analysis, a separately versioned
+   activation writer must require every representation-index record to have the
+   published schema and a matching dense vector/hash. In particular, `dtype`
+   must be `float32`, `hidden_states_count` 33, `hidden_size` 960 and tuple
+   index one of `0, 11, 21, 32`. Historical R2 code is byte-bound and cannot be
+   retrofitted; C3 handles its exact historical omission only in memory.
 
 ## Export contract
 
 `schemas/a0r2-representation-index-record.schema.json` defines the public
-JSONL record. The local writer also validates row-to-vector identity, so JSON
-Schema alone cannot mask a missing dense row or mismatched vector hash.
+JSONL record. A future versioned writer must validate row-to-vector identity,
+so JSON Schema alone cannot mask a missing dense row or mismatched vector hash.
 
 Every future A0-R2 activation package must preserve the following invariant:
 
@@ -86,7 +86,7 @@ and must not be generalized into a permissive parser.
 | --- | --- | --- |
 | C1 tokenizer failure | `BatchEncoding` mapping semantics were documented but the adapter demanded `dict`. | Mapping acceptance plus an installed-ABI `BatchEncoding` test. |
 | C2 tensor-shape failure | The output API documents rank-three hidden states, while the path assumed token-by-hidden rows. | 33-state `[1,T,960]` synthetic end-to-end contract and singleton-only normalization. |
-| C2 index-metadata failure | This was a repository export-contract omission, not a SmolLM2 API fact. | A dedicated record schema, writer-side row/vector validation, and a regression test that removes `dtype`. |
+| C2 index-metadata failure | This was a repository export-contract omission, not a SmolLM2 API fact. | A dedicated record schema, a future versioned writer-side row/vector validation, and a regression test that removes `dtype`. |
 
 ## Change control
 
