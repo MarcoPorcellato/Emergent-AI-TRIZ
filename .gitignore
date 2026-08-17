@@ -6,6 +6,7 @@ __pycache__/
 .mypy_cache/
 .venv/
 .ccp/
+.gitnexus/
 
 # Notebooks and local experiment output
 .ipynb_checkpoints/

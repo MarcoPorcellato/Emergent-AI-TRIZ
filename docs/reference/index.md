@@ -12,6 +12,7 @@ last_verified: 2026-08-17
 
 - [Stage 1 blinded pilot](../STAGE1_PILOT.md)
 - [Commit CI Preflight adoption](commit-ci-preflight.md)
+- [GitNexus code-intelligence policy](gitnexus-policy.md)
 - [Fail-closed schema validation](schema-validation.md)
 - [SmolLM2 runtime contract](smollm2-runtime-contract.md)
 - [TRIZ expert reference corpus](triz-reference-corpus.md)
