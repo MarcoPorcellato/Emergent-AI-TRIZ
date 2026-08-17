@@ -1,5 +1,5 @@
 Complete A0-R2-C3 according to docs/A0R2C3_ANALYSIS_ONLY_RECOVERY.md, starting
-from verified public main `c8a8a99441680bffb17de0e93d909f7c01373b5b` and
+from verified public main `06d26d82604e1c644950f0343196a8991c6a6255` and
 verifying the live repository, ruleset, artifacts, and receipts first.
 
 C3 is an analysis-only recovery of the immutable C2 activation bundle. Keep
@@ -13,7 +13,8 @@ SmolLM2 runtime contract, C3-namespaced pre-analysis recovery and publication,
 and exact recovery bindings. Preserve byte-for-byte every R2 module bound by
 the consumed R2 dossier; never amend its implementation manifest. Then request
 a new explicit authorization for one C3
-analysis-boundary target read; only after it, and CCP resource `Admit` with an
+analysis-boundary target read; the explicit authorization receipt is now recorded
+against the immutable contract; only after it, and CCP resource `Admit` with an
 inactive empty queue, run the one analysis-only recovery and publish every
 terminal outcome. Keep all claim IDs absent and complete only after fresh-clone
 verification and terminal exact-head gates.

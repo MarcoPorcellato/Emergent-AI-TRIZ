@@ -356,14 +356,19 @@ or target access without a new explicit approval. These are conservative caps;
 the feasibility measurement was 2.37 GiB and 3.81 seconds for the synthetic
 probe.
 
-**Current checkpoint — corrective authorization recorded, pre-run qualification pending:** the human-readable
+**Verified complete — corrective implementation merged; C3 authorization recorded:** the human-readable
 [`A0-R2.3 sealed-execution approval dossier`](./A0R2_SEALED_EXECUTION_APPROVAL.md)
 and its strict machine-readable request bind the exact model snapshot,
 pre-output contracts, declared R1 input hashes, prior feasibility and guard
 receipts, resource ceilings, one-run boundary, single analysis target read,
 terminal publication rules, and claim limit. The request records
-`operator_approval_granted=false`. Publishing or verifying the dossier does not
-authorize a model load, material run, or sealed-target access.
+`operator_approval_granted=false`. PR 71 merged the C3 implementation and GitNexus
+policy at `06d26d82604e1c644950f0343196a8991c6a6255`; its exact-head CCP receipt
+passed generation 2 on the pre-merge head. The separate
+`results/a0r2c3/preexecution/analysis-authorization.json` records the explicit
+one-run, analysis-only authorization bound to the contract hash. It authorizes no
+model load and no new dense output; it authorizes exactly one target content read
+at the analysis boundary, subject to the fresh CCP Admit gate.
 
 PR 62 published the request from exact source head
 `28f0b2596a273212dfc0712aaa00b5887ecce83a` and merged at
