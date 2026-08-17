@@ -14,10 +14,11 @@
 
 - The latest committed no-model statistical checkpoint is
   `0cc8c30e061350de5ed5ba6d6398016ce2c2ba75`.
-- `stash@{0}` (`checkpoint: r3 primary-unit draft pending correction`) preserves
-  an interrupted, unapproved authoring draft. It must not be applied as a
-  fixture without review: its first review found duplicated replicates and a
-  lexical control that was not semantically independent.
+- `stash@{0}` (`checkpoint: r3 primary units awaiting real position balance`)
+  preserves the latest unapproved authoring draft. It improves duplicate and
+  lookup-style controls but remains unfit for freezing: the intended transfer
+  answer is still systematically the first option, and its apparent balance
+  test was only a structural proxy. `stash@{1}` preserves the earlier draft.
 - The interrupted response-adapter delegation wrote no repository files.
 
 ## Completed no-model work
@@ -56,7 +57,9 @@ requested.
 3. Review or reconstruct the saved primary-unit draft. Require 24 distinct
    public units, six domains, two families and two independent replicates per
    domain, with a genuinely non-TRIZ lexical control and separate option set
-   for every control. Do this without accessing model or sealed targets; update
+   for every control. Apply a real four-position semantic rotation before the
+   sealed key is created, then verify the sealed key is exactly balanced. Do
+   this without accessing model or sealed targets; update
    the canonical specification and persistent goal.
 4. Qualify the frozen no-model package before requesting any new operator
    authorization. CCP resource/admission checks apply only before a later
