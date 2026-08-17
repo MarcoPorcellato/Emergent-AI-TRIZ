@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-r3-implementation.schema.json",
+  "title": "EXP-001 R3 implementation binding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "implementation_id", "protocol_id", "protocol_status", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids", "model", "code_sha256", "fixture_sha256", "source_sha256", "receipt_sha256", "inventory", "limits", "policies"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-implementation-binding"}, "implementation_id": {"type": "string"}, "protocol_id": {"const": "exp001-reference-integrated-r3-v1.0.0"},
+    "protocol_status": {"enum": ["ready_for_review", "frozen", "approval_requested", "authorized"]}, "scientific_status": {"const": "exploratory"}, "evidence_eligible": {"const": false}, "expert_validated": {"const": false}, "claim_ids": {"const": []},
+    "model": {"type": "object", "additionalProperties": false, "required": ["name", "revision", "local_only"], "properties": {"name": {"const": "HuggingFaceTB/SmolLM2-360M"}, "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"}, "local_only": {"const": true}}},
+    "code_sha256": {"$ref": "#/$defs/entries"}, "fixture_sha256": {"$ref": "#/$defs/entries"}, "source_sha256": {"$ref": "#/$defs/entries"}, "receipt_sha256": {"$ref": "#/$defs/entries"},
+    "inventory": {"type": "object", "additionalProperties": false, "required": ["primary_records", "secondary_records", "combined_records", "teacher_forced_labels_per_record", "score_calls"], "properties": {"primary_records": {"const": 72}, "secondary_records": {"const": 13}, "combined_records": {"const": 85}, "teacher_forced_labels_per_record": {"const": 4}, "score_calls": {"const": 340}}},
+    "limits": {"type": "object", "additionalProperties": false, "required": ["wall_time_seconds", "peak_rss_bytes", "new_dense_output_bytes"], "properties": {"wall_time_seconds": {"const": 1800}, "peak_rss_bytes": {"const": 8589934592}, "new_dense_output_bytes": {"const": 134217728}}},
+    "policies": {"type": "object", "additionalProperties": false, "required": ["network_access", "generation", "single_run", "sealed_target_read_boundary", "retry_after_model_or_target_access", "model_substitution", "protocol_mutation", "publish_every_terminal_outcome", "general_triz_claim"], "properties": {"network_access": {"const": false}, "generation": {"const": false}, "single_run": {"const": true}, "sealed_target_read_boundary": {"const": "analysis_only"}, "retry_after_model_or_target_access": {"const": false}, "model_substitution": {"const": false}, "protocol_mutation": {"const": false}, "publish_every_terminal_outcome": {"const": true}, "general_triz_claim": {"const": false}}}
+  },
+  "$defs": {"entries": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "size"], "properties": {"path": {"type": "string", "pattern": "^[^/].*[^/]$"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "size": {"type": "integer", "minimum": 0}}}}}
+}
