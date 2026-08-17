@@ -131,6 +131,13 @@ paired item set, split receipt, implementation binding, and terminal
 statistics remain incomplete. This status authorizes neither a model load nor
 sealed-target access.
 
+The current no-model source verifier is committed at `6316cd6`. It verifies
+the four immutable reference hashes, forty ordered principle records, eighteen
+web-resource records, fixture schemas, safe paths, paired non-poolable strata,
+Matrix double-check agreement, and Panitz non-selection controls without
+importing an ML runtime. It is evidence of preparation only, not a study
+freeze or a model qualification.
+
 ### R3.1 — independent fixture construction and contamination audit
 
 Build independent paraphrases and domains from the reference summaries without
