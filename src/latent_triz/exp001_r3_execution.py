@@ -13,6 +13,7 @@ from typing import Any, Mapping
 
 from .exp001_r3_contract import Exp001ContractError, verify_contract
 from .exp001_r3_primary_fixture import Exp001PrimaryFixtureError, build_primary_records
+from .exp001_r3_secondary_fixture import Exp001SecondaryFixtureError, build_secondary_records
 
 
 class Exp001ExecutionPreflightError(ValueError):
@@ -25,6 +26,8 @@ INTEGRITY_RECEIPT = "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-r
 FEASIBILITY_RECEIPT = "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json"
 PROTOCOL = "experiments/exp001-reference-integrated/protocol.json"
 PRIMARY_UNITS = "experiments/exp001-reference-integrated/fixtures/primary-units.jsonl"
+MATRIX_CELLS = "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl"
+TOOL_EDGES = "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl"
 
 
 def _read_json(root: Path, relative: str) -> dict[str, Any]:
@@ -38,12 +41,12 @@ def _read_json(root: Path, relative: str) -> dict[str, Any]:
     return value
 
 
-def _read_jsonl(root: Path, relative: str) -> list[dict[str, Any]]:
+def _read_jsonl(root: Path, relative: str, *, label: str = "fixture") -> list[dict[str, Any]]:
     path = root / relative
     try:
         lines = path.read_text(encoding="utf-8").splitlines()
     except OSError as exc:
-        raise Exp001ExecutionPreflightError(f"missing primary fixture: {relative}") from exc
+        raise Exp001ExecutionPreflightError(f"missing {label}: {relative}") from exc
     values: list[dict[str, Any]] = []
     try:
         for line in lines:
@@ -53,7 +56,7 @@ def _read_jsonl(root: Path, relative: str) -> list[dict[str, Any]]:
                     raise ValueError
                 values.append(value)
     except (ValueError, json.JSONDecodeError) as exc:
-        raise Exp001ExecutionPreflightError(f"invalid primary fixture: {relative}") from exc
+        raise Exp001ExecutionPreflightError(f"invalid {label}: {relative}") from exc
     return values
 
 
@@ -94,13 +97,22 @@ def preflight(root: str | Path, authorization: Mapping[str, Any]) -> dict[str, A
     if protocol.get("protocol_status") != "frozen":
         raise Exp001ExecutionPreflightError("R3 protocol must be exactly frozen before execution")
 
-    units = _read_jsonl(repo, PRIMARY_UNITS)
+    units = _read_jsonl(repo, PRIMARY_UNITS, label="primary fixture")
     try:
         records = build_primary_records(units)
     except Exp001PrimaryFixtureError as exc:
         raise Exp001ExecutionPreflightError("primary fixture expansion failed") from exc
     if len(records) != 72:
         raise Exp001ExecutionPreflightError("primary fixture must expand to exactly 72 records")
+
+    matrix_cells = _read_jsonl(repo, MATRIX_CELLS, label="Matrix fixture")
+    tool_edges = _read_jsonl(repo, TOOL_EDGES, label="Panitz fixture")
+    try:
+        secondary_records = build_secondary_records(matrix_cells, tool_edges)
+    except Exp001SecondaryFixtureError as exc:
+        raise Exp001ExecutionPreflightError("secondary fixture expansion failed") from exc
+    if len(secondary_records) != 13 or len(records) + len(secondary_records) != 85:
+        raise Exp001ExecutionPreflightError("combined fixture inventory must contain exactly 85 records")
 
     if not isinstance(authorization, Mapping):
         raise Exp001ExecutionPreflightError("authorization must be a mapping")
@@ -117,6 +129,10 @@ def preflight(root: str | Path, authorization: Mapping[str, Any]) -> dict[str, A
         "model_id": MODEL_ID,
         "revision": MODEL_REVISION,
         "primary_records": len(records),
+        "matrix_cells": len(matrix_cells),
+        "tool_edges": len(tool_edges),
+        "secondary_records": len(secondary_records),
+        "total_records": len(records) + len(secondary_records),
         "contract": summary,
         "model_or_target_accessed": False,
     }

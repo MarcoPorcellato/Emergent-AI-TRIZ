@@ -13,6 +13,7 @@ from typing import Any
 from .validator import validate
 from .exp001_r3_fixture_builder import FixtureBuilderError, build_public_record_stubs
 from .exp001_r3_primary_fixture import Exp001PrimaryFixtureError, build_primary_records
+from .exp001_r3_secondary_fixture import Exp001SecondaryFixtureError, build_secondary_records
 
 
 class Exp001ContractError(ValueError):
@@ -206,10 +207,18 @@ def verify_contract(root: str | Path) -> dict[str, Any]:
         raise Exp001ContractError("primary-unit inventory is not constructible") from exc
     if len(primary_records) != 72:
         raise Exp001ContractError("primary-unit expansion drift")
+    try:
+        secondary_records = build_secondary_records(loaded["matrix_cells"], loaded["tool_edges"])
+    except Exp001SecondaryFixtureError as exc:
+        raise Exp001ContractError("secondary fixture expansion is not constructible") from exc
+    if len(secondary_records) != 13 or len(primary_records) + len(secondary_records) != 85:
+        raise Exp001ContractError("combined public inventory drift")
     return {"status": "verified", "principles": 40, "web_resources": 18,
             "items": len(items), "matrix_cells": len(loaded["matrix_cells"]),
             "tool_edges": len(loaded["tool_edges"]), "source_exposures": len(loaded["source_exposures"]),
-            "public_record_stubs": len(stubs), "source_hashes": paths}
+            "public_record_stubs": len(stubs), "primary_records": len(primary_records),
+            "secondary_records": len(secondary_records), "combined_records": 85,
+            "source_hashes": paths}
 
 
 validate_contract = verify_contract

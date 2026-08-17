@@ -51,7 +51,30 @@ class Exp001ExecutionPreflightTests(unittest.TestCase):
         result = preflight(repo, AUTHORIZATION)
         self.assertEqual(result["status"], "ready_for_material_execution")
         self.assertEqual(result["primary_records"], 72)
+        self.assertEqual(result["matrix_cells"], 3)
+        self.assertEqual(result["tool_edges"], 4)
+        self.assertEqual(result["secondary_records"], 13)
+        self.assertEqual(result["total_records"], 85)
         self.assertFalse(result["model_or_target_accessed"])
+
+    def test_mutated_matrix_fixture_fails_closed(self):
+        repo = _copy_repo()
+        _edit_protocol(repo, "frozen")
+        path = repo / "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl"
+        value = json.loads(path.read_text(encoding="utf-8").splitlines()[0])
+        value["direction"] = "worsening_row_improving_column"
+        lines = path.read_text(encoding="utf-8").splitlines()
+        lines[0] = json.dumps(value)
+        path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        with self.assertRaises(Exp001ExecutionPreflightError):
+            preflight(repo, AUTHORIZATION)
+
+    def test_missing_panitz_fixture_fails_closed(self):
+        repo = _copy_repo()
+        _edit_protocol(repo, "frozen")
+        (repo / "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl").unlink()
+        with self.assertRaises(Exp001ExecutionPreflightError):
+            preflight(repo, AUTHORIZATION)
 
     def test_non_authorized_status_fails_closed(self):
         repo = _copy_repo()
