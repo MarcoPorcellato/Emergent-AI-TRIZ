@@ -366,13 +366,15 @@ single target-read boundary remain unchanged.
 
 ### A0-R2-C2 — singleton-batch shape correction
 
-C2 is the only allowed continuation of C1: it is a separately preregistered,
+C2 was the only allowed continuation of C1: it was a separately preregistered,
 namespaced correction that removes a singleton batch dimension from Llama
-hidden-state layers only after strict shape validation. It is not a C1 retry.
-The C2 contract binds the C1 terminal package, retains all frozen scientific
-inputs and resource limits, and requires synthetic shape qualification,
-exact-head review, a new explicit authorization, then one guarded material
-attempt with terminal publication.
+hidden-state layers only after strict shape validation. It was not a C1 retry.
+The C2 contract bound the C1 terminal package and retained all frozen
+scientific inputs and resource limits. Its one guarded material attempt
+successfully produced the activation bundle but terminated with
+`A0R2AnalysisError` at the data stage. The terminal package is `failed`; no
+statistical inference or claim is available, and any further run requires a
+separate preregistration and explicit authorization.
 
 ### PR 30 — annotation ontology v1.2 implementation
 
