@@ -1,22 +1,21 @@
-Complete A0-R2-C3 according to docs/A0R2C3_ANALYSIS_ONLY_RECOVERY.md, starting
-from verified public main `06d26d82604e1c644950f0343196a8991c6a6255` and
-verifying the live repository, ruleset, artifacts, and receipts first.
+Complete `docs/EXP001_REFERENCE_INTEGRATED.md` from verified public main
+`f60afc8d9f2803a6a988f26f6c520dd72659080a`, verifying the live repository,
+ruleset, source corpus, artifacts, and receipts before acting.
 
-C3 is an analysis-only recovery of the immutable C2 activation bundle. Keep
-the exact model/revision, frozen protocol, corpus, targets, prompts, endpoint,
-statistics, thresholds, claims, and source artifact bytes unchanged. Do not
-load or query a model, generate output, tune, substitute inputs, or reopen C2
-targets under its consumed authorization.
+Prepare and freeze a new R3/EXP-001 TRIZ reference-integrated study without
+changing any A0-R2/C3 bytes. Keep `TRIZ-blinded-transfer` and
+`source-exposed-competence` physically and statistically separate; include the
+40 principles, a double-checked sparse Matrix 2003 fixture, and a rights-aware
+Panitz tool-edge fixture with lexical, direction-swap, unsupported-edge,
+abstention, source-family, and held-out-domain controls. Use deterministic tools
+first and delegate inventory, mechanical checks, and test/log work to GPT-5.6
+Luna; keep architecture, statistics, security, CCP, interpretation, release,
+and merge decisions with GPT-5.6 Terra.
 
-First finish and publish C3.0/C3.1 with synthetic qualification, the canonical
-SmolLM2 runtime contract, C3-namespaced pre-analysis recovery and publication,
-and exact recovery bindings. Preserve byte-for-byte every R2 module bound by
-the consumed R2 dossier; never amend its implementation manifest. Then request
-a new explicit authorization for one C3
-analysis-boundary target read; the explicit authorization receipt is now recorded
-against the immutable contract; after CCP resource `Admit` with an
-inactive empty queue, run the one analysis-only recovery and publish every
-terminal outcome. Keep all claim IDs absent and complete only after fresh-clone
-verification and terminal exact-head gates. The single C3 analysis-only run has
-now produced a positive exploratory package; fresh-clone verification and its
-publication PR remain the final gates.
+Do not load a model, access sealed targets, download new sources, or produce
+model output until the protocol, fixtures, hashes, primary endpoint, and
+resource envelope are frozen and an explicit operator approval is recorded.
+After approval, perform exactly one guarded local SmolLM2 run, publish every
+terminal outcome, the external dense locator/hash, exact-head CCP receipt, PR,
+fresh-clone verification, limitations, and final report. Complete only when the
+specification checklist is proven and no general TRIZ claim is promoted.

@@ -168,23 +168,22 @@ synthetic-only qualification, descriptive cross-model comparisons, and no
 sealed execution or sealed-target access. PRs 48 and 49 migrated the trusted
 CCP digest and 180-second timeout in two base-authorized steps, ending at public anchor
 `85180041717f336de554300dda109731b48c6b95`. PR 47 subsequently merged the
-R2.2 implementation at `fa1e254ec373092278b1ab63f05504545e295b67`. R2.3
-model execution and sealed-target access remain a separate explicit approval
-gate.
-
-R2.3 is the active approval-request checkpoint. Its exact dossier fixes the
-already acquired model identity, one-run resource envelope, single target-read
-boundary, terminal publication duties, and exclusions before any material
-execution.
+R2.2 implementation at `fa1e254ec373092278b1ab63f05504545e295b67`. The
+corrective C3 authorization and terminal analysis package were then published
+through PRs 72 and 73; PR 73 merged at
+`f60afc8d9f2803a6a988f26f6c520dd72659080a` after exact-head CCP and hosted
+artifact gates passed. R2.3–R2.5 are now verified complete as an exploratory
+positive package, with no claim promotion.
 
 The expert TRIZ reference-corpus foundation adds exact provenance for a
 forty-principle example set, Matrix 2003, a TRIZ tools relationship map, and a
 curated inventory of the official TRIZ Consulting Group method, tool, training,
 and application resources. It improves future construct and question coverage
-while remaining reference-only, evidence-ineligible, and excluded from frozen
-R2.3. Its first experimental role is a separately preregistered R3/EXP-001
-comparison of `TRIZ-blinded` transfer against `source-exposed` retrieval and
-use.
+while remaining reference-only and evidence-ineligible. Its first experimental
+role is the separately preregistered
+[EXP-001 reference-integrated study](./EXP001_REFERENCE_INTEGRATED.md), a
+comparison of non-poolable `TRIZ-blinded` transfer against `source-exposed`
+retrieval and use.
 
 ### Evidence profiles
 
@@ -231,8 +230,10 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
    and no real model load or sealed-target access. PRs 48 and 49 migrated the
    trusted CCP digest and timeout without candidate-policy self-authorization;
    PR 47 then passed its refreshed exact-head receipt and hosted gates and
-   merged at `fa1e254ec373092278b1ab63f05504545e295b67`. R2.3 remains a
-   separate approval gate.
+   merged at `fa1e254ec373092278b1ab63f05504545e295b67`. The subsequent C3
+   correction and publication closed R2.3–R2.5 at public main
+   `f60afc8d9f2803a6a988f26f6c520dd72659080a`; the next material experiment is
+   the separately frozen reference-integrated R3/EXP-001 study.
 7. Build Wave 2 from label-free counterfactual problem families, with generator targets stored separately, source/generator/template provenance, and grouped splits that keep every problem family together.
 8. Store independent raw ratings, adjudications, exclusions, and canonical human labels as separate immutable artifacts. Labs 03–05 consume canonical labels, never generator intent.
 9. Add a common empirical envelope without rewriting v1 fixtures, and separate pre-freeze candidate surface auditing from post-freeze Lab 03.
