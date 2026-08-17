@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-r3-analysis-plan.schema.json",
+  "title": "EXP-001 R3 pre-freeze statistical analysis plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "status", "target_values_present", "primary", "secondaries", "uncertainty", "terminal_rules", "non_pooling"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-analysis-plan"},
+    "status": {"const": "pre_freeze_no_targets"},
+    "target_values_present": {"const": false},
+    "primary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["stratum", "unit", "task_family", "required_domains", "required_problem_families_per_domain", "required_replicates_per_problem_family", "required_units", "score", "choice_scoring", "effect", "cluster", "test", "permutation_count", "alpha", "positive_requirements", "null_rule", "sensitivity_may_replace_primary"],
+      "properties": {
+        "stratum": {"const": "TRIZ-blinded-transfer"},
+        "unit": {"const": "paired_blinded_transfer_minus_lexical_matched_control"},
+        "task_family": {"const": "principle"},
+        "required_domains": {"const": 6},
+        "required_problem_families_per_domain": {"const": 2},
+        "required_replicates_per_problem_family": {"const": 2},
+        "required_units": {"const": 24},
+        "score": {"type": "string", "minLength": 1},
+        "choice_scoring": {"type": "string", "minLength": 1},
+        "effect": {"type": "string", "minLength": 1},
+        "cluster": {"const": "domain"},
+        "test": {"const": "exact_two_sided_domain_sign_flip_permutation"},
+        "permutation_count": {"const": 64},
+        "alpha": {"const": 0.05},
+        "positive_requirements": {"type": "array", "minItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "null_rule": {"type": "string", "minLength": 1},
+        "sensitivity_may_replace_primary": {"const": false}
+      }
+    },
+    "secondaries": {"type": "array", "minItems": 3, "items": {"type": "object", "additionalProperties": false, "required": ["endpoint_id", "stratum", "task_family", "status"], "properties": {"endpoint_id": {"type": "string", "minLength": 1}, "stratum": {"enum": ["TRIZ-blinded-transfer", "source-exposed-competence"]}, "task_family": {"enum": ["principle", "matrix", "tool_edge"]}, "status": {"const": "descriptive_nonpooled"}}}},
+    "uncertainty": {"type": "object", "additionalProperties": false, "required": ["bootstrap", "bootstrap_resamples", "bootstrap_seed", "secondary_multiplicity"], "properties": {"bootstrap": {"const": "domain_cluster_nonparametric"}, "bootstrap_resamples": {"const": 10000}, "bootstrap_seed": {"type": "integer"}, "secondary_multiplicity": {"const": "reported_descriptively_no_primary_replacement"}}},
+    "terminal_rules": {"type": "object", "additionalProperties": false, "required": ["positive", "null", "failed", "non_interpretable", "incompatible"], "properties": {"positive": {"type": "string", "minLength": 1}, "null": {"type": "string", "minLength": 1}, "failed": {"type": "string", "minLength": 1}, "non_interpretable": {"type": "string", "minLength": 1}, "incompatible": {"type": "string", "minLength": 1}}},
+    "non_pooling": {"type": "object", "additionalProperties": false, "required": ["between_strata", "between_primary_and_secondary", "secondary_cannot_replace_primary"], "properties": {"between_strata": {"const": true}, "between_primary_and_secondary": {"const": true}, "secondary_cannot_replace_primary": {"const": true}}}
+  }
+}

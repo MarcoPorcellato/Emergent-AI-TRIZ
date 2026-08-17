@@ -98,6 +98,7 @@ VALIDATION_PAIRS = (
     ("schemas/exp001-r3-control-plan.schema.json", "experiments/exp001-reference-integrated/fixtures/control-plan.json"),
     ("schemas/exp001-r3-option-set.schema.json", "experiments/exp001-reference-integrated/fixtures/option-sets.jsonl"),
     ("schemas/exp001-r3-split-receipt.schema.json", "experiments/exp001-reference-integrated/fixtures/split-receipt.json"),
+    ("schemas/exp001-r3-analysis-plan.schema.json", "experiments/exp001-reference-integrated/analysis-plan.json"),
     ("schemas/triz-web-corpus.schema.json", "data/triz-consulting-web-corpus.json"),
 )
 

@@ -38,6 +38,7 @@
     "control_plan": "fixtures/control-plan.json",
     "option_sets": "fixtures/option-sets.jsonl",
     "split_receipt": "fixtures/split-receipt.json",
+    "analysis_plan": "analysis-plan.json",
     "sealed_targets": "not_created_before_freeze_and_authorization"
   },
   "controls": [

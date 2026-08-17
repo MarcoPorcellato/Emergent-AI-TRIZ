@@ -32,6 +32,7 @@ _FIXTURES = {
     "control_plan": "fixtures/control-plan.json",
     "option_sets": "fixtures/option-sets.jsonl",
     "split_receipt": "fixtures/split-receipt.json",
+    "analysis_plan": "analysis-plan.json",
 }
 _SCHEMAS = {
     "items": "exp001-r3-item.schema.json",
@@ -41,6 +42,7 @@ _SCHEMAS = {
     "control_plan": "exp001-r3-control-plan.schema.json",
     "option_sets": "exp001-r3-option-set.schema.json",
     "split_receipt": "exp001-r3-split-receipt.schema.json",
+    "analysis_plan": "exp001-r3-analysis-plan.schema.json",
 }
 
 
@@ -127,7 +129,7 @@ def verify_contract(root: str | Path) -> dict[str, Any]:
     loaded: dict[str, list[dict[str, Any]]] = {}
     for name, rel in _FIXTURES.items():
         path = _safe(experiment, rel, experiment=experiment)
-        if name in {"control_plan", "split_receipt"}:
+        if name in {"control_plan", "split_receipt", "analysis_plan"}:
             value = json.loads(path.read_text(encoding="utf-8"))
             if not isinstance(value, dict):
                 raise Exp001ContractError("control plan must be an object")
@@ -187,6 +189,14 @@ def verify_contract(root: str | Path) -> dict[str, Any]:
         raise Exp001ContractError("public fixture stubs are not constructible") from exc
     if len(stubs) != 20 or any(not record["pooling_prohibited"] for record in stubs):
         raise Exp001ContractError("public fixture stubs violate the non-pooling contract")
+    analysis_plan = loaded["analysis_plan"][0]
+    primary = analysis_plan.get("primary")
+    if not isinstance(primary, dict) or primary.get("required_units") != 24:
+        raise Exp001ContractError("analysis plan must require the full primary inventory")
+    if primary.get("permutation_count") != 64 or primary.get("alpha") != 0.05:
+        raise Exp001ContractError("analysis plan must preserve the exact primary test")
+    if analysis_plan.get("target_values_present") is not False:
+        raise Exp001ContractError("analysis plan cannot contain target values")
     return {"status": "verified", "principles": 40, "web_resources": 18,
             "items": len(items), "matrix_cells": len(loaded["matrix_cells"]),
             "tool_edges": len(loaded["tool_edges"]), "source_exposures": len(loaded["source_exposures"]),

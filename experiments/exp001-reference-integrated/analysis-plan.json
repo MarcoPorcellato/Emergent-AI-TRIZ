@@ -1,0 +1,52 @@
+{
+  "artifact_class": "exp001-r3-analysis-plan",
+  "status": "pre_freeze_no_targets",
+  "target_values_present": false,
+  "primary": {
+    "stratum": "TRIZ-blinded-transfer",
+    "unit": "paired_blinded_transfer_minus_lexical_matched_control",
+    "task_family": "principle",
+    "required_domains": 6,
+    "required_problem_families_per_domain": 2,
+    "required_replicates_per_problem_family": 2,
+    "required_units": 24,
+    "score": "mean_teacher_forced_log_probability_of_sealed_correct_choice_tokens_minus_mean_teacher_forced_log_probability_of_sealed_distractor_choice_tokens",
+    "choice_scoring": "teacher_forced_mean_token_log_probability; no_generation; option_order_and_correct_choice_position_balanced_in_sealed_targets",
+    "effect": "within_unit_blinded_transfer_score_minus_lexical_matched_control_score",
+    "cluster": "domain",
+    "test": "exact_two_sided_domain_sign_flip_permutation",
+    "permutation_count": 64,
+    "alpha": 0.05,
+    "positive_requirements": [
+      "two_sided_p_at_most_0.05",
+      "mean_domain_delta_greater_than_0",
+      "all_6_domain_direction_deltas_greater_than_0",
+      "domain_cluster_bootstrap_95_percent_ci_lower_greater_than_0"
+    ],
+    "null_rule": "completed_primary_not_meeting_every_positive_requirement",
+    "sensitivity_may_replace_primary": false
+  },
+  "secondaries": [
+    {"endpoint_id": "source_exposed_principle", "stratum": "source-exposed-competence", "task_family": "principle", "status": "descriptive_nonpooled"},
+    {"endpoint_id": "matrix_direction_and_nonrecommendation", "stratum": "TRIZ-blinded-transfer", "task_family": "matrix", "status": "descriptive_nonpooled"},
+    {"endpoint_id": "tool_edge_and_abstention", "stratum": "TRIZ-blinded-transfer", "task_family": "tool_edge", "status": "descriptive_nonpooled"}
+  ],
+  "uncertainty": {
+    "bootstrap": "domain_cluster_nonparametric",
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20260818,
+    "secondary_multiplicity": "reported_descriptively_no_primary_replacement"
+  },
+  "terminal_rules": {
+    "positive": "only_primary_positive_requirements_all_met; exploratory_E0_only",
+    "null": "analysis_completed_primary_not_positive",
+    "failed": "runtime_or_integrity_failure_after_access_boundary",
+    "non_interpretable": "analysis_or_data_contract_failure_after_access_boundary",
+    "incompatible": "frozen_tokenizer_or_model_output_contract_not_met_before_model_output"
+  },
+  "non_pooling": {
+    "between_strata": true,
+    "between_primary_and_secondary": true,
+    "secondary_cannot_replace_primary": true
+  }
+}

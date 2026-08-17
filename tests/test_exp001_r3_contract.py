@@ -68,6 +68,14 @@ class Exp001R3ContractTest(unittest.TestCase):
         with self.assertRaises(Exp001ContractError):
             verify_contract(self.copy)
 
+    def test_analysis_plan_primary_mutation_fails_closed(self):
+        path = self.copy / "experiments/exp001-reference-integrated/analysis-plan.json"
+        plan = json.loads(path.read_text())
+        plan["primary"]["required_units"] = 12
+        path.write_text(json.dumps(plan), encoding="utf-8")
+        with self.assertRaises(Exp001ContractError):
+            verify_contract(self.copy)
+
     def test_no_model_runtime_imports(self):
         source = (ROOT / "src/latent_triz/exp001_r3_contract.py").read_text()
         self.assertNotIn("transformers", source)
