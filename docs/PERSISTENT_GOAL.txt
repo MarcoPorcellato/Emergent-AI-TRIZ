@@ -14,7 +14,9 @@ and exact recovery bindings. Preserve byte-for-byte every R2 module bound by
 the consumed R2 dossier; never amend its implementation manifest. Then request
 a new explicit authorization for one C3
 analysis-boundary target read; the explicit authorization receipt is now recorded
-against the immutable contract; only after it, and CCP resource `Admit` with an
+against the immutable contract; after CCP resource `Admit` with an
 inactive empty queue, run the one analysis-only recovery and publish every
 terminal outcome. Keep all claim IDs absent and complete only after fresh-clone
-verification and terminal exact-head gates.
+verification and terminal exact-head gates. The single C3 analysis-only run has
+now produced a positive exploratory package; fresh-clone verification and its
+publication PR remain the final gates.

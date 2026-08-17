@@ -387,10 +387,16 @@ SmolLM2: it is an analysis-only correction that preserves the exact C2
 activation receipt, index, and dense-asset hash and can add `float32` only in
 memory under an exact-index binding. It must keep the original byte-bound R2
 modules unchanged and use separately namespaced C3 recovery/publication code.
-C3.0 synthetic qualification is complete and C3.1 corrective isolation is in
-delivery. Its next external gate
-is a new preregistered contract, then a separate explicit authorization for one
-sealed-target read and no model load. See
+C3.0 synthetic qualification and C3.1 corrective isolation are complete. The
+explicit authorization was recorded against the immutable contract, and the one
+analysis-only run completed after a fresh CCP `Admit`/empty-queue check. It opened
+the sealed targets once at the analysis boundary, loaded no model, and produced
+the terminal positive exploratory package at
+`results/a0r2/a0r2c3-analysis-only-v1.0.0-f8027fd0-r1/`. The primary p-value is
+`0.001000`, the macro-F1 margin over surface is `0.147686`, all `24` families
+passed, and `6` held-out domain directions succeeded. This remains automated E0
+evidence with no claim IDs and no general TRIZ claim. Fresh-clone verification
+and exact-head publication remain the final gates. See
 [A0-R2-C3 analysis-only metadata recovery](./A0R2C3_ANALYSIS_ONLY_RECOVERY.md).
 
 ### PR 30 — annotation ontology v1.2 implementation
