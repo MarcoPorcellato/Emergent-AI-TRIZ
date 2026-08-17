@@ -103,6 +103,7 @@ def main() -> int:
         ("schemas/exp001-r3-tool-edge.schema.json", "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl"),
         ("schemas/exp001-r3-item.schema.json", "experiments/exp001-reference-integrated/fixtures/items.jsonl"),
         ("schemas/exp001-r3-source-exposure.schema.json", "experiments/exp001-reference-integrated/fixtures/source-exposures.jsonl"),
+        ("schemas/exp001-r3-control-plan.schema.json", "experiments/exp001-reference-integrated/fixtures/control-plan.json"),
         ("schemas/triz-web-corpus.schema.json", "data/triz-consulting-web-corpus.json"),
         ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),
         ("schemas/a0-case.schema.json", "data/a0/cases.jsonl"),

@@ -28,12 +28,14 @@ _FIXTURES = {
     "matrix_cells": "fixtures/matrix-cells.jsonl",
     "tool_edges": "fixtures/tool-edges.jsonl",
     "source_exposures": "fixtures/source-exposures.jsonl",
+    "control_plan": "fixtures/control-plan.json",
 }
 _SCHEMAS = {
     "items": "exp001-r3-item.schema.json",
     "matrix_cells": "exp001-r3-matrix-cell.schema.json",
     "tool_edges": "exp001-r3-tool-edge.schema.json",
     "source_exposures": "exp001-r3-source-exposure.schema.json",
+    "control_plan": "exp001-r3-control-plan.schema.json",
 }
 
 
@@ -120,7 +122,13 @@ def verify_contract(root: str | Path) -> dict[str, Any]:
     loaded: dict[str, list[dict[str, Any]]] = {}
     for name, rel in _FIXTURES.items():
         path = _safe(experiment, rel, experiment=experiment)
-        loaded[name] = _jsonl(path)
+        if name == "control_plan":
+            value = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(value, dict):
+                raise Exp001ContractError("control plan must be an object")
+            loaded[name] = [value]
+        else:
+            loaded[name] = _jsonl(path)
         _schema_check(repo, loaded[name], _SCHEMAS[name])
     items = loaded["items"]
     by_id = {i["item_id"]: i for i in items}
@@ -147,6 +155,14 @@ def verify_contract(root: str | Path) -> dict[str, Any]:
             raise Exp001ContractError(f"Matrix visual receipts disagree: {cell['cell_id']}")
         if cell["direction"] != "improving_row_worsening_column":
             raise Exp001ContractError("Matrix reverse direction is not permitted")
+    control_plan = loaded["control_plan"][0]
+    pairs = control_plan.get("pairs")
+    if control_plan.get("target_values_present") is not False or not isinstance(pairs, list) or len(pairs) != 10:
+        raise Exp001ContractError("control plan is not the exact no-target ten-pair inventory")
+    kinds = {str(pair.get("control_kind")) for pair in pairs if isinstance(pair, dict)}
+    required_kinds = {"primary", "lexical_matched", "principle_near_neighbour", "matrix_direction_swap", "matrix_non_recommended_option", "tool_edge_unsupported", "explicit_abstention"}
+    if not required_kinds.issubset(kinds):
+        raise Exp001ContractError("control plan omits a required control")
     return {"status": "verified", "principles": 40, "web_resources": 18,
             "items": len(items), "matrix_cells": len(loaded["matrix_cells"]),
             "tool_edges": len(loaded["tool_edges"]), "source_exposures": len(loaded["source_exposures"]),
