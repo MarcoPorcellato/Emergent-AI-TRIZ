@@ -56,6 +56,18 @@ class A0R2C2ShapeContractTests(unittest.TestCase):
         self.assertEqual(2, len(result["hidden_states"][0]))
         self.assertEqual(960, len(result["hidden_states"][0][0]))
 
+    def test_adapter_normalizes_all_33_documented_llama_states(self) -> None:
+        rank_three_state = [[[1.0] * 960, [2.0] * 960]]
+        payload = {
+            "token_ids": [11, 12],
+            "hidden_states": tuple(rank_three_state for _ in range(33)),
+        }
+        adapter = object.__new__(SmolLM2C2ShapeAdapter)
+        with patch("latent_triz.a0r2c2_adapter.SmolLM2C1MappingAdapter.run_prompt", return_value=payload):
+            result = adapter.run_prompt(prompt="synthetic")
+        self.assertEqual(33, len(result["hidden_states"]))
+        self.assertTrue(all(len(state) == 2 and len(state[0]) == 960 for state in result["hidden_states"]))
+
 
 if __name__ == "__main__":
     unittest.main()

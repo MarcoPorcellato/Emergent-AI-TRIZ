@@ -3,7 +3,7 @@ type: documentation-index
 title: Documentation Index
 description: Maintained documentation portal for the Latent TRIZ open laboratory.
 status: canonical
-last_verified: 2026-08-16
+last_verified: 2026-08-17
 ---
 
 # Documentation Index
@@ -18,6 +18,7 @@ This is the **maintained** documentation bundle.
 - [Chronology log](./log.md)
 - [Reference collection](./reference/index.md)
 - [TRIZ expert reference corpus](./reference/triz-reference-corpus.md)
+- [SmolLM2 runtime contract](./reference/smollm2-runtime-contract.md)
 - [A0-R2.3 sealed-execution approval dossier](./A0R2_SEALED_EXECUTION_APPROVAL.md)
 - [Decision records](./decisions/index.md)
 

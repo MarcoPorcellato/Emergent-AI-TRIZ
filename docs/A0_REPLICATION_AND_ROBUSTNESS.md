@@ -480,6 +480,9 @@ index/dense bytes, tune statistics, or substitute any input.
 
 The detailed C3 contract is
 [A0-R2-C3 analysis-only metadata recovery](./A0R2C3_ANALYSIS_ONLY_RECOVERY.md).
+The [SmolLM2 runtime contract](./reference/smollm2-runtime-contract.md)
+separately makes the official tokenizer, Llama shape, and export-metadata
+requirements executable before future analysis.
 Only C3.0 synthetic qualification is currently authorized. A fresh explicit
 operator authorization remains mandatory before one later analysis-boundary
 sealed-target read; C2's authorization remains consumed.

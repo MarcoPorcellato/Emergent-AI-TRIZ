@@ -8,8 +8,9 @@ statistics, thresholds, claims, and source artifact bytes unchanged. Do not
 load or query a model, generate output, tune, substitute inputs, or reopen C2
 targets under its consumed authorization.
 
-First finish and publish C3.0/C3.1 with synthetic qualification and exact
-recovery bindings. Then request a new explicit authorization for one C3
+First finish and publish C3.0/C3.1 with synthetic qualification, the canonical
+SmolLM2 runtime contract, pre-analysis representation-index validation, and
+exact recovery bindings. Then request a new explicit authorization for one C3
 analysis-boundary target read; only after it, and CCP resource `Admit` with an
 inactive empty queue, run the one analysis-only recovery and publish every
 terminal outcome. Keep all claim IDs absent and complete only after fresh-clone

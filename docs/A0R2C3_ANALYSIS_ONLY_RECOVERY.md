@@ -38,8 +38,11 @@ protocol, prompts, cases, targets, endpoint, statistics, thresholds, and
 interpretation rules remain unchanged. Any mismatch is terminally refused.
 
 The extraction writer is also corrected to emit `dtype: float32` for any
-separately authorized future activation run. That writer correction does not
-alter the historical C2 index and is not permission for a further model run.
+separately authorized future activation run. It validates every index record
+and its dense-vector hash before the atomic bundle write, so an export-contract
+failure stops before analysis. The broader documented guardrails are in the
+[SmolLM2 runtime contract](./reference/smollm2-runtime-contract.md). None of
+this alters the historical C2 index or authorizes a further model run.
 
 ## Ordered milestones
 

@@ -51,6 +51,26 @@ EXPECTED_FORWARD_PASSES = 192
 EXPECTED_VECTOR_COUNT = 1920
 EXPECTED_HIDDEN_STATES = 33
 EXPECTED_HIDDEN_SIZE = 960
+REQUIRED_INDEX_FIELDS = frozenset(
+    {
+        "record_id",
+        "case_id",
+        "problem_family_id",
+        "domain",
+        "split",
+        "view",
+        "anchor_source",
+        "token_site",
+        "tuple_index",
+        "hidden_states_count",
+        "hidden_size",
+        "dtype",
+        "token_count",
+        "prompt_token_count",
+        "prompt_sha256",
+        "vector_sha256",
+    }
+)
 
 R1_CORPUS_MANIFEST_REL = Path("data/a0r1/manifest.json")
 R1_CASES_REL = Path("data/a0r1/cases.jsonl")
@@ -144,6 +164,44 @@ def _mean_vectors(vectors: list[list[float]], expected_dim: int) -> list[float]:
         for index, value in enumerate(vector):
             accumulator[index] += float(value)
     return [value / len(vectors) for value in accumulator]
+
+
+def _validate_representation_index_rows(
+    index_rows: list[dict[str, Any]],
+    dense_rows: dict[str, list[float]],
+    *,
+    expected_records: int = EXPECTED_VECTOR_COUNT,
+) -> None:
+    """Fail closed on an incomplete activation index before it reaches analysis.
+
+    This is deliberately independent of the statistical analyzer: an export
+    contract defect must stop while targets remain unopened. JSON Schema is
+    published for external tooling; this local check additionally binds each
+    row to the dense vector it indexes.
+    """
+
+    _require(len(index_rows) == expected_records, "representation index record-count drift")
+    _require(len(dense_rows) == expected_records, "dense representation record-count drift")
+    seen: set[str] = set()
+    for row in index_rows:
+        _require(isinstance(row, dict), "representation index row must be an object")
+        _require(REQUIRED_INDEX_FIELDS.issubset(row), "representation index missing required metadata")
+        record_id = row.get("record_id")
+        _require(isinstance(record_id, str) and record_id and record_id not in seen, "representation index record ID drift")
+        seen.add(record_id)
+        _require(row.get("dtype") == "float32", "representation index dtype drift")
+        _require(row.get("hidden_states_count") == EXPECTED_HIDDEN_STATES, "representation index hidden-state count drift")
+        _require(row.get("hidden_size") == EXPECTED_HIDDEN_SIZE, "representation index hidden-size drift")
+        _require(row.get("tuple_index") in REQUIRED_TUPLE_INDICES, "representation index tuple-index drift")
+        _require(isinstance(row.get("token_count"), int) and row["token_count"] > 0, "representation index token-count drift")
+        _require(
+            isinstance(row.get("prompt_token_count"), int) and row["prompt_token_count"] >= row["token_count"],
+            "representation index prompt-token count drift",
+        )
+        vector = dense_rows.get(record_id)
+        _require(isinstance(vector, list) and len(vector) == EXPECTED_HIDDEN_SIZE, "representation index dense vector missing")
+        _require(row.get("vector_sha256") == _stable_sha256(vector), "representation index vector hash drift")
+    _require(seen == set(dense_rows), "representation index and dense record IDs differ")
 
 
 def _git_head_sha(root: Path) -> str:
@@ -635,6 +693,7 @@ def run_a0r2_activations(
     _require(forward_passes == EXPECTED_FORWARD_PASSES, "forward-pass count drift")
     _require(len(index_rows) == EXPECTED_VECTOR_COUNT, "vector-count drift")
     _require(len(dense_rows) == EXPECTED_VECTOR_COUNT, "dense row-count drift")
+    _validate_representation_index_rows(index_rows, dense_rows)
 
     output_root.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=str(output_root.parent)) as staging_root:

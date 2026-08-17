@@ -15,7 +15,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from latent_triz import a0r2_adapter
 from latent_triz.a0r2_adapter import A0R2AdapterError, SmolLM2TransformersAdapter
-from latent_triz.a0r2_activations import A0R2ActivationError, run_a0r2_activations
+from latent_triz.a0r2_activations import (
+    A0R2ActivationError,
+    _stable_sha256,
+    _validate_representation_index_rows,
+    run_a0r2_activations,
+)
+from latent_triz.validator import validate
 
 
 class _FakeTokenizer:
@@ -160,6 +166,28 @@ class A0R2ActivationTests(unittest.TestCase):
             (model_root / filename).write_text(filename, encoding="utf-8")
         return model_root
 
+    def test_representation_index_rejects_missing_dtype_before_analysis(self) -> None:
+        vector = [0.0] * 960
+        row = {
+            "record_id": "case::problem_only::sentinel::32",
+            "case_id": "case",
+            "problem_family_id": "family",
+            "domain": "domain",
+            "split": "sealed",
+            "view": "problem_only",
+            "anchor_source": "transformation",
+            "token_site": "sentinel",
+            "tuple_index": 32,
+            "hidden_states_count": 33,
+            "hidden_size": 960,
+            "token_count": 1,
+            "prompt_token_count": 1,
+            "prompt_sha256": "0" * 64,
+            "vector_sha256": _stable_sha256(vector),
+        }
+        with self.assertRaisesRegex(A0R2ActivationError, "missing required metadata"):
+            _validate_representation_index_rows([row], {row["record_id"]: vector}, expected_records=1)
+
     def test_activation_flow_hits_expected_counts_and_hashes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             tmpdir = Path(directory)
@@ -203,6 +231,10 @@ class A0R2ActivationTests(unittest.TestCase):
             self.assertTrue(all(len(row) == 960 for row in dense_payload.values()))
             self.assertEqual(1920, len(index_rows))
             self.assertEqual({"float32"}, {row.get("dtype") for row in index_rows})
+            index_schema = json.loads(
+                (self.root / "schemas/a0r2-representation-index-record.schema.json").read_text(encoding="utf-8")
+            )
+            self.assertTrue(all(not validate(row, index_schema) for row in index_rows))
             self.assertEqual(48, summary_payload["case_count"])
             self.assertEqual(192, summary_payload["forward_passes"])
             self.assertEqual(1920, summary_payload["vector_count"])
