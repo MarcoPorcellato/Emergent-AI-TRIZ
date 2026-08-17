@@ -1,0 +1,57 @@
+{
+  "artifact_class": "a0r2c2-shape-correction-contract",
+  "claim_ids": [],
+  "contract_id": "a0r2c2-shape-correction-v1",
+  "contract_status": "approval_requested",
+  "correction": {
+    "corrected_shape": "[token,hidden] after singleton_batch_removal",
+    "failure_kind": "TypeError",
+    "input_shape": "[batch,token,hidden] with batch=1",
+    "root_cause": "rank_three_Llama_hidden_state_passed_to_rank_two_normalizer",
+    "semantic_delta": "singleton_batch_dimension_normalization_only"
+  },
+  "created_at": "2026-08-16T23:15:00Z",
+  "empirical": true,
+  "evidence_eligible": false,
+  "implementation_code": [
+    {"path": "src/latent_triz/a0r2c2_adapter.py", "sha256": "233557349a97c02422b87e50c6299f13cac91278bee232cf30dd9f616c6693b6", "size": 3023},
+    {"path": "src/latent_triz/a0r2c2_authorization.py", "sha256": "8dfa88f35075c5756d2bf5df50b01bb5d9f8f6f115c084c3fd9dc45fa3450a23", "size": 5305},
+    {"path": "src/latent_triz/a0r2c2_runner.py", "sha256": "0ea2856b8aa3989cbb1a92037e97e8041b84176710b9fbe940f382d2537f98fd", "size": 1765}
+  ],
+  "invariants": {
+    "cases_unchanged": true,
+    "model_revision_unchanged": true,
+    "no_claim_promotion": true,
+    "no_model_substitution": true,
+    "no_tuning": true,
+    "statistics_unchanged": true,
+    "study_protocol_unchanged": true,
+    "targets_unchanged": true,
+    "thresholds_unchanged": true
+  },
+  "operator_approval_granted": false,
+  "predecessor": {
+    "public_main": "30a93c7df51433dacb09e2cd6a1554eba4a6e35c",
+    "c1_publication_manifest": {"path": "results/a0r2/a0r2c1-v1.0.0-f8027fd0-r1/publication-manifest.json", "sha256": "09889eecc5779dd2078a09dc0068367ea712cee6acba9cd7c7c526eced8e35b8", "size": 820},
+    "c1_terminal_failure": {"path": "results/a0r2/a0r2c1-v1.0.0-f8027fd0-r1/run-failure.json", "sha256": "90bc5bff66bb5e191749f2f72e825a6d59aa07f6a684de29eca476d12424bc82", "size": 839},
+    "study_protocol": {"path": "experiments/a0r2-independent-model/study-protocol.json", "sha256": "383c2fe8a0d2baa893bc88326e3a5e18329691a90fd9bd1ea106602c8ee9bf3f", "size": 6403}
+  },
+  "run_contract": {
+    "analysis_target_content_reads": 1,
+    "device": "cpu",
+    "dtype": "float32",
+    "generation_allowed": false,
+    "local_only": true,
+    "maximum_material_runs": 1,
+    "maximum_new_dense_output_bytes": 67108864,
+    "maximum_peak_rss_bytes": 8589934592,
+    "maximum_wall_seconds": 1800,
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "network_access": false,
+    "publish_every_terminal_outcome": true,
+    "retry_after_model_or_target_access": "new_explicit_approval_required",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "run_id": "a0r2c2-v1.0.0-f8027fd0-r1"
+  },
+  "scientific_status": "exploratory"
+}

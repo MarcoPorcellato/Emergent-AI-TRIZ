@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2c2-sealed-execution-authorization.schema.json",
+  "title": "A0-R2-C2 sealed execution authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "receipt_id", "receipt_status", "recorded_at", "source", "bindings", "scope", "access"],
+  "properties": {
+    "artifact_class": {"const": "a0r2c2-sealed-execution-authorization"},
+    "receipt_id": {"const": "a0r2c2-sealed-execution-authorization-v1"},
+    "receipt_status": {"const": "authorized"},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "source": {"const": "explicit_operator_authorization"},
+    "bindings": {"type": "object", "additionalProperties": false, "required": ["contract_sha256"], "properties": {"contract_sha256": {"pattern": "^[0-9a-f]{64}$"}}},
+    "scope": {"type": "object", "additionalProperties": false, "required": ["run_id", "maximum_material_runs", "analysis_target_content_reads", "maximum_wall_seconds", "maximum_peak_rss_bytes", "maximum_new_dense_output_bytes", "local_only", "network_access", "generation_allowed", "no_tuning", "no_model_substitution", "no_protocol_change", "publish_every_terminal_outcome"], "properties": {"run_id": {"const": "a0r2c2-v1.0.0-f8027fd0-r1"}, "maximum_material_runs": {"const": 1}, "analysis_target_content_reads": {"const": 1}, "maximum_wall_seconds": {"const": 1800}, "maximum_peak_rss_bytes": {"const": 8589934592}, "maximum_new_dense_output_bytes": {"const": 67108864}, "local_only": {"const": true}, "network_access": {"const": false}, "generation_allowed": {"const": false}, "no_tuning": {"const": true}, "no_model_substitution": {"const": true}, "no_protocol_change": {"const": true}, "publish_every_terminal_outcome": {"const": true}}},
+    "access": {"type": "object", "additionalProperties": false, "required": ["model_loaded", "model_output_accessed", "sealed_targets_accessed"], "properties": {"model_loaded": {"const": false}, "model_output_accessed": {"const": false}, "sealed_targets_accessed": {"const": false}}}
+  }
+}

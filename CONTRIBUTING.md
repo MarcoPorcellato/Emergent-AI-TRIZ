@@ -81,6 +81,9 @@ make preflight-run
 make preflight-verify
 ```
 
+Before changing branches to publish the receipt, follow the receipt-custody
+rule in the [Commit CI Preflight reference](docs/reference/commit-ci-preflight.md#receipt-custody-across-branch-changes).
+
 For Stage 1 dry-runs and schema checks:
 
 ```text

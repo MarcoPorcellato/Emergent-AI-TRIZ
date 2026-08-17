@@ -51,6 +51,17 @@ of one hour. When the classifier requires CCP, publish the receipt on the commit
 `ccp-evidence/<40-character-head-SHA>` branch. The trusted workflow verifies
 it against the base-branch policy.
 
+### Receipt custody across branch changes
+
+Before changing branches after a fresh CCP run, preserve the generated
+`.ccp/receipt.json` outside the checkout (or in a uniquely named temporary
+file), record its SHA-256 and source `HEAD`, and verify both before publication.
+Publish that preserved copy to the commit-bound evidence branch; do not switch
+to the evidence branch while relying on the ignored working-tree receipt,
+because checkout can restore or overwrite an older tracked receipt. If the
+preserved receipt or its hash is unavailable, stop and run a newly admitted CCP
+qualification rather than publishing an unverified or stale receipt.
+
 ### Installed macOS v4 resource admission
 
 The locally installed CCP binary includes the `macos-v4` compound-pressure
