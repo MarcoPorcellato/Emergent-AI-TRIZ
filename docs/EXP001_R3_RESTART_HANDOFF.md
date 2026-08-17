@@ -10,6 +10,16 @@
 - Remote/ruleset/PR state has not been re-verified at this checkpoint and must
   be checked live before publication or qualification.
 
+## 2026-08-18 continuation checkpoint
+
+- The latest committed no-model statistical checkpoint is
+  `0cc8c30e061350de5ed5ba6d6398016ce2c2ba75`.
+- `stash@{0}` (`checkpoint: r3 primary-unit draft pending correction`) preserves
+  an interrupted, unapproved authoring draft. It must not be applied as a
+  fixture without review: its first review found duplicated replicates and a
+  lexical control that was not semantically independent.
+- The interrupted response-adapter delegation wrote no repository files.
+
 ## Completed no-model work
 
 - R3 source and schema foundation is committed through `60c39e1`.
@@ -43,8 +53,11 @@ requested.
 1. Verify `git status`, branch/HEAD, `origin/main`, worktree inventory,
    stashes, GitHub ruleset/open PRs, and the immutable source/SmolLM2 receipts.
 2. Re-run the listed targeted R3 tests and schema cross-validation.
-3. Complete the public fixture/statistical design without accessing model or
-   sealed targets; update the canonical specification and persistent goal.
+3. Review or reconstruct the saved primary-unit draft. Require 24 distinct
+   public units, six domains, two families and two independent replicates per
+   domain, with a genuinely non-TRIZ lexical control and separate option set
+   for every control. Do this without accessing model or sealed targets; update
+   the canonical specification and persistent goal.
 4. Qualify the frozen no-model package before requesting any new operator
    authorization. CCP resource/admission checks apply only before a later
    material qualification or model run.
