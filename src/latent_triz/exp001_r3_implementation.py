@@ -29,7 +29,7 @@ CODE_PATHS = tuple(
         "exp001_r3_primary_fixture", "exp001_r3_response_adapter",
         "exp001_r3_response_execution", "exp001_r3_runner",
         "exp001_r3_secondary_fixture", "exp001_r3_target_key",
-        "exp001_r3_implementation", "exp001_r3_report",
+        "exp001_r3_implementation", "exp001_r3_report", "exp001_r3_material_runner",
     )
 )
 FIXTURE_PATHS = (
