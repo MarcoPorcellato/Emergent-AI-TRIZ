@@ -1,6 +1,6 @@
 Complete `docs/EXP001_REFERENCE_INTEGRATED.md` from verified public main
 `db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c`, resuming local R3 checkpoint
-`60c39e12503f01f2e60a5864dbf6881a333d112c` only after verifying the live repository,
+`a216eeb646995b0530ec942b92820cfa0e163b38` only after verifying the live repository,
 ruleset, source corpus, artifacts, and receipts before acting.
 
 R3.0 is in delivery on branch `agent/exp001-r3-reference-freeze`: a strict
@@ -8,10 +8,11 @@ no-model protocol, sparse externally-referenced Matrix 2003 fixture, and
 rights-aware Panitz edge fixture are being prepared. Do not call this a frozen
 study until paired items, split/contamination receipts, implementation hash
 bindings, synthetic qualification, and an exact approval dossier exist.
-The current ten-pair inventory is insufficient for the stated alpha .05 primary;
-expand its public target-free fixture design and freeze the statistical endpoint
-before any model or sealed-target access. Resume instructions are in
-`docs/EXP001_R3_RESTART_HANDOFF.md`.
+The public target-free fixture now structurally satisfies the six-domain primary
+design, but the study remains unfrozen. Finish the teacher-forced local scoring
+adapter, immutable package/verification path, implementation hash bindings and
+full synthetic qualification before any model or sealed-target access. Resume
+instructions are in `docs/EXP001_R3_RESTART_HANDOFF.md`.
 
 Prepare and freeze a new R3/EXP-001 TRIZ reference-integrated study without
 changing any A0-R2/C3 bytes. Keep `TRIZ-blinded-transfer` and

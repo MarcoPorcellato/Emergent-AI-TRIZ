@@ -4,7 +4,7 @@
 
 - Recorded: 2026-08-18, before operator-requested macOS restart.
 - Branch: `agent/exp001-r3-reference-freeze`.
-- Exact local checkpoint: `60c39e12503f01f2e60a5864dbf6881a333d112c`.
+- Exact local checkpoint before this handoff commit: `a216eeb646995b0530ec942b92820cfa0e163b38`.
 - Verified public delivery base: `db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c`.
 - Worktree at recording: clean; the four pre-existing stashes remain untouched.
 - Remote/ruleset/PR state has not been re-verified at this checkpoint and must
@@ -12,56 +12,59 @@
 
 ## 2026-08-18 continuation checkpoint
 
-- The latest committed no-model statistical checkpoint is
-  `0cc8c30e061350de5ed5ba6d6398016ce2c2ba75`.
-- `stash@{0}` (`checkpoint: r3 primary units awaiting real position balance`)
-  preserves the latest unapproved authoring draft. It improves duplicate and
-  lookup-style controls but remains unfit for freezing: the intended transfer
-  answer is still systematically the first option, and its apparent balance
-  test was only a structural proxy. `stash@{1}` preserves the earlier draft.
-- The interrupted response-adapter delegation wrote no repository files.
+- `b1ab0d6` replaces the unbalanced draft with 24 public, target-free primary
+  units across six domains, two families per domain, and two replicates per
+  family. The semantic intended positions are rotated six times each over
+  `A`–`D`; no answer mapping is stored in the public fixture.
+- `e91e420` defines teacher-forced four-option scoring; `5ac2f89` adds the
+  fail-closed no-model execution preflight; `bd016be` adds a local-only
+  SmolLM2 adapter; and `a216eeb` adds the target-free response-execution
+  layer. All are synthetic-tested only: no R3 model load, target read, output,
+  CCP workload, or network operation has occurred.
+- `stash@{0}` and `stash@{1}` preserve rejected pre-balance fixture drafts as
+  historical recovery evidence. They must remain untouched and must not be
+  applied over the corrected committed fixture.
 
 ## Completed no-model work
 
-- R3 source and schema foundation is committed through `60c39e1`.
+- R3 source and schema foundation is committed through `a216eeb`.
 - `87a54f7` adds a target-free builder that deterministically derives 20
   non-poolable public record stubs from the ten-pair control plan and opaque
   option-set inventory.
 - `60c39e1` makes the no-model contract fail closed if the option inventory,
   split bindings, or non-pooling guarantee diverge from the control plan.
-- Targeted synthetic validation passed: 14 R3 builder/split/contract tests.
-- Schema parity validation passed: 80 tracked schema pairs agree and all four
-  required mutations are rejected.
+- Targeted synthetic validations passed for the fixture, analysis, execution,
+  adapter, response-execution, and analysis-boundary modules. A full no-model
+  suite and schema parity check remain required before freezing.
 
 ## Deliberately unfinished boundary
 
 The study is not frozen and no model, sealed target, CCP workload, or network
-operation has been started for R3. A review found that the present ten-pair
-inventory cannot support the declared held-out-domain primary: it has only four
-primary domains, a lexical control only for one domain, and placeholder options.
-It therefore cannot yield a valid alpha .05 cluster-permutation primary result.
+operation has been started for R3. The public fixture is now structurally
+adequate for the declared six-domain exact primary, but it still lacks the
+frozen implementation binding, terminal-package schemas and writers, a
+human-independent/source-derived sealed-key procedure, and full exact-head
+no-model qualification.
 
-The next milestone is to revise the public, target-free fixture design before
-freezing: add at least six independent domains, two problem families per domain,
-two task pairs per family, a lexical-matched control for every family/domain,
-and semantic public option text with sealed labels. Then freeze the scoring,
-cluster permutation, confidence interval, multiplicity, and abstention rules;
-only after no-model qualification may an exact authorization dossier be
-requested.
+The next milestone is to complete the R3-specific model scoring integration and
+immutable package/verification path, then freeze the implementation and
+statistical bindings. Only after exact-head no-model qualification may an exact
+authorization dossier be requested and the sealed key created at the authorized
+analysis boundary.
 
 ## Resume sequence
 
 1. Verify `git status`, branch/HEAD, `origin/main`, worktree inventory,
    stashes, GitHub ruleset/open PRs, and the immutable source/SmolLM2 receipts.
 2. Re-run the listed targeted R3 tests and schema cross-validation.
-3. Review or reconstruct the saved primary-unit draft. Require 24 distinct
-   public units, six domains, two families and two independent replicates per
-   domain, with a genuinely non-TRIZ lexical control and separate option set
-   for every control. Apply a real four-position semantic rotation before the
-   sealed key is created, then verify the sealed key is exactly balanced. Do
-   this without accessing model or sealed targets; update
-   the canonical specification and persistent goal.
-4. Qualify the frozen no-model package before requesting any new operator
+3. Finish and synthetic-test the real local teacher-forced option-scoring
+   adapter. In particular, validate tensor normalization, prompt/continuation
+   prefix stability, continuation log-probability positions, offline-only
+   loading, and absence of generation.
+4. Add and test immutable R3 execution, result, report, and publication
+   manifests; then freeze implementation hashes and update the canonical
+   specification and persistent goal.
+5. Qualify the frozen no-model package before requesting any new operator
    authorization. CCP resource/admission checks apply only before a later
    material qualification or model run.
 
