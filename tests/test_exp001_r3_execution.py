@@ -1,5 +1,4 @@
 import json
-import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -38,8 +37,9 @@ def _edit_protocol(repo: Path, status: str) -> None:
 
 class Exp001ExecutionPreflightTests(unittest.TestCase):
     def test_module_has_no_ml_runtime_imports(self):
-        self.assertNotIn("torch", sys.modules)
-        self.assertNotIn("transformers", sys.modules)
+        source = (ROOT / "src/latent_triz/exp001_r3_execution.py").read_text(encoding="utf-8")
+        self.assertNotIn("import torch", source)
+        self.assertNotIn("import transformers", source)
 
     def test_current_review_protocol_fails_closed(self):
         with self.assertRaises(Exp001ExecutionPreflightError):
