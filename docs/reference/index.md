@@ -3,7 +3,7 @@ type: reference-collection
 title: Reference Collection
 description: Canonical pointers for artifact flow, schemas, and operational references.
 status: canonical
-last_verified: 2026-08-16
+last_verified: 2026-08-17
 ---
 
 # Reference Collection
@@ -12,7 +12,9 @@ last_verified: 2026-08-16
 
 - [Stage 1 blinded pilot](../STAGE1_PILOT.md)
 - [Commit CI Preflight adoption](commit-ci-preflight.md)
+- [GitNexus code-intelligence policy](gitnexus-policy.md)
 - [Fail-closed schema validation](schema-validation.md)
+- [SmolLM2 runtime contract](smollm2-runtime-contract.md)
 - [TRIZ expert reference corpus](triz-reference-corpus.md)
 - [Lab architecture](../LAB_ARCHITECTURE.md)
 - [Laboratory master plan](../LABORATORY_MASTER_PLAN.md)

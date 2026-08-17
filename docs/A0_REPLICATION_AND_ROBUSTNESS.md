@@ -3,7 +3,7 @@ type: research-spec
 title: A0 Replication and Robustness
 description: Preregistered route for challenging the published A0 automated-proxy signal on independent procedural data and model families.
 status: in_delivery
-last_verified: 2026-08-16
+last_verified: 2026-08-17
 ---
 
 # A0 Replication and Robustness
@@ -417,7 +417,7 @@ asset exists; the failure receipt, report, and manifest are the complete
 immutable package. The package verifier must continue to reject a fabricated
 mixed failure/activation package.
 
-**R2.3–R2.5 closeout:** PR 64 merged the corrective authorization gate at
+**Historical R2.3–R2.5 closeout:** PR 64 merged the corrective authorization gate at
 `9a2269650380864af4932cd0403c806eb57837a1`. PR 65 then published the first and
 only terminal execution package at `1112bc31e388c5c6857ecfd96542466cf613ea52`.
 The source package passed fresh-clone verification; its exact-head CCP receipt
@@ -466,6 +466,28 @@ stage. The failure receipt conservatively records model output and sealed
 target access as `possibly_accessed`; no statistical result exists, no claim is
 promoted, and the C2 authorization is consumed. Any future model run requires
 a separately preregistered protocol and explicit authorization.
+
+#### A0-R2-C3 — analysis-only index metadata recovery
+
+**Current checkpoint — C3.0 complete; C3.1 corrective isolation in delivery:** the published C2 failure digest
+resolves deterministically to `activation dtype drift`. The 1,920 historical
+C2 index rows omit `dtype`, while the activation receipt independently binds
+the run to CPU `float32`; the analyzer rejects the omission before target
+content is read. C3 is constrained to an in-memory, exact-index-hash metadata
+recovery and a prospective analysis-only path over the immutable C2 activation
+bundle. It must not load or query a model, generate output, alter the source
+index/dense bytes, tune statistics, or substitute any input. The frozen R2
+activation, analysis, and report modules remain byte-identical to their bound
+implementation receipt; C3-only behavior is separately namespaced and bound.
+
+The detailed C3 contract is
+[A0-R2-C3 analysis-only metadata recovery](./A0R2C3_ANALYSIS_ONLY_RECOVERY.md).
+The [SmolLM2 runtime contract](./reference/smollm2-runtime-contract.md)
+separately makes the official tokenizer, Llama shape, and export-metadata
+requirements executable before future analysis.
+Only C3.0 synthetic qualification is currently authorized. A fresh explicit
+operator authorization remains mandatory before one later analysis-boundary
+sealed-target read; C2's authorization remains consumed.
 
 ## Statistical and missing-data rules
 

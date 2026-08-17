@@ -1,6 +1,7 @@
 # A0-R2-C2 Llama hidden-state shape correction
 
-Status: terminal failed package pending publication; no further C2 execution is authorized.
+Status: terminal failed package published on public `main`; no further C2
+execution is authorized.
 
 ## Predecessor and root cause
 
@@ -50,3 +51,8 @@ No statistical result or TRIZ claim follows from this terminal failure. The
 activation receipt, representation index, external dense-asset locator and
 hash, failure receipt, report, and publication manifest are retained for
 recovery and independent inspection.
+
+The C2 failure digest has since been deterministically resolved to
+`activation dtype drift`: the historical index omitted a field required by the
+analyzer. The separately preregistered C3 analysis-only recovery is documented
+in [A0-R2-C3 analysis-only metadata recovery](./A0R2C3_ANALYSIS_ONLY_RECOVERY.md).

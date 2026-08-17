@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2-representation-index-record.schema.json",
+  "title": "A0-R2 representation-index record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_id", "case_id", "problem_family_id", "domain", "split", "view", "anchor_source", "token_site", "tuple_index", "hidden_states_count", "hidden_size", "dtype", "token_count", "prompt_token_count", "prompt_sha256", "vector_sha256"],
+  "properties": {
+    "record_id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+    "case_id": {"type": "string", "minLength": 1},
+    "problem_family_id": {"type": "string", "minLength": 1},
+    "domain": {"type": "string", "minLength": 1},
+    "split": {"const": "sealed"},
+    "view": {"enum": ["problem_only", "transformation_only", "problem_plus_transformation", "problem_plus_solution"]},
+    "anchor_source": {"enum": ["transformation", "solution"]},
+    "token_site": {"enum": ["sentinel", "final_transformation_token", "mean_transformation_span"]},
+    "tuple_index": {"enum": [0, 11, 21, 32]},
+    "hidden_states_count": {"const": 33},
+    "hidden_size": {"const": 960},
+    "dtype": {"const": "float32"},
+    "token_count": {"type": "integer", "minimum": 1},
+    "prompt_token_count": {"type": "integer", "minimum": 1},
+    "prompt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "vector_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

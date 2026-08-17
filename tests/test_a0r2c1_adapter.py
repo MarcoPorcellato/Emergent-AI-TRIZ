@@ -5,6 +5,11 @@ import unittest
 from latent_triz.a0r2_adapter import A0R2AdapterError
 from latent_triz.a0r2c1_adapter import SmolLM2C1MappingAdapter
 
+try:
+    from transformers.tokenization_utils_base import BatchEncoding
+except ImportError:  # The repository's dependency-free test lane remains supported.
+    BatchEncoding = None
+
 
 class _Tokenizer:
     is_fast = True
@@ -42,6 +47,13 @@ class TestA0R2C1Adapter(unittest.TestCase):
         self.assertEqual(result["token_ids"], [1, 2])
         self.assertEqual(result["offsets_mapping"], [[0, 1], [1, 2]])
 
+    @unittest.skipUnless(BatchEncoding is not None, "requires the installed Transformers ABI")
+    def test_accepts_actual_transformers_batch_encoding(self):
+        encoded = BatchEncoding(_encoded())
+        self.assertFalse(isinstance(encoded, dict))
+        result = _Adapter(encoded).run_prompt(prompt="ab")
+        self.assertEqual(result["token_ids"], [1, 2])
+        self.assertEqual(result["offsets_mapping"], [[0, 1], [1, 2]])
 
     def test_rejects_non_mapping_tokenizer_output(self):
         with self.assertRaisesRegex(A0R2AdapterError, "must be a mapping"):
