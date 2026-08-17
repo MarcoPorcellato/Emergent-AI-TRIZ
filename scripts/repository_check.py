@@ -95,6 +95,7 @@ def main() -> int:
         ("schemas/a0r2c1-tokenizer-compatibility.schema.json", "results/a0r2c1/preexecution/tokenizer-compatibility.json"),
         ("schemas/a0r2c1-sealed-execution-authorization.schema.json", "results/a0r2c1/preexecution/sealed-execution-authorization.json"),
         ("schemas/a0r2c2-correction-contract.schema.json", "experiments/a0r2c2-shape-correction/contract.json"),
+        ("schemas/a0r2c3-analysis-contract.schema.json", "experiments/a0r2c3-analysis-only-recovery/contract.json"),
         ("schemas/triz-reference-registry.schema.json", "data/triz-reference-sources.json"),
         ("schemas/triz-principle-reference.schema.json", "data/triz-reference/principles.jsonl"),
         ("schemas/triz-web-corpus.schema.json", "data/triz-consulting-web-corpus.json"),
@@ -181,6 +182,8 @@ def main() -> int:
         "schemas/a0r2c1-tokenizer-compatibility.schema.json",
         "schemas/a0r2c2-correction-contract.schema.json",
         "schemas/a0r2c2-sealed-execution-authorization.schema.json",
+        "schemas/a0r2c3-analysis-contract.schema.json",
+        "schemas/a0r2c3-analysis-authorization.schema.json",
         "schemas/triz-reference-registry.schema.json",
         "data/triz-reference-sources.json",
         "schemas/triz-principle-reference.schema.json",
@@ -221,6 +224,7 @@ def main() -> int:
         "results/a0r2c1/preexecution/tokenizer-compatibility.json",
         "results/a0r2c1/preexecution/sealed-execution-authorization.json",
         "experiments/a0r2c2-shape-correction/contract.json",
+        "experiments/a0r2c3-analysis-only-recovery/contract.json",
     )
     for path in json_files:
         json.loads((ROOT / path).read_text(encoding="utf-8"))

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/a0r2c3-analysis-contract.schema.json",
+  "title": "A0-R2-C3 analysis-only metadata recovery contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "contract_id", "contract_status", "created_at", "operator_approval_granted", "scientific_status", "empirical", "evidence_eligible", "claim_ids", "predecessor", "correction", "invariants", "run_contract", "implementation_code"],
+  "properties": {
+    "artifact_class": {"const": "a0r2c3-analysis-only-recovery-contract"},
+    "contract_id": {"const": "a0r2c3-analysis-only-recovery-v1"},
+    "contract_status": {"const": "approval_requested"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "operator_approval_granted": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "empirical": {"const": true},
+    "evidence_eligible": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "predecessor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["public_main", "study_protocol", "c2_failure", "c2_activation_receipt", "c2_representation_index", "c2_publication_manifest"],
+      "properties": {
+        "public_main": {"const": "c8a8a99441680bffb17de0e93d909f7c01373b5b"},
+        "study_protocol": {"$ref": "#/$defs/binding"},
+        "c2_failure": {"$ref": "#/$defs/binding"},
+        "c2_activation_receipt": {"$ref": "#/$defs/binding"},
+        "c2_representation_index": {"$ref": "#/$defs/binding"},
+        "c2_publication_manifest": {"$ref": "#/$defs/binding"}
+      }
+    },
+    "correction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["failure_digest", "failure_message", "source_index_sha256", "source_dtype", "source_records", "semantic_delta"],
+      "properties": {
+        "failure_digest": {"const": "e42a209ddb9d3e2017d68f5b56ec609986b280e9890dace37a8152fd6f4a9e0a"},
+        "failure_message": {"const": "activation dtype drift"},
+        "source_index_sha256": {"const": "baa78647fcc01c1d71cf27ef1c1fd83c6e38feb2a9a54a58fab87f245c63fc58"},
+        "source_dtype": {"const": "float32"},
+        "source_records": {"const": 1920},
+        "semantic_delta": {"const": "in_memory_dtype_metadata_recovery_only"}
+      }
+    },
+    "invariants": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_activation_bytes_unchanged", "model_load_forbidden", "model_substitution_forbidden", "network_forbidden", "generation_forbidden", "statistics_unchanged", "targets_unchanged", "no_tuning", "no_claim_promotion"],
+      "properties": {
+        "source_activation_bytes_unchanged": {"const": true}, "model_load_forbidden": {"const": true}, "model_substitution_forbidden": {"const": true}, "network_forbidden": {"const": true}, "generation_forbidden": {"const": true}, "statistics_unchanged": {"const": true}, "targets_unchanged": {"const": true}, "no_tuning": {"const": true}, "no_claim_promotion": {"const": true}
+      }
+    },
+    "run_contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["run_id", "maximum_analysis_runs", "analysis_target_content_reads", "model_loads", "new_dense_output_bytes", "local_only", "network_access", "generation_allowed", "publish_every_terminal_outcome", "retry_after_target_access"],
+      "properties": {
+        "run_id": {"const": "a0r2c3-analysis-only-v1.0.0-f8027fd0-r1"}, "maximum_analysis_runs": {"const": 1}, "analysis_target_content_reads": {"const": 1}, "model_loads": {"const": 0}, "new_dense_output_bytes": {"const": 0}, "local_only": {"const": true}, "network_access": {"const": false}, "generation_allowed": {"const": false}, "publish_every_terminal_outcome": {"const": true}, "retry_after_target_access": {"const": "new_explicit_approval_required"}
+      }
+    },
+    "implementation_code": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"$ref": "#/$defs/code_binding"}}
+  },
+  "$defs": {
+    "binding": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "size"], "properties": {"path": {"type": "string", "minLength": 1}, "sha256": {"pattern": "^[0-9a-f]{64}$"}, "size": {"type": "integer", "minimum": 1}}},
+    "code_binding": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "size"], "properties": {"path": {"pattern": "^src/latent_triz/a0r2[a-z0-9_]*\\.py$"}, "sha256": {"pattern": "^[0-9a-f]{64}$"}, "size": {"type": "integer", "minimum": 1}}}
+  }
+}

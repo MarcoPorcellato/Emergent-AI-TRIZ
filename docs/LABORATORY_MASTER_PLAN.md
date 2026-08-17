@@ -36,7 +36,7 @@ as a short pointer to this plan rather than duplicating its milestones.
 | Item | Verified state | Authoritative anchor |
 |---|---|---|
 | Public repository | `MarcoPorcellato/Latent-TRIZ` | GitHub repository and tracked `LICENSE` / `NOTICE` |
-| Protected `main` | `39ad1965e82f5aa2f4671e38708e401774f176ec` | live GitHub state after PR 51; verify again before the next mutation |
+| Protected `main` | `c8a8a99441680bffb17de0e93d909f7c01373b5b` | live GitHub state after PR 70; verify again before the next mutation |
 | Required merge context | strict `merge-policy/gate` | active GitHub ruleset and `.github/expected-main-ruleset.json` |
 | Completed automated milestone | A0-R Tier R1 same-model replication | PR 41, run `a0r1-v1.0.0-e93a9faa-r1` |
 | Current authentic-TRIZ milestone | annotation ontology v1.2 | draft PR 30; live state must be rebased and requalified before delivery |
@@ -375,6 +375,17 @@ successfully produced the activation bundle but terminated with
 `A0R2AnalysisError` at the data stage. The terminal package is `failed`; no
 statistical inference or claim is available, and any further run requires a
 separate preregistration and explicit authorization.
+
+### A0-R2-C3 — analysis-only metadata recovery
+
+The C2 failure is now reproducibly attributable to the missing per-row
+`dtype` metadata required by the analyzer. C3 may not rerun SmolLM2: it is an
+analysis-only correction that preserves the exact C2 activation receipt, index,
+and dense-asset hash and can add `float32` only in memory under an exact-index
+binding. C3.0 synthetic qualification is in delivery. Its next external gate
+is a new preregistered contract, then a separate explicit authorization for one
+sealed-target read and no model load. See
+[A0-R2-C3 analysis-only metadata recovery](./A0R2C3_ANALYSIS_ONLY_RECOVERY.md).
 
 ### PR 30 — annotation ontology v1.2 implementation
 

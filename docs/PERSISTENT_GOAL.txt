@@ -1,15 +1,16 @@
-Publish and verify the terminal A0-R2-C2 SmolLM2 failure package from the live
-public main anchor. Preserve C1 as an immutable terminal failure; C2 consumed
-its separately authorized one-attempt execution contract and is not retryable.
+Complete A0-R2-C3 according to docs/A0R2C3_ANALYSIS_ONLY_RECOVERY.md, starting
+from verified public main `c8a8a99441680bffb17de0e93d909f7c01373b5b` and
+verifying the live repository, ruleset, artifacts, and receipts first.
 
-The C2 singleton-batch correction successfully extracted the frozen
-representations, then terminated with an `A0R2AnalysisError` at the data stage.
-Keep the exact model/revision, corpus, targets, prompts, sites, statistics,
-thresholds, resource caps, no-network/no-generation policy, no-tuning rule,
-and terminal-publication policy unchanged.
+C3 is an analysis-only recovery of the immutable C2 activation bundle. Keep
+the exact model/revision, frozen protocol, corpus, targets, prompts, endpoint,
+statistics, thresholds, claims, and source artifact bytes unchanged. Do not
+load or query a model, generate output, tune, substitute inputs, or reopen C2
+targets under its consumed authorization.
 
-Publish the authorization receipt, activation receipt, representation index,
-external dense-asset locator and hash, failure receipt, report, and manifest.
-Do not rerun, tune, substitute, or reopen targets under the consumed C2
-authorization. Keep all claim IDs absent and record the precise recovery gate
-for any separately preregistered future study.
+First finish and publish C3.0/C3.1 with synthetic qualification and exact
+recovery bindings. Then request a new explicit authorization for one C3
+analysis-boundary target read; only after it, and CCP resource `Admit` with an
+inactive empty queue, run the one analysis-only recovery and publish every
+terminal outcome. Keep all claim IDs absent and complete only after fresh-clone
+verification and terminal exact-head gates.

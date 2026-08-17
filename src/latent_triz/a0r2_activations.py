@@ -624,6 +624,7 @@ def run_a0r2_activations(
                             "tuple_index": int(tuple_index),
                             "hidden_states_count": len(hidden_states),
                             "hidden_size": EXPECTED_HIDDEN_SIZE,
+                            "dtype": "float32",
                             "token_count": len(selected_indices),
                             "prompt_token_count": len(token_ids),
                             "prompt_sha256": _sha256_bytes(prompt.encode("utf-8")),

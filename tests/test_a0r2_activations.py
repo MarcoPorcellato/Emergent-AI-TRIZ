@@ -202,6 +202,7 @@ class A0R2ActivationTests(unittest.TestCase):
             self.assertEqual(1920, len(dense_payload))
             self.assertTrue(all(len(row) == 960 for row in dense_payload.values()))
             self.assertEqual(1920, len(index_rows))
+            self.assertEqual({"float32"}, {row.get("dtype") for row in index_rows})
             self.assertEqual(48, summary_payload["case_count"])
             self.assertEqual(192, summary_payload["forward_passes"])
             self.assertEqual(1920, summary_payload["vector_count"])

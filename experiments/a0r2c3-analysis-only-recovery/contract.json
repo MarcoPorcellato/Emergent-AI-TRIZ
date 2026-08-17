@@ -1,0 +1,37 @@
+{
+  "artifact_class": "a0r2c3-analysis-only-recovery-contract",
+  "claim_ids": [],
+  "contract_id": "a0r2c3-analysis-only-recovery-v1",
+  "contract_status": "approval_requested",
+  "correction": {
+    "failure_digest": "e42a209ddb9d3e2017d68f5b56ec609986b280e9890dace37a8152fd6f4a9e0a",
+    "failure_message": "activation dtype drift",
+    "semantic_delta": "in_memory_dtype_metadata_recovery_only",
+    "source_dtype": "float32",
+    "source_index_sha256": "baa78647fcc01c1d71cf27ef1c1fd83c6e38feb2a9a54a58fab87f245c63fc58",
+    "source_records": 1920
+  },
+  "created_at": "2026-08-17T07:15:00Z",
+  "empirical": true,
+  "evidence_eligible": false,
+  "implementation_code": [
+    {"path": "src/latent_triz/a0r2_analysis.py", "sha256": "98b5d297b8ee1310e7bb700a0706bbd48c633b12f294dabc7059b5094074f6a9", "size": 31139},
+    {"path": "src/latent_triz/a0r2_activations.py", "sha256": "8a328cd4f20971e9af0b27d8ab6d113a2e71c724b020e2b106489bac437d4783", "size": 33436},
+    {"path": "src/latent_triz/a0r2_report.py", "sha256": "8317cf2b82812c353e4d4a3d5638e76f1b8b81841db21945cb715149e4f90b88", "size": 28737},
+    {"path": "src/latent_triz/a0r2c3_analysis.py", "sha256": "4356d461c35a7b18de73e2e73f3a85783ad5b1f88963fbcf31646648aa093f9e", "size": 2459},
+    {"path": "src/latent_triz/a0r2c3_authorization.py", "sha256": "c01a81c073399bf428f6693fe52bcfd020cef6c2413d8cb2f32148801b79bc6a", "size": 5812},
+    {"path": "src/latent_triz/a0r2c3_runner.py", "sha256": "0f8ceb48bc66cbf1da1b26056191dbd5b99a4ed7aba21f391078d03265bb6a47", "size": 4659}
+  ],
+  "invariants": {"model_load_forbidden": true, "model_substitution_forbidden": true, "network_forbidden": true, "generation_forbidden": true, "no_claim_promotion": true, "no_tuning": true, "source_activation_bytes_unchanged": true, "statistics_unchanged": true, "targets_unchanged": true},
+  "operator_approval_granted": false,
+  "predecessor": {
+    "public_main": "c8a8a99441680bffb17de0e93d909f7c01373b5b",
+    "study_protocol": {"path": "experiments/a0r2-independent-model/study-protocol.json", "sha256": "383c2fe8a0d2baa893bc88326e3a5e18329691a90fd9bd1ea106602c8ee9bf3f", "size": 6403},
+    "c2_failure": {"path": "results/a0r2/a0r2c2-v1.0.0-f8027fd0-r1/run-failure.json", "sha256": "d7dbe5b7da3dea2f51362ea05acadb04f5176f7ad193bb19c028d766eda782b5", "size": 847},
+    "c2_activation_receipt": {"path": "results/a0r2/a0r2c2-v1.0.0-f8027fd0-r1/activation-receipt.json", "sha256": "a96048812d95a3bee40f565b57b13bb45a495079b5c3605ac84e15845074cc15", "size": 2513},
+    "c2_representation_index": {"path": "results/a0r2/a0r2c2-v1.0.0-f8027fd0-r1/representations-index.jsonl", "sha256": "baa78647fcc01c1d71cf27ef1c1fd83c6e38feb2a9a54a58fab87f245c63fc58", "size": 1108352},
+    "c2_publication_manifest": {"path": "results/a0r2/a0r2c2-v1.0.0-f8027fd0-r1/publication-manifest.json", "sha256": "7d06e1bb412411db3f6a5f32cad86a8ddbc9ecd13655a0249ac0759bfba80ecd", "size": 820}
+  },
+  "run_contract": {"analysis_target_content_reads": 1, "generation_allowed": false, "local_only": true, "maximum_analysis_runs": 1, "model_loads": 0, "network_access": false, "new_dense_output_bytes": 0, "publish_every_terminal_outcome": true, "retry_after_target_access": "new_explicit_approval_required", "run_id": "a0r2c3-analysis-only-v1.0.0-f8027fd0-r1"},
+  "scientific_status": "exploratory"
+}
