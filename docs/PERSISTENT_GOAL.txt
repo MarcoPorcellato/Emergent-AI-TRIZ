@@ -1,6 +1,6 @@
 Complete `docs/EXP001_REFERENCE_INTEGRATED.md` from verified public main
 `db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c`, resuming local R3 checkpoint
-`a216eeb646995b0530ec942b92820cfa0e163b38` only after verifying the live repository,
+`fd7d3411abfc88dd7cbc36100544227e6667bf35` only after verifying the live repository,
 ruleset, source corpus, artifacts, and receipts before acting.
 
 R3.0 is in delivery on branch `agent/exp001-r3-reference-freeze`: a strict

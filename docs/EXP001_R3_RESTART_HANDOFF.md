@@ -4,7 +4,7 @@
 
 - Recorded: 2026-08-18, before operator-requested macOS restart.
 - Branch: `agent/exp001-r3-reference-freeze`.
-- Exact local checkpoint before this handoff commit: `a216eeb646995b0530ec942b92820cfa0e163b38`.
+- Exact local checkpoint before this handoff commit: `fd7d3411abfc88dd7cbc36100544227e6667bf35`.
 - Verified public delivery base: `db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c`.
 - Worktree at recording: clean; the four pre-existing stashes remain untouched.
 - Remote/ruleset/PR state has not been re-verified at this checkpoint and must
@@ -21,6 +21,9 @@
   SmolLM2 adapter; and `a216eeb` adds the target-free response-execution
   layer. All are synthetic-tested only: no R3 model load, target read, output,
   CCP workload, or network operation has occurred.
+- `2e7c510` hardens teacher-forced scoring for tensor-backed tokenizer output,
+  causal continuation positions and token-prefix drift; `fd7d341` adds the
+  terminal package schemas. Both are synthetic-only checkpoints.
 - `stash@{0}` and `stash@{1}` preserve rejected pre-balance fixture drafts as
   historical recovery evidence. They must remain untouched and must not be
   applied over the corrected committed fixture.

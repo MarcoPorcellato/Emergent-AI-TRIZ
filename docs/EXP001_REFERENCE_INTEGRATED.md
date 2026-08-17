@@ -4,7 +4,7 @@ title: EXP-001 Reference-Integrated TRIZ Study
 description: Durable preregistration for a source-aware, source-blinded, label-safe study using the public TRIZ reference layer.
 status: draft_preregistration
 version: 0.1.0
-last_verified: 2026-08-17
+last_verified: 2026-08-18
 ---
 
 # EXP-001 — reference-integrated TRIZ study
@@ -157,14 +157,13 @@ scored.
 lexical-overlap report, source-family/domain split report, matrix double-check
 receipt, tool-edge status receipt, and synthetic power/permutation calibration.
 
-**Checkpoint (2026-08-18):** the public target-free inventory and split binding
-are mechanically verified through local commit `60c39e1`; 14 targeted R3 tests
-and schema parity validation pass. A no-model statistical audit found that the
-ten-pair inventory is insufficient for the declared alpha .05 held-out-domain
-primary: it contains only four primary domains, only one matched lexical
-control, and placeholder options. R3.1 therefore remains in delivery. The
-inventory must be expanded and the score/test frozen before a model may be
-loaded. See `docs/EXP001_R3_RESTART_HANDOFF.md` for the exact recovery state.
+**Checkpoint (2026-08-18):** `b1ab0d6` adds 24 public target-free primary
+units across six domains, two families per domain, and two replicates per
+family. Correct-answer positions are rotated semantically in the future sealed
+key and are not stored in public fixtures. `2e7c510` adds synthetic-tested
+teacher-forced scoring that rejects tensor, prefix, architecture, or generation
+contract drift. R3.1 remains in delivery: Matrix and Panitz secondary fixtures
+still require execution-ready public records, and no protocol is frozen.
 
 ### R3.2 — statistical and implementation freeze
 
@@ -184,6 +183,10 @@ adapters/vectors must cover both strata and every terminal class.
 **Exit evidence:** frozen protocol, code/fixture hash manifest, mutation tests,
 synthetic statistics tests, exact-head CCP qualification, and a separate
 operator approval dossier.
+
+**Checkpoint (2026-08-18):** `fd7d341` adds strict terminal receipt, response
+index, statistical-result, and publication-manifest schemas. They preserve the
+exploratory/no-claim envelope and are not an authorization or model result.
 
 ### R3.3 — one guarded model run
 
