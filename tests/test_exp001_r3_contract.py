@@ -24,6 +24,7 @@ class Exp001R3ContractTest(unittest.TestCase):
         self.assertEqual(result["principles"], 40)
         self.assertEqual(result["web_resources"], 18)
         self.assertEqual(result["items"], 8)
+        self.assertEqual(result["public_record_stubs"], 20)
 
     def test_source_hash_mutation_fails_closed(self):
         path = self.copy / "data/triz-reference-sources.json"
@@ -54,6 +55,16 @@ class Exp001R3ContractTest(unittest.TestCase):
         protocol = json.loads(path.read_text())
         protocol["fixture_inputs"]["items"] = "../../data/triz-reference/principles.jsonl"
         path.write_text(json.dumps(protocol), encoding="utf-8")
+        with self.assertRaises(Exp001ContractError):
+            verify_contract(self.copy)
+
+    def test_option_set_target_locator_mutation_fails_closed(self):
+        path = self.copy / "experiments/exp001-reference-integrated/fixtures/option-sets.jsonl"
+        lines = path.read_text().splitlines()
+        record = json.loads(lines[0])
+        record["target_locator"] = "sealed://exp001-r3/not-in-control-plan"
+        lines[0] = json.dumps(record)
+        path.write_text("\n".join(lines) + "\n", encoding="utf-8")
         with self.assertRaises(Exp001ContractError):
             verify_contract(self.copy)
 

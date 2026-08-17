@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from .validator import validate
+from .exp001_r3_fixture_builder import FixtureBuilderError, build_public_record_stubs
 
 
 class Exp001ContractError(ValueError):
@@ -29,6 +30,8 @@ _FIXTURES = {
     "tool_edges": "fixtures/tool-edges.jsonl",
     "source_exposures": "fixtures/source-exposures.jsonl",
     "control_plan": "fixtures/control-plan.json",
+    "option_sets": "fixtures/option-sets.jsonl",
+    "split_receipt": "fixtures/split-receipt.json",
 }
 _SCHEMAS = {
     "items": "exp001-r3-item.schema.json",
@@ -36,6 +39,8 @@ _SCHEMAS = {
     "tool_edges": "exp001-r3-tool-edge.schema.json",
     "source_exposures": "exp001-r3-source-exposure.schema.json",
     "control_plan": "exp001-r3-control-plan.schema.json",
+    "option_sets": "exp001-r3-option-set.schema.json",
+    "split_receipt": "exp001-r3-split-receipt.schema.json",
 }
 
 
@@ -122,7 +127,7 @@ def verify_contract(root: str | Path) -> dict[str, Any]:
     loaded: dict[str, list[dict[str, Any]]] = {}
     for name, rel in _FIXTURES.items():
         path = _safe(experiment, rel, experiment=experiment)
-        if name == "control_plan":
+        if name in {"control_plan", "split_receipt"}:
             value = json.loads(path.read_text(encoding="utf-8"))
             if not isinstance(value, dict):
                 raise Exp001ContractError("control plan must be an object")
@@ -163,10 +168,29 @@ def verify_contract(root: str | Path) -> dict[str, Any]:
     required_kinds = {"primary", "lexical_matched", "principle_near_neighbour", "matrix_direction_swap", "matrix_non_recommended_option", "tool_edge_unsupported", "explicit_abstention"}
     if not required_kinds.issubset(kinds):
         raise Exp001ContractError("control plan omits a required control")
+    split_receipt = loaded["split_receipt"][0]
+    if split_receipt.get("target_values_present") is not False:
+        raise Exp001ContractError("split receipt cannot contain target values")
+    receipt_pairs = split_receipt.get("bindings")
+    if not isinstance(receipt_pairs, list) or {
+        pair.get("pair_id") for pair in receipt_pairs if isinstance(pair, dict)
+    } != {pair.get("pair_id") for pair in pairs if isinstance(pair, dict)}:
+        raise Exp001ContractError("split receipt must bind exactly the control-plan pairs")
+    if any(binding.get("pooling_prohibited") is not True for binding in receipt_pairs if isinstance(binding, dict)):
+        raise Exp001ContractError("split receipt must prohibit pooling for every pair")
+    try:
+        stubs = build_public_record_stubs(
+            _safe(experiment, _FIXTURES["control_plan"], experiment=experiment),
+            _safe(experiment, _FIXTURES["option_sets"], experiment=experiment),
+        )
+    except FixtureBuilderError as exc:
+        raise Exp001ContractError("public fixture stubs are not constructible") from exc
+    if len(stubs) != 20 or any(not record["pooling_prohibited"] for record in stubs):
+        raise Exp001ContractError("public fixture stubs violate the non-pooling contract")
     return {"status": "verified", "principles": 40, "web_resources": 18,
             "items": len(items), "matrix_cells": len(loaded["matrix_cells"]),
             "tool_edges": len(loaded["tool_edges"]), "source_exposures": len(loaded["source_exposures"]),
-            "source_hashes": paths}
+            "public_record_stubs": len(stubs), "source_hashes": paths}
 
 
 validate_contract = verify_contract
