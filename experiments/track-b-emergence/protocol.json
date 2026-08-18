@@ -1,0 +1,84 @@
+{
+  "artifact_class": "track-b-controlled-emergence-protocol",
+  "protocol_id": "track-b-controlled-emergence-v1.0.0",
+  "status": "planned",
+  "execution_readiness": "no_model_ready",
+  "empirical": false,
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "scope_boundary": {
+    "training_permitted": false,
+    "model_load_permitted": false,
+    "target_access_permitted": false,
+    "network_permitted": false,
+    "ccp_permitted": false,
+    "execution_permitted": false
+  },
+  "reference_exclusion": {
+    "named_reference_terms_permitted": false,
+    "reference_sources_permitted": false,
+    "canonical_examples_permitted": false,
+    "reference_lookup_permitted": false
+  },
+  "frozen_inputs": {
+    "corpus": {
+      "freeze_state": "pre_execution_frozen",
+      "content_accessed": false,
+      "locator": null,
+      "sha256": null,
+      "revision": null
+    },
+    "splits": {
+      "freeze_state": "pre_execution_frozen",
+      "strategy": "held_out_domains_and_operator_codes",
+      "family_overlap_permitted": false,
+      "post_freeze_modification_permitted": false
+    },
+    "seeds": {
+      "freeze_state": "pre_execution_frozen",
+      "split_seed": 2026081801,
+      "random_control_seed": 2026081802,
+      "run_seeds": [2026081811, 2026081812, 2026081813]
+    },
+    "checkpoints": {
+      "freeze_state": "pre_execution_frozen",
+      "registry": [],
+      "checkpoint_load_permitted": false,
+      "substitution_permitted": false
+    }
+  },
+  "independent_runs": {
+    "planned_run_ids": ["track-b-independent-01", "track-b-independent-02", "track-b-independent-03"],
+    "execution_unit": "independent_isolated_run",
+    "input_binding": "same_frozen_pre_execution_inputs",
+    "cross_run_output_transfer_permitted": false,
+    "retry_after_access_permitted": false
+  },
+  "held_out_evaluation": {
+    "domain_codes": ["domain-01", "domain-02", "domain-03", "domain-04", "domain-05", "domain-06"],
+    "held_out_domain_codes": ["domain-05", "domain-06"],
+    "operator_codes": ["operator-01", "operator-02", "operator-03", "operator-04"],
+    "held_out_operator_codes": ["operator-03", "operator-04"],
+    "selection_after_access_permitted": false
+  },
+  "control_families": [
+    {"control_id": "contamination", "required": true, "pass_required_for_interpretation": true},
+    {"control_id": "shortcut", "required": true, "pass_required_for_interpretation": true},
+    {"control_id": "random", "required": true, "pass_required_for_interpretation": true},
+    {"control_id": "generic", "required": true, "pass_required_for_interpretation": true}
+  ],
+  "terminal_outcomes": ["positive", "null", "failed", "non_interpretable"],
+  "publication_boundary": {
+    "publish_every_terminal_outcome": true,
+    "claim_promotion_allowed": false,
+    "post_hoc_tuning_allowed": false
+  },
+  "authorization_boundary": {
+    "operator_approval_present": false,
+    "model_load_authorized": false,
+    "target_access_authorized": false,
+    "training_authorized": false,
+    "run_authorized": false
+  }
+}

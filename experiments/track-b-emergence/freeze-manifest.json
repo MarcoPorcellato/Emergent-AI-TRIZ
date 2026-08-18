@@ -1,0 +1,45 @@
+{
+  "artifact_class": "track-b-controlled-emergence-freeze-manifest",
+  "manifest_id": "track-b-controlled-emergence-freeze-v1.0.0",
+  "status": "planned",
+  "protocol_status": "planned",
+  "execution_readiness": "no_model_ready",
+  "empirical": false,
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "protocol": {
+    "path": "experiments/track-b-emergence/protocol.json",
+    "sha256": "ae4a272ddc6651aa31c6abdb29370cbae7562aaea1233de1ff6af35d035432b3",
+    "size": 3051
+  },
+  "freeze_inventory": {
+    "corpus": "pre_execution_frozen_without_content_access",
+    "splits": "pre_execution_frozen",
+    "seeds": "pre_execution_frozen",
+    "checkpoints": "pre_execution_frozen_empty_registry",
+    "run_plan": "three_independent_isolated_runs",
+    "held_out_evaluation": "domains_and_operator_codes_frozen",
+    "controls": "contamination_shortcut_random_generic_required"
+  },
+  "access_receipt": {
+    "model_loaded": false,
+    "model_output_accessed": false,
+    "target_accessed": false,
+    "corpus_content_accessed": false,
+    "network_accessed": false,
+    "ccp_accessed": false,
+    "training_started": false
+  },
+  "authorization_boundary": {
+    "approval_present": false,
+    "model_load_authorized": false,
+    "target_access_authorized": false,
+    "training_authorized": false,
+    "run_authorized": false
+  },
+  "publication_boundary": {
+    "terminal_outcomes": ["positive", "null", "failed", "non_interpretable"],
+    "claim_promotion_allowed": false
+  }
+}

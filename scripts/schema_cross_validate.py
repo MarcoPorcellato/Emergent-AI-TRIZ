@@ -46,6 +46,8 @@ VALIDATION_PAIRS = (
     ("schemas/lab05-result.schema.json", "results/lab05/candidate-directions/summary.json"),
     ("schemas/cv2-negative-control.schema.json", "experiments/cv2-negative-controls/protocol.json"),
     ("schemas/lab06-dossier.schema.json", "experiments/lab06-causal-intervention/dossier.json"),
+    ("schemas/track-b-protocol.schema.json", "experiments/track-b-emergence/protocol.json"),
+    ("schemas/track-b-freeze-manifest.schema.json", "experiments/track-b-emergence/freeze-manifest.json"),
     ("schemas/a0-protocol.schema.json", "experiments/a0-automated-weak-proxy/protocol.json"),
     ("schemas/a0r1-protocol.schema.json", "experiments/a0r1-independent-proxy/protocol.json"),
     ("schemas/a0r1-corpus-manifest.schema.json", "data/a0r1/manifest.json"),
@@ -167,6 +169,20 @@ def _cv2_lab06_mutations(cv2: Any, lab06: Any) -> Iterable[tuple[str, Any]]:
     yield "lab06_premature_authorization", ("schemas/lab06-dossier.schema.json", authorized_lab06)
 
 
+def _track_b_mutations(protocol: Any, manifest: Any) -> Iterable[tuple[str, Any]]:
+    target_access = deepcopy(protocol)
+    target_access["scope_boundary"]["target_access_permitted"] = True
+    yield "track_b_target_access_permitted", ("schemas/track-b-protocol.schema.json", target_access)
+
+    missing_control = deepcopy(protocol)
+    missing_control["control_families"] = missing_control["control_families"][:-1]
+    yield "track_b_missing_required_control", ("schemas/track-b-protocol.schema.json", missing_control)
+
+    model_loaded = deepcopy(manifest)
+    model_loaded["access_receipt"]["model_loaded"] = True
+    yield "track_b_model_loaded", ("schemas/track-b-freeze-manifest.schema.json", model_loaded)
+
+
 def _instances(path: Path) -> Iterable[tuple[int, Any]]:
     if path.suffix == ".jsonl":
         for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
@@ -222,13 +238,26 @@ def main() -> int:
                 f"reference_rejects={reference_rejects}"
             )
 
+    track_b_protocol = json.loads((ROOT / "experiments/track-b-emergence/protocol.json").read_text(encoding="utf-8"))
+    track_b_manifest = json.loads((ROOT / "experiments/track-b-emergence/freeze-manifest.json").read_text(encoding="utf-8"))
+    for mutation_name, (schema_name, mutation) in _track_b_mutations(track_b_protocol, track_b_manifest):
+        schema = json.loads((ROOT / schema_name).read_text(encoding="utf-8"))
+        reference = Draft202012Validator(schema)
+        minimal_rejects = bool(validate_minimal(mutation, schema))
+        reference_rejects = bool(list(reference.iter_errors(mutation)))
+        if not minimal_rejects or not reference_rejects:
+            errors.append(
+                f"mutation {mutation_name}: minimal_rejects={minimal_rejects} "
+                f"reference_rejects={reference_rejects}"
+            )
+
     if errors:
         for error in errors:
             print(f"schema-cross-validate: {error}", file=sys.stderr)
         return 1
     print(
         f"schema-cross-validate: {len(VALIDATION_PAIRS)} tracked pairs agree; "
-        "6 mutations rejected by both validators"
+        "9 mutations rejected by both validators"
     )
     return 0
 

@@ -49,7 +49,7 @@ It is normative for new WLT/SLT work and does not rewrite historical packages.
 | Comparative reference tranche | three terminal `null` packages | PR 77 working head `10d249a`; exploratory and claim-free; live PR/base state must be rechecked before mutation |
 
 The local working checkpoint for this planning tranche is branch
-`agent/exp001-comparative-reference` at `24e3fda30aeb7ce148acee7c9c37a2565466796e`.
+`agent/exp001-comparative-reference` at `b501e120def835e15ad00d16573c32396bc488f2`.
 It is not a protected-main claim: the remote base, ruleset, PR state, and
 receipt branch must be verified again immediately before publication.
 
@@ -731,6 +731,15 @@ select the Track B corpus or checkpoint.
 seed replication, held-out decodability, causal controls, capability checks, and
 every terminal outcome published under the E0-E6 envelope.
 
+**No-model checkpoint (2026-08-18):** the independent preparation contract is
+now machine-bound in `experiments/track-b-emergence/protocol.json` and
+`freeze-manifest.json`, with strict schemas and cross-validator mutation tests.
+It freezes the no-TRIZ-term boundary, held-out domain/operator codes, three
+independent run seeds, contamination/shortcut/random/generic controls, and
+the terminal publication classes. The protocol is `planned` and
+`no_model_ready`; it authorizes no corpus access, training, model load, target
+access, CCP, or claim promotion.
+
 ### CV6 — contributor path and release hygiene
 
 Add a small no-model quickstart that reaches a synthetic result in under thirty
@@ -819,8 +828,8 @@ inspection, or a receipt for another commit are not a pass.
   any new model output.
 - [ ] Demonstrate one out-of-sample operator direction and qualify the Lab 06
   causal dossier before composition or broad model scaling.
-- [ ] Prepare the Track B no-TRIZ-term from-scratch protocol independently of
-  Track A selection decisions.
+- [x] Prepare the Track B no-TRIZ-term from-scratch protocol independently of
+  Track A selection decisions (no-model contract only; training remains gated).
 - [x] Publish the sub-thirty-minute no-model contributor quickstart and a
   positive/null evidence-profile walkthrough entry point (`make
   no-model-quickstart`); the walkthrough remains readiness-only.

@@ -41,6 +41,19 @@ Raw expert records must validate against
 `schemas/h1-annotation.schema.json`; the existing v1.1 dataset schema remains
 unchanged for historical smoke artifacts.
 
+After the three independent files are returned, run the dedicated v1.2 audit
+without opening a model or target:
+
+```text
+make h1-annotation-audit ANNOTATION_FILES="artifacts/annotations/rater_a.jsonl artifacts/annotations/rater_b.jsonl artifacts/annotations/rater_c.jsonl"
+```
+
+The audit binds every record to the six-case payload, v1.2 guide, display
+version, and batch digest. It emits a fail-closed `blinded-annotation-audit`
+package with coverage, agreement, abstention, bootstrap, disagreement, and
+adjudication fields. A `ready_for_freeze` result is still not a claim: the
+additive adjudication and versioned keep/amend decision remain required.
+
 The v1.2 packet freezes a minimum of three distinct raters, raw agreement and
 nominal alpha floors of 0.8, abstention at most 0.2, 2,000 case-bootstrap
 resamples, seed 1729, and case-level unanimity for the keep/amend decision.
