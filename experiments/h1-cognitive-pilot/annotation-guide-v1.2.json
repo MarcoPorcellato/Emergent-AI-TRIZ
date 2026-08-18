@@ -1,0 +1,45 @@
+{
+  "artifact_class": "h1-annotation-guide",
+  "guide_id": "segmentation-inversion-h1",
+  "revision": "v1.2.0",
+  "status": "proposed_for_review",
+  "labels": [
+    {"id": "segmentation", "definition": "Divide a system, object, process, or responsibility into independently managed parts that are essential to the stated solution."},
+    {"id": "inversion", "definition": "Reverse an action, arrangement, sequence, direction, role, or operating condition, and make that reversal essential to the stated solution."},
+    {"id": "both", "definition": "Segmentation and inversion are both essential, not merely mentioned, in the same stated solution."},
+    {"id": "other", "definition": "A different identifiable transformation is central to the solution; record the named alternative."},
+    {"id": "abstain", "definition": "The displayed information is insufficient, ambiguous, or inconsistent enough that no reliable operator label can be assigned."}
+  ],
+  "required_fields": [
+    "label",
+    "alternative_if_other",
+    "operator_presence",
+    "operator_essentiality",
+    "contradiction_resolution",
+    "solution_feasibility",
+    "rationale",
+    "confidence"
+  ],
+  "ordinal_scales": {
+    "operator_presence": [0, 1, 2, 3],
+    "operator_essentiality": [0, 1, 2, 3],
+    "contradiction_resolution": [0, 1, 2, 3, 4],
+    "solution_feasibility": [0, 1, 2, 3, 4]
+  },
+  "agreement_policy": {
+    "minimum_distinct_raters": 3,
+    "raw_agreement_threshold": 0.8,
+    "nominal_alpha_threshold": 0.8,
+    "maximum_abstention_rate": 0.2,
+    "abstain_as_category": true,
+    "ordinal_agreement_metric": "krippendorff_alpha_ordinal",
+    "confidence_interval_method": "case_bootstrap_percentile",
+    "confidence_level": 0.95,
+    "confidence_interval_resamples": 2000,
+    "confidence_interval_seed": 1729,
+    "case_level_unanimity_required": true
+  },
+  "human_review_required_before_freeze": true,
+  "non_empirical": true,
+  "evidence_eligible": false
+}

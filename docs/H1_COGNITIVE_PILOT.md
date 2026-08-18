@@ -12,6 +12,12 @@ This is the operational handoff for the first real human validation. Existing
 `data/pilot/*` files are synthetic calibration artifacts and must remain
 `non_empirical: true`; they cannot close H1.
 
+The public collection packet is now available under
+`experiments/h1-cognitive-pilot/`. It contains six unlabeled cases, a proposed
+v1.2 guide, deterministic display allocation, and no answer key. Its status is
+`ready_for_collection`; it is not human evidence until three independent expert
+sessions are returned and audited.
+
 ## Frozen design
 
 - six human-authored, TRIZ-name-free paired cases;
