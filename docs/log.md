@@ -10,6 +10,13 @@ last_verified: 2026-08-16
 
 ## 2026-08-18
 
+- The comparative target-free tranche is committed at `a4ee5c74f3e0436f969f2411eb5b03385cbeaa87`.
+  Live resource status is `Admit`, but exact-head CCP admission remains
+  fail-closed because the shared coordinator reports an incompatible
+  `.../leases` layout. No CCP qualification, model load, download, or sealed
+  target access was attempted past that gate; the stale-layout report is
+  ready for the CCP maintainer.
+
 - Froze the target-free EXP-001 comparative dossier for the first-model Pythia
   retest and a third Qwen3 model. The dossier reuses the 40-principle,
   Matrix-2003, and Panitz fixtures without pooling strata or model scores,
