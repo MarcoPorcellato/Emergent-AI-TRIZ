@@ -46,8 +46,9 @@ persistent OrbStack daemons are present but no CCP run or container is active.
 Resume by qualifying this exact head, then perform exactly one guarded run for
 each of Pythia, SmolLM2, and Qwen3.
 
-Current live hold: the exact runner head `80b1de1df9c86c09b839327b3e89538cecead616`
-has a passing CCP receipt, but admission is temporarily `active=true` because
+Current live hold: the runner implementation is updated at `481cc082f8559b76bac3fa193820c83e07a8348e`, while its last passing CCP receipt is
+bound to the prior exact head `80b1de1df9c86c09b839327b3e89538cecead616`.
+Admission is temporarily `active=true` because
 an independent Matryca OrbStack run holds the slot. Do not terminate it or
 start a model; resume only after a fresh `resource status --json` plus
 `admission status --json` returns `Admit`, inactive, and queue zero.

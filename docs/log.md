@@ -20,6 +20,11 @@ last_verified: 2026-08-16
   model or sealed target was accessed. Resume only after admission returns
   inactive with an empty queue.
 
+- Corrected comparative receipts to bind the actual serialized external-score
+  asset size instead of reporting zero dense bytes. The correction is published
+  at `481cc082f8559b76bac3fa193820c83e07a8348e`; it awaits a fresh exact-head
+  CCP receipt once the independent admission holder releases the slot.
+
 - Operator authorization was recorded for the exact Qwen3 seven-file runtime
   acquisition at `da87bfb608c14b7cf20ba1ce41287e8de496c0cd`, capped at
   1,610,612,736 bytes and limited to streaming SHA-256 integrity receipts.
