@@ -189,6 +189,11 @@ retrieval and use.
 
 The public E0-E6 ladder remains the concise communication layer. Before claim promotion, each result will also carry a machine-readable evidence profile covering behavioral effect, lexical controls, cross-domain transfer, decodability, positive and negative interventions, dose response, capability preservation, independent/cross-model replication, and controlled training. The ladder level will be derived from satisfied profile fields rather than used as the sole description of evidence.
 
+The normative definitions and falsification rules for Weak and Strong Latent
+TRIZ are maintained in [HYPOTHESES_AND_FALSIFICATION.md](./HYPOTHESES_AND_FALSIFICATION.md).
+The current A0/R1 positives and comparative three-model nulls remain E0
+exploratory evidence; they do not close the human construct or causal gates.
+
 ### Immediate sequence
 
 1. **Delivered:** close the integrity hotfix by enforcing every JSON Schema keyword used by the repository, cross-checking tracked artifacts against Draft 2020-12 `jsonschema`, and making case-level disagreement incompatible with freeze readiness.
@@ -239,6 +244,18 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 9. Add a common empirical envelope without rewriting v1 fixtures, and separate pre-freeze candidate surface auditing from post-freeze Lab 03.
 10. Publish a real model-backed recognition smoke with problem-only and completed-solution views, multiple token sites, versioned index/summary receipts, external Safetensors, and no promoted claim.
 11. Run EXP-001-R only after surface, provenance, annotation, grouped-split, and held-out-domain gates pass. Empirical Lab 05 and Lab 06 remain deferred until an out-of-sample direction is demonstrated.
+12. Close H1 with three independent TRIZ experts and immutable raw, agreement,
+    abstention, adjudication, and keep/amend receipts before treating any
+    operator as a validated construct.
+13. Add the stronger near-neighbour, generic, cosmetic, Matrix-direction,
+    unsupported-edge, abstention, and extreme-domain controls, then prepare one
+    validated-principle Lab 06 causal dossier with steering, ablation,
+    dose-response, opposite-sign, random, unrelated, fluency, and capability
+    controls.
+14. Keep Track B as a separate controlled-emergence protocol: from-scratch
+    training, no TRIZ terms or source cues, frozen checkpoints, shuffled and
+    generic controls, held-out domains, and independent seeds. Do not use Track
+    A results to select Track B data or checkpoints.
 
 The target milestone is a complete chain of label-free paired cases, independent
 canonical human labels, no detected surface shortcut, exact model activations,

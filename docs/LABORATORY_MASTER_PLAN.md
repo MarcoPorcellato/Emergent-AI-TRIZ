@@ -19,6 +19,10 @@ Hypothesis.
 Long-running Codex work should use [the persistent execution goal](./PERSISTENT_GOAL.txt)
 as a short pointer to this plan rather than duplicating its milestones.
 
+The construct-validity and falsification contract is maintained separately in
+[Weak and Strong Latent TRIZ Hypotheses](./HYPOTHESES_AND_FALSIFICATION.md).
+It is normative for new WLT/SLT work and does not rewrite historical packages.
+
 ## Status vocabulary
 
 - **Verified:** supported by a tracked artifact, exact commit, merged pull
@@ -36,12 +40,13 @@ as a short pointer to this plan rather than duplicating its milestones.
 | Item | Verified state | Authoritative anchor |
 |---|---|---|
 | Public repository | `MarcoPorcellato/Latent-TRIZ` | GitHub repository and tracked `LICENSE` / `NOTICE` |
-| Protected `main` | `c8a8a99441680bffb17de0e93d909f7c01373b5b` | live GitHub state after PR 70; verify again before the next mutation |
+| Protected `main` | `8ce557fdfb0333db08867b0da7a0319fec891553` | live GitHub base for PR 77; verify again before the next mutation |
 | Required merge context | strict `merge-policy/gate` | active GitHub ruleset and `.github/expected-main-ruleset.json` |
 | Completed automated milestone | A0-R Tier R1 same-model replication | PR 41, run `a0r1-v1.0.0-e93a9faa-r1` |
 | Current authentic-TRIZ milestone | annotation ontology v1.2 | draft PR 30; live state must be rebased and requalified before delivery |
 | Claim state | all registered claims remain E0 | `data/claims.jsonl` |
 | First dataset attempt | rejected for scientific freeze | retained Wave 1 surface-audit artifacts |
+| Comparative reference tranche | three terminal `null` packages | PR 77 head `d203cd9`; exploratory and claim-free |
 
 The checkout used for unrelated local work is not an authoritative integration
 base. Delivery uses an isolated worktree created from an exact verified commit.
@@ -429,7 +434,8 @@ and exact-head publication remain the final gates. See
 
 ### Human gate H1 — three-expert cognitive pilot
 
-This is **blocked by real human work**, not by code. Three independent TRIZ
+This is **blocked by real human work**, not by code. The operational handoff is
+[H1_COGNITIVE_PILOT.md](./H1_COGNITIVE_PILOT.md). Three independent TRIZ
 experts must evaluate the six frozen pilot cases, explain ambiguities, and
 produce a versioned keep-or-amend decision. Synthetic or model-generated
 responses cannot substitute for this gate. Wave 2 collection cannot start until
@@ -573,6 +579,81 @@ confirmatory contract explicitly changes that boundary.
 **Claim impact:** the run may inform a future recognition-specific claim, but it
 does not by itself establish pre-output selection, causal use, or the Strong
 Latent TRIZ Hypothesis. Null results are published without reinterpretation.
+
+## Construct-validity and causal transition plan
+
+The next scientific tranche follows the formal contract in
+[HYPOTHESES_AND_FALSIFICATION.md](./HYPOTHESES_AND_FALSIFICATION.md). The
+comparative Pythia/SmolLM2/Qwen3 null packages are retained as a robustness
+constraint; they do not authorize a rerun or a post-hoc threshold change.
+
+### CV1 — H1 expert construct pilot
+
+**Dependency:** annotation ontology v1.2 and the frozen blinded workbench.
+
+Three independent TRIZ experts rate a small blinded pilot for Segmentation,
+Inversion, adjacent principles, contradiction resolution, feasibility, and
+abstention. Raw ratings, adjudication, exclusions, and canonical labels remain
+separate. The model results are not shown to raters.
+
+**Exit evidence:** exact guide/case/session hashes, independent rater receipts,
+agreement statistic and confidence interval, disagreement ledger, adjudication
+record, and a keep/amend decision. Synthetic or model-generated ratings cannot
+close H1.
+
+### CV2 — strengthened negative-control corpus
+
+Add lexical- and length-matched generic transformations, near-neighbour
+principles, cosmetic counterfactuals, Matrix direction swaps, unsupported
+Panitz edges, and domain-shift cases. Freeze family and source splits before
+any model output. Keep source-blinded transfer and source-exposed competence
+physically and statistically separate.
+
+**Exit evidence:** contamination, shortcut, split, power, and abstention
+receipts; all controls pass or are explicitly published as readiness failures.
+
+### CV3 — one-principle causal pilot
+
+**Dependency:** CV1 agreement gate and an out-of-sample decodability direction.
+
+Select one operator by the frozen expert and data criteria, never by inspecting
+the causal outcome. Prepare a separate Lab 06 contract for steering, ablation,
+dose-response, opposite-sign and norm-matched controls, plus capability
+preservation. Do not run it until the exact dossier and resource gate are
+approved.
+
+**Exit evidence:** immutable intervention parameters, activation and behavior
+receipts, positive/null/failed/non-interpretable result, and a report that does
+not promote a TRIZ claim.
+
+### CV4 — contradiction and composition pilot
+
+**Dependency:** CV3 passes its causal integrity gate.
+
+Test technical/physical contradictions and two-operator compositions separately
+from single-operator recognition. Include Matrix direction, random-composition,
+single-operator, and abstention controls. A composition result cannot rescue a
+failed single-operator primary.
+
+### CV5 — Track B controlled emergence
+
+Track B remains a separate preregistered route. Train a small model from scratch
+on provenance-audited problem-solution data with no TRIZ terms, sources,
+canonical examples, matrix cells, or Panitz edges. Freeze data, checkpoints,
+seeds, matched shuffled-solution controls, generic-transformation controls, and
+held-out domains before inspecting emergence. Pretrained-model results cannot
+select the Track B corpus or checkpoint.
+
+**Exit evidence:** training and data receipts, checkpoint schedule, independent
+seed replication, held-out decodability, causal controls, capability checks, and
+every terminal outcome published under the E0-E6 envelope.
+
+### CV6 — contributor path and release hygiene
+
+Add a small no-model quickstart that reaches a synthetic result in under thirty
+minutes, while keeping model/target execution behind CCP and explicit approval.
+Publish a claim/evidence profile for every scientific package and preserve dense
+assets externally with immutable locators and hashes.
 
 ## Work after the first authentic recognition run
 
