@@ -1,4 +1,5 @@
 import json
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -66,31 +67,36 @@ class ComparativeMaterialRunnerTests(unittest.TestCase):
     def test_synthetic_run_reads_targets_once_and_publishes_terminal_package(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-            # The real runner needs the public fixtures and frozen protocol;
-            # use the checkout as source and only write results in a temp copy
-            # is intentionally not required for this boundary test.
+            # CCP mounts the checkout read-only. Copy only public protocol and
+            # fixtures into a writable synthetic root; no model or target
+            # bytes are copied or opened.
+            for relative in (
+                "experiments/exp001-comparative-reference",
+                "experiments/exp001-reference-integrated/fixtures",
+            ):
+                shutil.copytree(ROOT / relative, root / relative)
             run_id = "synthetic-run-fixed"
-            result = run_comparative_material(root=ROOT, run_id=run_id, model_id="EleutherAI/pythia-70m-deduped", revision="e93a9faa9c77e5d09219f6c868bfc7a1bd65593c", authorization=_authorization("EleutherAI/pythia-70m-deduped", "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"), ccp_gate={"resource_decision": "admit", "admission_active": False, "queue_count": 0}, adapter=FakeAdapter(), target_reader=_targets, analysis_plan=json.loads((ROOT / "experiments/exp001-comparative-reference/analysis-plan.json").read_text()))
+            result = run_comparative_material(root=root, run_id=run_id, model_id="EleutherAI/pythia-70m-deduped", revision="e93a9faa9c77e5d09219f6c868bfc7a1bd65593c", authorization=_authorization("EleutherAI/pythia-70m-deduped", "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"), ccp_gate={"resource_decision": "admit", "admission_active": False, "queue_count": 0}, adapter=FakeAdapter(), target_reader=_targets, analysis_plan=json.loads((root / "experiments/exp001-comparative-reference/analysis-plan.json").read_text()))
             self.assertIn(result["status"], {"positive", "null", "failed"})
             self.assertEqual(result["access"]["target_reads"], 1)
             self.assertTrue(result["access"]["sealed_targets_accessed"])
-            package = ROOT / result["package_dir"]
+            package = root / result["package_dir"]
             self.assertTrue((package / "execution-receipt.json").is_file())
-            self.assertEqual(verify_comparative_publication(repo_root=ROOT, package_dir=result["package_dir"])["status"], "pass")
-            asset_path = ROOT / result["external_response_asset"]["locator"]
+            self.assertEqual(verify_comparative_publication(repo_root=root, package_dir=result["package_dir"])["status"], "pass")
+            asset_path = root / result["external_response_asset"]["locator"]
             original = asset_path.read_bytes()
             asset_path.write_bytes(original + b"mutation")
             with self.assertRaises(ComparativeReportError):
-                verify_comparative_publication(repo_root=ROOT, package_dir=result["package_dir"])
+                verify_comparative_publication(repo_root=root, package_dir=result["package_dir"])
             asset_path.write_bytes(original)
             asset_path.unlink()
             with self.assertRaises(ComparativeReportError):
-                verify_comparative_publication(repo_root=ROOT, package_dir=result["package_dir"])
+                verify_comparative_publication(repo_root=root, package_dir=result["package_dir"])
             # Leave no model or dense output content tracked by the test suite.
             for path in package.glob("*"):
                 path.unlink()
             package.rmdir()
-            external = ROOT / f"artifacts/exp001-comparative/pythia-70m-e93a9faa/{run_id}/response-scores.json"
+            external = root / f"artifacts/exp001-comparative/pythia-70m-e93a9faa/{run_id}/response-scores.json"
             external.unlink(missing_ok=True)
             external.parent.rmdir()
             external.parent.parent.rmdir()
