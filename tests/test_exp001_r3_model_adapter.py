@@ -4,6 +4,11 @@ from types import SimpleNamespace
 
 from latent_triz.exp001_r3_model_adapter import R3ModelAdapterError, SmolLM2R3Adapter
 
+try:
+    import torch as _torch
+except ImportError:  # The dependency-light CCP image must not load model code.
+    _torch = None
+
 
 class Batch(Mapping):
     def __init__(self, values): self.values = values
@@ -64,6 +69,7 @@ class TensorModel(FakeModel):
         return {"logits": torch.tensor([[[0.0, 1.0], [1.0, 0.0]]])}
 
 
+@unittest.skipUnless(_torch is not None, "requires the optional torch runtime")
 class AdapterTests(unittest.TestCase):
     def config(self, **overrides):
         values = dict(model_type="llama", num_hidden_layers=32, hidden_size=960,

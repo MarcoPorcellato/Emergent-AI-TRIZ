@@ -8,6 +8,18 @@ last_verified: 2026-08-16
 
 # Documentation Chronology
 
+## 2026-08-18
+
+- The first R3 exact-head CCP attempt at `8a4df44` failed before any model or
+  target access: the read-only runtime had no writable `/tmp`, and the
+  dependency-light image correctly lacked the optional `torch` package needed
+  only by model-adapter synthetic tests. The corrective repository check now
+  probes a writable temp directory and exports `/dev/shm` to child checks,
+  skips only those optional model tests when the dependency is absent, and
+  excludes local `.venv` symlinks from copied-repository fixtures. A direct
+  read-only container diagnostic passed `repository_check`; a fresh exact-head
+  CCP receipt is still required before material execution.
+
 ## 2026-08-16
 
 - Published and merged the non-authorizing R2.3 approval dossier through PR 62

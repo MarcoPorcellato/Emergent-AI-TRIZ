@@ -42,6 +42,11 @@ that single integration test as an explicit unittest skip; the same test
 remains fully exercised on normal local and hosted environments. This does not
 weaken the workbench's non-loopback binding refusal test.
 
+The repository check also selects `/dev/shm` as its temporary directory when a
+read-only CCP runtime has no writable `/tmp`. This keeps the checkout and model
+artifacts read-only while allowing the existing isolated fixture tests to run;
+normal hosts retain Python's default temporary-directory selection.
+
 Run CCP only from an exact clean commit:
 
 ```text

@@ -24,6 +24,40 @@ PYTHON = sys.executable
 ENV = dict(os.environ, PYTHONPATH=str(ROOT / "src"))
 
 
+def _ensure_writable_tempdir() -> str:
+    """Select the container's writable shared-memory tmpdir when needed.
+
+    CCP mounts the checkout read-only and some runtimes also expose no writable
+    ``/tmp``.  The repository tests intentionally use ``tempfile`` for
+    isolated fixtures, so fail-closed qualification must provide a writable
+    temporary location without relaxing the checkout mount.  Normal hosts keep
+    Python's default selection unchanged; the fallback is used only when the
+    default lookup is unavailable.
+    """
+
+    candidates = []
+    try:
+        candidates.append(tempfile.gettempdir())
+    except FileNotFoundError:
+        pass
+    candidates.extend(("/dev/shm", "/tmp"))
+
+    for candidate in dict.fromkeys(candidates):
+        if not os.path.isdir(candidate):
+            continue
+        try:
+            descriptor, probe = tempfile.mkstemp(prefix="latent-triz-", dir=candidate)
+            os.close(descriptor)
+            os.unlink(probe)
+        except OSError:
+            continue
+        tempfile.tempdir = candidate
+        ENV["TMPDIR"] = candidate
+        return candidate
+
+    raise RuntimeError("no writable temporary directory available for repository checks")
+
+
 def run(*args: str) -> None:
     subprocess.run(args, cwd=ROOT, env=ENV, check=True)
 
@@ -34,6 +68,7 @@ def validate(schema: str, data: str) -> None:
 
 
 def main() -> int:
+    _ensure_writable_tempdir()
     run(PYTHON, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py")
 
     validation_pairs = (

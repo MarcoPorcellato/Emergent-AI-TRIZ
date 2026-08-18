@@ -48,7 +48,13 @@ class MaterialEndToEndTests(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name) / "repo"
-        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache", "artifacts", ".gitnexus", ".serena", ".ccp"))
+        shutil.copytree(
+            ROOT,
+            self.root,
+            ignore=shutil.ignore_patterns(
+                ".git", ".venv", "__pycache__", ".pytest_cache", "artifacts", ".gitnexus", ".serena", ".ccp"
+            ),
+        )
 
         protocol_path = self.root / "experiments/exp001-reference-integrated/protocol.json"
         protocol = json.loads(protocol_path.read_text(encoding="utf-8"))

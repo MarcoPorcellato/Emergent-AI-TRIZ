@@ -30,8 +30,15 @@ fresh-clone verification, limitations, and final report. Complete only when the
 specification checklist is proven and no general TRIZ claim is promoted.
 
 Current checkpoint: public no-model freeze commit
-`f1cc72bac58051db11d7050b22edc22970b9e988`, PR #75. Local R3 and repository
-gates pass; CCP currently reports `decision=admit`, `active=false`, and an empty
-queue. Material execution remains blocked only by the tracked dossier’s
-`operator_approval_granted=false` state. Never bypass the approval gate or edit
-CCP cache/journals manually.
+`8a4df44afd7a7b2b1e275e34bafd62a9067fa323`, PR #75. The operator has now
+authorized exactly one R3 run under the frozen dossier; the authorization receipt
+is kept as a local preexecution artifact because the tracked dossier remains an
+immutable approval-request record. A prior exact-head CCP attempt failed because
+the read-only runtime exposed no writable temporary directory and the dependency-
+light image lacked `torch` for model-only synthetic tests. The corrective patch
+selects a writable `/dev/shm` tempdir for child checks, skips only tests that
+require the absent optional torch runtime, and excludes local `.venv` symlinks from
+the copied-repository e2e fixture. A direct read-only container diagnostic now
+passes `repository_check`; publish the corrective commit and obtain a fresh CCP
+`decision=admit`, `active=false`, `queue_count=0` receipt before the single
+material run. Never bypass approval or edit CCP cache/journals manually.
