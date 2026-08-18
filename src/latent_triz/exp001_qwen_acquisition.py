@@ -39,6 +39,7 @@ FILES: dict[str, tuple[int, str, str]] = {
 }
 TOTAL_BYTES = sum(size for size, _oid, _kind in FILES.values())
 _BLOCK = 1 << 20
+_NETWORK_TIMEOUT_SECONDS = 300
 CANONICAL_ROOT = Path(__file__).resolve().parents[2] / ROOT_LOCATOR
 
 
@@ -164,7 +165,7 @@ def acquire_qwen(root: Path, *, allow_download: bool, authorization: Mapping[str
 
     def fetch(url: str):
         request = Request(url, headers={"Accept-Encoding": "identity"})
-        response = opener(url) if opener else _HTTP.open(request, timeout=90)
+        response = opener(url) if opener else _HTTP.open(request, timeout=_NETWORK_TIMEOUT_SECONDS)
         status = getattr(response, "status", 200)
         final_url = str(getattr(response, "url", url))
         final_host = urlparse(final_url).hostname
