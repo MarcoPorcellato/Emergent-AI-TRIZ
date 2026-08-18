@@ -31,3 +31,5 @@ After approval, perform exactly one guarded local SmolLM2 run, publish every
 terminal outcome, the external dense locator/hash, exact-head CCP receipt, PR,
 fresh-clone verification, limitations, and final report. Complete only when the
 specification checklist is proven and no general TRIZ claim is promoted.
+
+Current checkpoint: public no-model freeze commit `d8d4e98fdd4ad7145e427eb270f3a8ca23b844fb`, PR #75. Local R3 and repository gates pass. Material execution remains blocked by CCP admission `active=true` with an empty queue and two corrupt/incomplete operator-required journals; never bypass this gate or edit cache state manually.

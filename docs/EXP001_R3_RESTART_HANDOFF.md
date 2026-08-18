@@ -84,5 +84,20 @@ analysis boundary.
 - Before publication or qualification, re-check the live branch, public main,
   ruleset, open PRs, and CCP resource/admission state.
 
+## Public no-model freeze checkpoint (2026-08-18)
+
+- Commit `d8d4e98fdd4ad7145e427eb270f3a8ca23b844fb` freezes the target-free
+  protocol and publishes the implementation binding, freeze manifest, and
+  unapproved dossier. PR #75 is the public delivery vehicle.
+- Exact local validation: 98 R3 tests, full repository check (666 tests), and
+  schema cross-validation (85 tracked pairs) passed. No model, target, network,
+  or material CCP workload was used.
+- The required CCP preflight currently reports resource `decision=admit` but
+  admission `active=true`, `queue_count=0`. Recovery status identifies old
+  operator-required journals `13a2307e...` and `ca04aa31...`; the installed
+  utility rejects both exact `recover apply` requests as `run journal is corrupt
+  or incomplete`. Do not edit the cache manually or bypass admission. Recheck
+  this boundary after the host/CCP state is repaired.
+
 No existing A0-R2/C3 artifact may be modified. No prior execution approval
 authorizes the eventual R3 model run.
