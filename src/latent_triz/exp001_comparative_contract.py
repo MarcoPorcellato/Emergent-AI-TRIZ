@@ -75,8 +75,8 @@ def validate_comparative_contract(root: str | Path = ROOT) -> dict[str, Any]:
     analysis = _read_json(repo / ANALYSIS_PLAN.relative_to(ROOT))
     acquisition = _read_json(repo / ACQUISITION.relative_to(ROOT))
     authorization = _read_json(repo / AUTHORIZATION.relative_to(ROOT))
-    if registry.get("registry_status") not in {"proposal_frozen_no_download", "frozen", "approval_requested"}:
-        raise ComparativeContractError("registry is not a target-free frozen proposal")
+    if registry.get("registry_status") not in {"proposal_frozen_no_download", "frozen", "approval_requested", "authorized"}:
+        raise ComparativeContractError("registry is not a frozen or authorized proposal")
     if registry.get("selection_observed_prior_result") is not False:
         raise ComparativeContractError("selection must not consult prior results")
     if registry.get("substitution_policy") != "no_model_substitution_after_freeze":
@@ -99,10 +99,10 @@ def validate_comparative_contract(root: str | Path = ROOT) -> dict[str, Any]:
         root_name = model.get("local_root")
         if not isinstance(root_name, str) or not root_name.startswith("artifacts/models/") or ".." in Path(root_name).parts:
             raise ComparativeContractError(f"unsafe local root for {model_id}")
-        if model_id == "Qwen/Qwen3-0.6B-Base" and model.get("acquisition_status") != "not_acquired":
-            raise ComparativeContractError("Qwen must remain not acquired in target-free dossier")
-    if protocol.get("protocol_status") != "frozen_no_download_approval_requested":
-        raise ComparativeContractError("protocol is not awaiting approval")
+        if model_id == "Qwen/Qwen3-0.6B-Base" and model.get("acquisition_status") not in {"not_acquired", "integrity_verified"}:
+            raise ComparativeContractError("Qwen acquisition state is invalid")
+    if protocol.get("protocol_status") not in {"frozen_no_download_approval_requested", "authorized"}:
+        raise ComparativeContractError("protocol is not frozen or authorized")
     if protocol.get("source_registry", {}).get("principle_count") != 40:
         raise ComparativeContractError("principle count drift")
     if protocol.get("inventory", {}).get("records") != 85 or protocol.get("inventory", {}).get("score_calls_per_model") != 340:
@@ -118,16 +118,19 @@ def validate_comparative_contract(root: str | Path = ROOT) -> dict[str, Any]:
         raise ComparativeContractError("analysis primary cardinality drift")
     if acquisition.get("model_id") != "Qwen/Qwen3-0.6B-Base" or acquisition.get("revision") != EXPECTED_MODELS["Qwen/Qwen3-0.6B-Base"]["revision"]:
         raise ComparativeContractError("Qwen acquisition identity drift")
-    if acquisition.get("download_authorized") is not False or acquisition.get("model_load_authorized") is not False:
-        raise ComparativeContractError("Qwen acquisition/load authorization must remain absent")
+    if acquisition.get("download_authorized") is not True or acquisition.get("model_load_authorized") is not False:
+        raise ComparativeContractError("Qwen acquisition/load authorization boundary drift")
     if acquisition.get("sealed_execution_authorized") is not False:
         raise ComparativeContractError("sealed execution authorization must remain absent")
-    if authorization.get("status") != "approval_requested" or authorization.get("operator_approval", {}).get("granted") is not False:
-        raise ComparativeContractError("comparative execution authorization must remain pending")
+    if authorization.get("status") not in {"approval_requested", "authorized"}:
+        raise ComparativeContractError("comparative execution authorization state is invalid")
+    if authorization.get("status") == "authorized" and authorization.get("operator_approval", {}).get("granted") is not True:
+        raise ComparativeContractError("authorized execution lacks operator approval")
     permissions = authorization.get("permissions_requested", {})
     for field in ("download_qwen_runtime_files_only", "load_existing_pythia_once", "load_existing_smollm2_once", "load_qwen_once_after_integrity"):
-        if permissions.get(field) is not False:
-            raise ComparativeContractError(f"unauthorized material permission: {field}")
+        expected = authorization.get("status") == "authorized"
+        if permissions.get(field) is not expected:
+            raise ComparativeContractError(f"material permission drift: {field}")
     return {
         "artifact_class": "exp001-comparative-contract-audit",
         "status": "pass",

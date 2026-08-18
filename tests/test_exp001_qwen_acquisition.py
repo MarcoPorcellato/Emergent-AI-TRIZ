@@ -4,6 +4,7 @@ import hashlib
 import tempfile
 import unittest
 from pathlib import Path
+from urllib.request import Request
 
 from latent_triz.exp001_qwen_acquisition import (
     _BoundedRedirect,
@@ -71,7 +72,7 @@ class QwenAcquisitionTests(unittest.TestCase):
 
     def test_redirect_handler_rejects_untrusted_host(self):
         handler = _BoundedRedirect()
-        self.assertIsNone(handler.redirect_request(None, None, 302, "Found", {}, "https://evil.example/x"))
+        self.assertIsNone(handler.redirect_request(Request("https://huggingface.co/source"), None, 302, "Found", {}, "https://evil.example/x"))
 
 
 if __name__ == "__main__":

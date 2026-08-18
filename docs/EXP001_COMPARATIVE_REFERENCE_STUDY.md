@@ -2,7 +2,7 @@
 type: research-specification
 title: EXP-001 Comparative Reference Study
 description: Model-separated retest of the TRIZ reference-integrated automated proxy.
-status: frozen_no_download_approval_requested
+status: authorized_acquisition_and_one_run
 version: 1.0.0
 last_verified: 2026-08-18
 ---
@@ -54,15 +54,16 @@ acquired models provide the first-model retest and the prior R3 reference:
 |---|---|---|---|
 | first-model retest | `EleutherAI/pythia-70m-deduped@e93a9faa9c77e5d09219f6c868bfc7a1bd65593c` | GPT-NeoX, 6 layers, width 512 | local snapshot present |
 | prior reference | `HuggingFaceTB/SmolLM2-360M@f8027fd0eaeea54caa13c31d31b9fdc459c38b49` | Llama, 32 layers, width 960 | R3 published `null` |
-| third model | `Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd` | Qwen3, 28 layers, width 1024 | not acquired |
+| third model | `Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd` | Qwen3, 28 layers, width 1024 | integrity verified; load/run pending CCP |
 
 Qwen3 is selected for provider, architecture, training-lineage, and tokenizer
 independence from Pythia and SmolLM2 while remaining a public Apache-2.0 base
 model of plausible CPU size. The official configuration identifies
 `Qwen3ForCausalLM`, `qwen3`, 28 layers, width 1024, and vocabulary 151936.
-The exact file bytes, installed-runtime compatibility, CPU peak RSS/latency,
-and training-data overlap remain unknown until separately authorized and
-receipted. The older `d4e79cd...` snapshot is not substituted for the frozen
+The exact seven-file bytes and source OIDs are now bound by the immutable
+Qwen integrity receipt. Installed-runtime compatibility, CPU peak RSS/latency,
+and training-data overlap remain unknown until the single authorized run and
+its receipt. The older `d4e79cd...` snapshot is not substituted for the frozen
 `da87bfb...` revision.
 
 ## Frozen analysis
@@ -84,9 +85,9 @@ permitted; only teacher-forced choice scores are comparable at the task level.
 
 ## Execution and publication gates
 
-Before any Qwen download, model load, material CPU feasibility, or sealed-target
-read, the exact model registry and this protocol require explicit operator
-approval. For each material run, CCP must report `resource decision=admit`,
+The Qwen download is complete and integrity-verified under its separate
+seven-file authorization. Before each model load or sealed-target read, CCP
+must report `resource decision=admit`,
 `admission active=false`, and `queue_count=0`; an unknown or incompatible
 admission state never authorizes execution. Each model run is local-only CPU
 float32, offline, no generation, at most 1,800 seconds, 8 GiB peak RSS, and
@@ -107,7 +108,8 @@ The SmolLM2 reference-integrated R3 package is already public and terminal
 approval-requested: Pythia retest and Qwen acquisition/run have not occurred.
 No model or sealed target was accessed while preparing this dossier.
 
-The next external gate is one explicit approval naming the exact Qwen revision,
-the allowed runtime files and disk budget, permission to load the already
-acquired Pythia and SmolLM2 snapshots for one run each, the per-run CPU/RSS/time
-limits, the one-read target boundary, and publication of every terminal result.
+The operator has authorized exactly one run for each exact Pythia, SmolLM2, and
+Qwen3 snapshot under the stated CPU/RSS/time limits, one-read target boundary,
+and publication of every terminal result. The remaining gate is exact-head CCP
+qualification with inactive admission and an empty queue; no run starts before
+that receipt is bound to this code and protocol.

@@ -2,7 +2,7 @@
   "artifact_class": "exp001-comparative-execution-authorization",
   "dossier_id": "exp001-comparative-execution-approval-v1",
   "protocol_id": "exp001-reference-comparative-v1.0.0",
-  "status": "approval_requested",
+  "status": "authorized",
   "scientific_status": "exploratory",
   "evidence_eligible": false,
   "expert_validated": false,
@@ -13,10 +13,10 @@
     {"model_id": "Qwen/Qwen3-0.6B-Base", "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd", "local_root": "artifacts/models/qwen3-0.6b-base-da87bfb"}
   ],
   "permissions_requested": {
-    "download_qwen_runtime_files_only": false,
-    "load_existing_pythia_once": false,
-    "load_existing_smollm2_once": false,
-    "load_qwen_once_after_integrity": false,
+    "download_qwen_runtime_files_only": true,
+    "load_existing_pythia_once": true,
+    "load_existing_smollm2_once": true,
+    "load_qwen_once_after_integrity": true,
     "local_cpu_float32": true,
     "network": false,
     "generation": false,
@@ -39,9 +39,9 @@
     "target_access_before_analysis_boundary"
   ],
   "operator_approval": {
-    "granted": false,
-    "operator_id": null,
-    "approved_at": null,
-    "approval_text_sha256": null
+    "granted": true,
+    "operator_id": "MarcoPorcellato",
+    "approved_at": "2026-08-18",
+    "approval_text_sha256": "9d5d36c7f0e4a6593d6d5504abebe46e89cc02d9e23870013c3138f6e37dfadd"
   }
 }

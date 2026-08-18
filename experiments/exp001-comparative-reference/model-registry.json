@@ -1,7 +1,7 @@
 {
   "artifact_class": "exp001-comparative-model-registry",
   "registry_id": "exp001-reference-comparative-models-v1.0.0",
-  "registry_status": "proposal_frozen_no_download",
+  "registry_status": "authorized",
   "scientific_status": "exploratory",
   "evidence_eligible": false,
   "expert_validated": false,
@@ -70,7 +70,7 @@
         "model.safetensors", "tokenizer.json", "tokenizer_config.json",
         "vocab.json"
       ],
-      "acquisition_status": "not_acquired",
+      "acquisition_status": "integrity_verified",
       "unknown_until_authorized_feasibility": [
         "exact_file_sizes_and_sha256",
         "installed_transformers_compatibility",
@@ -82,7 +82,7 @@
     }
   ],
   "substitution_policy": "no_model_substitution_after_freeze",
-  "download_authorization": "not_granted",
-  "model_load_authorization": "not_granted",
-  "sealed_target_authorization": "not_granted"
+  "download_authorization": "granted_exact_files",
+  "model_load_authorization": "granted_exact_models",
+  "sealed_target_authorization": "granted_one_read_per_model"
 }

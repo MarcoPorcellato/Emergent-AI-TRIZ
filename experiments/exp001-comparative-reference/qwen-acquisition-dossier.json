@@ -1,28 +1,28 @@
 {
   "artifact_class": "exp001-comparative-qwen-acquisition-dossier",
   "dossier_id": "exp001-qwen3-acquisition-v1",
-  "status": "approval_requested",
+  "status": "integrity_verified",
   "model_id": "Qwen/Qwen3-0.6B-Base",
   "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
   "license_id": "Apache-2.0",
   "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/tree/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
   "runtime_root": "artifacts/models/qwen3-0.6b-base-da87bfb",
   "runtime_files": [
-    {"path": "config.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/config.json", "declared_size_bytes": 727},
-    {"path": "generation_config.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/generation_config.json", "declared_size_bytes": 138},
-    {"path": "merges.txt", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/merges.txt", "declared_size_bytes": 1750000},
-    {"path": "model.safetensors", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/model.safetensors", "declared_size_bytes": 1277000000},
-    {"path": "tokenizer.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/tokenizer.json", "declared_size_bytes": 7370000},
-    {"path": "tokenizer_config.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/tokenizer_config.json", "declared_size_bytes": 9920},
-    {"path": "vocab.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/vocab.json", "declared_size_bytes": 2920000}
+    {"path": "config.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/config.json", "declared_size_bytes": 727, "source_oid": "43c79dcb3766612b23cbed17d0a56ce63efe4e74", "source_kind": "git_blob"},
+    {"path": "generation_config.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/generation_config.json", "declared_size_bytes": 138, "source_oid": "cbbb3133034e192527e5321b4c679154e4819ab8", "source_kind": "git_blob"},
+    {"path": "merges.txt", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/merges.txt", "declared_size_bytes": 1671853, "source_oid": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7", "source_kind": "git_blob"},
+    {"path": "model.safetensors", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/model.safetensors", "declared_size_bytes": 1192135096, "source_oid": "cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba", "source_kind": "lfs_sha256"},
+    {"path": "tokenizer.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/tokenizer.json", "declared_size_bytes": 7031645, "source_oid": "443909a61d429dff23010e5bddd28ff530edda00", "source_kind": "git_blob"},
+    {"path": "tokenizer_config.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/tokenizer_config.json", "declared_size_bytes": 9678, "source_oid": "6a3829ee9491f36113e64df37573be81df0366f5", "source_kind": "git_blob"},
+    {"path": "vocab.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/vocab.json", "declared_size_bytes": 2776833, "source_oid": "4783fe10ac3adce15ac8f358ef5462739852c569", "source_kind": "git_blob"}
   ],
-  "declared_sizes_are": "official_page_estimates_not_receipt_grade",
+  "declared_sizes_are": "official_tree_receipt_grade",
   "disk_budget_bytes": 1610612736,
-  "download_authorized": false,
+  "download_authorized": true,
   "terms_acceptance_recorded": false,
   "model_load_authorized": false,
   "feasibility_authorized": false,
   "sealed_execution_authorized": false,
-  "integrity_receipt": null,
-  "unknowns": ["exact_bytes", "sha256", "redirect_and_revision_integrity", "peak_rss", "cpu_latency", "runtime_compatibility"]
+  "integrity_receipt": {"path": "results/exp001-comparative/preexecution/qwen-integrity-receipt.json", "status": "integrity_verified"},
+  "unknowns": ["peak_rss", "cpu_latency", "runtime_compatibility", "fast_tokenizer_prefix_boundary_behavior", "training_data_overlap_with_existing_models"]
 }

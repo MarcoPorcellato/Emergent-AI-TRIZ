@@ -76,7 +76,7 @@ class ComparativeContractTests(unittest.TestCase):
                 destination.write_bytes((base / relative).read_bytes())
             dossier_path = root / "experiments/exp001-comparative-reference/qwen-acquisition-dossier.json"
             dossier = json.loads(dossier_path.read_text())
-            dossier["download_authorized"] = True
+            dossier["download_authorized"] = False
             dossier_path.write_text(json.dumps(dossier))
             with self.assertRaises(ComparativeContractError):
                 validate_comparative_contract(root)
@@ -97,7 +97,7 @@ class ComparativeContractTests(unittest.TestCase):
                 destination.write_bytes((base / relative).read_bytes())
             auth_path = root / "experiments/exp001-comparative-reference/execution-authorization.json"
             auth = json.loads(auth_path.read_text())
-            auth["permissions_requested"]["load_existing_pythia_once"] = True
+            auth["permissions_requested"]["load_existing_pythia_once"] = False
             auth_path.write_text(json.dumps(auth))
             with self.assertRaises(ComparativeContractError):
                 validate_comparative_contract(root)
