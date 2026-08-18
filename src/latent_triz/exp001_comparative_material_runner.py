@@ -143,16 +143,17 @@ def run_comparative_material(*, root: str | Path, run_id: str, model_id: str, re
         analysis = run_analysis_boundary(records, responses, one_shot_reader, analysis_plan)
         if read_count != 1:
             raise ComparativeMaterialError("analysis did not perform exactly one target read")
+        result = analysis["analysis"]
+        external = {"artifact_class": "exp001-comparative-external-response-scores", "protocol_id": PROTOCOL_ID, "model_id": model_id, "record_count": len(responses), "records": responses}
+        external_payload_bytes = len(_stable(external))
         resources = dict(resource_probe() if resource_probe else {})
         wall = float(resources.get("wall_seconds", (clock() - started) if clock else 0.0))
         rss = int(resources.get("peak_rss_bytes", 0))
-        dense = int(resources.get("new_dense_output_bytes", 0))
+        dense = max(int(resources.get("new_dense_output_bytes", 0)), external_payload_bytes)
         if wall > MAX_WALL_SECONDS or rss > MAX_RSS_BYTES or dense > MAX_DENSE_BYTES:
             raise ComparativeMaterialError("frozen material ceiling exceeded")
-        result = analysis["analysis"]
         statistical = {"artifact_class": "exp001-comparative-statistical-result", "protocol_id": PROTOCOL_ID, "model_id": model_id, "revision": revision, "status": result["status"], "scientific_status": "exploratory", "evidence_eligible": False, "expert_validated": False, "claim_ids": [], "primary": result["primary"], "secondary": analysis.get("secondary_summaries", {}), "pooling": "forbidden_across_models_and_strata", "interpretation": "Exploratory automated reference-task signal only; no general TRIZ claim."}
         response_index = {"artifact_class": "exp001-comparative-response-index", "protocol_id": PROTOCOL_ID, "model_id": model_id, "revision": revision, "record_count": len(responses), "records": responses}
-        external = {"artifact_class": "exp001-comparative-external-response-scores", "protocol_id": PROTOCOL_ID, "model_id": model_id, "record_count": len(responses), "records": responses}
         external_rel = Path("artifacts/exp001-comparative") / key / run_id / "response-scores.json"
         external_abs = repo / external_rel
         _write_new(external_abs, external)
