@@ -1,0 +1,46 @@
+{
+  "artifact_class": "cv2-negative-control-protocol",
+  "status": "no_model_ready",
+  "empirical": false,
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "strata": [
+    {"id": "TRIZ-blinded-transfer", "source_exposure": false, "poolable": false, "primary_role": "primary"},
+    {"id": "source-exposed-competence", "source_exposure": true, "poolable": false, "primary_role": "secondary"}
+  ],
+  "control_families": [
+    {"control_id": "cv2-lexical-length", "kind": "lexical_length_matched", "lexical_matched": true, "source_exposure": false, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-template-swap", "kind": "template_swap", "lexical_matched": true, "source_exposure": false, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-near-neighbour", "kind": "near_neighbour", "lexical_matched": false, "source_exposure": false, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-cosmetic", "kind": "cosmetic_counterfactual", "lexical_matched": true, "source_exposure": false, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-generic-transformation", "kind": "generic_transformation", "lexical_matched": true, "source_exposure": false, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-matrix-direction", "kind": "matrix_direction_swap", "lexical_matched": false, "source_exposure": true, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-unsupported-edge", "kind": "unsupported_tool_edge", "lexical_matched": false, "source_exposure": true, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-abstention", "kind": "explicit_abstention", "lexical_matched": false, "source_exposure": false, "paired_with_primary": false, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-random-label", "kind": "random_label", "lexical_matched": true, "source_exposure": false, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-random-direction", "kind": "random_direction", "lexical_matched": false, "source_exposure": false, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true},
+    {"control_id": "cv2-extreme-domain", "kind": "extreme_domain_shift", "lexical_matched": false, "source_exposure": false, "paired_with_primary": true, "scored_separately": true, "abstention_allowed": true}
+  ],
+  "split_policy": {
+    "group_key": "problem_family_id",
+    "held_out_domain_required": true,
+    "source_family_split_required": true,
+    "family_overlap_forbidden": true,
+    "strata_physical_separation_required": true,
+    "freeze_before_model_output": true
+  },
+  "required_receipts": [
+    "contamination", "lexical_shortcut", "template_shortcut",
+    "grouped_split", "source_family_split", "power_calibration",
+    "abstention_policy"
+  ],
+  "publication_boundary": {
+    "model_output_accessed": false,
+    "sealed_targets_accessed": false,
+    "dense_vectors_published": false,
+    "claim_promotion_allowed": false
+  },
+  "terminal_classes": ["positive", "null", "failed", "non_interpretable"],
+  "no_post_hoc_tuning": true
+}

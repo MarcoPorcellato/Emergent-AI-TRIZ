@@ -1,0 +1,50 @@
+{
+  "artifact_class": "lab06-causal-dossier",
+  "status": "blocked_by_h1",
+  "empirical": false,
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "operator_selection": {
+    "selection_status": "awaiting_h1_and_lab05",
+    "operator_id": null,
+    "selection_rule": "freeze_after_h1_and_held_out_direction_before_causal_outcome",
+    "candidate_operator_ids": ["segmentation", "inversion"]
+  },
+  "preconditions": {
+    "h1_closed": false,
+    "canonical_labels_frozen": false,
+    "lab05_out_of_sample_direction": false,
+    "controls_frozen": false,
+    "model_identity_bound": false,
+    "resource_approval": false,
+    "dossier_hash_bound": false
+  },
+  "intervention_arms": [
+    "positive_steering", "opposite_sign_steering", "ablation",
+    "dose_response_three_levels", "norm_matched_random",
+    "unrelated_label_direction", "no_intervention_baseline",
+    "fluency_capability_preservation"
+  ],
+  "statistical_plan": {
+    "primary_outcome": "held_out_domain_operator_behavior",
+    "multiplicity": "frozen_after_h1_before_causal_output",
+    "permutation_or_bootstrap": "frozen_after_h1_before_causal_output",
+    "seed": null,
+    "sample_size": null,
+    "stopping_rule": null
+  },
+  "publication_boundary": {
+    "model_output_accessed": false,
+    "sealed_targets_accessed": false,
+    "dense_vectors_published": false,
+    "claim_promotion_allowed": false
+  },
+  "approval_boundary": {
+    "model_load_authorized": false,
+    "target_read_authorized": false,
+    "training_authorized": false,
+    "run_authorized": false
+  },
+  "terminal_classes": ["positive", "null", "failed", "non_interpretable"]
+}

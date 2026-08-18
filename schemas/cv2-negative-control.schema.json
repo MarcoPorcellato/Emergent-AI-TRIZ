@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/cv2-negative-control.schema.json",
+  "title": "CV2 strengthened negative-control protocol",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "status", "empirical", "evidence_eligible",
+    "expert_validated", "claim_ids", "strata", "control_families",
+    "split_policy", "required_receipts", "publication_boundary",
+    "terminal_classes", "no_post_hoc_tuning"
+  ],
+  "properties": {
+    "artifact_class": {"const": "cv2-negative-control-protocol"},
+    "status": {"const": "no_model_ready"},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "strata": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "source_exposure", "poolable", "primary_role"],
+        "properties": {
+          "id": {"enum": ["TRIZ-blinded-transfer", "source-exposed-competence"]},
+          "source_exposure": {"type": "boolean"},
+          "poolable": {"const": false},
+          "primary_role": {"enum": ["primary", "secondary"]}
+        }
+      }
+    },
+    "control_families": {
+      "type": "array", "minItems": 11, "maxItems": 11,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": [
+          "control_id", "kind", "lexical_matched", "source_exposure",
+          "paired_with_primary", "scored_separately", "abstention_allowed"
+        ],
+        "properties": {
+          "control_id": {"pattern": "^cv2-[a-z0-9-]+$", "type": "string"},
+          "kind": {"enum": [
+            "lexical_length_matched", "template_swap", "near_neighbour",
+            "cosmetic_counterfactual", "generic_transformation",
+            "matrix_direction_swap", "unsupported_tool_edge",
+            "explicit_abstention", "random_label", "random_direction",
+            "extreme_domain_shift"
+          ]},
+          "lexical_matched": {"type": "boolean"},
+          "source_exposure": {"type": "boolean"},
+          "paired_with_primary": {"type": "boolean"},
+          "scored_separately": {"const": true},
+          "abstention_allowed": {"const": true}
+        }
+      }
+    },
+    "split_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "group_key", "held_out_domain_required", "source_family_split_required",
+        "family_overlap_forbidden", "strata_physical_separation_required",
+        "freeze_before_model_output"
+      ],
+      "properties": {
+        "group_key": {"const": "problem_family_id"},
+        "held_out_domain_required": {"const": true},
+        "source_family_split_required": {"const": true},
+        "family_overlap_forbidden": {"const": true},
+        "strata_physical_separation_required": {"const": true},
+        "freeze_before_model_output": {"const": true}
+      }
+    },
+    "required_receipts": {
+      "type": "array", "minItems": 7, "uniqueItems": true,
+      "items": {"enum": [
+        "contamination", "lexical_shortcut", "template_shortcut",
+        "grouped_split", "source_family_split", "power_calibration",
+        "abstention_policy"
+      ]}
+    },
+    "publication_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "model_output_accessed", "sealed_targets_accessed",
+        "dense_vectors_published", "claim_promotion_allowed"
+      ],
+      "properties": {
+        "model_output_accessed": {"const": false},
+        "sealed_targets_accessed": {"const": false},
+        "dense_vectors_published": {"const": false},
+        "claim_promotion_allowed": {"const": false}
+      }
+    },
+    "terminal_classes": {
+      "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true,
+      "items": {"enum": ["positive", "null", "failed", "non_interpretable"]}
+    },
+    "no_post_hoc_tuning": {"const": true}
+  }
+}

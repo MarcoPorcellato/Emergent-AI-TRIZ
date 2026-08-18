@@ -678,6 +678,13 @@ failure.
 **Exit evidence:** contamination, shortcut, split, power, and abstention
 receipts; all controls pass or are explicitly published as readiness failures.
 
+**No-model checkpoint (2026-08-18):** the machine-bound protocol is now
+`experiments/cv2-negative-controls/protocol.json`, with a strict schema and
+cross-validator registration. It freezes eleven control families, grouped
+family/source/domain splits, non-poolable blinded/exposed strata, all required
+readiness receipts, and all terminal classes. This is preparation only; no
+control targets or model outputs exist.
+
 ### CV3 — one-principle causal pilot
 
 **Dependency:** CV1 agreement gate and an out-of-sample decodability direction.
@@ -695,6 +702,12 @@ not promote a TRIZ claim.
 This gate has priority over broad forty-principle coverage and over additional
 model-family runs. The selected operator must be chosen from the frozen human
 and held-out data rules before the intervention outcome is visible.
+
+**No-model checkpoint (2026-08-18):**
+`experiments/lab06-causal-intervention/dossier.json` and
+`docs/LAB06_DOSSIER.md` define the single-pilot arms and approval boundary.
+The dossier remains `blocked_by_h1`; its operator is deliberately unset and
+all model, target, training, and run authorization flags are false.
 
 ### CV4 — contradiction and composition pilot
 

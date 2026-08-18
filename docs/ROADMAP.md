@@ -284,6 +284,9 @@ exploratory evidence; they do not close the human construct or causal gates.
 17. Add a no-model contributor quickstart that reproduces one synthetic result
    in under thirty minutes and walks through one positive exploratory and one
    null/failed package with their evidence boundaries.
+18. Maintain the machine-bound CV2 control protocol and Lab 06 causal dossier
+    as no-model readiness artifacts; neither may become executable until H1,
+    held-out direction, resource, and explicit approval gates are closed.
 
 The target milestone is a complete chain of label-free paired cases, independent
 canonical human labels, no detected surface shortcut, exact model activations,
