@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Mapping
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 import hashlib
 import json
@@ -53,10 +53,15 @@ _ALLOWED_CDN_HOSTS = {
 
 class _BoundedRedirect(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):  # type: ignore[no-untyped-def]
-        parsed = urlparse(newurl)
-        if parsed.scheme != "https" or parsed.hostname not in _ALLOWED_CDN_HOSTS:
+        absolute = urljoin(req.full_url, newurl)
+        parsed = urlparse(absolute)
+        allowed_internal = (
+            parsed.hostname == "huggingface.co"
+            and parsed.path.startswith(f"/api/resolve-cache/models/{MODEL_ID}/{REVISION}/")
+        )
+        if parsed.scheme != "https" or (parsed.hostname not in _ALLOWED_CDN_HOSTS and not allowed_internal):
             return None
-        return super().redirect_request(req, fp, code, msg, headers, newurl)
+        return super().redirect_request(req, fp, code, msg, headers, absolute)
 
 
 _HTTP = build_opener(_BoundedRedirect())
@@ -169,7 +174,11 @@ def acquire_qwen(root: Path, *, allow_download: bool, authorization: Mapping[str
         status = getattr(response, "status", 200)
         final_url = str(getattr(response, "url", url))
         final_host = urlparse(final_url).hostname
-        if status != 200 or (final_url != url and final_host not in _ALLOWED_CDN_HOSTS):
+        final_internal = (
+            final_host == "huggingface.co"
+            and urlparse(final_url).path.startswith(f"/api/resolve-cache/models/{MODEL_ID}/{REVISION}/")
+        )
+        if status != 200 or (final_url != url and final_host not in _ALLOWED_CDN_HOSTS and not final_internal):
             response.close()
             raise QwenAcquisitionError(f"download failed or redirected: HTTP {status}")
         return response
