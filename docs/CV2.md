@@ -31,3 +31,13 @@ Unknown, missing, or contradictory receipt data is `non_interpretable`.
 
 The protocol publishes all terminal classes (`positive`, `null`, `failed`, and
 `non_interpretable`) and forbids post-hoc tuning, pooling, or claim promotion.
+
+Run the deterministic readiness surface with:
+
+```text
+make no-model-quickstart
+```
+
+This renders the synthetic dashboard, validates all tracked schema pairs,
+audits the H1 collection packet, and validates the CV2/Lab06 contracts without
+model libraries, network access, generation, or sealed-target reads.

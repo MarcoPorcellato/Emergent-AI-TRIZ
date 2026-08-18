@@ -821,8 +821,9 @@ inspection, or a receipt for another commit are not a pass.
   causal dossier before composition or broad model scaling.
 - [ ] Prepare the Track B no-TRIZ-term from-scratch protocol independently of
   Track A selection decisions.
-- [ ] Publish the sub-thirty-minute no-model contributor quickstart and a
-  positive/null evidence-profile walkthrough.
+- [x] Publish the sub-thirty-minute no-model contributor quickstart and a
+  positive/null evidence-profile walkthrough entry point (`make
+  no-model-quickstart`); the walkthrough remains readiness-only.
 
 The unchecked items are genuine prerequisites, not missing documentation. A
 future run may not be called WLT or SLT evidence while any applicable item is
