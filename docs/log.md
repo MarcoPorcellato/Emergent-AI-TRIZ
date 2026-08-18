@@ -8,6 +8,25 @@ last_verified: 2026-08-16
 
 # Documentation Chronology
 
+## 2026-08-18
+
+- Exact-head CCP qualification then passed on `8bd99a68c07f8c666ec77e0f7d009703ac4551cf`
+  for Python 3.11/3.12 with a clean worktree. Under the separately recorded
+  authorization, the single guarded SmolLM2 R3 run completed terminal `null`
+  in 299.054 seconds with peak RSS 2,824,798,208 bytes, exactly one sealed
+  target read, and no retry. The immutable package and external response-score
+  locator/hash are ready for publication; all claims remain exploratory and
+  non-pooled.
+
+- The R3 exact-head CCP attempts at `8a4df44` and `db46782` failed before any
+  model or target access. The dependency-light image correctly lacked the
+  optional `torch` package needed only by model-adapter synthetic tests, and
+  CCP mounts a writable `/tmp` tmpfs capped at 64 MiB. The repository check now
+  prefers `/dev/shm`, skips only those optional model tests when the dependency
+  is absent, and excludes local `.venv` symlinks from copied-repository
+  fixtures. Direct Python 3.11/3.12 read-only diagnostics pass; a fresh
+  exact-head CCP receipt is still required before material execution.
+
 ## 2026-08-16
 
 - Published and merged the non-authorizing R2.3 approval dossier through PR 62

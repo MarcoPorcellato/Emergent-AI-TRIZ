@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/exp001-r3-execution-receipt.schema.json",
+  "title": "EXP-001 R3 execution receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "status", "created_at", "model", "execution", "access", "claim_ids", "evidence_eligible", "expert_validated"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-execution-receipt"},
+    "protocol_id": {"const": "exp001-reference-integrated-r3-v1.0.0"},
+    "status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "revision", "local_locator"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "local_locator": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?:[^/\\s]+(?:/[^/\\s]+)*)$"}
+      }
+    },
+    "execution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["runtime_status", "device", "dtype", "network", "generation", "run_count", "wall_seconds", "peak_rss_bytes"],
+      "properties": {
+        "runtime_status": {"enum": ["completed", "failed", "not_started"]},
+        "device": {"const": "cpu"}, "dtype": {"const": "float32"},
+        "network": {"const": "disabled"}, "generation": {"const": false}, "run_count": {"const": 1},
+        "wall_seconds": {"type": "number", "minimum": 0, "maximum": 1800},
+        "peak_rss_bytes": {"type": "integer", "minimum": 0, "maximum": 8589934592}
+      }
+    },
+    "access": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_loaded", "model_output_accessed", "sealed_targets_accessed", "target_reads"],
+      "properties": {
+        "model_loaded": {"type": "boolean"},
+        "model_output_accessed": {"enum": ["not_accessed", "accessed", "possibly_accessed"]},
+        "sealed_targets_accessed": {"enum": ["not_accessed", "accessed", "possibly_accessed"]},
+        "target_reads": {"type": "integer", "minimum": 0, "maximum": 1}
+      }
+    },
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "evidence_eligible": {"const": false}, "expert_validated": {"const": false},
+    "receipt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "provenance": {"type": "object", "additionalProperties": false, "properties": {
+      "implementation": {"$ref": "#/$defs/artifact"}, "authorization": {"$ref": "#/$defs/artifact"}, "integrity": {"$ref": "#/$defs/artifact"}, "feasibility": {"$ref": "#/$defs/artifact"}, "sealed_key_access": {"$ref": "#/$defs/artifact"}, "recovery": {"$ref": "#/$defs/artifact"}
+    }},
+    "external_response_asset": {"type": "object", "additionalProperties": false, "required": ["locator", "sha256"], "properties": {"locator": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\s]+$"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}},
+    "reports": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\s]+$"}}
+  },
+  "$defs": {"artifact": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": {"path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\s]+$"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}}}
+}

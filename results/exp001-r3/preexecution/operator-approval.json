@@ -1,0 +1,36 @@
+{
+  "artifact_class": "exp001-r3-operator-authorization",
+  "receipt_id": "exp001-r3-operator-authorization-v1",
+  "receipt_status": "authorized",
+  "recorded_at": "2026-08-18T00:00:00Z",
+  "source": "explicit_operator_authorization",
+  "dossier": {
+    "dossier_id": "exp001-r3-execution-approval-v1",
+    "path": "experiments/exp001-reference-integrated/execution-authorization.json",
+    "sha256": "f09fa164099d673c8e05994ad446dbe62f3e763ad72472831163b846d32c91f3",
+    "commit": "8a4df44afd7a7b2b1e275e34bafd62a9067fa323"
+  },
+  "scope": {
+    "model_id": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+    "device": "cpu",
+    "dtype": "float32",
+    "network_access": false,
+    "generation": false,
+    "wall_time_seconds": 1800,
+    "peak_rss_bytes": 8589934592,
+    "new_dense_output_bytes": 134217728,
+    "single_run": true,
+    "sealed_target_reads": "exactly_one_at_analysis_boundary",
+    "publish_every_terminal_outcome": true,
+    "retry_after_model_or_target_access": false,
+    "model_substitution": false,
+    "protocol_mutation": false,
+    "general_triz_claim_allowed": false
+  },
+  "access": {
+    "model_loaded": false,
+    "model_output_accessed": false,
+    "sealed_targets_accessed": false
+  }
+}

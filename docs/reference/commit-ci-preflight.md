@@ -36,6 +36,18 @@ and 256 PIDs per runtime. It binds `repository_check.py` and
 read-only. A successful matrix run writes the ignored local receipt
 `.ccp/receipt.json`.
 
+The annotation-workbench integration test is loopback-only by design. In CCP's
+`network = false` containers, runtimes that deny even a loopback bind report
+that single integration test as an explicit unittest skip; the same test
+remains fully exercised on normal local and hosted environments. This does not
+weaken the workbench's non-loopback binding refusal test.
+
+The repository check prefers `/dev/shm` when available, because CCP's writable
+`/tmp` tmpfs is intentionally capped at 64 MiB; it falls back to Python's
+default temporary-directory selection when shared memory is unavailable. This
+keeps the checkout and model artifacts read-only while allowing the existing
+isolated fixture tests to run without filling the bounded CCP tmpfs.
+
 Run CCP only from an exact clean commit:
 
 ```text

@@ -1,0 +1,67 @@
+{
+  "artifact_class": "exp001-r3-execution-authorization",
+  "created_at": "2026-08-18T00:00:00Z",
+  "dossier_id": "exp001-r3-execution-approval-v1",
+  "dossier_status": "approval_requested",
+  "implementation": {
+    "path": "experiments/exp001-reference-integrated/implementation.json",
+    "sha256": "e073d713e53f30b64895c86883894ecb4bb19eabe4444522118a1a75a50f11eb",
+    "size": 6087
+  },
+  "inventory": {
+    "combined_records": 85,
+    "primary_records": 72,
+    "score_calls": 340,
+    "secondary_records": 13,
+    "teacher_forced_labels_per_record": 4
+  },
+  "limits": {
+    "new_dense_output_bytes": 134217728,
+    "peak_rss_bytes": 8589934592,
+    "wall_time_seconds": 1800
+  },
+  "model": {
+    "feasibility_receipt": {
+      "path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json",
+      "sha256": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67",
+      "size": 2440
+    },
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "integrity_receipt": {
+      "path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json",
+      "sha256": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3",
+      "size": 4759
+    },
+    "local_locator": "artifacts/models/smollm2-360m-f8027fd0",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"
+  },
+  "operator_approval_granted": false,
+  "policies": {
+    "device": "cpu",
+    "dtype": "float32",
+    "generation": false,
+    "model_substitution": false,
+    "network_access": false,
+    "protocol_mutation": false,
+    "publish_every_terminal_outcome": true,
+    "retry_after_model_or_target_access": false,
+    "sealed_target_reads": "exactly_one_at_analysis_boundary",
+    "single_run": true
+  },
+  "protocol": {
+    "path": "experiments/exp001-reference-integrated/protocol.json",
+    "sha256": "cf79bf9b58edd5e74ff9cf0467e832d9476052136161e8f4cc1cae94d0fa59ea",
+    "size": 3090
+  },
+  "protocol_id": "exp001-reference-integrated-r3-v1.0.0",
+  "publication": {
+    "general_triz_claim_allowed": false,
+    "terminal_outcomes": [
+      "positive",
+      "null",
+      "failed",
+      "non_interpretable",
+      "incompatible"
+    ]
+  }
+}

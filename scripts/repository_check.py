@@ -24,6 +24,40 @@ PYTHON = sys.executable
 ENV = dict(os.environ, PYTHONPATH=str(ROOT / "src"))
 
 
+def _ensure_writable_tempdir() -> str:
+    """Select the container's writable shared-memory tmpdir when needed.
+
+    CCP mounts the checkout read-only and some runtimes also expose no writable
+    ``/tmp``.  The repository tests intentionally use ``tempfile`` for
+    isolated fixtures, so fail-closed qualification must provide a writable
+    temporary location without relaxing the checkout mount.  Normal hosts keep
+    Python's default selection unchanged; the fallback is used only when the
+    default lookup is unavailable.
+    """
+
+    candidates = ["/dev/shm"]
+    try:
+        candidates.append(tempfile.gettempdir())
+    except FileNotFoundError:
+        pass
+    candidates.append("/tmp")
+
+    for candidate in dict.fromkeys(candidates):
+        if not os.path.isdir(candidate):
+            continue
+        try:
+            descriptor, probe = tempfile.mkstemp(prefix="latent-triz-", dir=candidate)
+            os.close(descriptor)
+            os.unlink(probe)
+        except OSError:
+            continue
+        tempfile.tempdir = candidate
+        ENV["TMPDIR"] = candidate
+        return candidate
+
+    raise RuntimeError("no writable temporary directory available for repository checks")
+
+
 def run(*args: str) -> None:
     subprocess.run(args, cwd=ROOT, env=ENV, check=True)
 
@@ -34,6 +68,7 @@ def validate(schema: str, data: str) -> None:
 
 
 def main() -> int:
+    _ensure_writable_tempdir()
     run(PYTHON, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py")
 
     validation_pairs = (
@@ -98,6 +133,19 @@ def main() -> int:
         ("schemas/a0r2c3-analysis-contract.schema.json", "experiments/a0r2c3-analysis-only-recovery/contract.json"),
         ("schemas/triz-reference-registry.schema.json", "data/triz-reference-sources.json"),
         ("schemas/triz-principle-reference.schema.json", "data/triz-reference/principles.jsonl"),
+        ("schemas/exp001-r3-protocol.schema.json", "experiments/exp001-reference-integrated/protocol.json"),
+        ("schemas/exp001-r3-implementation.schema.json", "experiments/exp001-reference-integrated/implementation.json"),
+        ("schemas/exp001-r3-execution-authorization.schema.json", "experiments/exp001-reference-integrated/execution-authorization.json"),
+        ("schemas/exp001-r3-freeze-manifest.schema.json", "results/exp001-r3/freeze-manifest.json"),
+        ("schemas/exp001-r3-matrix-cell.schema.json", "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl"),
+        ("schemas/exp001-r3-tool-edge.schema.json", "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl"),
+        ("schemas/exp001-r3-item.schema.json", "experiments/exp001-reference-integrated/fixtures/items.jsonl"),
+        ("schemas/exp001-r3-source-exposure.schema.json", "experiments/exp001-reference-integrated/fixtures/source-exposures.jsonl"),
+        ("schemas/exp001-r3-control-plan.schema.json", "experiments/exp001-reference-integrated/fixtures/control-plan.json"),
+        ("schemas/exp001-r3-option-set.schema.json", "experiments/exp001-reference-integrated/fixtures/option-sets.jsonl"),
+        ("schemas/exp001-r3-split-receipt.schema.json", "experiments/exp001-reference-integrated/fixtures/split-receipt.json"),
+        ("schemas/exp001-r3-analysis-plan.schema.json", "experiments/exp001-reference-integrated/analysis-plan.json"),
+        ("schemas/exp001-r3-primary-unit.schema.json", "experiments/exp001-reference-integrated/fixtures/primary-units.jsonl"),
         ("schemas/triz-web-corpus.schema.json", "data/triz-consulting-web-corpus.json"),
         ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),
         ("schemas/a0-case.schema.json", "data/a0/cases.jsonl"),

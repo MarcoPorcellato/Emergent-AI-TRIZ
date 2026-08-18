@@ -1,6 +1,15 @@
 Complete `docs/EXP001_REFERENCE_INTEGRATED.md` from verified public main
-`f60afc8d9f2803a6a988f26f6c520dd72659080a`, verifying the live repository,
+`db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c`, resuming local R3 checkpoint
+`fe77dc6560e95dbb865cc1bf721552fd610782b5` only after verifying the live repository,
 ruleset, source corpus, artifacts, and receipts before acting.
+
+R3.0-R3.2 target-free freeze is complete on branch
+`agent/exp001-r3-reference-freeze` and published in PR #75: the strict
+no-model protocol, sparse externally-referenced Matrix 2003 fixture,
+rights-aware Panitz edge fixture, implementation hash binding, freeze manifest,
+synthetic qualification, and approval-request dossier are all present. This is
+still a no-model freeze, not a sealed study result. Resume instructions are in
+`docs/EXP001_R3_RESTART_HANDOFF.md`.
 
 Prepare and freeze a new R3/EXP-001 TRIZ reference-integrated study without
 changing any A0-R2/C3 bytes. Keep `TRIZ-blinded-transfer` and
@@ -19,3 +28,14 @@ After approval, perform exactly one guarded local SmolLM2 run, publish every
 terminal outcome, the external dense locator/hash, exact-head CCP receipt, PR,
 fresh-clone verification, limitations, and final report. Complete only when the
 specification checklist is proven and no general TRIZ claim is promoted.
+
+Current checkpoint: R3.3 material run completed on exact head
+`8bd99a68c07f8c666ec77e0f7d009703ac4551cf`. CCP passed on Python 3.11/3.12;
+the single guarded SmolLM2 run returned terminal status `null`, read sealed
+targets exactly once at the analysis boundary, used 299.054 seconds and
+2,824,798,208 bytes peak RSS, and performed no retry. The immutable package
+is `results/exp001-r3/smollm2-r3-20260818-01/`; its external response-score
+asset remains ignored and is bound by locator/hash in the manifest. Next step
+is publication (package commit, exact-head CCP evidence branch, PR/merge, and
+fresh-clone asset-mutation tests). Preserve the operator receipt and all
+stashes; never edit CCP cache/journals or rerun the consumed material scope.

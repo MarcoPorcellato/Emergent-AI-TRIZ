@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-r3-primary-unit.schema.json",
+  "title": "EXP-001 R3 target-free primary authoring unit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["unit_id", "domain", "problem_family", "replicate", "transfer_prompt", "transfer_options", "lexical_control_prompt", "lexical_control_options", "exposed_context", "source_id"],
+  "properties": {
+    "unit_id": {"type": "string", "pattern": "^[a-z0-9-]+-[12]$"},
+    "domain": {"enum": ["agriculture", "medical", "manufacturing", "logistics", "software", "energy"]},
+    "problem_family": {"type": "string", "minLength": 1},
+    "replicate": {"enum": [1, 2]},
+    "transfer_prompt": {"type": "string", "minLength": 40},
+    "transfer_options": {"$ref": "#/$defs/options"},
+    "lexical_control_prompt": {"type": "string", "minLength": 40},
+    "lexical_control_options": {"$ref": "#/$defs/options"},
+    "exposed_context": {"type": "string", "minLength": 20},
+    "source_id": {"const": "triz-ref-inventive-principles-2023"}
+  },
+  "$defs": {
+    "options": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {"type": "object", "additionalProperties": false, "required": ["id", "description"], "properties": {"id": {"enum": ["A", "B", "C", "D"]}, "description": {"type": "string", "minLength": 4}}}
+    }
+  }
+}

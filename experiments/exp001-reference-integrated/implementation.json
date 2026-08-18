@@ -1,0 +1,181 @@
+{
+  "artifact_class": "exp001-r3-implementation-binding",
+  "claim_ids": [],
+  "code_sha256": [
+    {
+      "path": "src/latent_triz/exp001_r3_analysis.py",
+      "sha256": "0c261c8fdabeae359edc5b729929eb91ecded836b46d30f4b6bc308ff020d97b",
+      "size": 6477
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_contract.py",
+      "sha256": "44c8a41c1e3a549b37145ae6473910b764d69ee21ca3bd0c9647784e76d5dda5",
+      "size": 11990
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_execution.py",
+      "sha256": "19993c50aad78764865b9d92ebff25891cbaac0fd5eacee4e50a8ce1a1fda116",
+      "size": 6389
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_fixture_builder.py",
+      "sha256": "99d8237e1de4bb2c9a0da26e2a9581d5d97df2260b56e81de669f6eb62ce5ad5",
+      "size": 4636
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_model_adapter.py",
+      "sha256": "e7a0e038e506650a98c85ba8cc100027ca8c6ab6b7bd5ed27cf15d422059f653",
+      "size": 11448
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_primary_fixture.py",
+      "sha256": "17a37c227ef7276673ebbc6092cd20848da5c96e159737e069af4616db8e457a",
+      "size": 4051
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_response_adapter.py",
+      "sha256": "26917e6d7ce6b537e14d1e4a57e9e076546e172d48a46ec7d52e63aaace916af",
+      "size": 6590
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_response_execution.py",
+      "sha256": "41a89d06b626fcf10ed412b82daee3e7a1c6112bb06635cc3b551bf2037c70bc",
+      "size": 5268
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_runner.py",
+      "sha256": "e9440539c8cfc37b41bc2140afe7c235ce6c0bafbee69cc705a00c397cc64427",
+      "size": 9037
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_secondary_fixture.py",
+      "sha256": "501ca4052f39f2fd5ac6505d2cae0fa2e036e50145477dd26375ca736bf16574",
+      "size": 9011
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_target_key.py",
+      "sha256": "3bfdecf4f10e5e05458a8dca9ad79d5cb660364bfda5838cd8c45b406f1790d6",
+      "size": 2535
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_implementation.py",
+      "sha256": "7cd67bcadc82be8abb5a7c44dfc90c917ce272b5581dcccc4028840c1c9a32bb",
+      "size": 7821
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_authorization.py",
+      "sha256": "cf20d9f7f2d3ec0c14bba59d086eb8f3f3183f90f432815d89cb6a9668990773",
+      "size": 7624
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_freeze.py",
+      "sha256": "89e8c6e7ec58b895f6b921505849bca86fc6cb05b5661625f6e301467a531188",
+      "size": 6376
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_report.py",
+      "sha256": "1f2e343adf985f71b2c862b50ab186e8da1693c0814db8036849a4d634c4bc07",
+      "size": 15062
+    },
+    {
+      "path": "src/latent_triz/exp001_r3_material_runner.py",
+      "sha256": "66298d9d341c380f482e408d5b62b8e2a0163d3122ed4cba161f0d81c88a6f45",
+      "size": 18973
+    }
+  ],
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "fixture_sha256": [
+    {
+      "path": "experiments/exp001-reference-integrated/protocol.json",
+      "sha256": "cf79bf9b58edd5e74ff9cf0467e832d9476052136161e8f4cc1cae94d0fa59ea",
+      "size": 3090
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/analysis-plan.json",
+      "sha256": "3fe54dde38f552d04d50d9a5e9a795070175fcced86ec6f69d019a13e73b1e07",
+      "size": 2570
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/primary-units.jsonl",
+      "sha256": "d444c5ccc489ec710ae9551e07c6c5bb60e03ff99cc345fc2dae308e597d98a3",
+      "size": 25574
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl",
+      "sha256": "2277e904baf3f005f57edb76220d16cf471811c28940d757ae800acd205fa9b4",
+      "size": 2829
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl",
+      "sha256": "5b43a74d19592d87431603aac3c7be66540ce4390c192dd852c94d142e8d9d86",
+      "size": 1631
+    }
+  ],
+  "implementation_id": "exp001-reference-integrated-r3-v1.0.0-impl",
+  "inventory": {
+    "combined_records": 85,
+    "primary_records": 72,
+    "score_calls": 340,
+    "secondary_records": 13,
+    "teacher_forced_labels_per_record": 4
+  },
+  "limits": {
+    "new_dense_output_bytes": 134217728,
+    "peak_rss_bytes": 8589934592,
+    "wall_time_seconds": 1800
+  },
+  "model": {
+    "local_only": true,
+    "name": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"
+  },
+  "policies": {
+    "general_triz_claim": false,
+    "generation": false,
+    "model_substitution": false,
+    "network_access": false,
+    "protocol_mutation": false,
+    "publish_every_terminal_outcome": true,
+    "retry_after_model_or_target_access": false,
+    "sealed_target_read_boundary": "analysis_only",
+    "single_run": true
+  },
+  "protocol_id": "exp001-reference-integrated-r3-v1.0.0",
+  "protocol_status": "frozen",
+  "receipt_sha256": [
+    {
+      "path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json",
+      "sha256": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3",
+      "size": 4759
+    },
+    {
+      "path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json",
+      "sha256": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67",
+      "size": 2440
+    }
+  ],
+  "scientific_status": "exploratory",
+  "source_sha256": [
+    {
+      "path": "data/triz-reference-sources.json",
+      "sha256": "a3bd9283b7e73ebd723bcfab8edb9599161e37a47686b6c25e652158d2158273",
+      "size": 4780
+    },
+    {
+      "path": "data/triz-reference/principles.jsonl",
+      "sha256": "7baa3b74f7a5ee7ca5fe9303baf64361a5cbcdfea0cb0c539e00bb74db764249",
+      "size": 19990
+    },
+    {
+      "path": "data/triz-consulting-web-corpus.json",
+      "sha256": "e397160adfc60c534d16b5cd934deddb3e3500bb8f99f7fef26a2b6d4c2eff46",
+      "size": 11276
+    },
+    {
+      "path": "docs/reference/triz-reference-corpus.md",
+      "sha256": "92429183119e463090df170f4ec29bf0f0e43ee531f47898c8071325a3b7435f",
+      "size": 8755
+    }
+  ]
+}

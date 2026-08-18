@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/exp001-r3-freeze-manifest.schema.json",
+  "title": "EXP-001 R3 frozen no-model manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "status", "protocol_status", "protocol", "implementation", "analysis_plan", "fixtures", "sources", "model", "inventory", "access", "policies"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-freeze-manifest"},
+    "protocol_id": {"const": "exp001-reference-integrated-r3-v1.0.0"},
+    "status": {"const": "frozen"},
+    "protocol_status": {"const": "frozen"},
+    "protocol": {"$ref": "#/$defs/artifact"},
+    "implementation": {"$ref": "#/$defs/artifact"},
+    "analysis_plan": {"$ref": "#/$defs/artifact"},
+    "fixtures": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/artifact"}},
+    "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/artifact"}},
+    "model": {"type": "object", "additionalProperties": false, "required": ["id", "revision", "integrity_receipt", "feasibility_receipt"], "properties": {
+      "id": {"const": "HuggingFaceTB/SmolLM2-360M"}, "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"}, "integrity_receipt": {"$ref": "#/$defs/artifact"}, "feasibility_receipt": {"$ref": "#/$defs/artifact"}
+    }},
+    "inventory": {"type": "object", "additionalProperties": false, "required": ["primary_records", "secondary_records", "combined_records", "score_calls"], "properties": {"primary_records": {"const": 72}, "secondary_records": {"const": 13}, "combined_records": {"const": 85}, "score_calls": {"const": 340}}},
+    "access": {"type": "object", "additionalProperties": false, "required": ["model_loaded", "model_output_accessed", "sealed_targets_accessed", "target_reads"], "properties": {"model_loaded": {"const": false}, "model_output_accessed": {"const": "not_accessed"}, "sealed_targets_accessed": {"const": "not_accessed"}, "target_reads": {"const": 0}}},
+    "policies": {"type": "object", "additionalProperties": false, "required": ["network_access", "generation", "sealed_target_reads", "no_model_output"], "properties": {"network_access": {"const": false}, "generation": {"const": false}, "sealed_target_reads": {"const": "forbidden_before_explicit_authorization"}, "no_model_output": {"const": true}}}
+  },
+  "$defs": {"artifact": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "size"], "properties": {"path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\s]+$"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "size": {"type": "integer", "minimum": 0}}}}
+}

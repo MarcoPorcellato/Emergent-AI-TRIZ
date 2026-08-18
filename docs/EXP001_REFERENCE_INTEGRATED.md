@@ -4,7 +4,7 @@ title: EXP-001 Reference-Integrated TRIZ Study
 description: Durable preregistration for a source-aware, source-blinded, label-safe study using the public TRIZ reference layer.
 status: draft_preregistration
 version: 0.1.0
-last_verified: 2026-08-17
+last_verified: 2026-08-18
 ---
 
 # EXP-001 — reference-integrated TRIZ study
@@ -39,9 +39,11 @@ TRIZ.
 
 ## 2. Verified anchors
 
-The live starting anchor is public `main` commit
-`f60afc8d9f2803a6a988f26f6c520dd72659080a` (verify `origin/main` before every
-mutation). The current reference layer is:
+The verified starting anchor is public `main` commit
+`db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c` (PR #74; verify `origin/main`
+before every mutation). The prior `f60afc8d9f2803a6a988f26f6c520dd72659080a`
+anchor remains the immutable A0-R2/C3 publication input, not the R3 delivery
+base. The current reference layer is:
 
 | Artifact | SHA-256 | Scientific status |
 |---|---|---|
@@ -123,6 +125,19 @@ open sealed targets, or alter A0-R2.
 **Exit evidence:** schema cross-validation, source/hash audit, rights audit,
 clean worktree, and a reviewable protocol diff.
 
+**Current status (2026-08-18):** the target-free protocol, implementation
+binding, freeze manifest, and approval-request dossier are frozen and published
+on PR #75. Exact-head no-model qualification and operator approval remain
+separate gates. This status authorizes neither a model load nor sealed-target
+access.
+
+The current no-model source verifier is committed at `6316cd6`. It verifies
+the four immutable reference hashes, forty ordered principle records, eighteen
+web-resource records, fixture schemas, safe paths, paired non-poolable strata,
+Matrix double-check agreement, and Panitz non-selection controls without
+importing an ML runtime. It is evidence of preparation only, not a study
+freeze or a model qualification.
+
 ### R3.1 — independent fixture construction and contamination audit
 
 Build independent paraphrases and domains from the reference summaries without
@@ -141,6 +156,24 @@ scored.
 **Exit evidence:** frozen fixture manifest, independent derivation receipts,
 lexical-overlap report, source-family/domain split report, matrix double-check
 receipt, tool-edge status receipt, and synthetic power/permutation calibration.
+
+**Checkpoint (2026-08-18):** `b1ab0d6` adds 24 public target-free primary
+units across six domains, two families per domain, and two replicates per
+family. Correct-answer positions are rotated semantically in the future sealed
+key and are not stored in public fixtures. `2e7c510` adds synthetic-tested
+teacher-forced scoring that rejects tensor, prefix, architecture, or generation
+contract drift. Matrix and Panitz secondary fixtures are now execution-ready,
+source-family separated, and bound by the public freeze manifest; R3.1 is
+verified complete without model or target access.
+
+**Operational decision pending freeze:** preserve the 72-record primary
+inventory unchanged and add 13 separately scored secondary records: nine
+Matrix 2003 checks (three verified cells × forward, reversed-direction and
+non-recommendation controls) plus four Panitz edge checks. The combined single
+model invocation will therefore score 85 records × four teacher-forced labels.
+Secondary outcomes are descriptive, source-family separated and cannot alter
+the primary terminal classification. The target-free fixture inventory is now
+bound by the R3 implementation freeze; sealed target values remain absent.
 
 ### R3.2 — statistical and implementation freeze
 
@@ -161,6 +194,12 @@ adapters/vectors must cover both strata and every terminal class.
 synthetic statistics tests, exact-head CCP qualification, and a separate
 operator approval dossier.
 
+**Checkpoint (2026-08-18):** the public freeze at `f1cc72b` binds the strict
+terminal receipt, response index, statistical-result, publication-manifest,
+freeze-manifest, and approval-request dossier to the frozen protocol and exact
+SmolLM2 receipts. They preserve the exploratory/no-claim envelope and are not
+an operator authorization or model result.
+
 ### R3.3 — one guarded model run
 
 After explicit approval of the frozen dossier, check CCP `resource status
@@ -176,6 +215,16 @@ target access outside the declared analysis boundary is permitted. If any
 runtime or tokenizer mismatch occurs, publish `incompatible` or `failed` and
 stop.
 
+**Checkpoint (2026-08-18):** exact-head CCP qualification passed on
+`8bd99a68c07f8c666ec77e0f7d009703ac4551cf` for Python 3.11 and 3.12
+(repository and schema checks). With the separately recorded operator
+authorization, one guarded SmolLM2 run completed exactly once. The terminal
+package is `results/exp001-r3/smollm2-r3-20260818-01/`, with status `null`,
+one sealed-target read, 299.054 seconds wall time, and peak RSS
+2,824,798,208 bytes. No retry occurred; the result remains exploratory and
+claim-free. The secondary Matrix 2003 and Panitz strata were executed but are
+reported descriptive-only/not reported by the frozen primary statistic.
+
 **Exit evidence:** exact runtime receipt, access receipt, activation/response
 index, terminal statistical result, recovery observation, and immutable logs.
 
@@ -190,6 +239,12 @@ missing or mutated.
 
 **Exit evidence:** merged main commit, PR and receipt links, fresh-clone pass,
 fresh-clone missing/mutation rejection, final report, and updated chronology.
+
+**Current status (2026-08-18):** R3.3 is complete locally and its immutable
+package, external response-score locator/hash, and terminal report are ready
+for publication. R3.4 remains open pending package commit, exact-head CCP
+receipt publication, PR review/merge, and fresh-clone verification with
+deliberate missing/mutated external-asset rejection.
 
 ## 6. Required deliverables
 
@@ -240,4 +295,3 @@ the checkpoint.
 - [ ] Exact-head receipt and hosted gates are terminally green.
 - [ ] Fresh clone passes with the declared external asset and rejects missing or mutated assets.
 - [ ] Main, chronology, persistent goal, and this specification agree on status.
-

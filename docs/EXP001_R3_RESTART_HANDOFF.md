@@ -1,0 +1,104 @@
+# EXP-001 R3 restart handoff
+
+## Checkpoint
+
+- Recorded: 2026-08-18, before operator-requested macOS restart.
+- Branch: `agent/exp001-r3-reference-freeze`.
+- Exact local checkpoint before this handoff commit: `fe77dc6560e95dbb865cc1bf721552fd610782b5`.
+- Verified public delivery base: `db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c`.
+- Worktree at recording: clean; the four pre-existing stashes remain untouched.
+- Remote/ruleset/PR state has not been re-verified at this checkpoint and must
+  be checked live before publication or qualification.
+
+## 2026-08-18 continuation checkpoint
+
+- `b1ab0d6` replaces the unbalanced draft with 24 public, target-free primary
+  units across six domains, two families per domain, and two replicates per
+  family. The semantic intended positions are rotated six times each over
+  `A`–`D`; no answer mapping is stored in the public fixture.
+- `e91e420` defines teacher-forced four-option scoring; `5ac2f89` adds the
+  fail-closed no-model execution preflight; `bd016be` adds a local-only
+  SmolLM2 adapter; and `a216eeb` adds the target-free response-execution
+  layer. All are synthetic-tested only: no R3 model load, target read, output,
+  CCP workload, or network operation has occurred.
+- `2e7c510` hardens teacher-forced scoring for tensor-backed tokenizer output,
+  causal continuation positions and token-prefix drift; `fd7d341` adds the
+  terminal package schemas. Both are synthetic-only checkpoints.
+- `stash@{0}` and `stash@{1}` preserve rejected pre-balance fixture drafts as
+  historical recovery evidence. They must remain untouched and must not be
+  applied over the corrected committed fixture.
+
+## Completed no-model work
+
+- R3 source and schema foundation is committed through `a216eeb`.
+- `87a54f7` adds a target-free builder that deterministically derives 20
+  non-poolable public record stubs from the ten-pair control plan and opaque
+  option-set inventory.
+- `60c39e1` makes the no-model contract fail closed if the option inventory,
+  split bindings, or non-pooling guarantee diverge from the control plan.
+- Targeted synthetic validations passed for the fixture, analysis, execution,
+  adapter, response-execution, and analysis-boundary modules. A full no-model
+  suite and schema parity check remain required before freezing.
+
+## Deliberately unfinished boundary
+
+The target-free protocol is frozen and no model, sealed target, CCP workload,
+or network operation has been started for R3. The public fixture and terminal
+package path are synthetic-tested. The implementation/freeze writers and
+approval-dossier builder are now being integrated; no real approval dossier or
+sealed target key has been created. Exact-head no-model qualification remains
+unfinished.
+
+The next milestone is to complete the R3-specific model scoring integration and
+immutable package/verification path, then freeze the implementation and
+statistical bindings. Only after exact-head no-model qualification may an exact
+authorization dossier be requested and the sealed key created at the authorized
+analysis boundary.
+
+## Resume sequence
+
+1. Verify `git status`, branch/HEAD, `origin/main`, worktree inventory,
+   stashes, GitHub ruleset/open PRs, and the immutable source/SmolLM2 receipts.
+2. Re-run the listed targeted R3 tests and schema cross-validation.
+3. Finish and synthetic-test the real local teacher-forced option-scoring
+   adapter. In particular, validate tensor normalization, prompt/continuation
+   prefix stability, continuation log-probability positions, offline-only
+   loading, and absence of generation.
+4. Add and test immutable R3 execution, result, report, and publication
+   manifests; then freeze implementation hashes and update the canonical
+   specification and persistent goal.
+5. Qualify the frozen no-model package before requesting any new operator
+   authorization. CCP resource/admission checks apply only before a later
+   material qualification or model run.
+
+## Restart safety (2026-08-18)
+
+- The only uncommitted files at this checkpoint are the bounded approval
+  layer: `schemas/exp001-r3-execution-authorization.schema.json`,
+  `src/latent_triz/exp001_r3_authorization.py`, and
+  `tests/test_exp001_r3_authorization.py`.
+- They build only an `approval_requested` in-memory dossier and perform no
+  model load, target read, network access, CCP run, or output generation.
+- Existing stashes `stash@{0}` through `stash@{5}` are preserved. Do not apply
+  or delete them during restart recovery.
+- Before publication or qualification, re-check the live branch, public main,
+  ruleset, open PRs, and CCP resource/admission state.
+
+## Public no-model freeze checkpoint (2026-08-18)
+
+- Commit `f1cc72bac58051db11d7050b22edc22970b9e988` freezes the target-free
+  protocol and publishes the implementation binding, freeze manifest, and
+  unapproved dossier. PR #75 is the public delivery vehicle.
+- Exact local validation: 98 R3 tests, full repository check (666 tests), and
+  schema cross-validation (85 tracked pairs) passed. No model, target, network,
+  or material CCP workload was used.
+- The required CCP preflight currently reports resource `decision=admit` but
+  admission `active=false`, `queue_count=0`. Recovery status identifies old
+  operator-required journals `13a2307e...` and `ca04aa31...`; the installed
+  utility rejects both exact `recover apply` requests as `run journal is corrupt
+  or incomplete`. Do not edit the cache manually or bypass admission. The
+  current execution blocker is the unapproved tracked dossier, not CCP
+  admission.
+
+No existing A0-R2/C3 artifact may be modified. No prior execution approval
+authorizes the eventual R3 model run.

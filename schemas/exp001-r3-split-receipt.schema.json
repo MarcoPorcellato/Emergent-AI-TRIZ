@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-r3-split-receipt.schema.json",
+  "title": "EXP-001 R3 split and non-pooling receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "status", "target_values_present", "control_plan_sha256", "bindings"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-split-receipt"},
+    "status": {"const": "pre_freeze_no_targets"},
+    "target_values_present": {"const": false},
+    "control_plan_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "bindings": {
+      "type": "array", "minItems": 10, "maxItems": 10,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["pair_id", "task_family", "control_kind", "source_family", "problem_family", "domain_holdout", "source_holdout", "family_holdout", "target_locator", "strata", "pooling_prohibited"],
+        "properties": {
+          "pair_id": {"type": "string", "pattern": "^exp001-r3-pair-[a-z0-9-]+$"},
+          "task_family": {"enum": ["principle", "matrix", "tool_edge", "abstention"]},
+          "control_kind": {"enum": ["primary", "lexical_matched", "principle_near_neighbour", "matrix_direction_swap", "matrix_non_recommended_option", "tool_edge_unsupported", "explicit_abstention"]},
+          "source_family": {"enum": ["principles", "matrix", "tool-map"]},
+          "problem_family": {"type": "string", "minLength": 1},
+          "domain_holdout": {"type": "string", "minLength": 1},
+          "source_holdout": {"type": "string", "minLength": 1},
+          "family_holdout": {"type": "string", "minLength": 1},
+          "target_locator": {"type": "string", "pattern": "^sealed://exp001-r3/[a-z0-9-]+$"},
+          "strata": {"const": ["TRIZ-blinded-transfer", "source-exposed-competence"]},
+          "pooling_prohibited": {"const": true}
+        }
+      }
+    }
+  }
+}

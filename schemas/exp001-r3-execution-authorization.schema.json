@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/exp001-r3-execution-authorization.schema.json",
+  "title": "EXP-001 R3 execution approval dossier",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "dossier_id", "protocol_id", "dossier_status", "operator_approval_granted", "protocol", "implementation", "model", "inventory", "limits", "policies", "publication"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-execution-authorization"},
+    "dossier_id": {"const": "exp001-r3-execution-approval-v1"},
+    "protocol_id": {"const": "exp001-reference-integrated-r3-v1.0.0"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "dossier_status": {"const": "approval_requested"},
+    "operator_approval_granted": {"const": false},
+    "protocol": {"$ref": "#/$defs/artifact"},
+    "implementation": {"$ref": "#/$defs/artifact"},
+    "model": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "revision", "local_locator", "integrity_receipt", "feasibility_receipt"],
+      "properties": {
+        "id": {"const": "HuggingFaceTB/SmolLM2-360M"},
+        "revision": {"const": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+        "local_locator": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\s]+$"},
+        "integrity_receipt": {"$ref": "#/$defs/artifact"},
+        "feasibility_receipt": {"$ref": "#/$defs/artifact"}
+      }
+    },
+    "inventory": {
+      "type": "object", "additionalProperties": false,
+      "required": ["primary_records", "secondary_records", "combined_records", "teacher_forced_labels_per_record", "score_calls"],
+      "properties": {"primary_records": {"const": 72}, "secondary_records": {"const": 13}, "combined_records": {"const": 85}, "teacher_forced_labels_per_record": {"const": 4}, "score_calls": {"const": 340}}
+    },
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["wall_time_seconds", "peak_rss_bytes", "new_dense_output_bytes"],
+      "properties": {"wall_time_seconds": {"const": 1800}, "peak_rss_bytes": {"const": 8589934592}, "new_dense_output_bytes": {"const": 134217728}}
+    },
+    "policies": {
+      "type": "object", "additionalProperties": false,
+      "required": ["device", "dtype", "network_access", "generation", "single_run", "retry_after_model_or_target_access", "model_substitution", "protocol_mutation", "sealed_target_reads", "publish_every_terminal_outcome"],
+      "properties": {"device": {"const": "cpu"}, "dtype": {"const": "float32"}, "network_access": {"const": false}, "generation": {"const": false}, "single_run": {"const": true}, "retry_after_model_or_target_access": {"const": false}, "model_substitution": {"const": false}, "protocol_mutation": {"const": false}, "sealed_target_reads": {"const": "exactly_one_at_analysis_boundary"}, "publish_every_terminal_outcome": {"const": true}}
+    },
+    "publication": {"type": "object", "additionalProperties": false, "required": ["terminal_outcomes", "general_triz_claim_allowed"], "properties": {"terminal_outcomes": {"const": ["positive", "null", "failed", "non_interpretable", "incompatible"]}, "general_triz_claim_allowed": {"const": false}}}
+  },
+  "$defs": {"artifact": {"type": "object", "additionalProperties": false, "required": ["path", "sha256", "size"], "properties": {"path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\s]+$"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "size": {"type": "integer", "minimum": 0}}}}
+}

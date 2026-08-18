@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/exp001-r3-response-index.schema.json",
+  "title": "EXP-001 R3 response index",
+  "type": "object", "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "record_count", "records"],
+  "properties": {
+    "artifact_class": {"const": "exp001-r3-response-index"}, "protocol_id": {"const": "exp001-reference-integrated-r3-v1.0.0"},
+    "record_count": {"const": 85},
+    "records": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["record_id", "scores", "prompt_sha256"],
+        "properties": {
+          "record_id": {"type": "string", "pattern": "^(?:[a-z0-9-]+-(?:transfer-blinded|lexical-control|transfer-exposed)|matrix2003-cell-[a-z0-9-]+-matrix-(?:forward|reverse|nonrecommendation)|panitz-edge-[a-z0-9-]+-tool-abstention)$"},
+          "scores": {"type": "object", "additionalProperties": false, "required": ["A", "B", "C", "D"], "properties": {"A": {"type": "number"}, "B": {"type": "number"}, "C": {"type": "number"}, "D": {"type": "number"}}},
+          "prompt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        }
+      }
+    }
+  }
+}

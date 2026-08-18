@@ -1,0 +1,117 @@
+{
+  "access": {
+    "model_loaded": false,
+    "model_output_accessed": "not_accessed",
+    "sealed_targets_accessed": "not_accessed",
+    "target_reads": 0
+  },
+  "analysis_plan": {
+    "path": "experiments/exp001-reference-integrated/analysis-plan.json",
+    "sha256": "3fe54dde38f552d04d50d9a5e9a795070175fcced86ec6f69d019a13e73b1e07",
+    "size": 2570
+  },
+  "artifact_class": "exp001-r3-freeze-manifest",
+  "fixtures": [
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/items.jsonl",
+      "sha256": "5f8c76c4a9d4619c46ae4fcf05dd7cdc09cdcee4562f3acc5bf67f7374cecdcf",
+      "size": 9856
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl",
+      "sha256": "2277e904baf3f005f57edb76220d16cf471811c28940d757ae800acd205fa9b4",
+      "size": 2829
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl",
+      "sha256": "5b43a74d19592d87431603aac3c7be66540ce4390c192dd852c94d142e8d9d86",
+      "size": 1631
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/source-exposures.jsonl",
+      "sha256": "d1b2c387933fbc756abcfd35497bf44e2e9139822814f36eed712b541c16bde3",
+      "size": 2369
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/control-plan.json",
+      "sha256": "36305114b3d33ca1a691912b048e9f49567a1c69e7fcf08018691f0e2d293306",
+      "size": 3534
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/option-sets.jsonl",
+      "sha256": "daf78fdf4773b236eddeb5ec01e418b741a1b5d0eef1d49089fec67d0a4a7722",
+      "size": 2242
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/split-receipt.json",
+      "sha256": "673094d09132b862dc0c047cb00da18ff1bce3183bdc34c1e90e7b337684b1fc",
+      "size": 4321
+    },
+    {
+      "path": "experiments/exp001-reference-integrated/fixtures/primary-units.jsonl",
+      "sha256": "d444c5ccc489ec710ae9551e07c6c5bb60e03ff99cc345fc2dae308e597d98a3",
+      "size": 25574
+    }
+  ],
+  "implementation": {
+    "path": "experiments/exp001-reference-integrated/implementation.json",
+    "sha256": "e073d713e53f30b64895c86883894ecb4bb19eabe4444522118a1a75a50f11eb",
+    "size": 6087
+  },
+  "inventory": {
+    "combined_records": 85,
+    "primary_records": 72,
+    "score_calls": 340,
+    "secondary_records": 13
+  },
+  "model": {
+    "feasibility_receipt": {
+      "path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json",
+      "sha256": "5ba37c8b1d74a231f7aee33c2e884e21f31467951a71a7f7935c960721270e67",
+      "size": 2440
+    },
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "integrity_receipt": {
+      "path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json",
+      "sha256": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3",
+      "size": 4759
+    },
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"
+  },
+  "policies": {
+    "generation": false,
+    "network_access": false,
+    "no_model_output": true,
+    "sealed_target_reads": "forbidden_before_explicit_authorization"
+  },
+  "protocol": {
+    "path": "experiments/exp001-reference-integrated/protocol.json",
+    "sha256": "cf79bf9b58edd5e74ff9cf0467e832d9476052136161e8f4cc1cae94d0fa59ea",
+    "size": 3090
+  },
+  "protocol_id": "exp001-reference-integrated-r3-v1.0.0",
+  "protocol_status": "frozen",
+  "sources": [
+    {
+      "path": "data/triz-reference-sources.json",
+      "sha256": "a3bd9283b7e73ebd723bcfab8edb9599161e37a47686b6c25e652158d2158273",
+      "size": 4780
+    },
+    {
+      "path": "data/triz-reference/principles.jsonl",
+      "sha256": "7baa3b74f7a5ee7ca5fe9303baf64361a5cbcdfea0cb0c539e00bb74db764249",
+      "size": 19990
+    },
+    {
+      "path": "data/triz-consulting-web-corpus.json",
+      "sha256": "e397160adfc60c534d16b5cd934deddb3e3500bb8f99f7fef26a2b6d4c2eff46",
+      "size": 11276
+    },
+    {
+      "path": "docs/reference/triz-reference-corpus.md",
+      "sha256": "92429183119e463090df170f4ec29bf0f0e43ee531f47898c8071325a3b7435f",
+      "size": 8755
+    }
+  ],
+  "status": "frozen"
+}
