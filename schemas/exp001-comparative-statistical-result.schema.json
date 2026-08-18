@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-statistical-result.schema.json",
+  "type": "object",
+  "required": ["artifact_class", "protocol_id", "model_id", "revision", "status", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids"],
+  "properties": {
+    "artifact_class": {"enum": ["exp001-comparative-statistical-result", "exp001-comparative-run-failure"]},
+    "protocol_id": {"const": "exp001-reference-comparative-v1.0.0"},
+    "model_id": {"type": "string"}, "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]},
+    "scientific_status": {"const": "exploratory"}, "evidence_eligible": {"const": false}, "expert_validated": {"const": false}, "claim_ids": {"const": []}
+  },
+  "additionalProperties": true
+}

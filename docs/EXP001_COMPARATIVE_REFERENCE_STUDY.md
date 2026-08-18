@@ -2,7 +2,7 @@
 type: research-specification
 title: EXP-001 Comparative Reference Study
 description: Model-separated retest of the TRIZ reference-integrated automated proxy.
-status: authorized_acquisition_and_one_run
+status: published_exploratory_results
 version: 1.0.0
 last_verified: 2026-08-18
 ---
@@ -52,9 +52,9 @@ acquired models provide the first-model retest and the prior R3 reference:
 
 | role | exact model and revision | architecture | status |
 |---|---|---|---|
-| first-model retest | `EleutherAI/pythia-70m-deduped@e93a9faa9c77e5d09219f6c868bfc7a1bd65593c` | GPT-NeoX, 6 layers, width 512 | local snapshot present |
-| prior reference | `HuggingFaceTB/SmolLM2-360M@f8027fd0eaeea54caa13c31d31b9fdc459c38b49` | Llama, 32 layers, width 960 | R3 published `null` |
-| third model | `Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd` | Qwen3, 28 layers, width 1024 | integrity verified; load/run pending CCP |
+| first-model retest | `EleutherAI/pythia-70m-deduped@e93a9faa9c77e5d09219f6c868bfc7a1bd65593c` | GPT-NeoX, 6 layers, width 512 | run complete: `null` |
+| prior reference | `HuggingFaceTB/SmolLM2-360M@f8027fd0eaeea54caa13c31d31b9fdc459c38b49` | Llama, 32 layers, width 960 | comparative run complete: `null` |
+| third model | `Qwen/Qwen3-0.6B-Base@da87bfb608c14b7cf20ba1ce41287e8de496c0cd` | Qwen3, 28 layers, width 1024 | run complete: `null` |
 
 Qwen3 is selected for provider, architecture, training-lineage, and tokenizer
 independence from Pythia and SmolLM2 while remaining a public Apache-2.0 base
@@ -101,15 +101,26 @@ external asset identified by locator and SHA-256 unless separately authorized
 for public publication. Fresh-clone verification must pass with the declared
 asset and fail closed when it is absent or mutated.
 
-## Current checkpoint
+## Terminal results and current checkpoint
 
 The SmolLM2 reference-integrated R3 package is already public and terminal
-`null` (PR #75 merge `4cc1c6d...`). This comparative tranche is target-free and
-approval-requested: Pythia retest and Qwen acquisition/run have not occurred.
-No model or sealed target was accessed while preparing this dossier.
+`null` (PR #75 merge `4cc1c6d...`). The comparative tranche is now terminally
+complete. All three runs were authorized, CCP-gated, and independently
+verified:
 
-The operator has authorized exactly one run for each exact Pythia, SmolLM2, and
-Qwen3 snapshot under the stated CPU/RSS/time limits, one-read target boundary,
-and publication of every terminal result. The remaining gate is exact-head CCP
-qualification with inactive admission and an empty queue; no run starts before
-that receipt is bound to this code and protocol.
+| Model | Status | p | Mean delta | 95% bootstrap CI | Positive domains | Wall / peak RSS |
+|---|---|---:|---:|---|---:|---:|
+| Pythia 70M | `null` | 0.6875 | +0.0545 | [-0.1485, +0.2956] | 3/6 | 312.4 s / 1.92 GiB |
+| SmolLM2 360M | `null` | 0.65625 | -0.0247 | [-0.1095, +0.0602] | 2/6 | 365.4 s / 2.90 GiB |
+| Qwen3 0.6B | `null` | 0.0625 | +0.9323 | [+0.5353, +1.2063] | 5/6 | 948.8 s / 4.66 GiB |
+
+The Qwen3 near-signal remains `null` because it misses `p<=0.05` and has one
+slightly negative held-out domain. All three packages pass
+`verify_comparative_publication`; each records exactly one sealed-target read,
+no generation/network, and the approved resource ceilings. This is automated
+exploratory evidence only, not a TRIZ rediscovery or competence claim.
+
+Packages and external dense-asset hashes are recorded in the tracked result
+directories and their execution receipts. No model or target access remains
+pending for this comparative tranche; the next scientific step is independent
+expert review or a newly preregistered confirmatory design.

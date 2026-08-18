@@ -13,6 +13,19 @@ class ComparativeReportError(ValueError):
     """Raised when a comparative package or external asset is incomplete."""
 
 
+BASE_PACKAGE_FILES = (
+    "execution-receipt.json",
+    "statistical-result.json",
+    "sealed-key-access.json",
+    "recovery-observation.json",
+    "report.md",
+)
+SUCCESS_PACKAGE_FILES = BASE_PACKAGE_FILES + ("response-index.json",)
+MAX_WALL_SECONDS = 1800.0
+MAX_RSS_BYTES = 8_589_934_592
+MAX_DENSE_BYTES = 134_217_728
+
+
 def _sha(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -29,6 +42,25 @@ def _json(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ComparativeReportError(f"package artifact must be an object: {path}")
     return value
+
+
+def _binding(repo: Path, path: Path) -> dict[str, str]:
+    return {"path": path.relative_to(repo).as_posix(), "sha256": _sha(path)}
+
+
+def _verify_binding(repo: Path, binding: Any, *, expected_path: Path | None = None) -> None:
+    if not isinstance(binding, dict) or not isinstance(binding.get("path"), str) or not isinstance(binding.get("sha256"), str):
+        raise ComparativeReportError("artifact binding is incomplete")
+    relative = Path(binding["path"])
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ComparativeReportError("artifact binding escaped repository")
+    path = (repo / relative).resolve()
+    if not path.is_file() or not path.is_relative_to(repo):
+        raise ComparativeReportError(f"bound artifact is missing: {relative}")
+    if expected_path is not None and path != expected_path.resolve():
+        raise ComparativeReportError("artifact binding points to the wrong path")
+    if _sha(path) != binding["sha256"]:
+        raise ComparativeReportError(f"bound artifact hash mismatch: {relative}")
 
 
 def _safe_package(repo: Path, package_dir: str | Path) -> Path:
@@ -93,8 +125,56 @@ def verify_comparative_publication(*, repo_root: str | Path, package_dir: str | 
     report = package / "report.md"
     if not report.is_file():
         raise ComparativeReportError("report is missing")
-    if manifest.get("terminal_status") != result.get("status") or manifest.get("model_id") != receipt.get("model", {}).get("id"):
+    required_files = SUCCESS_PACKAGE_FILES if result.get("status") != "failed" else BASE_PACKAGE_FILES
+    for name in required_files:
+        if not (package / name).is_file():
+            raise ComparativeReportError(f"package artifact is missing: {name}")
+    if manifest.get("terminal_status") != result.get("status") or manifest.get("model_id") != receipt.get("model", {}).get("id") or manifest.get("revision") != receipt.get("model", {}).get("revision"):
         raise ComparativeReportError("publication manifest identity mismatch")
+    if receipt.get("artifact_class") != "exp001-comparative-execution-receipt" or result.get("artifact_class") not in {"exp001-comparative-statistical-result", "exp001-comparative-run-failure"}:
+        raise ComparativeReportError("comparative artifact class drift")
+    if receipt.get("protocol_id") != "exp001-reference-comparative-v1.0.0" or result.get("protocol_id") != receipt.get("protocol_id"):
+        raise ComparativeReportError("comparative protocol identity drift")
+    execution = receipt.get("execution")
+    if not isinstance(execution, dict) or execution.get("runtime_status") != "completed" or execution.get("device") != "cpu" or execution.get("dtype") != "float32" or execution.get("network") != "disabled" or execution.get("generation") is not False or execution.get("run_count") != 1:
+        raise ComparativeReportError("execution boundary drift")
+    if float(execution.get("wall_seconds", MAX_WALL_SECONDS + 1)) > MAX_WALL_SECONDS or int(execution.get("peak_rss_bytes", MAX_RSS_BYTES + 1)) > MAX_RSS_BYTES or int(execution.get("new_dense_output_bytes", MAX_DENSE_BYTES + 1)) > MAX_DENSE_BYTES:
+        raise ComparativeReportError("execution ceiling exceeded")
+    gate = receipt.get("ccp_gate")
+    if not isinstance(gate, dict) or gate.get("resource_decision") != "admit" or gate.get("admission_active") is not False or gate.get("queue_count") != 0:
+        raise ComparativeReportError("CCP gate is not Admit/inactive/empty")
+    access = receipt.get("access")
+    if not isinstance(access, dict) or access.get("target_reads") != 1 or access.get("sealed_targets_accessed") is not True or access.get("model_loaded") is not True or access.get("model_output_accessed") is not True:
+        raise ComparativeReportError("access boundary is incomplete")
+    if result.get("evidence_eligible") is not False or result.get("expert_validated") is not False or result.get("claim_ids") != []:
+        raise ComparativeReportError("scientific claim envelope drift")
+    if result.get("status") != "failed":
+        response_index = _json(package / "response-index.json")
+        if response_index.get("record_count") != 85 or not isinstance(response_index.get("records"), list) or len(response_index["records"]) != 85:
+            raise ComparativeReportError("response index cardinality drift")
+    sealed = _json(package / "sealed-key-access.json")
+    if sealed.get("target_reads") != 1 or sealed.get("sealed_targets_accessed") is not True:
+        raise ComparativeReportError("sealed-key receipt drift")
+    recovery = _json(package / "recovery-observation.json")
+    if recovery.get("retry_performed") is not False:
+        raise ComparativeReportError("retry boundary drift")
+    bindings = manifest.get("bindings")
+    if not isinstance(bindings, dict):
+        raise ComparativeReportError("publication bindings are missing")
+    for name in required_files:
+        _verify_binding(repo, bindings.get(name), expected_path=package / name)
+    provenance = manifest.get("provenance")
+    if not isinstance(provenance, dict):
+        raise ComparativeReportError("execution provenance is missing")
+    for key in ("protocol", "analysis_plan", "execution_authorization", "model_integrity_receipt"):
+        _verify_binding(repo, provenance.get(key))
+    if receipt.get("model", {}).get("id") == "Qwen/Qwen3-0.6B-Base":
+        _verify_binding(repo, provenance.get("qwen_acquisition_dossier"))
+        qwen = _json(repo / Path(provenance["qwen_acquisition_dossier"]["path"]))
+        if qwen.get("model_load_authorized") is not False or qwen.get("sealed_execution_authorized") is not False:
+            raise ComparativeReportError("Qwen acquisition dossier crossed its authorization boundary")
+    if not isinstance(provenance.get("execution_code_commit"), str) or len(provenance["execution_code_commit"]) != 40:
+        raise ComparativeReportError("execution code commit binding is missing")
     external = manifest.get("external_response_asset")
     if not isinstance(external, dict) or not isinstance(external.get("locator"), str) or not isinstance(external.get("sha256"), str):
         raise ComparativeReportError("publication external asset binding is incomplete")

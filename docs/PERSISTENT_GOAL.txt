@@ -31,24 +31,17 @@ specification checklist is proven and no general TRIZ claim is promoted.
 
 Current checkpoint: the SmolLM2 reference-integrated R3 test is published in
 `main` merge `4cc1c6d862bffc9558b47a5cadd838a2ee22c465` (PR #75) with terminal
-`null`. The comparative target-free dossier is now frozen in
+`null`. The comparative dossier is now executed and terminally verified in
 `docs/EXP001_COMPARATIVE_REFERENCE_STUDY.md` and
-`experiments/exp001-comparative-reference/`: it binds the same 40-principle,
-Matrix 2003, and Panitz fixtures to one independent Pythia retest and one
-preregistered Qwen3 third-model evaluation. The operator has now authorized
-only the seven-file Qwen download and SHA-256 integrity receipt, with a 1.5 GiB
-budget; model load, feasibility, generation, and sealed execution remain
-forbidden. The bounded downloader is fail-closed on authorization,
-official-CDN redirects, symlinks, revision OIDs, and budget. The Qwen receipt
-is now integrity-verified for 1,203,625,970 bytes with no model or target
-access. CCP resource is Admit with inactive admission and an empty queue;
-persistent OrbStack daemons are present but no CCP run or container is active.
-Resume by qualifying this exact head, then perform exactly one guarded run for
-each of Pythia, SmolLM2, and Qwen3.
-
-Current live hold: the runner implementation is updated at `481cc082f8559b76bac3fa193820c83e07a8348e`, while its last passing CCP receipt is
-bound to the prior exact head `80b1de1df9c86c09b839327b3e89538cecead616`.
-Admission is temporarily `active=true` because
-an independent Matryca OrbStack run holds the slot. Do not terminate it or
-start a model; resume only after a fresh `resource status --json` plus
-`admission status --json` returns `Admit`, inactive, and queue zero.
+`experiments/exp001-comparative-reference/`, binding the same 40-principle,
+Matrix 2003, and Panitz fixtures to three independent model runs. Exact-head
+CCP qualification for `c3027216853aa66faca77d35f28d11551a67be02` passed on
+generation 6 for Python 3.11 and 3.12. Exactly one local run completed for
+each authorized snapshot, with one sealed-target read per model, no
+network/generation, and all resource ceilings respected. The terminal results
+are `null` for Pythia (`p=0.6875`), SmolLM2 (`p=0.65625`), and Qwen3
+(`p=0.0625`; near-signal but above threshold). All three packages pass the
+publication verifier and remain exploratory, claim-free, and non-pooled.
+Dense response assets remain external and are bound by SHA-256 locators in the
+receipts. The automated comparative tranche is complete; do not rerun or tune
+without a new frozen protocol and explicit approval.

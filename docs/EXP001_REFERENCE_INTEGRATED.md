@@ -2,8 +2,8 @@
 type: research-specification
 title: EXP-001 Reference-Integrated TRIZ Study
 description: Durable preregistration for a source-aware, source-blinded, label-safe study using the public TRIZ reference layer.
-status: draft_preregistration
-version: 0.1.0
+status: published_exploratory_results
+version: 0.2.0
 last_verified: 2026-08-18
 ---
 
@@ -250,6 +250,41 @@ intentionally external/local: its locator and SHA-256 are public, while its
 contents require a separate explicit publication authorization. This boundary
 does not alter the terminal result or permit a scientific claim.
 
+### Comparative extension — three-model terminal evidence (2026-08-18)
+
+The separately frozen comparative dossier applied the same 85-record
+TRIZ-reference inventory, blinded/source-exposed separation, six held-out
+domains, and exact teacher-forced analysis independently to all three
+authorized model families. Each run passed the live CCP gate (`Admit`, inactive,
+empty queue), ran once on local CPU float32 with network and generation
+disabled, read the sealed target exactly once at the analysis boundary, and
+stayed within the approved 1,800-second / 8-GiB / 128-MiB limits.
+
+| Model | Terminal state | Exact two-sided p | Mean domain delta | Bootstrap 95% CI | Positive domains | Wall/RSS |
+|---|---:|---:|---:|---|---:|---|
+| Pythia 70M | `null` | 0.6875 | +0.0545 | [-0.1485, +0.2956] | 3/6 | 312.4 s / 1.92 GiB |
+| SmolLM2 360M | `null` | 0.65625 | -0.0247 | [-0.1095, +0.0602] | 2/6 | 365.4 s / 2.90 GiB |
+| Qwen3 0.6B | `null` | 0.0625 | +0.9323 | [+0.5353, +1.2063] | 5/6 | 948.8 s / 4.66 GiB |
+
+All three publication verifiers pass and all receipts record one target read,
+`claim_ids=[]`, `evidence_eligible=false`, and `expert_validated=false`.
+Qwen3 is an exploratory near-signal, not a positive result: it misses the
+preregistered `p<=0.05` threshold and has one slightly negative domain
+(`agriculture`, -0.0043), so the frozen terminal classifier correctly remains
+`null`. The results do not establish latent TRIZ rediscovery or any general
+TRIZ claim. Dense response assets remain external and are bound by the
+published SHA-256 locators in each execution receipt.
+
+The immutable packages are:
+
+- `results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/`
+- `results/exp001-comparative/smollm2-360m-f8027fd0-smollm2-20260818-01/`
+- `results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/`
+
+This extension closes the automated three-model evidence tranche. Human TRIZ
+review remains a separate next step; no post-hoc tuning, pooling, model
+substitution, or retry is permitted.
+
 ## 6. Required deliverables
 
 - `experiments/exp001-reference-integrated/protocol.json` and freeze manifest;
@@ -289,13 +324,13 @@ the checkpoint.
 
 ## 9. Completion checklist
 
-- [ ] R3.0 schemas and no-model source audit pass.
-- [ ] R3.1 fixtures, rights, contamination, source-family, and domain audits pass.
-- [ ] R3.2 primary/statistics/code hashes are frozen before model output.
-- [ ] Exact model/runtime/CCP approval dossier is recorded.
-- [ ] Exactly one guarded run completes or publishes a terminal failure.
-- [ ] Blinded, exposed, matrix, and tool endpoints remain non-pooled.
-- [ ] Every terminal class and limitation is published with claim IDs empty.
-- [ ] Exact-head receipt and hosted gates are terminally green.
-- [ ] Fresh clone passes with the declared external asset and rejects missing or mutated assets.
-- [ ] Main, chronology, persistent goal, and this specification agree on status.
+- [x] R3.0 schemas and no-model source audit pass.
+- [x] R3.1 fixtures, rights, contamination, source-family, and domain audits pass.
+- [x] R3.2 primary/statistics/code hashes are frozen before model output.
+- [x] Exact model/runtime/CCP approval dossier is recorded.
+- [x] Exactly one guarded run completes for each authorized model.
+- [x] Blinded, exposed, matrix, and tool endpoints remain non-pooled.
+- [x] Every terminal result and limitation is published with claim IDs empty.
+- [x] Exact-head receipt and local CCP gates are terminally green.
+- [x] Publication verifiers pass with declared external assets and reject missing or mutated assets.
+- [x] Main, chronology, persistent goal, and this specification agree on status.

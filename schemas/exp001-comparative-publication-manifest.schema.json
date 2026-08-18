@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-publication-manifest.schema.json",
+  "type": "object",
+  "required": ["artifact_class", "protocol_id", "model_id", "revision", "terminal_status", "package", "report", "external_response_asset", "bindings", "provenance", "claim_ids", "evidence_eligible", "expert_validated"],
+  "properties": {
+    "artifact_class": {"const": "exp001-comparative-publication-manifest"}, "protocol_id": {"const": "exp001-reference-comparative-v1.0.0"}, "model_id": {"type": "string"}, "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "terminal_status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]}, "package": {"type": "string"},
+    "report": {"type": "object", "required": ["path", "sha256"], "properties": {"path": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": true},
+    "external_response_asset": {"type": "object", "required": ["locator", "sha256"], "properties": {"locator": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": true},
+    "bindings": {"type": "object", "minProperties": 5}, "provenance": {"type": "object", "required": ["protocol", "analysis_plan", "execution_authorization", "model_integrity_receipt", "execution_code_commit"], "additionalProperties": true}, "claim_ids": {"const": []}, "evidence_eligible": {"const": false}, "expert_validated": {"const": false}
+  },
+  "additionalProperties": true
+}

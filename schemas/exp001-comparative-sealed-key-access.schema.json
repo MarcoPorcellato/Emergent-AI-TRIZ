@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-sealed-key-access.schema.json",
+  "type": "object",
+  "required": ["artifact_class", "status", "target_reads", "sealed_targets_accessed"],
+  "properties": {"artifact_class": {"const": "exp001-comparative-sealed-key-access"}, "status": {"type": "string"}, "target_reads": {"const": 1}, "sealed_targets_accessed": {"const": true}},
+  "additionalProperties": true
+}

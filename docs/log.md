@@ -10,6 +10,11 @@ last_verified: 2026-08-16
 
 ## 2026-08-18
 
+- EXP-001 comparative tranche completed at exact head `c3027216853aa66faca77d35f28d11551a67be02`: CCP generation 6 passed on Python 3.11 and 3.12 after one non-material queue-timeout attempt.
+- Exactly one authorized local CPU-float32 run completed for each model: Pythia (`null`, p=.6875), SmolLM2 (`null`, p=.65625), and Qwen3 (`null`, p=.0625).
+- Each receipt records network disabled, generation false, exactly one sealed-target read, and approved resource ceilings. Publication verifiers pass for all three packages; dense assets remain external and hash-bound.
+- Qwen3 produced a strong exploratory near-signal (mean domain delta +.9323; bootstrap CI [+0.5353, +1.2063]) but failed the preregistered p<=.05 and all-domain-positive gates because agriculture was slightly negative. No TRIZ claim is promoted.
+
 - The comparative execution runner is fully bound at exact head
   `80b1de1df9c86c09b839327b3e89538cecead616`, with CCP v2 PASS published on
   `ccp-evidence/80b1de1df9c86c09b839327b3e89538cecead616`. Before the first

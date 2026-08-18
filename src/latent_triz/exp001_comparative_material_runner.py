@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import subprocess
 import tempfile
 import time
 from datetime import datetime, timezone
@@ -41,6 +42,47 @@ def _stable(value: Mapping[str, Any]) -> bytes:
 
 def _sha_bytes(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
+
+
+def _sha_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def _file_binding(repo: Path, path: Path) -> dict[str, str]:
+    return {"path": path.relative_to(repo).as_posix(), "sha256": _sha_file(path)}
+
+
+def _code_commit(repo: Path) -> str:
+    try:
+        value = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True, stderr=subprocess.DEVNULL).strip()
+    except (OSError, subprocess.CalledProcessError):
+        value = "0" * 40
+    return value if len(value) == 40 else "0" * 40
+
+
+def _provenance(repo: Path, model_id: str) -> dict[str, Any]:
+    model_receipts = {
+        "EleutherAI/pythia-70m-deduped": Path("results/lab01/model-anatomy/model_receipt.json"),
+        "HuggingFaceTB/SmolLM2-360M": Path("results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json"),
+        "Qwen/Qwen3-0.6B-Base": Path("results/exp001-comparative/preexecution/qwen-integrity-receipt.json"),
+    }
+    paths = {
+        "protocol": Path("experiments/exp001-comparative-reference/protocol.json"),
+        "analysis_plan": Path("experiments/exp001-comparative-reference/analysis-plan.json"),
+        "execution_authorization": Path("experiments/exp001-comparative-reference/execution-authorization.json"),
+        "model_integrity_receipt": model_receipts[model_id],
+    }
+    provenance = {key: _file_binding(repo, repo / relative) for key, relative in paths.items() if (repo / relative).is_file()}
+    if model_id == "Qwen/Qwen3-0.6B-Base":
+        relative = Path("experiments/exp001-comparative-reference/qwen-acquisition-dossier.json")
+        if (repo / relative).is_file():
+            provenance["qwen_acquisition_dossier"] = _file_binding(repo, repo / relative)
+    provenance["execution_code_commit"] = _code_commit(repo)
+    return provenance
 
 
 def _write_new(path: Path, value: Mapping[str, Any]) -> None:
@@ -109,12 +151,9 @@ def run_comparative_material(*, root: str | Path, run_id: str, model_id: str, re
     validate_material_authorization(authorization, model_id, revision)
     _check_gate(ccp_gate)
     try:
-        validate_comparative_contract(repo)
+        validate_comparative_contract(repo, material_execution=True)
     except ComparativeContractError as exc:
-        # The no-download validator deliberately rejects the pending dossier;
-        # material callers must provide its already reviewed frozen artifacts.
-        if "authorization" not in str(exc).lower() and "permission" not in str(exc).lower():
-            raise ComparativeMaterialError(f"comparative contract failed: {exc}") from exc
+        raise ComparativeMaterialError(f"comparative contract failed: {exc}") from exc
     if not run_id or Path(run_id).name != run_id or run_id in {".", ".."}:
         raise ComparativeMaterialError("run_id must be a simple non-empty name")
     key = _model_key(model_id)
@@ -122,6 +161,7 @@ def run_comparative_material(*, root: str | Path, run_id: str, model_id: str, re
     if package.exists():
         raise ComparativeMaterialError("refuse overwrite: run package exists")
     started = clock() if clock else time.monotonic()
+    provenance = _provenance(repo, model_id)
     access: dict[str, Any] = {"model_loaded": bool(getattr(adapter, "model_loaded", True)), "model_output_accessed": False, "sealed_targets_accessed": False, "target_reads": 0}
     records = _records(repo)
     try:
@@ -162,10 +202,12 @@ def run_comparative_material(*, root: str | Path, run_id: str, model_id: str, re
         _write_new(package / "statistical-result.json", statistical)
         _write_new(package / "sealed-key-access.json", {"artifact_class": "exp001-comparative-sealed-key-access", "status": "accessed", "target_reads": 1, "sealed_targets_accessed": True})
         _write_new(package / "recovery-observation.json", {"artifact_class": "exp001-comparative-recovery-observation", "status": "completed", "terminal_status": result["status"], "retry_performed": False})
-        receipt = {"artifact_class": "exp001-comparative-execution-receipt", "protocol_id": PROTOCOL_ID, "model": {"id": model_id, "revision": revision}, "status": result["status"], "execution": {"runtime_status": "completed", "device": "cpu", "dtype": "float32", "network": "disabled", "generation": False, "run_count": 1, "wall_seconds": wall, "peak_rss_bytes": rss, "new_dense_output_bytes": dense}, "ccp_gate": dict(ccp_gate), "access": access, "external_response_asset": {"locator": external_rel.as_posix(), "sha256": _sha_bytes(external_abs.read_bytes())}, "claim_ids": [], "evidence_eligible": False, "expert_validated": False}
+        receipt = {"artifact_class": "exp001-comparative-execution-receipt", "protocol_id": PROTOCOL_ID, "model": {"id": model_id, "revision": revision}, "status": result["status"], "execution": {"runtime_status": "completed", "device": "cpu", "dtype": "float32", "network": "disabled", "generation": False, "run_count": 1, "wall_seconds": wall, "peak_rss_bytes": rss, "new_dense_output_bytes": dense}, "ccp_gate": dict(ccp_gate), "access": access, "external_response_asset": {"locator": external_rel.as_posix(), "sha256": _sha_bytes(external_abs.read_bytes())}, "provenance": provenance, "claim_ids": [], "evidence_eligible": False, "expert_validated": False}
         _write_new(package / "execution-receipt.json", receipt)
         report_binding = generate_comparative_report(repo_root=repo, package_dir=package.relative_to(repo))
-        manifest = {"artifact_class": "exp001-comparative-publication-manifest", "protocol_id": PROTOCOL_ID, "model_id": model_id, "revision": revision, "terminal_status": result["status"], "package": package.relative_to(repo).as_posix(), "report": report_binding, "external_response_asset": receipt["external_response_asset"], "claim_ids": [], "evidence_eligible": False, "expert_validated": False}
+        package_files = ("execution-receipt.json", "statistical-result.json", "response-index.json", "sealed-key-access.json", "recovery-observation.json", "report.md")
+        bindings = {name: _file_binding(repo, package / name) for name in package_files}
+        manifest = {"artifact_class": "exp001-comparative-publication-manifest", "protocol_id": PROTOCOL_ID, "model_id": model_id, "revision": revision, "terminal_status": result["status"], "package": package.relative_to(repo).as_posix(), "report": report_binding, "external_response_asset": receipt["external_response_asset"], "bindings": bindings, "provenance": provenance, "claim_ids": [], "evidence_eligible": False, "expert_validated": False}
         _write_new(package / "publication-manifest.json", manifest)
         return {"status": result["status"], "package_dir": package.relative_to(repo).as_posix(), "access": access, "external_response_asset": receipt["external_response_asset"]}
     except Exception as exc:
@@ -173,10 +215,20 @@ def run_comparative_material(*, root: str | Path, run_id: str, model_id: str, re
             raise
         package.mkdir(parents=True, exist_ok=True)
         failure = {"artifact_class": "exp001-comparative-run-failure", "protocol_id": PROTOCOL_ID, "model_id": model_id, "revision": revision, "status": "failed", "scientific_status": "exploratory", "evidence_eligible": False, "expert_validated": False, "claim_ids": [], "failure": {"kind": type(exc).__name__, "digest": _sha_bytes(f"{type(exc).__name__}:{exc}".encode())}, "access": access}
+        external_rel = Path("artifacts/exp001-comparative") / key / run_id / "response-scores.json"
+        external_abs = repo / external_rel
+        _write_new(external_abs, {"artifact_class": "exp001-comparative-external-response-scores", "protocol_id": PROTOCOL_ID, "model_id": model_id, "record_count": 0, "records": []})
         _write_new(package / "statistical-result.json", failure)
         _write_new(package / "sealed-key-access.json", {"artifact_class": "exp001-comparative-sealed-key-access", "status": access["sealed_targets_accessed"], "target_reads": access["target_reads"], "sealed_targets_accessed": access["sealed_targets_accessed"]})
         _write_new(package / "recovery-observation.json", {"artifact_class": "exp001-comparative-recovery-observation", "status": "terminal_failure", "terminal_status": "failed", "retry_performed": False})
-        return {"status": "failed", "package_dir": package.relative_to(repo).as_posix(), "access": access}
+        receipt = {"artifact_class": "exp001-comparative-execution-receipt", "protocol_id": PROTOCOL_ID, "model": {"id": model_id, "revision": revision}, "status": "failed", "execution": {"runtime_status": "not_started" if not access["model_output_accessed"] else "failed", "device": "cpu", "dtype": "float32", "network": "disabled", "generation": False, "run_count": 1, "wall_seconds": 0.0, "peak_rss_bytes": 0, "new_dense_output_bytes": 0}, "ccp_gate": dict(ccp_gate), "access": access, "external_response_asset": {"locator": external_rel.as_posix(), "sha256": _sha_file(external_abs)}, "provenance": provenance, "claim_ids": [], "evidence_eligible": False, "expert_validated": False}
+        _write_new(package / "execution-receipt.json", receipt)
+        report_binding = generate_comparative_report(repo_root=repo, package_dir=package.relative_to(repo))
+        package_files = ("execution-receipt.json", "statistical-result.json", "sealed-key-access.json", "recovery-observation.json", "report.md")
+        bindings = {name: _file_binding(repo, package / name) for name in package_files}
+        manifest = {"artifact_class": "exp001-comparative-publication-manifest", "protocol_id": PROTOCOL_ID, "model_id": model_id, "revision": revision, "terminal_status": "failed", "package": package.relative_to(repo).as_posix(), "report": report_binding, "external_response_asset": receipt["external_response_asset"], "bindings": bindings, "provenance": provenance, "claim_ids": [], "evidence_eligible": False, "expert_validated": False}
+        _write_new(package / "publication-manifest.json", manifest)
+        return {"status": "failed", "package_dir": package.relative_to(repo).as_posix(), "access": access, "external_response_asset": receipt["external_response_asset"]}
 
 
 __all__ = ["ComparativeMaterialError", "run_comparative_material", "validate_material_authorization"]

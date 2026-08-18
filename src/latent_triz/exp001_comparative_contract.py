@@ -67,8 +67,14 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def validate_comparative_contract(root: str | Path = ROOT) -> dict[str, Any]:
-    """Validate the target-free dossier and return a bounded audit summary."""
+def validate_comparative_contract(root: str | Path = ROOT, *, material_execution: bool = False) -> dict[str, Any]:
+    """Validate the dossier with an explicit acquisition/material phase.
+
+    The acquisition dossier intentionally records that it does not authorize
+    model loading. Material execution is authorized only by the separate
+    execution-authorization dossier; callers must opt into that phase instead
+    of suppressing a generic authorization error.
+    """
     repo = Path(root).resolve()
     registry = _read_json(repo / REGISTRY.relative_to(ROOT))
     protocol = _read_json(repo / PROTOCOL.relative_to(ROOT))
@@ -118,10 +124,10 @@ def validate_comparative_contract(root: str | Path = ROOT) -> dict[str, Any]:
         raise ComparativeContractError("analysis primary cardinality drift")
     if acquisition.get("model_id") != "Qwen/Qwen3-0.6B-Base" or acquisition.get("revision") != EXPECTED_MODELS["Qwen/Qwen3-0.6B-Base"]["revision"]:
         raise ComparativeContractError("Qwen acquisition identity drift")
-    if acquisition.get("download_authorized") is not True or acquisition.get("model_load_authorized") is not False:
-        raise ComparativeContractError("Qwen acquisition/load authorization boundary drift")
-    if acquisition.get("sealed_execution_authorized") is not False:
-        raise ComparativeContractError("sealed execution authorization must remain absent")
+    if acquisition.get("download_authorized") is not True:
+        raise ComparativeContractError("Qwen acquisition authorization boundary drift")
+    if acquisition.get("model_load_authorized") is not False or acquisition.get("sealed_execution_authorized") is not False:
+        raise ComparativeContractError("Qwen acquisition dossier must remain acquisition-only")
     if authorization.get("status") not in {"approval_requested", "authorized"}:
         raise ComparativeContractError("comparative execution authorization state is invalid")
     if authorization.get("status") == "authorized" and authorization.get("operator_approval", {}).get("granted") is not True:
@@ -131,6 +137,11 @@ def validate_comparative_contract(root: str | Path = ROOT) -> dict[str, Any]:
         expected = authorization.get("status") == "authorized"
         if permissions.get(field) is not expected:
             raise ComparativeContractError(f"material permission drift: {field}")
+    if material_execution:
+        if authorization.get("status") != "authorized" or authorization.get("operator_approval", {}).get("granted") is not True:
+            raise ComparativeContractError("material execution requires separate operator authorization")
+        if permissions.get("sealed_target_read") != "exactly_one_per_model_at_analysis_boundary":
+            raise ComparativeContractError("material sealed-target boundary is not authorized")
     return {
         "artifact_class": "exp001-comparative-contract-audit",
         "status": "pass",

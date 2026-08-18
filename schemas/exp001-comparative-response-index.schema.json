@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-response-index.schema.json",
+  "type": "object",
+  "required": ["artifact_class", "protocol_id", "model_id", "revision", "record_count", "records"],
+  "properties": {
+    "artifact_class": {"const": "exp001-comparative-response-index"}, "protocol_id": {"const": "exp001-reference-comparative-v1.0.0"}, "model_id": {"type": "string"}, "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "record_count": {"const": 85}, "records": {"type": "array", "minItems": 85, "maxItems": 85}
+  },
+  "additionalProperties": true
+}

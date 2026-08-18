@@ -75,6 +75,8 @@ class ComparativeMaterialRunnerTests(unittest.TestCase):
                 "experiments/exp001-reference-integrated/fixtures",
             ):
                 shutil.copytree(ROOT / relative, root / relative)
+            (root / "results/lab01/model-anatomy").mkdir(parents=True)
+            shutil.copy2(ROOT / "results/lab01/model-anatomy/model_receipt.json", root / "results/lab01/model-anatomy/model_receipt.json")
             run_id = "synthetic-run-fixed"
             result = run_comparative_material(root=root, run_id=run_id, model_id="EleutherAI/pythia-70m-deduped", revision="e93a9faa9c77e5d09219f6c868bfc7a1bd65593c", authorization=_authorization("EleutherAI/pythia-70m-deduped", "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"), ccp_gate={"resource_decision": "admit", "admission_active": False, "queue_count": 0}, adapter=FakeAdapter(), target_reader=_targets, analysis_plan=json.loads((root / "experiments/exp001-comparative-reference/analysis-plan.json").read_text()))
             self.assertIn(result["status"], {"positive", "null", "failed"})
@@ -92,15 +94,20 @@ class ComparativeMaterialRunnerTests(unittest.TestCase):
             asset_path.unlink()
             with self.assertRaises(ComparativeReportError):
                 verify_comparative_publication(repo_root=root, package_dir=result["package_dir"])
+            # The package verifier must also reject drift in a bound receipt.
+            # Rebuild the synthetic package once, then mutate the receipt only.
+            asset_path.parent.mkdir(parents=True, exist_ok=True)
+            asset_path.write_bytes(original)
+            result = run_comparative_material(root=root, run_id="synthetic-run-bound", model_id="EleutherAI/pythia-70m-deduped", revision="e93a9faa9c77e5d09219f6c868bfc7a1bd65593c", authorization=_authorization("EleutherAI/pythia-70m-deduped", "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"), ccp_gate={"resource_decision": "admit", "admission_active": False, "queue_count": 0}, adapter=FakeAdapter(), target_reader=_targets, analysis_plan=json.loads((root / "experiments/exp001-comparative-reference/analysis-plan.json").read_text()))
+            bound_receipt = root / result["package_dir"] / "execution-receipt.json"
+            receipt = json.loads(bound_receipt.read_text())
+            receipt["access"]["target_reads"] = 2
+            bound_receipt.write_text(json.dumps(receipt))
+            with self.assertRaises(ComparativeReportError):
+                verify_comparative_publication(repo_root=root, package_dir=result["package_dir"])
             # Leave no model or dense output content tracked by the test suite.
-            for path in package.glob("*"):
-                path.unlink()
-            package.rmdir()
-            external = root / f"artifacts/exp001-comparative/pythia-70m-e93a9faa/{run_id}/response-scores.json"
-            external.unlink(missing_ok=True)
-            external.parent.rmdir()
-            external.parent.parent.rmdir()
-            external.parent.parent.parent.rmdir()
+            shutil.rmtree(root / "artifacts", ignore_errors=True)
+            shutil.rmtree(root / "results", ignore_errors=True)
 
 
 if __name__ == "__main__":
