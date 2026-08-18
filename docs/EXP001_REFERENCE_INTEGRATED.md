@@ -240,11 +240,15 @@ missing or mutated.
 **Exit evidence:** merged main commit, PR and receipt links, fresh-clone pass,
 fresh-clone missing/mutation rejection, final report, and updated chronology.
 
-**Current status (2026-08-18):** R3.3 is complete locally and its immutable
-package, external response-score locator/hash, and terminal report are ready
-for publication. R3.4 remains open pending package commit, exact-head CCP
-receipt publication, PR review/merge, and fresh-clone verification with
-deliberate missing/mutated external-asset rejection.
+**Current status (2026-08-18):** R3.4 package publication is complete. PR #75
+merged the immutable package into `main` at
+`4cc1c6d862bffc9558b47a5cadd838a2ee22c465`; the exact-head CCP receipt is
+public on `ccp-evidence/48a354eaa2f06e0e6eabf016c42a7387a1ab1b65`. Fresh-clone
+verification passed when the declared external response-score asset was
+provided and rejected both a missing and a mutated asset. The score asset is
+intentionally external/local: its locator and SHA-256 are public, while its
+contents require a separate explicit publication authorization. This boundary
+does not alter the terminal result or permit a scientific claim.
 
 ## 6. Required deliverables
 
