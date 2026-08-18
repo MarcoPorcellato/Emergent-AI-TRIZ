@@ -13,7 +13,7 @@
         "type": "object", "additionalProperties": false,
         "required": ["record_id", "scores", "prompt_sha256"],
         "properties": {
-          "record_id": {"type": "string", "pattern": "^(?:exp001-r3-[a-z0-9-]+-(?:transfer-blinded|lexical-control|transfer-exposed)|matrix2003-cell-[a-z0-9-]+-matrix-(?:forward|reverse|nonrecommendation)|panitz-edge-[a-z0-9-]+-tool-abstention)$"},
+          "record_id": {"type": "string", "pattern": "^(?:[a-z0-9-]+-(?:transfer-blinded|lexical-control|transfer-exposed)|matrix2003-cell-[a-z0-9-]+-matrix-(?:forward|reverse|nonrecommendation)|panitz-edge-[a-z0-9-]+-tool-abstention)$"},
           "scores": {"type": "object", "additionalProperties": false, "required": ["A", "B", "C", "D"], "properties": {"A": {"type": "number"}, "B": {"type": "number"}, "C": {"type": "number"}, "D": {"type": "number"}}},
           "prompt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
         }

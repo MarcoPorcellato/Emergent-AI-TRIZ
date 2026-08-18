@@ -245,6 +245,13 @@ def verify_r3_report_package(*, package_dir: str | Path, repo_root: str | Path |
         _check_schema(response, _schema(root, "exp001-r3-response-index.schema.json"), "response index")
         if response.get("record_count") != len(response.get("records", [])):
             raise R3ReportError("response index record_count mismatch")
+    external = manifest["external_response_asset"]
+    external_path = _relative(external["locator"], "external_response_asset")
+    external_absolute = (root / external_path).resolve()
+    if not external_absolute.is_file() or not external_absolute.is_relative_to(root):
+        raise R3ReportError("external response asset missing or unsafe")
+    if _sha256(external_absolute) != external["sha256"]:
+        raise R3ReportError("external response asset hash mismatch")
     return manifest
 
 
