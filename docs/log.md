@@ -10,6 +10,14 @@ last_verified: 2026-08-16
 
 ## 2026-08-18
 
+- Closed the R3 publication checkpoint after PR #75 merged at
+  `4cc1c6d862bffc9558b47a5cadd838a2ee22c465`. The exact-head CCP receipt is
+  public on `ccp-evidence/48a354eaa2f06e0e6eabf016c42a7387a1ab1b65`. Fresh-clone
+  verification passed with the declared external response-score asset and
+  failed closed for missing or mutated bytes. The asset remains external/local
+  pending explicit authorization to publish its contents; its locator/hash and
+  the terminal null result are public.
+
 - Exact-head CCP qualification then passed on `8bd99a68c07f8c666ec77e0f7d009703ac4551cf`
   for Python 3.11/3.12 with a clean worktree. Under the separately recorded
   authorization, the single guarded SmolLM2 R3 run completed terminal `null`
