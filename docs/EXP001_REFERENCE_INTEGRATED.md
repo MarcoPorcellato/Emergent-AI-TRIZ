@@ -125,10 +125,9 @@ open sealed targets, or alter A0-R2.
 **Exit evidence:** schema cross-validation, source/hash audit, rights audit,
 clean worktree, and a reviewable protocol diff.
 
-**Current status (2026-08-17):** in delivery. The no-model protocol and strict
-record schemas may be reviewed and qualified, but it is not frozen while the
-paired item set, split receipt, implementation binding, and terminal
-statistics remain incomplete. This status authorizes neither a model load nor
+**Current status (2026-08-18):** the target-free protocol is frozen. The
+implementation, freeze manifest, and approval dossier still require exact-head
+qualification and review. This status authorizes neither a model load nor
 sealed-target access.
 
 The current no-model source verifier is committed at `6316cd6`. It verifies
@@ -171,7 +170,8 @@ Matrix 2003 checks (three verified cells × forward, reversed-direction and
 non-recommendation controls) plus four Panitz edge checks. The combined single
 model invocation will therefore score 85 records × four teacher-forced labels.
 Secondary outcomes are descriptive, source-family separated and cannot alter
-the primary terminal classification.
+the primary terminal classification. The target-free fixture inventory is now
+bound by the R3 implementation freeze; sealed target values remain absent.
 
 ### R3.2 — statistical and implementation freeze
 
@@ -192,9 +192,10 @@ adapters/vectors must cover both strata and every terminal class.
 synthetic statistics tests, exact-head CCP qualification, and a separate
 operator approval dossier.
 
-**Checkpoint (2026-08-18):** `fd7d341` adds strict terminal receipt, response
-index, statistical-result, and publication-manifest schemas. They preserve the
-exploratory/no-claim envelope and are not an authorization or model result.
+**Checkpoint (2026-08-18):** `9e5d1fd` adds strict terminal receipt, response
+index, statistical-result, publication-manifest, freeze-manifest, and approval
+dossier schemas. They preserve the exploratory/no-claim envelope and are not
+an operator authorization or model result.
 
 ### R3.3 — one guarded model run
 

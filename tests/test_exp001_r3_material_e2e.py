@@ -13,6 +13,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import Mock, patch
 
 from latent_triz.exp001_r3_implementation import build_implementation_binding
 from latent_triz.exp001_r3_material_runner import run_material
@@ -47,7 +48,7 @@ class MaterialEndToEndTests(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name) / "repo"
-        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache", "artifacts"))
+        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache", "artifacts", ".gitnexus", ".serena", ".ccp"))
 
         protocol_path = self.root / "experiments/exp001-reference-integrated/protocol.json"
         protocol = json.loads(protocol_path.read_text(encoding="utf-8"))
@@ -127,6 +128,46 @@ class MaterialEndToEndTests(unittest.TestCase):
         self.authorization_path.write_text("mutated\n", encoding="utf-8")
         with self.assertRaises(R3ReportError):
             verify_r3_report_package(package_dir="results/exp001-r3/provenance-mutation", repo_root=self.root)
+
+    def test_preflight_failure_publishes_empty_report_verifiable_terminal_package(self) -> None:
+        """A failure before scoring or target access remains fully publishable."""
+        adapter = Mock()
+        target_reader = Mock()
+        failing_preflight = Mock(side_effect=RuntimeError("synthetic preflight failure"))
+        with patch("latent_triz.exp001_r3_material_runner._records") as records:
+            result = run_material(
+                root=self.root,
+                run_id="preflight-failure",
+                authorization=self.authorization,
+                adapter=adapter,
+                target_reader=target_reader,
+                created_at="2026-08-18T00:00:00Z",
+                preflight_fn=failing_preflight,
+                provenance_artifacts=self.provenance,
+            )
+
+        self.assertEqual(result["status"], "failed")
+        failing_preflight.assert_called_once()
+        self.assertEqual(failing_preflight.call_args.args, (self.root.resolve(), self.authorization))
+        records.assert_not_called()
+        self.assertEqual(adapter.mock_calls, [])
+        target_reader.assert_not_called()
+        package_dir = "results/exp001-r3/preflight-failure"
+        manifest = verify_r3_report_package(package_dir=package_dir, repo_root=self.root)
+        self.assertEqual(manifest["terminal_status"], "failed")
+        self.assertNotIn("response_index", manifest)
+
+        receipt = json.loads((self.root / package_dir / "execution-receipt.json").read_text(encoding="utf-8"))
+        asset = json.loads((self.root / receipt["external_response_asset"]["locator"]).read_text(encoding="utf-8"))
+        sealed = json.loads((self.root / package_dir / "sealed-key-access.json").read_text(encoding="utf-8"))
+        recovery = json.loads((self.root / package_dir / "recovery-observation.json").read_text(encoding="utf-8"))
+        self.assertEqual(receipt["execution"]["runtime_status"], "not_started")
+        self.assertEqual(receipt["access"], {"model_loaded": False, "model_output_accessed": "not_accessed", "sealed_targets_accessed": "not_accessed", "target_reads": 0})
+        self.assertEqual(asset["record_count"], 0)
+        self.assertEqual(asset["records"], [])
+        self.assertEqual(set(receipt["provenance"]), {"implementation", "authorization", "integrity", "feasibility", "sealed_key_access", "recovery"})
+        self.assertEqual(sealed, {"artifact_class": "exp001-r3-sealed-key-access-observation", "status": "not_accessed", "target_reads": 0, "sealed_targets_accessed": "not_accessed"})
+        self.assertEqual(recovery, {"artifact_class": "exp001-r3-recovery-observation", "status": "terminal_failure", "terminal_status": "failed", "retry_performed": False})
 
 
 if __name__ == "__main__":

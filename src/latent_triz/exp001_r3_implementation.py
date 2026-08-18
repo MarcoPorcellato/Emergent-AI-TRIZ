@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -29,7 +31,7 @@ CODE_PATHS = tuple(
         "exp001_r3_primary_fixture", "exp001_r3_response_adapter",
         "exp001_r3_response_execution", "exp001_r3_runner",
         "exp001_r3_secondary_fixture", "exp001_r3_target_key",
-        "exp001_r3_implementation", "exp001_r3_report", "exp001_r3_material_runner",
+        "exp001_r3_implementation", "exp001_r3_authorization", "exp001_r3_freeze", "exp001_r3_report", "exp001_r3_material_runner",
     )
 )
 FIXTURE_PATHS = (
@@ -49,6 +51,7 @@ RECEIPT_PATHS = (
     "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json",
     "results/a0r2/preexecution/smollm2-360m-f8027fd0/feasibility-receipt.json",
 )
+PROTOCOL_PATH = "experiments/exp001-reference-integrated/protocol.json"
 
 
 def _sha(path: Path) -> str:
@@ -69,11 +72,20 @@ def _entries(repo: Path, paths: tuple[str, ...]) -> list[dict[str, Any]]:
 def build_implementation_binding(repo: str | Path) -> dict[str, Any]:
     """Build a canonical binding from the current no-model source tree."""
     root = Path(repo).resolve()
+    try:
+        protocol = json.loads((root / PROTOCOL_PATH).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise Exp001ImplementationError("protocol unavailable for implementation binding") from exc
+    if protocol.get("protocol_id") != PROTOCOL_ID:
+        raise Exp001ImplementationError("protocol identity mismatch")
+    protocol_status = protocol.get("protocol_status")
+    if protocol_status not in {"ready_for_review", "frozen", "approval_requested", "authorized"}:
+        raise Exp001ImplementationError("invalid protocol status")
     return {
         "artifact_class": "exp001-r3-implementation-binding",
         "implementation_id": "exp001-reference-integrated-r3-v1.0.0-impl",
         "protocol_id": PROTOCOL_ID,
-        "protocol_status": "ready_for_review",
+        "protocol_status": protocol_status,
         "scientific_status": "exploratory",
         "evidence_eligible": False,
         "expert_validated": False,
@@ -117,6 +129,35 @@ def verify_implementation_binding(repo: str | Path, binding: dict[str, Any]) -> 
     return {"status": "verified", "implementation_id": binding["implementation_id"],
             "code_files": len(binding["code_sha256"]), "combined_records": 85,
             "score_calls": 340}
+
+
+def write_implementation_binding(repo: str | Path, output: str | Path = "experiments/exp001-reference-integrated/implementation.json") -> dict[str, Any]:
+    """Persist one verified binding atomically and refuse to overwrite it."""
+    root = Path(repo).resolve()
+    relative = Path(output)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise Exp001ImplementationError("unsafe implementation binding path")
+    destination = root / relative
+    if destination.exists():
+        raise Exp001ImplementationError("refuse overwrite: implementation binding exists")
+    binding = build_implementation_binding(root)
+    verify_implementation_binding(root, binding)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    payload = (json.dumps(binding, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile("wb", dir=destination.parent, prefix=".implementation-", delete=False) as stream:
+            stream.write(payload)
+            temporary = Path(stream.name)
+        os.link(temporary, destination)
+    except FileExistsError as exc:
+        raise Exp001ImplementationError("refuse overwrite: implementation binding exists") from exc
+    except OSError as exc:
+        raise Exp001ImplementationError("cannot persist implementation binding") from exc
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+    return binding
 
 
 validate_implementation_binding = verify_implementation_binding

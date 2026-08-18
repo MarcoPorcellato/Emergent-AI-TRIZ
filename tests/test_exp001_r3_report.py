@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import json
 import sys
 import tempfile
@@ -48,6 +49,10 @@ class ReportPackageTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("provenance fixture\n")
             entry["sha256"] = __import__("hashlib").sha256(path.read_bytes()).hexdigest()
+        asset = root / ASSET["locator"]
+        asset.parent.mkdir(parents=True, exist_ok=True)
+        asset.write_text("scalar response fixture\n")
+        ASSET["sha256"] = hashlib.sha256(asset.read_bytes()).hexdigest()
         (self.package / "execution-receipt.json").write_text(json.dumps(_receipt()))
         self.root = root
 

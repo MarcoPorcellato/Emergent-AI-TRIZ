@@ -42,12 +42,12 @@
 
 ## Deliberately unfinished boundary
 
-The study is not frozen and no model, sealed target, CCP workload, or network
-operation has been started for R3. The public fixture and terminal package
-path are now synthetic-tested. The approval-dossier builder and schema are
-present as an uncommitted checkpoint, but no real dossier has been created;
-the frozen implementation binding, source-derived sealed-key procedure, and
-full exact-head no-model qualification remain unfinished.
+The target-free protocol is frozen and no model, sealed target, CCP workload,
+or network operation has been started for R3. The public fixture and terminal
+package path are synthetic-tested. The implementation/freeze writers and
+approval-dossier builder are now being integrated; no real approval dossier or
+sealed target key has been created. Exact-head no-model qualification remains
+unfinished.
 
 The next milestone is to complete the R3-specific model scoring integration and
 immutable package/verification path, then freeze the implementation and

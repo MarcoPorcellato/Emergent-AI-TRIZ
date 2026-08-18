@@ -24,7 +24,7 @@ AUTHORIZATION = {
 def _copy_repo() -> Path:
     temp = Path(tempfile.mkdtemp(prefix="exp001-r3-preflight-"))
     destination = temp / "repo"
-    copytree(ROOT, destination, ignore=lambda _path, names: {".git", ".venv", "__pycache__"}.intersection(names))
+    copytree(ROOT, destination, ignore=lambda _path, names: {".git", ".venv", "__pycache__", "artifacts", ".gitnexus", ".serena", ".ccp"}.intersection(names))
     return destination
 
 
@@ -41,9 +41,10 @@ class Exp001ExecutionPreflightTests(unittest.TestCase):
         self.assertNotIn("import torch", source)
         self.assertNotIn("import transformers", source)
 
-    def test_current_review_protocol_fails_closed(self):
-        with self.assertRaises(Exp001ExecutionPreflightError):
-            preflight(ROOT, AUTHORIZATION)
+    def test_current_frozen_protocol_preflight_is_model_free(self):
+        result = preflight(ROOT, AUTHORIZATION)
+        self.assertEqual(result["status"], "ready_for_material_execution")
+        self.assertFalse(result["model_or_target_accessed"])
 
     def test_frozen_authorized_boundary_passes_without_model_or_target(self):
         repo = _copy_repo()

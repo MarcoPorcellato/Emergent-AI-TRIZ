@@ -14,7 +14,7 @@ class Exp001R3ContractTest(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.copy = Path(self.tmp.name) / "repo"
-        shutil.copytree(ROOT, self.copy, ignore=shutil.ignore_patterns(".git", ".gitnexus", ".venv", "__pycache__"))
+        shutil.copytree(ROOT, self.copy, ignore=shutil.ignore_patterns(".git", ".gitnexus", ".venv", "__pycache__", "artifacts"))
 
     def tearDown(self):
         self.tmp.cleanup()

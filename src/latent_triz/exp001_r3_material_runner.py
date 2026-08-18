@@ -129,7 +129,7 @@ def _bound_artifacts(repo: Path, values: Mapping[str, Any] | None) -> dict[str, 
     """Validate caller-supplied provenance paths and bind their live hashes."""
     required = ("implementation", "authorization", "integrity", "feasibility")
     if not isinstance(values, Mapping) or set(values) != set(required):
-        raise Exp001MaterialRunnerError("provenance_artifacts must provide exactly six named artifacts")
+        raise Exp001MaterialRunnerError("provenance_artifacts must provide exactly four caller-supplied artifacts")
     bound: dict[str, dict[str, str]] = {}
     for name in required:
         entry = values[name]
@@ -153,6 +153,32 @@ def _package_artifact(repo: Path, relative: Path) -> dict[str, str]:
     if not absolute.is_file() or not absolute.is_relative_to(repo):
         raise Exp001MaterialRunnerError(f"missing package provenance artifact: {relative}")
     return {"path": relative.as_posix(), "sha256": _sha_bytes(absolute.read_bytes())}
+
+
+def _external_response_asset(repo: Path, run_id: str, records: Sequence[Mapping[str, Any]], requested_path: str | Path | None) -> dict[str, str]:
+    """Persist the hash-bound scalar asset, including an empty terminal one."""
+    external_rel = Path(requested_path) if requested_path is not None else Path("artifacts") / "exp001-r3" / run_id / "response-scores.json"
+    if external_rel.is_absolute() or ".." in external_rel.parts or external_rel.parts[:3] != ("artifacts", "exp001-r3", run_id):
+        raise Exp001MaterialRunnerError("external response asset must be artifacts/exp001-r3/<run-id>/response-scores.json")
+    external_absolute = (repo / external_rel).resolve()
+    external_absolute.parent.mkdir(parents=True, exist_ok=True)
+    _write_new(external_absolute, {
+        "artifact_class": "exp001-r3-external-response-scores",
+        "protocol_id": PROTOCOL_ID,
+        "record_count": len(records),
+        "records": list(records),
+    })
+    return {"locator": external_rel.as_posix(), "sha256": _sha_bytes(external_absolute.read_bytes())}
+
+
+def _terminal_provenance(repo: Path, run_id: str, values: Mapping[str, Any] | None) -> dict[str, Any] | None:
+    """Bind the observations written for either a completed or failed run."""
+    if values is None:
+        return None
+    provenance = dict(values)
+    provenance["sealed_key_access"] = _package_artifact(repo, PACKAGE_ROOT / run_id / "sealed-key-access.json")
+    provenance["recovery"] = _package_artifact(repo, PACKAGE_ROOT / run_id / "recovery-observation.json")
+    return provenance
 
 
 def _failure(status: str, stage: str, error: BaseException, access: Mapping[str, Any]) -> dict[str, Any]:
@@ -179,7 +205,12 @@ def run_material(*, root: str | Path, run_id: str, authorization: Mapping[str, A
     created = _utc(created_at)
     access: dict[str, Any] = {"model_loaded": False, "model_output_accessed": "not_accessed", "sealed_targets_accessed": "not_accessed", "target_reads": 0}
     resources: dict[str, Any] = {"wall_seconds": 0.0, "peak_rss_bytes": 0}
+    provenance: dict[str, Any] | None = None
     try:
+        # Bind independent provenance before preflight so a pre-model failure
+        # can still be report-verifiable.  This reads only caller-declared,
+        # non-sensitive artifacts and cannot load a model or sealed target.
+        provenance = _bound_artifacts(repo, provenance_artifacts) if report_fn is generate_r3_report_package else (dict(provenance_artifacts) if isinstance(provenance_artifacts, Mapping) else None)
         preflight_fn(repo, authorization)
         records = _records(repo)
         _wall_check(clock, started, "pre_model")
@@ -216,22 +247,13 @@ def run_material(*, root: str | Path, run_id: str, authorization: Mapping[str, A
         statistical["secondary_summary"] = secondary
         package.mkdir(parents=True)
         _write_new(package / "response-index.json", response_index)
-        external_rel = Path(external_response_asset_path) if external_response_asset_path is not None else Path("artifacts") / "exp001-r3" / run_id / "response-scores.json"
-        if external_rel.is_absolute() or ".." in external_rel.parts or external_rel.parts[:3] != ("artifacts", "exp001-r3", run_id):
-            raise Exp001MaterialRunnerError("external response asset must be artifacts/exp001-r3/<run-id>/response-scores.json")
-        external_absolute = (repo / external_rel).resolve()
-        external_absolute.parent.mkdir(parents=True, exist_ok=True)
-        _write_new(external_absolute, {"artifact_class": "exp001-r3-external-response-scores", "protocol_id": PROTOCOL_ID, "record_count": len(responses), "records": responses})
-        external_asset = {"locator": external_rel.as_posix(), "sha256": _sha_bytes(external_absolute.read_bytes())}
+        external_asset = _external_response_asset(repo, run_id, responses, external_response_asset_path)
         _write_new(package / "statistical-result.json", statistical)
-        sealed_observation = {"artifact_class": "exp001-r3-sealed-key-access-observation", "status": "accessed", "target_reads": access["target_reads"], "sealed_targets_accessed": access["sealed_targets_accessed"]}
+        sealed_observation = {"artifact_class": "exp001-r3-sealed-key-access-observation", "status": access["sealed_targets_accessed"], "target_reads": access["target_reads"], "sealed_targets_accessed": access["sealed_targets_accessed"]}
         recovery_observation = {"artifact_class": "exp001-r3-recovery-observation", "status": "completed", "terminal_status": result["status"], "retry_performed": False}
         _write_new(package / "sealed-key-access.json", sealed_observation)
         _write_new(package / "recovery-observation.json", recovery_observation)
-        provenance = _bound_artifacts(repo, provenance_artifacts) if report_fn is generate_r3_report_package else (dict(provenance_artifacts) if isinstance(provenance_artifacts, Mapping) else None)
-        if provenance is not None and report_fn is generate_r3_report_package:
-            provenance["sealed_key_access"] = _package_artifact(repo, PACKAGE_ROOT / run_id / "sealed-key-access.json")
-            provenance["recovery"] = _package_artifact(repo, PACKAGE_ROOT / run_id / "recovery-observation.json")
+        provenance = _terminal_provenance(repo, run_id, provenance)
         receipt = _receipt(result["status"], created, "completed", access, resources, provenance=provenance, external_response_asset=external_asset)
         _write_new(package / "execution-receipt.json", receipt)
         try:
@@ -246,9 +268,16 @@ def run_material(*, root: str | Path, run_id: str, authorization: Mapping[str, A
             raise
         status = "incompatible" if isinstance(error, Exp001MaterialRunnerError) and "ceiling" in str(error) else "failed"
         failure = _failure(status, "execution", error, access)
-        receipt = _receipt(status, created, "failed", access, resources)
         package.mkdir(parents=True, exist_ok=True)
         _write_new(package / "statistical-result.json", failure)
+        external_asset = _external_response_asset(repo, run_id, (), external_response_asset_path)
+        sealed_observation = {"artifact_class": "exp001-r3-sealed-key-access-observation", "status": access["sealed_targets_accessed"], "target_reads": access["target_reads"], "sealed_targets_accessed": access["sealed_targets_accessed"]}
+        recovery_observation = {"artifact_class": "exp001-r3-recovery-observation", "status": "terminal_failure", "terminal_status": status, "retry_performed": False}
+        _write_new(package / "sealed-key-access.json", sealed_observation)
+        _write_new(package / "recovery-observation.json", recovery_observation)
+        provenance = _terminal_provenance(repo, run_id, provenance)
+        runtime_status = "not_started" if access["model_output_accessed"] == "not_accessed" else "failed"
+        receipt = _receipt(status, created, runtime_status, access, resources, provenance=provenance, external_response_asset=external_asset)
         _write_new(package / "execution-receipt.json", receipt)
         try:
             report_fn(package_dir=PACKAGE_ROOT / run_id, created_at=created, terminal_result=PACKAGE_ROOT / run_id / "statistical-result.json", execution_receipt=PACKAGE_ROOT / run_id / "execution-receipt.json", repo_root=repo)

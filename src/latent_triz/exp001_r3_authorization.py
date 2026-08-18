@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -105,3 +107,32 @@ def verify_approval_requested(root: str | Path, dossier: dict[str, Any] | str | 
         if _sha(path) != binding["sha256"] or path.stat().st_size != binding["size"]:
             raise Exp001AuthorizationError(f"{name} hash or size mismatch")
     return {"artifact_class": "exp001-r3-authorization-verification", "status": "pass", "model_accessed": False, "sealed_targets_accessed": False}
+
+
+def write_approval_requested(root: str | Path, output: str | Path = "experiments/exp001-reference-integrated/execution-authorization.json", *, created_at: str | None = None) -> dict[str, Any]:
+    """Persist one unapproved dossier atomically; never upgrades its status."""
+    repository = Path(root).resolve()
+    relative = Path(output)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise Exp001AuthorizationError("unsafe dossier path")
+    destination = repository / relative
+    if destination.exists():
+        raise Exp001AuthorizationError("refuse overwrite: authorization dossier exists")
+    dossier = build_approval_requested(repository, created_at=created_at)
+    verify_approval_requested(repository, dossier)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    payload = (json.dumps(dossier, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile("wb", dir=destination.parent, prefix=".r3-approval-", delete=False) as stream:
+            stream.write(payload)
+            temporary = Path(stream.name)
+        os.link(temporary, destination)
+    except FileExistsError as exc:
+        raise Exp001AuthorizationError("refuse overwrite: authorization dossier exists") from exc
+    except OSError as exc:
+        raise Exp001AuthorizationError("cannot persist authorization dossier") from exc
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+    return dossier
