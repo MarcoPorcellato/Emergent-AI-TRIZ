@@ -151,6 +151,7 @@ def main() -> int:
         ("schemas/exp001-comparative-analysis-plan.schema.json", "experiments/exp001-comparative-reference/analysis-plan.json"),
         ("schemas/exp001-comparative-qwen-acquisition.schema.json", "experiments/exp001-comparative-reference/qwen-acquisition-dossier.json"),
         ("schemas/exp001-comparative-qwen-download-authorization.schema.json", "experiments/exp001-comparative-reference/qwen-download-authorization.json"),
+        ("schemas/exp001-comparative-qwen-integrity-receipt.schema.json", "results/exp001-comparative/preexecution/qwen-integrity-receipt.json"),
         ("schemas/exp001-comparative-execution-authorization.schema.json", "experiments/exp001-comparative-reference/execution-authorization.json"),
         ("schemas/exp001-comparative-source-audit.schema.json", "results/exp001-comparative/preexecution/source-audit.json"),
         ("schemas/triz-web-corpus.schema.json", "data/triz-consulting-web-corpus.json"),

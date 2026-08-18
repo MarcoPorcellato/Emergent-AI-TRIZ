@@ -19,6 +19,14 @@ last_verified: 2026-08-16
   symlink/path escapes, and removes interrupted partials. The transfer is in
   progress; no model or target has been accessed.
 
+- Qwen3 acquisition completed at the exact pinned revision. Seven files are
+  present under the ignored runtime root, total `1,203,625,970` bytes, and the
+  immutable receipt `results/exp001-comparative/preexecution/qwen-integrity-receipt.json`
+  records per-file SHA-256 plus official Git/LFS source OIDs. No model load,
+  generation, feasibility test, or sealed-target access occurred. The next
+  gate is exact-head CCP qualification before the three one-run material
+  executions.
+
 - The comparative target-free tranche is committed at `a4ee5c74f3e0436f969f2411eb5b03385cbeaa87`.
   Live resource status is `Admit`, but exact-head CCP admission remains
   fail-closed because the shared coordinator reports an incompatible

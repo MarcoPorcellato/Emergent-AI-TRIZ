@@ -39,8 +39,9 @@ preregistered Qwen3 third-model evaluation. The operator has now authorized
 only the seven-file Qwen download and SHA-256 integrity receipt, with a 1.5 GiB
 budget; model load, feasibility, generation, and sealed execution remain
 forbidden. The bounded downloader is fail-closed on authorization,
-official-CDN redirects, symlinks, revision OIDs, and budget. CCP resource is
-Admit with inactive admission and an empty queue; persistent OrbStack daemons
-are present but no CCP run or container is active. Resume by finishing the
-integrity receipt, then request a new exact-head CCP qualification before any
-model run.
+official-CDN redirects, symlinks, revision OIDs, and budget. The Qwen receipt
+is now integrity-verified for 1,203,625,970 bytes with no model or target
+access. CCP resource is Admit with inactive admission and an empty queue;
+persistent OrbStack daemons are present but no CCP run or container is active.
+Resume by qualifying this exact head, then perform exactly one guarded run for
+each of Pythia, SmolLM2, and Qwen3.
