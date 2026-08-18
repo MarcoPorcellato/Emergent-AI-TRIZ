@@ -17,3 +17,12 @@ files are additive artifacts and must never overwrite the synthetic smoke
 files under `data/pilot/`.
 
 Collection status is `ready_for_collection`, not `closed` or `validated`.
+
+Run the deterministic packet audit before distribution:
+
+```bash
+PYTHONPATH=src python scripts/h1_packet_audit.py
+```
+
+The audit rejects hash drift, answer-key fields, source/label cues, incomplete
+coverage, and any attempt to cross the non-empirical boundary.
