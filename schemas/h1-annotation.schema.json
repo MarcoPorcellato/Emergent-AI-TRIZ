@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/h1-annotation.schema.json",
+  "title": "H1 human TRIZ annotation record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "annotation_id", "case_id", "rater_id", "label", "confidence", "rationale",
+    "operator_presence", "operator_essentiality", "contradiction_resolution",
+    "solution_feasibility", "alternative_principle", "guide_revision",
+    "guide_sha256", "case_payload_sha256", "dataset_batch_sha256",
+    "display_view_version", "session_id", "non_empirical", "annotated_at"
+  ],
+  "properties": {
+    "annotation_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "case_id": {"type": "string", "pattern": "^h1_case_[0-9]{2}$"},
+    "rater_id": {"type": "string", "pattern": "^rater_[a-z]$"},
+    "label": {"type": "string", "enum": ["segmentation", "inversion", "both", "other", "abstain"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "rationale": {"type": "string", "minLength": 1},
+    "operator_presence": {"type": "integer", "minimum": 0, "maximum": 3},
+    "operator_essentiality": {"type": "integer", "minimum": 0, "maximum": 3},
+    "contradiction_resolution": {"type": "integer", "minimum": 0, "maximum": 4},
+    "solution_feasibility": {"type": "integer", "minimum": 0, "maximum": 4},
+    "alternative_principle": {"type": "string"},
+    "guide_revision": {"const": "v1.2.0"},
+    "guide_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "case_payload_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "dataset_batch_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "display_view_version": {"const": "v1.2.0"},
+    "session_id": {"type": "string", "minLength": 1},
+    "non_empirical": {"const": false},
+    "annotated_at": {"type": "string", "format": "date-time"}
+  }
+}
