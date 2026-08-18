@@ -31,6 +31,11 @@ MODEL_RECEIPTS = {
 }
 TARGET_PATH = ROOT / "artifacts/exp001-r3/target-key/targets.jsonl"
 TARGET_SHA256 = "5dd8e3e42e074439f2934db900f233508cc5671c5299516a033d815d47ccaa97"
+MODEL_SHAPES = {
+    "EleutherAI/pythia-70m-deduped": (6, 512),
+    "HuggingFaceTB/SmolLM2-360M": (32, 960),
+    "Qwen/Qwen3-0.6B-Base": (28, 1024),
+}
 
 
 def _sha256(path: Path) -> tuple[int, str]:
@@ -91,6 +96,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     model_id = args.model_id
     model_meta = EXPECTED_MODELS[model_id]
+    num_hidden_layers, hidden_size = MODEL_SHAPES[model_id]
     model_root = ROOT / {
         "EleutherAI/pythia-70m-deduped": "artifacts/models/pythia-70m-deduped-e93a9faa",
         "HuggingFaceTB/SmolLM2-360M": "artifacts/models/smollm2-360m-f8027fd0",
@@ -104,8 +110,8 @@ def main(argv: list[str] | None = None) -> int:
         revision=model_meta["revision"],
         model_type=model_meta["model_type"],
         architecture=model_meta["architecture"],
-        num_hidden_layers=model_meta["num_hidden_layers"],
-        hidden_size=model_meta["hidden_size"],
+        num_hidden_layers=num_hidden_layers,
+        hidden_size=hidden_size,
     )
     started = time.monotonic()
     adapter = ComparativeTeacherForcingAdapter.load(model_root, contract=contract)
