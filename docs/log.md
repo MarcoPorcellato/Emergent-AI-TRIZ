@@ -10,6 +10,16 @@ last_verified: 2026-08-16
 
 ## 2026-08-18
 
+- The comparative execution runner is fully bound at exact head
+  `80b1de1df9c86c09b839327b3e89538cecead616`, with CCP v2 PASS published on
+  `ccp-evidence/80b1de1df9c86c09b839327b3e89538cecead616`. Before the first
+  model run, the required fresh admission check reported `active=true`,
+  `queue_count=0`; live process inspection identifies an independent Matryca
+  CCP/OrbStack run `909548b6ce14-ready-20260818T082051Z-58918` (guard PID
+  58918, container `matryca-local-ci-*`). No process was terminated and no
+  model or sealed target was accessed. Resume only after admission returns
+  inactive with an empty queue.
+
 - Operator authorization was recorded for the exact Qwen3 seven-file runtime
   acquisition at `da87bfb608c14b7cf20ba1ce41287e8de496c0cd`, capped at
   1,610,612,736 bytes and limited to streaming SHA-256 integrity receipts.

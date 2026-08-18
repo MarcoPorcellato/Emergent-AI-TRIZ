@@ -45,3 +45,9 @@ access. CCP resource is Admit with inactive admission and an empty queue;
 persistent OrbStack daemons are present but no CCP run or container is active.
 Resume by qualifying this exact head, then perform exactly one guarded run for
 each of Pythia, SmolLM2, and Qwen3.
+
+Current live hold: the exact runner head `80b1de1df9c86c09b839327b3e89538cecead616`
+has a passing CCP receipt, but admission is temporarily `active=true` because
+an independent Matryca OrbStack run holds the slot. Do not terminate it or
+start a model; resume only after a fresh `resource status --json` plus
+`admission status --json` returns `Admit`, inactive, and queue zero.
