@@ -49,7 +49,7 @@ It is normative for new WLT/SLT work and does not rewrite historical packages.
 | Comparative reference tranche | three terminal `null` packages | PR 77 working head `10d249a`; exploratory and claim-free; live PR/base state must be rechecked before mutation |
 
 The local working checkpoint for this planning tranche is branch
-`agent/exp001-comparative-reference` at `10d249a4759f2db3825dd03fd4bde7c562595b92`.
+`agent/exp001-comparative-reference` at `b38d89f4206f7d936705eaf872a802b08653b7d5`.
 It is not a protected-main claim: the remote base, ruleset, PR state, and
 receipt branch must be verified again immediately before publication.
 
