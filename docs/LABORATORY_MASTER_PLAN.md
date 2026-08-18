@@ -48,9 +48,11 @@ It is normative for new WLT/SLT work and does not rewrite historical packages.
 | First dataset attempt | rejected for scientific freeze | retained Wave 1 surface-audit artifacts |
 | Comparative reference tranche | three terminal `null` packages | PR 77 working head `10d249a`; exploratory and claim-free; live PR/base state must be rechecked before mutation |
 
-The local working checkpoint for this planning tranche is branch
+The implementation checkpoint for this planning tranche is branch
 `agent/exp001-comparative-reference` at `b6f2c09` (full local commit
-`b6f2c090cdffa62b539980dd21ae5f0d15112b3f`; verify with `git rev-parse HEAD`).
+`b6f2c090cdffa62b539980dd21ae5f0d15112b3f`). Subsequent documentation-only
+checkpoint commits may follow it; verify the actual branch head before
+publication.
 It is not a protected-main claim: the remote base, ruleset, PR state, and
 receipt branch must be verified again immediately before publication.
 
