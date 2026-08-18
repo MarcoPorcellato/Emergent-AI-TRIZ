@@ -13,6 +13,11 @@
   "guide": "experiments/h1-cognitive-pilot/annotation-guide-v1.2.json",
   "cases": "experiments/h1-cognitive-pilot/cases.jsonl",
   "allocation": "experiments/h1-cognitive-pilot/allocation.json",
+  "input_hashes": {
+    "guide_sha256": "f510abb90058d03297bae7ca7440f18103083882112b678fcf5ac8a13f96d40a",
+    "cases_sha256": "8b2c7b91773ca9e8e8b0f1e2c5e69420d61772f360c4316e4bb72e8f2c824046",
+    "allocation_sha256": "5feafdc1961a69eba19f7c5c720f36058b263c6341fe4f1a28e2dd088fb6cbbc"
+  },
   "randomization_seed": 20260818,
   "blinded": true,
   "model_output_accessed": false,
