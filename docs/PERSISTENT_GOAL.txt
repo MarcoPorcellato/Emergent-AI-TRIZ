@@ -29,12 +29,13 @@ terminal outcome, the external dense locator/hash, exact-head CCP receipt, PR,
 fresh-clone verification, limitations, and final report. Complete only when the
 specification checklist is proven and no general TRIZ claim is promoted.
 
-Current checkpoint: the complete R3 SmolLM2 test is published in `main` merge
-`4cc1c6d862bffc9558b47a5cadd838a2ee22c465` (PR #75). The terminal result is
-`null`; CCP passed on Python 3.11/3.12, the single guarded run used 299.054
-seconds and 2,824,798,208 bytes peak RSS, read sealed targets exactly once,
-and performed no retry. The package, report, provenance, and exact-head CCP
-receipt are public. Clone verification passed with the declared external
-score asset and failed closed for missing/mutated variants. The asset remains
-external/local because public content publication needs separate explicit
-authorization; no scientific claim is promoted.
+Current checkpoint: the SmolLM2 reference-integrated R3 test is published in
+`main` merge `4cc1c6d862bffc9558b47a5cadd838a2ee22c465` (PR #75) with terminal
+`null`. The comparative target-free dossier is now frozen in
+`docs/EXP001_COMPARATIVE_REFERENCE_STUDY.md` and
+`experiments/exp001-comparative-reference/`: it binds the same 40-principle,
+Matrix 2003, and Panitz fixtures to one independent Pythia retest and one
+preregistered Qwen3 third-model evaluation. No comparative model load,
+Qwen download, or sealed-target access has occurred. The next gate is explicit
+operator approval for the exact Qwen revision, allowed files, budgets, and the
+one-run/one-target-read publication contract.

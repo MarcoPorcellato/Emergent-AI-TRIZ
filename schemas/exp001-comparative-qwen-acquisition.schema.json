@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-qwen-acquisition.schema.json",
+  "title": "EXP-001 Qwen acquisition dossier",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "dossier_id", "status", "model_id", "revision", "runtime_root", "runtime_files", "disk_budget_bytes", "download_authorized", "model_load_authorized", "feasibility_authorized", "sealed_execution_authorized"],
+  "properties": {
+    "artifact_class": {"const": "exp001-comparative-qwen-acquisition-dossier"},
+    "dossier_id": {"const": "exp001-qwen3-acquisition-v1"},
+    "status": {"enum": ["approval_requested", "authorized", "acquired", "integrity_verified", "rejected"]},
+    "model_id": {"const": "Qwen/Qwen3-0.6B-Base"},
+    "revision": {"const": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"},
+    "license_id": {"const": "Apache-2.0"},
+    "source_url": {"type": "string", "pattern": "^https://huggingface\\.co/"},
+    "runtime_root": {"const": "artifacts/models/qwen3-0.6b-base-da87bfb"},
+    "runtime_files": {"type": "array", "minItems": 7, "maxItems": 7, "items": {"type": "object", "additionalProperties": false, "required": ["path", "source_url", "declared_size_bytes"], "properties": {"path": {"type": "string", "pattern": "^[a-zA-Z0-9._-]+$"}, "source_url": {"type": "string", "pattern": "^https://huggingface\\.co/.+/resolve/[a-f0-9]{40}/[^/]+$"}, "declared_size_bytes": {"type": "integer", "minimum": 1}}}},
+    "declared_sizes_are": {"const": "official_page_estimates_not_receipt_grade"},
+    "disk_budget_bytes": {"const": 1610612736},
+    "download_authorized": {"const": false},
+    "terms_acceptance_recorded": {"const": false},
+    "model_load_authorized": {"const": false},
+    "feasibility_authorized": {"const": false},
+    "sealed_execution_authorized": {"const": false},
+    "integrity_receipt": {"type": ["null", "object"]},
+    "unknowns": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

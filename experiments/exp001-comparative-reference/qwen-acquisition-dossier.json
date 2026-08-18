@@ -1,0 +1,28 @@
+{
+  "artifact_class": "exp001-comparative-qwen-acquisition-dossier",
+  "dossier_id": "exp001-qwen3-acquisition-v1",
+  "status": "approval_requested",
+  "model_id": "Qwen/Qwen3-0.6B-Base",
+  "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "license_id": "Apache-2.0",
+  "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/tree/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "runtime_root": "artifacts/models/qwen3-0.6b-base-da87bfb",
+  "runtime_files": [
+    {"path": "config.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/config.json", "declared_size_bytes": 727},
+    {"path": "generation_config.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/generation_config.json", "declared_size_bytes": 138},
+    {"path": "merges.txt", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/merges.txt", "declared_size_bytes": 1750000},
+    {"path": "model.safetensors", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/model.safetensors", "declared_size_bytes": 1277000000},
+    {"path": "tokenizer.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/tokenizer.json", "declared_size_bytes": 7370000},
+    {"path": "tokenizer_config.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/tokenizer_config.json", "declared_size_bytes": 9920},
+    {"path": "vocab.json", "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/resolve/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/vocab.json", "declared_size_bytes": 2920000}
+  ],
+  "declared_sizes_are": "official_page_estimates_not_receipt_grade",
+  "disk_budget_bytes": 1610612736,
+  "download_authorized": false,
+  "terms_acceptance_recorded": false,
+  "model_load_authorized": false,
+  "feasibility_authorized": false,
+  "sealed_execution_authorized": false,
+  "integrity_receipt": null,
+  "unknowns": ["exact_bytes", "sha256", "redirect_and_revision_integrity", "peak_rss", "cpu_latency", "runtime_compatibility"]
+}

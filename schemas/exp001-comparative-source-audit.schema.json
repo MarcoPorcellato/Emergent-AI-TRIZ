@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-source-audit.schema.json",
+  "title": "EXP-001 comparative source audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "status", "model_accessed", "sealed_targets_accessed", "network_accessed", "principles", "web_resources", "primary_records", "secondary_records", "combined_records", "matrix_cells", "panitz_tool_edges", "source_hashes", "rights_boundary", "pooling"],
+  "properties": {
+    "artifact_class": {"const": "exp001-comparative-source-audit"},
+    "protocol_id": {"const": "exp001-reference-comparative-v1.0.0"},
+    "status": {"const": "pass"},
+    "model_accessed": {"const": false},
+    "sealed_targets_accessed": {"const": false},
+    "network_accessed": {"const": false},
+    "principles": {"const": 40},
+    "web_resources": {"const": 18},
+    "primary_records": {"const": 72},
+    "secondary_records": {"const": 13},
+    "combined_records": {"const": 85},
+    "matrix_cells": {"const": 3},
+    "panitz_tool_edges": {"const": 4},
+    "source_hashes": {"type": "object", "minProperties": 4, "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+    "rights_boundary": {"const": "external_source_pdfs_not_vendored_or_redistributed"},
+    "pooling": {"const": "blinded_and_exposed_strata_separate; matrix_and_panitz_descriptive_only"}
+  }
+}

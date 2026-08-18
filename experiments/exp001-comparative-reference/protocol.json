@@ -1,0 +1,94 @@
+{
+  "artifact_class": "exp001-comparative-reference-protocol",
+  "protocol_id": "exp001-reference-comparative-v1.0.0",
+  "protocol_status": "frozen_no_download_approval_requested",
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "source_protocol_id": "exp001-reference-integrated-r3-v1.0.0",
+  "source_protocol_sha256": "cf79bf9b58edd5e74ff9cf0467e832d9476052136161e8f4cc1cae94d0fa59ea",
+  "source_registry": {
+    "sources_sha256": "a3bd9283b7e73ebd723bcfab8edb9599161e37a47686b6c25e652158d2158273",
+    "principles_sha256": "7baa3b74f7a5ee7ca5fe9303baf64361a5cbcdfea0cb0c539e00bb74db764249",
+    "web_corpus_sha256": "e397160adfc60c534d16b5cd934deddb3e3500bb8f99f7fef26a2b6d4c2eff46",
+    "corpus_document_sha256": "92429183119e463090df170f4ec29bf0f0e43ee531f47898c8071325a3b7435f",
+    "principle_count": 40,
+    "source_pdf_redistribution": "prohibited"
+  },
+  "fixture_inputs": {
+    "primary_units": "experiments/exp001-reference-integrated/fixtures/primary-units.jsonl",
+    "secondary_items": "experiments/exp001-reference-integrated/fixtures/items.jsonl",
+    "matrix_cells": "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl",
+    "tool_edges": "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl",
+    "source_exposures": "experiments/exp001-reference-integrated/fixtures/source-exposures.jsonl",
+    "split_receipt": "experiments/exp001-reference-integrated/fixtures/split-receipt.json",
+    "sealed_targets": "artifacts/exp001-comparative/target-key/targets.jsonl"
+  },
+  "strata": {
+    "TRIZ-blinded-transfer": {
+      "source_text_or_names_allowed": false,
+      "canonical_examples_allowed": false,
+      "pool_with_other_stratum": false
+    },
+    "source-exposed-competence": {
+      "source_text_or_names_allowed": "bounded independently authored context",
+      "canonical_examples_allowed": false,
+      "pool_with_other_stratum": false
+    }
+  },
+  "inventory": {
+    "records": 85,
+    "primary_records": 72,
+    "secondary_records": 13,
+    "teacher_forced_labels_per_record": 4,
+    "score_calls_per_model": 340
+  },
+  "analysis": {
+    "primary": "same frozen blinded held-out-domain transfer minus lexical-matched control",
+    "primary_units": 24,
+    "domains": 6,
+    "families_per_domain": 2,
+    "replicates_per_family": 2,
+    "test": "exact_two_sided_domain_sign_flip_permutation",
+    "permutation_count": 64,
+    "alpha": 0.05,
+    "bootstrap_resamples": 10000,
+    "bootstrap_seed": 20260818,
+    "positive_requires": ["p<=0.05", "mean_delta>0", "all_domain_deltas>0", "bootstrap_lower>0"],
+    "secondary_policy": "descriptive_non_pooled_source_family_stratified",
+    "sensitivity_may_replace_primary": false
+  },
+  "model_execution": {
+    "per_model_run": "one",
+    "local_only": true,
+    "network_access": false,
+    "generation": false,
+    "dtype": "float32",
+    "wall_time_seconds": 1800,
+    "peak_rss_bytes": 8589934592,
+    "new_dense_output_bytes": 134217728,
+    "sealed_target_reads": "exactly_one_at_analysis_boundary",
+    "retry_after_model_or_target_access": false
+  },
+  "comparison": {
+    "pool_scores_across_models": false,
+    "compare_terminal_results_descriptively": true,
+    "compare_token_ids": false,
+    "architecture_mapping": "teacher_forced_choice_score_only",
+    "claim": "at most frozen automated reference-task signal per exact model"
+  },
+  "publication": {
+    "publish_every_terminal_outcome": true,
+    "general_triz_claim_promotion": false,
+    "claim_ids_must_remain_empty": true,
+    "external_dense_asset_content": "requires_separate_explicit_authorization"
+  },
+  "approval_required_before": [
+    "Qwen runtime-file download",
+    "any model load for comparative run",
+    "material CPU feasibility",
+    "sealed target access",
+    "public dense-score content publication"
+  ]
+}

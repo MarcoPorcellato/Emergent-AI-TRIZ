@@ -10,6 +10,14 @@ last_verified: 2026-08-16
 
 ## 2026-08-18
 
+- Froze the target-free EXP-001 comparative dossier for the first-model Pythia
+  retest and a third Qwen3 model. The dossier reuses the 40-principle,
+  Matrix-2003, and Panitz fixtures without pooling strata or model scores,
+  binds Qwen3 at exact revision `da87bfb608c14b7cf20ba1ce41287e8de496c0cd`,
+  and records all unknown acquisition/feasibility fields. No model or sealed
+  target was accessed; explicit approval remains required before download,
+  model load, or material execution.
+
 - Closed the R3 publication checkpoint after PR #75 merged at
   `4cc1c6d862bffc9558b47a5cadd838a2ee22c465`. The exact-head CCP receipt is
   public on `ccp-evidence/48a354eaa2f06e0e6eabf016c42a7387a1ab1b65`. Fresh-clone

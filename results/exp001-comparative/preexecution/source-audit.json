@@ -1,0 +1,23 @@
+{
+  "artifact_class": "exp001-comparative-source-audit",
+  "protocol_id": "exp001-reference-comparative-v1.0.0",
+  "status": "pass",
+  "model_accessed": false,
+  "sealed_targets_accessed": false,
+  "network_accessed": false,
+  "principles": 40,
+  "web_resources": 18,
+  "primary_records": 72,
+  "secondary_records": 13,
+  "combined_records": 85,
+  "matrix_cells": 3,
+  "panitz_tool_edges": 4,
+  "source_hashes": {
+    "data/triz-reference-sources.json": "a3bd9283b7e73ebd723bcfab8edb9599161e37a47686b6c25e652158d2158273",
+    "data/triz-reference/principles.jsonl": "7baa3b74f7a5ee7ca5fe9303baf64361a5cbcdfea0cb0c539e00bb74db764249",
+    "data/triz-consulting-web-corpus.json": "e397160adfc60c534d16b5cd934deddb3e3500bb8f99f7fef26a2b6d4c2eff46",
+    "docs/reference/triz-reference-corpus.md": "92429183119e463090df170f4ec29bf0f0e43ee531f47898c8071325a3b7435f"
+  },
+  "rights_boundary": "external_source_pdfs_not_vendored_or_redistributed",
+  "pooling": "blinded_and_exposed_strata_separate; matrix_and_panitz_descriptive_only"
+}
