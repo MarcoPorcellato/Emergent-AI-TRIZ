@@ -35,6 +35,10 @@ class TrackBSchemaTests(unittest.TestCase):
         target_access["scope_boundary"]["target_access_permitted"] = True
         mutations.append(target_access)
 
+        ccp_access = copy.deepcopy(self.protocol)
+        ccp_access["scope_boundary"]["ccp_permitted"] = True
+        mutations.append(ccp_access)
+
         mutable_split = copy.deepcopy(self.protocol)
         mutable_split["frozen_inputs"]["splits"]["post_freeze_modification_permitted"] = True
         mutations.append(mutable_split)

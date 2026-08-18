@@ -174,6 +174,10 @@ def _track_b_mutations(protocol: Any, manifest: Any) -> Iterable[tuple[str, Any]
     target_access["scope_boundary"]["target_access_permitted"] = True
     yield "track_b_target_access_permitted", ("schemas/track-b-protocol.schema.json", target_access)
 
+    ccp_access = deepcopy(protocol)
+    ccp_access["scope_boundary"]["ccp_permitted"] = True
+    yield "track_b_ccp_permitted", ("schemas/track-b-protocol.schema.json", ccp_access)
+
     missing_control = deepcopy(protocol)
     missing_control["control_families"] = missing_control["control_families"][:-1]
     yield "track_b_missing_required_control", ("schemas/track-b-protocol.schema.json", missing_control)
@@ -257,7 +261,7 @@ def main() -> int:
         return 1
     print(
         f"schema-cross-validate: {len(VALIDATION_PAIRS)} tracked pairs agree; "
-        "9 mutations rejected by both validators"
+        "10 mutations rejected by both validators"
     )
     return 0
 
