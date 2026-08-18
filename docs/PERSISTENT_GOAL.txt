@@ -35,7 +35,12 @@ Current checkpoint: the SmolLM2 reference-integrated R3 test is published in
 `docs/EXP001_COMPARATIVE_REFERENCE_STUDY.md` and
 `experiments/exp001-comparative-reference/`: it binds the same 40-principle,
 Matrix 2003, and Panitz fixtures to one independent Pythia retest and one
-preregistered Qwen3 third-model evaluation. No comparative model load,
-Qwen download, or sealed-target access has occurred. The next gate is explicit
-operator approval for the exact Qwen revision, allowed files, budgets, and the
-one-run/one-target-read publication contract.
+preregistered Qwen3 third-model evaluation. The operator has now authorized
+only the seven-file Qwen download and SHA-256 integrity receipt, with a 1.5 GiB
+budget; model load, feasibility, generation, and sealed execution remain
+forbidden. The bounded downloader is fail-closed on authorization,
+official-CDN redirects, symlinks, revision OIDs, and budget. CCP resource is
+Admit with inactive admission and an empty queue; persistent OrbStack daemons
+are present but no CCP run or container is active. Resume by finishing the
+integrity receipt, then request a new exact-head CCP qualification before any
+model run.

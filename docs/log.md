@@ -10,6 +10,15 @@ last_verified: 2026-08-16
 
 ## 2026-08-18
 
+- Operator authorization was recorded for the exact Qwen3 seven-file runtime
+  acquisition at `da87bfb608c14b7cf20ba1ce41287e8de496c0cd`, capped at
+  1,610,612,736 bytes and limited to streaming SHA-256 integrity receipts.
+  Model load, feasibility, generation, and sealed-target access remain
+  explicitly forbidden. A fail-closed downloader now binds the authorization
+  before any request, permits only official Hugging Face CDN redirects, rejects
+  symlink/path escapes, and removes interrupted partials. The transfer is in
+  progress; no model or target has been accessed.
+
 - The comparative target-free tranche is committed at `a4ee5c74f3e0436f969f2411eb5b03385cbeaa87`.
   Live resource status is `Admit`, but exact-head CCP admission remains
   fail-closed because the shared coordinator reports an incompatible
