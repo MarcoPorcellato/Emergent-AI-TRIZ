@@ -3,7 +3,7 @@ type: Roadmap
 title: Research Laboratory Roadmap
 description: Delivered foundation and staged route to a complete, visual, falsifiable Latent TRIZ laboratory.
 status: canonical
-last_verified: 2026-08-16
+last_verified: 2026-08-18
 ---
 
 # Roadmap
@@ -13,6 +13,21 @@ For the canonical long-form milestone sequence, see [Laboratory Master Plan](./L
 The laboratory foundation is operational. Lab 00 is a deterministic synthetic process smoke. Lab 01 is the first real-model instrumentation result and remains explicitly ineligible as evidence for the hypothesis. Its model-backed representation extractor now provides the hash-verified bridge from frozen cases and real residual-stream activations to Lab 04.
 
 This roadmap stays intentionally short. It records the current delivery shape and points to the master plan for the verified chronology, dependencies, exit gates, and deferred work.
+
+## Current priority
+
+The repository is now in an evidence-quality transition, not a model-scaling
+race. The next useful result is real H1 construct validation by three
+independent TRIZ experts, followed by stronger negative controls and one
+validated-principle causal pilot. Composition, forty-principle breadth, and
+additional model families remain downstream of that gate. Track B is prepared
+as a separate no-TRIZ-term controlled-emergence route and must not inherit
+Track A selections.
+
+This priority reflects the published record: A0/R1 contain positive
+exploratory procedural-proxy observations, while the three-model
+reference-task comparison is terminally null. Both are valuable E0 evidence;
+neither closes the expert or causal construct gates.
 
 The maintained Lab 00 through Lab 05 artifacts now have a single local visual entrance. `make lab` opens the dashboard and `make lab-render` produces the same deterministic page for headless use. The dashboard is a navigation and integrity surface; it does not recompute experiments or promote scientific claims.
 
@@ -198,7 +213,11 @@ exploratory evidence; they do not close the human construct or causal gates.
 
 1. **Delivered:** close the integrity hotfix by enforcing every JSON Schema keyword used by the repository, cross-checking tracked artifacts against Draft 2020-12 `jsonschema`, and making case-level disagreement incompatible with freeze readiness.
 2. **Delivered:** replace changing branch-policy exceptions with one stable, path- and risk-aware merge gate; restore pre-merge Python 3.11 coverage for code and require CCP plus scientific artifact checks where appropriate.
-3. **In delivery:** amend the unused annotation ontology to v1.2 before real collection: score Segmentation and Inversion separately, require an identified alternative for `Other`, permit null operator scores for `Cannot determine`, expose guide examples, reset every form field after submission, and complete the three-expert cognitive-pilot gate.
+3. **Ready for collection, human-gated:** the v1.2 annotation packet,
+   strict raw schema, and fail-closed packet audit are published. Collect three
+   independent TRIZ-expert sessions, then publish agreement, abstention,
+   disagreement, adjudication, and keep/amend receipts. Synthetic fixtures
+   cannot close this gate.
 4. **Delivered:** run [Phase A0](./A0_AUTOMATED_WEAK_HYPOTHESIS.md) as an
    independent automated proxy test. Protocol v1.0.3 was frozen before model
    output; PR 34 published the exact-revision positive exploratory result with
@@ -256,6 +275,15 @@ exploratory evidence; they do not close the human construct or causal gates.
     training, no TRIZ terms or source cues, frozen checkpoints, shuffled and
     generic controls, held-out domains, and independent seeds. Do not use Track
     A results to select Track B data or checkpoints.
+15. Treat causal Lab 06 on one expert-validated operator as the first material
+   scientific priority after H1; require steering, ablation, dose-response,
+   opposite-sign, random, unrelated, fluency, and capability controls.
+16. Defer composition, contradiction breadth, and additional model-family
+   scaling until the single-operator causal gate passes; publish every null or
+   failed attempt without retuning.
+17. Add a no-model contributor quickstart that reproduces one synthetic result
+   in under thirty minutes and walks through one positive exploratory and one
+   null/failed package with their evidence boundaries.
 
 The target milestone is a complete chain of label-free paired cases, independent
 canonical human labels, no detected surface shortcut, exact model activations,

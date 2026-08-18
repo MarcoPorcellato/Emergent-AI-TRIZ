@@ -3,7 +3,7 @@ type: master-plan
 title: Laboratory Master Plan
 description: Canonical evolution ledger and gated route from the verified laboratory foundation to falsifiable, reproducible Latent TRIZ experiments.
 status: canonical
-last_verified: 2026-08-16
+last_verified: 2026-08-18
 ---
 
 # Laboratory Master Plan
@@ -43,10 +43,15 @@ It is normative for new WLT/SLT work and does not rewrite historical packages.
 | Protected `main` | `8ce557fdfb0333db08867b0da7a0319fec891553` | live GitHub base for PR 77; verify again before the next mutation |
 | Required merge context | strict `merge-policy/gate` | active GitHub ruleset and `.github/expected-main-ruleset.json` |
 | Completed automated milestone | A0-R Tier R1 same-model replication | PR 41, run `a0r1-v1.0.0-e93a9faa-r1` |
-| Current authentic-TRIZ milestone | annotation ontology v1.2 | draft PR 30; live state must be rebased and requalified before delivery |
+| Current authentic-TRIZ milestone | H1 v1.2 collection packet | public packet is `ready_for_collection`; closure is blocked by three independent human TRIZ experts |
 | Claim state | all registered claims remain E0 | `data/claims.jsonl` |
 | First dataset attempt | rejected for scientific freeze | retained Wave 1 surface-audit artifacts |
-| Comparative reference tranche | three terminal `null` packages | PR 77 head `d203cd9`; exploratory and claim-free |
+| Comparative reference tranche | three terminal `null` packages | PR 77 working head `10d249a`; exploratory and claim-free; live PR/base state must be rechecked before mutation |
+
+The local working checkpoint for this planning tranche is branch
+`agent/exp001-comparative-reference` at `10d249a4759f2db3825dd03fd4bde7c562595b92`.
+It is not a protected-main claim: the remote base, ruleset, PR state, and
+receipt branch must be verified again immediately before publication.
 
 The checkout used for unrelated local work is not an authoritative integration
 base. Delivery uses an isolated worktree created from an exact verified commit.
@@ -68,6 +73,50 @@ A scientific result requires frozen inputs, canonical labels, an exact model
 revision, an immutable run record, the applicable controls, a terminal artifact
 audit, and an explicit link to the claim registry. Null and failed results are
 published under the same standard.
+
+## Strategic improvement decisions from the external hypothesis review
+
+The accompanying review is a planning input, not new scientific evidence. It
+does, however, sharpen the order in which the repository should spend effort.
+The following decisions are now normative for future work:
+
+1. **Construct validity before scale.** The immediate bottleneck is H1, not a
+   larger model or a broader principle inventory. Three independent qualified
+   TRIZ experts must validate the blinded operator cases before any automated
+   proxy is described as a Weak Latent TRIZ result.
+2. **Causality before breadth.** Once H1 and an out-of-sample direction exist,
+   the next material study is one validated operator in Lab 06. Steering,
+   ablation, dose-response, opposite-sign, norm-matched random, unrelated,
+   fluency, and capability controls have priority over testing all forty
+   principles or adding more model families.
+3. **Controls are part of the construct.** Every new dataset must challenge
+   lexical, length, template, source, near-neighbour, cosmetic, generic-action,
+   Matrix-direction, unsupported-tool-edge, abstention, random-label, and
+   extreme-domain shortcuts. A control that fails is a readiness failure, not
+   an invitation to tune the primary.
+4. **Keep retrieval separate from rediscovery.** The public TRIZ corpus may
+   improve source-exposed competence tasks, but only the source-blinded arm can
+   test transfer. Their records, statistics, claims, and publication summaries
+   remain physically and analytically non-poolable.
+5. **Treat Strong Latent TRIZ as a separate emergence question.** Track B must
+   use a from-scratch, no-TRIZ-term corpus with frozen checkpoints and
+   independent seeds. Track A outputs may not choose its data, checkpoint, or
+   hyperparameters. It may be prepared in parallel, but it cannot replace H1 or
+   causal evidence.
+6. **Use scale only after a stable signal.** Independent model-family
+   replication and additional principles are justified after the single
+   operator contract and controls are stable. Composition and contradiction
+   tasks come after the first causal gate; they cannot rescue a failed
+   single-operator result.
+7. **Make the lab usable without weakening it.** A no-model quickstart should
+   reproduce a synthetic result in under thirty minutes, expose the evidence
+   profile and published nulls, and route all material execution through CCP
+   and explicit approval. Infrastructure work that does not unlock a listed
+   evidence gate is deferred.
+
+This ordering prevents the repository from confusing a positive automated
+proxy with the construct itself, and prevents infrastructure expansion from
+outpacing the human and causal evidence needed to test the hypothesis.
 
 ## Evolution ledger
 
@@ -110,13 +159,19 @@ calibration corpus and regression fixture.
 
 ### Phase E — human-label route in delivery
 
-PR 30 is **in delivery**, not merged. The saved checkpoint contains the v1.2
-decision record, documentation amendment, and a ready-to-run three-expert,
-six-case cognitive-pilot protocol. The schemas, workbench, audit, synthetic
-fixture migration, full tests, exact-commit CCP receipt, pull request, and human
-pilot result are not yet complete. Its recorded base predates the merged A0
-work, so every implementation and receipt must be re-verified rather than
-carried forward by assumption.
+The v1.2 H1 route is now **software-ready but blocked by human work**. The
+public packet contains six blinded cases, deterministic allocation, a reviewed
+guide, a strict raw-annotation schema, a fail-closed packet audit, and a
+synthetic-only validation receipt at exact head `10d249a…`. The audit reports
+`ready_for_collection`, `non_empirical: true`, `expert_validated: false`, and
+`evidence_eligible: false`.
+
+The next required artifact is not another implementation PR: it is one
+immutable raw file from each of three independent qualified TRIZ experts,
+followed by agreement, abstention, disagreement, adjudication, and keep/amend
+receipts. The old v1.1 `data/pilot/*` files remain synthetic calibration and
+must not be reclassified. Until the human package closes, Wave 2 canonical
+labels, WLT claims, and Lab 06 remain gated.
 
 ### Phase F — completed automated A0 exploration
 
@@ -587,6 +642,14 @@ The next scientific tranche follows the formal contract in
 comparative Pythia/SmolLM2/Qwen3 null packages are retained as a robustness
 constraint; they do not authorize a rerun or a post-hoc threshold change.
 
+The execution order is intentionally front-loaded toward evidence quality:
+`H1 -> strengthened controls -> held-out recognition -> one-principle
+causality -> composition/contradictions -> independent model replication ->
+Track B emergence`. Track B can be prepared with no-model artifacts in
+parallel, but no Track A result may select its corpus or checkpoint. Adding
+principles, models, or mechanistic tooling before the causal predecessor is
+deferred unless it closes a named control or reproducibility gate.
+
 ### CV1 — H1 expert construct pilot
 
 **Dependency:** annotation ontology v1.2 and the frozen blinded workbench.
@@ -605,9 +668,12 @@ close H1.
 
 Add lexical- and length-matched generic transformations, near-neighbour
 principles, cosmetic counterfactuals, Matrix direction swaps, unsupported
-Panitz edges, and domain-shift cases. Freeze family and source splits before
-any model output. Keep source-blinded transfer and source-exposed competence
-physically and statistically separate.
+Panitz edges, abstention cases, random-label/direction controls, and extreme
+domain shifts (for example mechanical, organisational, biological, and
+software cases). Freeze family and source splits before any model output.
+Keep source-blinded transfer and source-exposed competence physically and
+statistically separate; a source-exposed success can never rescue a blinded
+failure.
 
 **Exit evidence:** contamination, shortcut, split, power, and abstention
 receipts; all controls pass or are explicitly published as readiness failures.
@@ -625,6 +691,10 @@ approved.
 **Exit evidence:** immutable intervention parameters, activation and behavior
 receipts, positive/null/failed/non-interpretable result, and a report that does
 not promote a TRIZ claim.
+
+This gate has priority over broad forty-principle coverage and over additional
+model-family runs. The selected operator must be chosen from the frozen human
+and held-out data rules before the intervention outcome is visible.
 
 ### CV4 — contradiction and composition pilot
 
@@ -655,23 +725,38 @@ minutes, while keeping model/target execution behind CCP and explicit approval.
 Publish a claim/evidence profile for every scientific package and preserve dense
 assets externally with immutable locators and hashes.
 
+The quickstart must also show one published positive exploratory package and
+one published null or failed package, explain why neither proves the construct,
+and expose the exact command that performs the fail-closed artifact audit.
+
+### CV7 — independent replication after causal stability
+
+Only after CV3 passes its integrity and capability gates, replicate the frozen
+single-operator contract on an independent model family, dataset, implementation,
+or team. The replication must be selected before observing its outcome and must
+retain the same controls and terminal publication classes. A replication null
+is evidence against robustness of the frozen proxy, not a license to retune the
+primary.
+
 ## Work after the first authentic recognition run
 
 Proceed only when the predecessor result justifies the next cost:
 
-1. construct Lab 05 directions on training domains and evaluate them on held-out
+1. close H1 with three independent experts and freeze the canonical operator
+   ontology before treating any proxy as construct evidence;
+2. construct Lab 05 directions on training domains and evaluate them on held-out
    domains with split-half, bootstrap, permutation, orthogonal, random, and
    opposite-sign controls;
-2. start Lab 06 only after an out-of-sample direction exists, then test dose
+3. start Lab 06 only after an out-of-sample direction exists, then test dose
    response, ablation, bidirectionality, and capability preservation;
-3. separate pre-output selection from recognition by annotating what the model
+4. separate pre-output selection from recognition by annotating what the model
    actually generates after problem-only activations are captured;
-4. replicate across an independent model family, dataset, implementation, or
+5. replicate across an independent model family, dataset, implementation, or
    team before E5;
-5. examine intermediate training checkpoints only after the primary recognition
+6. examine intermediate training checkpoints only after the primary recognition
    contract is stable;
-6. reserve controlled training and E6 for a separately preregistered Track B;
-7. publish versioned releases, tutorials, role-specific onboarding, issue
+7. reserve controlled training and E6 for a separately preregistered Track B;
+8. publish versioned releases, tutorials, role-specific onboarding, issue
    milestones, Discussions, and archival assets as first-class reproducibility
    surfaces.
 
@@ -706,6 +791,29 @@ Proceed only when the predecessor result justifies the next cost:
 
 Cost reduction never weakens an evidence gate. `RUNNING`, partial tests, source
 inspection, or a receipt for another commit are not a pass.
+
+## Improvement-tranche checklist
+
+- [x] Preserve A0/R1 positives, three-model comparative nulls, and the R3
+  reference-integrated package as immutable E0 exploratory records.
+- [x] Publish explicit Weak/Strong definitions, falsification rules, evidence
+  axes, and the no-claim boundary.
+- [x] Prepare and mechanically audit the v1.2 H1 packet without fabricating
+  human judgments.
+- [ ] Collect three independent expert sessions and publish agreement,
+  abstention, disagreement, adjudication, and keep/amend receipts.
+- [ ] Freeze the stronger control corpus and grouped source/domain splits before
+  any new model output.
+- [ ] Demonstrate one out-of-sample operator direction and qualify the Lab 06
+  causal dossier before composition or broad model scaling.
+- [ ] Prepare the Track B no-TRIZ-term from-scratch protocol independently of
+  Track A selection decisions.
+- [ ] Publish the sub-thirty-minute no-model contributor quickstart and a
+  positive/null evidence-profile walkthrough.
+
+The unchecked items are genuine prerequisites, not missing documentation. A
+future run may not be called WLT or SLT evidence while any applicable item is
+open.
 
 ## Release and completion definition
 

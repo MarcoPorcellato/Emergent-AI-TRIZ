@@ -1,21 +1,27 @@
 Complete the canonical improvement plan in `docs/LABORATORY_MASTER_PLAN.md`,
 using `docs/HYPOTHESES_AND_FALSIFICATION.md` as the normative Weak/Strong
-contract. The verified working anchor is public comparative exact-head
-`d203cd9b2e75e5acfd3b3fb250a69330052894ea`; PR #77 still requires its final
-GitHub merge gate.
+contract. The current local working anchor is comparative exact-head
+`10d249a4759f2db3825dd03fd4bde7c562595b92`; verify `origin/main`, PR #77, the
+ruleset, and the receipt branch live before the next publication or mutation.
 
-Treat A0/R1 positives and the Pythia/SmolLM2/Qwen3 comparative null packages as
-immutable exploratory evidence. Do not rerun or tune them. Close the real-human
-H1 pilot with three independent TRIZ experts and immutable raw/adjudication
-receipts; freeze canonical labels and stronger lexical, template, source,
-near-neighbour, generic, Matrix-direction, unsupported-edge, abstention, and
-domain-shift controls; then prepare one validated-principle Lab 06 causal
-dossier. Keep Track B as a separate no-TRIZ-term from-scratch protocol.
+Treat A0/R1 positives, the R3 reference-integrated package, and the
+Pythia/SmolLM2/Qwen3 comparative null packages as immutable exploratory
+evidence. Do not rerun or tune them. The immediate priority is the real-human
+H1 gate: three independent TRIZ experts and immutable raw/agreement,
+abstention, disagreement, adjudication, and keep/amend receipts. Then freeze
+stronger lexical, template, source, near-neighbour, generic, cosmetic,
+Matrix-direction, unsupported-edge, abstention, random-label, and extreme
+domain-shift controls; demonstrate an out-of-sample direction; and prepare one
+validated-principle Lab 06 causal dossier. Defer composition and broad model
+scaling until that causal gate. Keep Track B as a separate no-TRIZ-term
+from-scratch protocol with independent seeds and checkpoints.
 
 Do not load models, read sealed targets, train models, or run CCP until the
 relevant no-model contract, hashes, resource envelope, and explicit operator
 approval are complete. Publish every positive, null, failed, or
 non-interpretable result; preserve historical artifacts; use deterministic
 tools first; delegate bounded inventory, tests, and documentation to cheaper
-workers; and keep architecture, statistics, security, CCP, publication, and
-merge decisions under primary review.
+workers; require a no-model contributor quickstart; and keep architecture,
+statistics, security, CCP, publication, and merge decisions under primary
+review. Continue until every checklist item in the canonical plan is proven or
+the precise human/external gate is recorded.

@@ -47,6 +47,20 @@ exposed retrieval, and post-hoc model prompting cannot establish it.
 - No claim may be promoted until the corresponding human, causal, replication,
   and controlled-training obligations are attached to the claim registry.
 
+### Current interpretation of the published record
+
+| Record | What it supports | What it cannot support |
+|---|---|---|
+| A0/R1 positive packages | exploratory decodability of frozen procedural proxies | expert-validated TRIZ, causal use, or Strong Latent TRIZ |
+| Pythia/SmolLM2/Qwen3 comparative nulls | no robust transfer signal for that frozen reference-task primary across the tested families | falsification of WLT as a construct, because the human label and causal gates are open |
+| R3 reference-integrated package | a bounded exploratory test of blinded versus source-exposed reference tasks | rediscovery: source exposure is competence/retrieval and is never pooled with blinded transfer |
+
+This table is a guard against two symmetrical errors: promoting an automated
+proxy because it is positive, or declaring the construct impossible because a
+single frozen proxy family is null. A WLT decision requires the expert,
+held-out, control, and causal prerequisites below; an SLT decision additionally
+requires controlled from-scratch training and independent seed evidence.
+
 ## 3. Preregistered falsification rules
 
 Thresholds, sample sizes, and seeds must be frozen by a reviewable protocol and
@@ -69,6 +83,15 @@ conditions are met:
 The result is `non_interpretable`, rather than `null`, when labels, controls,
 or runtime integrity are insufficient. A positive automated proxy without
 expert agreement remains `exploratory_proxy_only`.
+
+For planning purposes, the minimum positive WLT profile is therefore:
+`expert_agreement_pass && held_out_transfer_pass && surface_controls_pass &&
+decodability_pass && causal_gate_pending_or_passed`. The final conjunct is
+deliberately not treated as optional for a promoted claim: before causal
+testing, the package may be described only as a construct-validated
+recognition signal, never as causal use or rediscovery. A failed primary cannot
+be rescued by a sensitivity endpoint, a source-exposed arm, a near-threshold
+model, or a post-hoc change of operator.
 
 ### SLT falsification
 

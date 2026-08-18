@@ -41,11 +41,11 @@ Raw expert records must validate against
 `schemas/h1-annotation.schema.json`; the existing v1.1 dataset schema remains
 unchanged for historical smoke artifacts.
 
-The existing guide declares a minimum of two raters, raw agreement and nominal
-alpha floors of 0.8, abstention at most 0.2, 2,000 bootstrap resamples, and
-seed 1729. These values must be reviewed and frozen in the v1.2 amendment
-before collection; the synthetic summary's one-rater smoke coverage is not
-evidence.
+The v1.2 packet freezes a minimum of three distinct raters, raw agreement and
+nominal alpha floors of 0.8, abstention at most 0.2, 2,000 case-bootstrap
+resamples, seed 1729, and case-level unanimity for the keep/amend decision.
+Any older guide or synthetic summary that mentions fewer raters is historical
+calibration metadata and cannot authorize collection or count as evidence.
 
 ## Closure rule
 
