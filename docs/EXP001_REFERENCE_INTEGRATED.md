@@ -215,9 +215,15 @@ target access outside the declared analysis boundary is permitted. If any
 runtime or tokenizer mismatch occurs, publish `incompatible` or `failed` and
 stop.
 
-**Current gate:** CCP is currently `resource=admit`, `active=false`,
-`queue_count=0`; execution is still blocked because the tracked dossier is
-`approval_requested` and `operator_approval_granted=false`.
+**Checkpoint (2026-08-18):** exact-head CCP qualification passed on
+`8bd99a68c07f8c666ec77e0f7d009703ac4551cf` for Python 3.11 and 3.12
+(repository and schema checks). With the separately recorded operator
+authorization, one guarded SmolLM2 run completed exactly once. The terminal
+package is `results/exp001-r3/smollm2-r3-20260818-01/`, with status `null`,
+one sealed-target read, 299.054 seconds wall time, and peak RSS
+2,824,798,208 bytes. No retry occurred; the result remains exploratory and
+claim-free. The secondary Matrix 2003 and Panitz strata were executed but are
+reported descriptive-only/not reported by the frozen primary statistic.
 
 **Exit evidence:** exact runtime receipt, access receipt, activation/response
 index, terminal statistical result, recovery observation, and immutable logs.
@@ -233,6 +239,12 @@ missing or mutated.
 
 **Exit evidence:** merged main commit, PR and receipt links, fresh-clone pass,
 fresh-clone missing/mutation rejection, final report, and updated chronology.
+
+**Current status (2026-08-18):** R3.3 is complete locally and its immutable
+package, external response-score locator/hash, and terminal report are ready
+for publication. R3.4 remains open pending package commit, exact-head CCP
+receipt publication, PR review/merge, and fresh-clone verification with
+deliberate missing/mutated external-asset rejection.
 
 ## 6. Required deliverables
 

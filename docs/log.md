@@ -10,6 +10,14 @@ last_verified: 2026-08-16
 
 ## 2026-08-18
 
+- Exact-head CCP qualification then passed on `8bd99a68c07f8c666ec77e0f7d009703ac4551cf`
+  for Python 3.11/3.12 with a clean worktree. Under the separately recorded
+  authorization, the single guarded SmolLM2 R3 run completed terminal `null`
+  in 299.054 seconds with peak RSS 2,824,798,208 bytes, exactly one sealed
+  target read, and no retry. The immutable package and external response-score
+  locator/hash are ready for publication; all claims remain exploratory and
+  non-pooled.
+
 - The R3 exact-head CCP attempts at `8a4df44` and `db46782` failed before any
   model or target access. The dependency-light image correctly lacked the
   optional `torch` package needed only by model-adapter synthetic tests, and

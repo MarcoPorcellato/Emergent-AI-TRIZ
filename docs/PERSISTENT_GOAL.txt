@@ -29,16 +29,13 @@ terminal outcome, the external dense locator/hash, exact-head CCP receipt, PR,
 fresh-clone verification, limitations, and final report. Complete only when the
 specification checklist is proven and no general TRIZ claim is promoted.
 
-Current checkpoint: public no-model freeze commit
-`8a4df44afd7a7b2b1e275e34bafd62a9067fa323`, PR #75. The operator has now
-authorized exactly one R3 run under the frozen dossier; the authorization receipt
-is kept as a local preexecution artifact because the tracked dossier remains an
-immutable approval-request record. A prior exact-head CCP attempt failed because
-the read-only runtime exposed no writable temporary directory and the dependency-
-light image lacked `torch` for model-only synthetic tests. The corrective patch
- prefers a writable `/dev/shm` tempdir over CCP's 64 MiB `/tmp` tmpfs for child checks, skips only tests that
-require the absent optional torch runtime, and excludes local `.venv` symlinks from
-the copied-repository e2e fixture. A direct read-only container diagnostic now
-passes `repository_check`; publish the corrective commit and obtain a fresh CCP
-`decision=admit`, `active=false`, `queue_count=0` receipt before the single
-material run. Never bypass approval or edit CCP cache/journals manually.
+Current checkpoint: R3.3 material run completed on exact head
+`8bd99a68c07f8c666ec77e0f7d009703ac4551cf`. CCP passed on Python 3.11/3.12;
+the single guarded SmolLM2 run returned terminal status `null`, read sealed
+targets exactly once at the analysis boundary, used 299.054 seconds and
+2,824,798,208 bytes peak RSS, and performed no retry. The immutable package
+is `results/exp001-r3/smollm2-r3-20260818-01/`; its external response-score
+asset remains ignored and is bound by locator/hash in the manifest. Next step
+is publication (package commit, exact-head CCP evidence branch, PR/merge, and
+fresh-clone asset-mutation tests). Preserve the operator receipt and all
+stashes; never edit CCP cache/journals or rerun the consumed material scope.
