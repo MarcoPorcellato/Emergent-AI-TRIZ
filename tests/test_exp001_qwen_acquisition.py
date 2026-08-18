@@ -6,10 +6,12 @@ import unittest
 from pathlib import Path
 
 from latent_triz.exp001_qwen_acquisition import (
+    _BoundedRedirect,
     FILES,
     QwenAcquisitionError,
     _blob_sha1,
     _verify_file,
+    validate_authorization,
 )
 
 
@@ -41,6 +43,35 @@ class QwenAcquisitionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(QwenAcquisitionError):
                 _verify_file(Path(tmp) / "x", "README.md")
+
+    def test_authorization_must_bind_every_runtime_file_and_permission(self):
+        payload = {
+            "status": "operator_authorized",
+            "model_id": "Qwen/Qwen3-0.6B-Base",
+            "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+            "license_id": "Apache-2.0",
+            "disk_budget_bytes": 1610612736,
+            "runtime_files": [
+                {"path": name, "size_bytes": size, "source_oid": oid, "source_kind": kind}
+                for name, (size, oid, kind) in FILES.items()
+            ],
+            "permissions": {
+                "download_runtime_files_only": True,
+                "integrity_receipt": True,
+                "model_load": False,
+                "feasibility": False,
+                "sealed_execution": False,
+                "sealed_targets": False,
+            },
+        }
+        validate_authorization(payload)
+        payload["runtime_files"][0]["size_bytes"] += 1
+        with self.assertRaises(QwenAcquisitionError):
+            validate_authorization(payload)
+
+    def test_redirect_handler_rejects_untrusted_host(self):
+        handler = _BoundedRedirect()
+        self.assertIsNone(handler.redirect_request(None, None, 302, "Found", {}, "https://evil.example/x"))
 
 
 if __name__ == "__main__":
