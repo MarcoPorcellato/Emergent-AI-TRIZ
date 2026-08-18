@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import json
 from pathlib import Path
 from unittest.mock import patch
 
@@ -78,6 +79,42 @@ class MaterialRunnerTests(unittest.TestCase):
         self.assertEqual(result["status"], "incompatible")
         execute.assert_not_called()
         reader.assert_not_called()
+
+    def test_wall_cap_after_public_scoring_is_terminal(self):
+        reader = unittest.mock.Mock()
+        ticks = iter((0.0, 1.0, 1801.0))
+        with patch.object(runner, "_records", return_value=_records()), patch.object(runner, "execute_public_responses", return_value=_responses(_records())) as execute:
+            result = runner.run_material(root=self.root, run_id="wall-after-score", authorization={}, adapter=object(), target_reader=reader, clock=lambda: next(ticks), preflight_fn=self._preflight, report_fn=self._report)
+        self.assertEqual(result["status"], "incompatible")
+        execute.assert_called_once()
+        reader.assert_not_called()
+
+    def test_report_failure_is_returned_and_recovery_observation_preserves_artifacts(self):
+        records = _records()
+        fake_analysis = {"analysis": {"status": "null", "primary": {"mean_domain_delta": 0.0, "two_sided_exact_p": 1.0, "bootstrap_95_ci": [-1.0, 1.0], "all_domain_directions_positive": False}}, "access": {}, "public_record_count": 85}
+        def failing_report(**_):
+            raise OSError("report writer unavailable")
+        with patch.object(runner, "_records", return_value=records), patch.object(runner, "execute_public_responses", return_value=_responses(records)), patch.object(runner, "run_analysis_boundary", return_value=fake_analysis):
+            with self.assertRaises(runner.Exp001MaterialRunnerError) as caught:
+                runner.run_material(root=self.root, run_id="report-failure", authorization={}, adapter=object(), target_reader=lambda _: [], created_at="2026-08-18T00:00:00Z", preflight_fn=self._preflight, report_fn=failing_report)
+        self.assertIn("publication failed", str(caught.exception))
+        package = self.root / "results/exp001-r3/report-failure"
+        self.assertTrue((package / "statistical-result.json").is_file())
+        observation = json.loads((package / "publication-recovery-observation.json").read_text(encoding="utf-8"))
+        self.assertEqual(observation["status"], "publication_failed")
+
+    def test_reader_failure_records_possible_access_in_receipt(self):
+        records = _records()
+        reader = unittest.mock.Mock(side_effect=RuntimeError("sealed key failure"))
+        def boundary(_records, _responses, target_reader, _plan):
+            target_reader(_records)
+            raise AssertionError("reader should have failed")
+        with patch.object(runner, "_records", return_value=records), patch.object(runner, "execute_public_responses", return_value=_responses(records)), patch.object(runner, "run_analysis_boundary", side_effect=boundary):
+            result = runner.run_material(root=self.root, run_id="reader-access", authorization={}, adapter=object(), target_reader=reader, created_at="2026-08-18T00:00:00Z", preflight_fn=self._preflight, report_fn=self._report)
+        self.assertEqual(result["status"], "failed")
+        receipt = json.loads((self.root / "results/exp001-r3/reader-access/execution-receipt.json").read_text(encoding="utf-8"))
+        self.assertEqual(receipt["access"]["target_reads"], 1)
+        self.assertEqual(receipt["access"]["sealed_targets_accessed"], "possibly_accessed")
 
 
 if __name__ == "__main__":

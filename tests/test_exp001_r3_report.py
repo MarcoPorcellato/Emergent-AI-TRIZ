@@ -12,6 +12,8 @@ ROOT = Path(__file__).parents[1]
 HEX = "a" * 64
 PID = "exp001-reference-integrated-r3-v1.0.0"
 MODEL = {"id": "HuggingFaceTB/SmolLM2-360M", "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49", "local_locator": "artifacts/models/smollm2-360m-f8027fd0"}
+ASSET = {"locator": "external/exp001-r3/response-scores.jsonl", "sha256": HEX}
+PROVENANCE = {name: {"path": f"results/exp001-r3/{name}.json", "sha256": HEX} for name in ("implementation", "authorization", "integrity", "feasibility", "sealed_key_access", "recovery")}
 
 
 def _protocol():
@@ -21,11 +23,11 @@ def _protocol():
 
 
 def _result():
-    return {"artifact_class":"exp001-r3-statistical-result","protocol_id":PID,"status":"null","scientific_status":"exploratory","empirical":True,"evidence_eligible":False,"expert_validated":False,"claim_ids":[],"design":{"units":24,"domains":6,"families":12,"replicates":2,"permutation_count":64,"bootstrap_count":10000},"primary":{"metric":"transfer_minus_lexical_control","mean_delta":0.0,"p_value":1.0,"bootstrap_lower":-1.0,"all_domain_deltas_positive":False},"input_hashes":{"fixture":HEX},"interpretation":"Exploratory null result."}
+    return {"artifact_class":"exp001-r3-statistical-result","protocol_id":PID,"status":"null","scientific_status":"exploratory","empirical":True,"evidence_eligible":False,"expert_validated":False,"claim_ids":[],"design":{"units":24,"domains":6,"families":12,"replicates":2,"permutation_count":64,"bootstrap_count":10000},"primary":{"metric":"transfer_minus_lexical_control","mean_delta":0.0,"p_value":1.0,"bootstrap_lower":-1.0,"all_domain_deltas_positive":False},"secondary_summary":{"pooling":"non_pooled","matrix_2003":"descriptive fixture summary","panitz":"descriptive fixture summary"},"input_hashes":{"fixture":HEX},"interpretation":"Exploratory null result."}
 
 
 def _receipt():
-    return {"artifact_class":"exp001-r3-execution-receipt","protocol_id":PID,"status":"null","created_at":"2026-08-18T12:00:00Z","model":MODEL,"execution":{"runtime_status":"completed","device":"cpu","dtype":"float32","network":"disabled","generation":False,"run_count":1,"wall_seconds":1.0,"peak_rss_bytes":1000},"access":{"model_loaded":True,"model_output_accessed":"accessed","sealed_targets_accessed":"accessed","target_reads":1},"claim_ids":[],"evidence_eligible":False,"expert_validated":False}
+    return {"artifact_class":"exp001-r3-execution-receipt","protocol_id":PID,"status":"null","created_at":"2026-08-18T12:00:00Z","model":MODEL,"execution":{"runtime_status":"completed","device":"cpu","dtype":"float32","network":"disabled","generation":False,"run_count":1,"wall_seconds":1.0,"peak_rss_bytes":1000},"access":{"model_loaded":True,"model_output_accessed":"accessed","sealed_targets_accessed":"accessed","target_reads":1},"claim_ids":[],"evidence_eligible":False,"expert_validated":False,"external_response_asset":ASSET,"provenance":PROVENANCE}
 
 
 class ReportPackageTests(unittest.TestCase):
@@ -41,6 +43,12 @@ class ReportPackageTests(unittest.TestCase):
         self.package.mkdir(parents=True)
         (self.package / "statistical-result.json").write_text(json.dumps(_result()))
         (self.package / "execution-receipt.json").write_text(json.dumps(_receipt()))
+        for entry in PROVENANCE.values():
+            path = root / entry["path"]
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("provenance fixture\n")
+            entry["sha256"] = __import__("hashlib").sha256(path.read_bytes()).hexdigest()
+        (self.package / "execution-receipt.json").write_text(json.dumps(_receipt()))
         self.root = root
 
     def tearDown(self): self.tmp.cleanup()
@@ -54,6 +62,12 @@ class ReportPackageTests(unittest.TestCase):
     def test_verify_fails_hash_drift_status_and_traversal(self):
         generate_r3_report_package(package_dir="results/exp001-r3/run-001", created_at="2026-08-18T12:00:00Z", terminal_result="results/exp001-r3/run-001/statistical-result.json", execution_receipt="results/exp001-r3/run-001/execution-receipt.json", repo_root=self.root)
         (self.package / "report.md").write_text("mutated")
+        with self.assertRaises(R3ReportError): verify_r3_report_package(package_dir="results/exp001-r3/run-001", repo_root=self.root)
+
+    def test_verify_fails_provenance_hash_drift(self):
+        generate_r3_report_package(package_dir="results/exp001-r3/run-001", created_at="2026-08-18T12:00:00Z", terminal_result="results/exp001-r3/run-001/statistical-result.json", execution_receipt="results/exp001-r3/run-001/execution-receipt.json", repo_root=self.root)
+        path = self.root / PROVENANCE["implementation"]["path"]
+        path.write_text("mutated provenance\n")
         with self.assertRaises(R3ReportError): verify_r3_report_package(package_dir="results/exp001-r3/run-001", repo_root=self.root)
         (self.package / "report.md").write_text("# EXP-001 R3 publication report\n")
         with self.assertRaises(R3ReportError): verify_r3_report_package(package_dir="results/exp001-r3/../run-001", repo_root=self.root)

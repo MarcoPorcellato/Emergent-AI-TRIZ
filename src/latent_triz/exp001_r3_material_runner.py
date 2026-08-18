@@ -96,7 +96,19 @@ def _resource(resource_probe: Callable[[], Mapping[str, Any]] | None) -> dict[st
     return {"wall_seconds": wall, "peak_rss_bytes": rss}
 
 
-def _receipt(status: str, created_at: str, runtime_status: str, access: Mapping[str, Any], resources: Mapping[str, Any], reports: Sequence[str] = ()) -> dict[str, Any]:
+def _wall_check(clock: Callable[[], float] | None, started: float, stage: str) -> float:
+    """Enforce the wall ceiling at each irreversible execution boundary."""
+    if clock is None:
+        return 0.0
+    elapsed = float(clock()) - started
+    if elapsed < 0:
+        raise Exp001MaterialRunnerError(f"clock moved backwards at {stage}")
+    if elapsed > MAX_WALL:
+        raise Exp001MaterialRunnerError(f"wall ceiling exceeded at {stage}: {elapsed:.3f}s")
+    return elapsed
+
+
+def _receipt(status: str, created_at: str, runtime_status: str, access: Mapping[str, Any], resources: Mapping[str, Any], reports: Sequence[str] = (), *, provenance: Mapping[str, Any] | None = None, external_response_asset: Mapping[str, Any] | None = None) -> dict[str, Any]:
     value: dict[str, Any] = {
         "artifact_class": "exp001-r3-execution-receipt", "protocol_id": PROTOCOL_ID,
         "status": status, "created_at": created_at,
@@ -106,7 +118,41 @@ def _receipt(status: str, created_at: str, runtime_status: str, access: Mapping[
     }
     if reports:
         value["reports"] = list(reports)
+    if provenance is not None:
+        value["provenance"] = dict(provenance)
+    if external_response_asset is not None:
+        value["external_response_asset"] = dict(external_response_asset)
     return value
+
+
+def _bound_artifacts(repo: Path, values: Mapping[str, Any] | None) -> dict[str, dict[str, str]]:
+    """Validate caller-supplied provenance paths and bind their live hashes."""
+    required = ("implementation", "authorization", "integrity", "feasibility")
+    if not isinstance(values, Mapping) or set(values) != set(required):
+        raise Exp001MaterialRunnerError("provenance_artifacts must provide exactly six named artifacts")
+    bound: dict[str, dict[str, str]] = {}
+    for name in required:
+        entry = values[name]
+        if not isinstance(entry, Mapping) or set(entry) != {"path", "sha256"}:
+            raise Exp001MaterialRunnerError(f"invalid provenance artifact: {name}")
+        path = Path(str(entry["path"]))
+        if path.is_absolute() or ".." in path.parts or not path.parts:
+            raise Exp001MaterialRunnerError(f"unsafe provenance artifact: {name}")
+        absolute = (repo / path).resolve()
+        if not absolute.is_file() or not absolute.is_relative_to(repo):
+            raise Exp001MaterialRunnerError(f"missing provenance artifact: {name}")
+        digest = _sha_bytes(absolute.read_bytes())
+        if str(entry["sha256"]) != digest:
+            raise Exp001MaterialRunnerError(f"provenance hash mismatch: {name}")
+        bound[name] = {"path": path.as_posix(), "sha256": digest}
+    return bound
+
+
+def _package_artifact(repo: Path, relative: Path) -> dict[str, str]:
+    absolute = (repo / relative).resolve()
+    if not absolute.is_file() or not absolute.is_relative_to(repo):
+        raise Exp001MaterialRunnerError(f"missing package provenance artifact: {relative}")
+    return {"path": relative.as_posix(), "sha256": _sha_bytes(absolute.read_bytes())}
 
 
 def _failure(status: str, stage: str, error: BaseException, access: Mapping[str, Any]) -> dict[str, Any]:
@@ -116,7 +162,7 @@ def _failure(status: str, stage: str, error: BaseException, access: Mapping[str,
             "expert_validated": False, "claim_ids": [], "failure": {"stage": stage, "failure_kind": type(error).__name__, "failure_digest": digest}, "access": dict(access)}
 
 
-def run_material(*, root: str | Path, run_id: str, authorization: Mapping[str, Any], adapter: Any, target_reader: Callable[[Sequence[Mapping[str, Any]]], Sequence[Mapping[str, Any]]], created_at: str | None = None, clock: Callable[[], float] | None = None, resource_probe: Callable[[], Mapping[str, Any]] | None = None, preflight_fn: Callable[[str | Path, Mapping[str, Any]], Mapping[str, Any]] = preflight, report_fn: Callable[..., Any] = generate_r3_report_package) -> dict[str, Any]:
+def run_material(*, root: str | Path, run_id: str, authorization: Mapping[str, Any], adapter: Any, target_reader: Callable[[Sequence[Mapping[str, Any]]], Sequence[Mapping[str, Any]]], created_at: str | None = None, clock: Callable[[], float] | None = None, resource_probe: Callable[[], Mapping[str, Any]] | None = None, preflight_fn: Callable[[str | Path, Mapping[str, Any]], Mapping[str, Any]] = preflight, report_fn: Callable[..., Any] = generate_r3_report_package, provenance_artifacts: Mapping[str, Any] | None = None, external_response_asset_path: str | Path | None = None) -> dict[str, Any]:
     """Execute one injected SmolLM2 run and publish its terminal package.
 
     ``preflight_fn`` and ``report_fn`` are injectable solely for deterministic
@@ -136,25 +182,64 @@ def run_material(*, root: str | Path, run_id: str, authorization: Mapping[str, A
     try:
         preflight_fn(repo, authorization)
         records = _records(repo)
+        _wall_check(clock, started, "pre_model")
         resources = _resource(resource_probe)
         responses = execute_public_responses(records, adapter)
+        resources["wall_seconds"] = max(resources["wall_seconds"], _wall_check(clock, started, "after_public_scoring"))
         access["model_loaded"] = bool(getattr(adapter, "model_loaded", True))
         access["model_output_accessed"] = "accessed"
         response_index = {"artifact_class": "exp001-r3-response-index", "protocol_id": PROTOCOL_ID, "record_count": 85, "records": responses}
         plan = _json(repo / "experiments/exp001-reference-integrated/analysis-plan.json")
-        access["sealed_targets_accessed"] = "possibly_accessed"
-        access["target_reads"] = 1
-        analysis = run_analysis_boundary(records, responses, target_reader, plan)
+        target_invoked = False
+        def guarded_reader(public_records: Sequence[Mapping[str, Any]]) -> Sequence[Mapping[str, Any]]:
+            nonlocal target_invoked
+            if target_invoked:
+                raise Exp001MaterialRunnerError("sealed target reader invoked more than once")
+            target_invoked = True
+            access["target_reads"] = 1
+            access["sealed_targets_accessed"] = "possibly_accessed"
+            try:
+                value = target_reader(public_records)
+            except Exception:
+                # A failed reader may have opened the sealed target before failing.
+                raise
+            access["sealed_targets_accessed"] = "accessed"
+            return value
+        analysis = run_analysis_boundary(records, responses, guarded_reader, plan)
+        _wall_check(clock, started, "after_analysis")
         access["sealed_targets_accessed"] = "accessed"
-        resources = _resource(resource_probe)
+        observed = _resource(resource_probe)
+        resources = {"wall_seconds": max(resources["wall_seconds"], observed["wall_seconds"], _wall_check(clock, started, "after_analysis")), "peak_rss_bytes": max(resources["peak_rss_bytes"], observed["peak_rss_bytes"])}
         result = analysis["analysis"]
         statistical = {"artifact_class": "exp001-r3-statistical-result", "protocol_id": PROTOCOL_ID, "status": result["status"], "scientific_status": "exploratory", "empirical": True, "evidence_eligible": False, "expert_validated": False, "claim_ids": [], "design": {"units": 24, "domains": 6, "families": 12, "replicates": 2, "permutation_count": 64, "bootstrap_count": 10000}, "primary": {"metric": "transfer_minus_lexical_control", "mean_delta": result["primary"]["mean_domain_delta"], "p_value": result["primary"]["two_sided_exact_p"], "bootstrap_lower": result["primary"]["bootstrap_95_ci"][0], "all_domain_deltas_positive": result["primary"]["all_domain_directions_positive"]}, "input_hashes": {"response_index": _sha_bytes(_stable(response_index))}, "interpretation": "Exploratory automated-proxy result; no general TRIZ claim."}
-        receipt = _receipt(result["status"], created, "completed", access, resources)
+        secondary = analysis.get("secondary_summary", {"pooling": "non_pooled", "matrix_2003": "not reported", "panitz": "not reported"})
+        statistical["secondary_summary"] = secondary
         package.mkdir(parents=True)
         _write_new(package / "response-index.json", response_index)
+        external_rel = Path(external_response_asset_path) if external_response_asset_path is not None else Path("artifacts") / "exp001-r3" / run_id / "response-scores.json"
+        if external_rel.is_absolute() or ".." in external_rel.parts or external_rel.parts[:3] != ("artifacts", "exp001-r3", run_id):
+            raise Exp001MaterialRunnerError("external response asset must be artifacts/exp001-r3/<run-id>/response-scores.json")
+        external_absolute = (repo / external_rel).resolve()
+        external_absolute.parent.mkdir(parents=True, exist_ok=True)
+        _write_new(external_absolute, {"artifact_class": "exp001-r3-external-response-scores", "protocol_id": PROTOCOL_ID, "record_count": len(responses), "records": responses})
+        external_asset = {"locator": external_rel.as_posix(), "sha256": _sha_bytes(external_absolute.read_bytes())}
         _write_new(package / "statistical-result.json", statistical)
+        sealed_observation = {"artifact_class": "exp001-r3-sealed-key-access-observation", "status": "accessed", "target_reads": access["target_reads"], "sealed_targets_accessed": access["sealed_targets_accessed"]}
+        recovery_observation = {"artifact_class": "exp001-r3-recovery-observation", "status": "completed", "terminal_status": result["status"], "retry_performed": False}
+        _write_new(package / "sealed-key-access.json", sealed_observation)
+        _write_new(package / "recovery-observation.json", recovery_observation)
+        provenance = _bound_artifacts(repo, provenance_artifacts) if report_fn is generate_r3_report_package else (dict(provenance_artifacts) if isinstance(provenance_artifacts, Mapping) else None)
+        if provenance is not None and report_fn is generate_r3_report_package:
+            provenance["sealed_key_access"] = _package_artifact(repo, PACKAGE_ROOT / run_id / "sealed-key-access.json")
+            provenance["recovery"] = _package_artifact(repo, PACKAGE_ROOT / run_id / "recovery-observation.json")
+        receipt = _receipt(result["status"], created, "completed", access, resources, provenance=provenance, external_response_asset=external_asset)
         _write_new(package / "execution-receipt.json", receipt)
-        report_fn(package_dir=PACKAGE_ROOT / run_id, created_at=created, terminal_result=PACKAGE_ROOT / run_id / "statistical-result.json", execution_receipt=PACKAGE_ROOT / run_id / "execution-receipt.json", response_index=PACKAGE_ROOT / run_id / "response-index.json", repo_root=repo)
+        try:
+            report_fn(package_dir=PACKAGE_ROOT / run_id, created_at=created, terminal_result=PACKAGE_ROOT / run_id / "statistical-result.json", execution_receipt=PACKAGE_ROOT / run_id / "execution-receipt.json", response_index=PACKAGE_ROOT / run_id / "response-index.json", repo_root=repo)
+        except Exception as report_error:
+            observation = {"artifact_class": "exp001-r3-publication-recovery-observation", "status": "publication_failed", "stage": "report_generation", "failure_kind": type(report_error).__name__, "failure": str(report_error), "preserved_artifacts": ["response-index.json", "statistical-result.json", "execution-receipt.json"]}
+            _write_new(package / "publication-recovery-observation.json", observation)
+            raise Exp001MaterialRunnerError(f"publication failed during report generation: {report_error}") from report_error
         return {"status": result["status"], "package_dir": str(PACKAGE_ROOT / run_id), "analysis": analysis}
     except Exception as error:
         if package.exists():
@@ -167,8 +252,10 @@ def run_material(*, root: str | Path, run_id: str, authorization: Mapping[str, A
         _write_new(package / "execution-receipt.json", receipt)
         try:
             report_fn(package_dir=PACKAGE_ROOT / run_id, created_at=created, terminal_result=PACKAGE_ROOT / run_id / "statistical-result.json", execution_receipt=PACKAGE_ROOT / run_id / "execution-receipt.json", repo_root=repo)
-        except Exception:
-            pass
+        except Exception as report_error:
+            observation = {"artifact_class": "exp001-r3-publication-recovery-observation", "status": "publication_failed", "stage": "failure_report_generation", "failure_kind": type(report_error).__name__, "failure": str(report_error), "preserved_artifacts": ["statistical-result.json", "execution-receipt.json"]}
+            _write_new(package / "publication-recovery-observation.json", observation)
+            return {"status": status, "package_dir": str(PACKAGE_ROOT / run_id), "failure": failure, "publication_failure": str(report_error)}
         return {"status": status, "package_dir": str(PACKAGE_ROOT / run_id), "failure": failure}
 
 

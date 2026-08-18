@@ -83,6 +83,28 @@ def _artifact(root: Path, path: Path, label: str) -> dict[str, str]:
     return {"path": path.as_posix(), "sha256": _sha256(absolute)}
 
 
+def _verify_artifact_entry(root: Path, entry: Mapping[str, Any], label: str) -> None:
+    """Require a provenance hash object to name an existing exact file."""
+    if not isinstance(entry, Mapping) or not isinstance(entry.get("path"), str) or not isinstance(entry.get("sha256"), str):
+        raise R3ReportError(f"{label} must be a path/SHA-256 artifact object")
+    path = _relative(entry["path"], label)
+    absolute = (root / path).resolve()
+    if not absolute.is_file() or not absolute.is_relative_to(root):
+        raise R3ReportError(f"{label} is missing or outside the repository")
+    if _sha256(absolute) != entry["sha256"]:
+        raise R3ReportError(f"{label} hash mismatch")
+
+
+def _verify_provenance(root: Path, provenance: Mapping[str, Any], label: str = "provenance") -> None:
+    required = ("implementation", "authorization", "integrity", "feasibility", "sealed_key_access", "recovery")
+    if not isinstance(provenance, Mapping):
+        raise R3ReportError(f"{label} must be an object")
+    for name in required:
+        if name not in provenance:
+            raise R3ReportError(f"{label}.{name} is missing")
+        _verify_artifact_entry(root, provenance[name], f"{label}.{name}")
+
+
 def _under(path: Path, directory: Path, label: str) -> None:
     if path.parts[: len(directory.parts)] != directory.parts:
         raise R3ReportError(f"{label} must be inside the package directory")
@@ -176,9 +198,15 @@ def generate_r3_report_package(*, package_dir: str | Path, created_at: str, term
     result_art = _artifact(root, result_rel, "statistical result")
     receipt_art = _artifact(root, receipt_rel, "execution receipt")
     response_art = None if response_rel is None else _artifact(root, response_rel, "response index")
-    report_text = (f"# EXP-001 R3 publication report\n\n- Created: {created_at}\n- Terminal status: `{result['status']}`\n- Protocol: `{PROTOCOL_ID}`\n- Records: `85` (primary and TRIZ-source secondary strata remain unpooled).\n\n## Scientific boundary\n\nThis is an exploratory automated-proxy result. `claim_ids` is empty; `evidence_eligible` and `expert_validated` are false. It does not establish a general TRIZ claim.\n\n## Integrity\n\nThe publication manifest binds the frozen protocol, execution receipt, statistical result, and optional response index by SHA-256. Dense assets are external and are not copied into this package.\n\n## Limitations\n\nInterpretation is limited to the frozen protocol, exact model revision, and terminal outcome recorded here. Matrix 2003 and Panitz-derived controls are descriptive and are never pooled with the primary test.\n")
+    secondary = result.get("secondary_summary", {})
+    report_text = (f"# EXP-001 R3 publication report\n\n- Created: {created_at}\n- Terminal status: `{result['status']}`\n- Protocol: `{PROTOCOL_ID}`\n- Records: `85` (primary and TRIZ-source secondary strata remain unpooled).\n\n## Scientific boundary\n\nThis is an exploratory automated-proxy result. `claim_ids` is empty; `evidence_eligible` and `expert_validated` are false. It does not establish a general TRIZ claim.\n\n## Secondary strata (descriptive, non-pooled)\n\n- Matrix 2003: {secondary.get('matrix_2003', 'not reported')}\n- Panitz: {secondary.get('panitz', 'not reported')}\n\n## Integrity\n\nThe publication manifest binds the frozen protocol, execution receipt, statistical result, response index, and provenance artifacts by SHA-256. Scalar response assets remain external and are referenced by locator and SHA-256; they are not copied into this package.\n\n## Limitations\n\nInterpretation is limited to the frozen protocol, exact model revision, and terminal outcome recorded here. Matrix 2003 and Panitz-derived controls are descriptive and are never pooled with the primary test.\n")
     report_bytes = report_text.encode("utf-8")
-    manifest: dict[str, Any] = {"artifact_class": "exp001-r3-publication-manifest", "protocol_id": PROTOCOL_ID, "terminal_status": result["status"], "publish_every_terminal_outcome": True, "claim_ids": [], "evidence_eligible": False, "expert_validated": False, "protocol": protocol_art, "receipt": receipt_art, "report": {"path": report_rel.as_posix(), "sha256": hashlib.sha256(report_bytes).hexdigest()}, "result": result_art}
+    external_asset = receipt.get("external_response_asset")
+    provenance = receipt.get("provenance")
+    if not isinstance(external_asset, Mapping) or not isinstance(provenance, Mapping):
+        raise R3ReportError("receipt must bind external_response_asset and provenance before publication")
+    _verify_provenance(root, provenance, "receipt.provenance")
+    manifest: dict[str, Any] = {"artifact_class": "exp001-r3-publication-manifest", "protocol_id": PROTOCOL_ID, "terminal_status": result["status"], "publish_every_terminal_outcome": True, "claim_ids": [], "evidence_eligible": False, "expert_validated": False, "protocol": protocol_art, "receipt": receipt_art, "report": {"path": report_rel.as_posix(), "sha256": hashlib.sha256(report_bytes).hexdigest()}, "result": result_art, "external_response_asset": dict(external_asset), "provenance": dict(provenance)}
     if response_art is not None:
         manifest["response_index"] = response_art
     _check_schema(manifest, _schema(root, "exp001-r3-publication-manifest.schema.json"), "publication manifest")
@@ -207,6 +235,7 @@ def verify_r3_report_package(*, package_dir: str | Path, repo_root: str | Path |
             raise R3ReportError(f"manifest artifact missing or unsafe: {name}")
         if _sha256(absolute) != entry["sha256"]:
             raise R3ReportError(f"manifest artifact hash mismatch: {name}")
+    _verify_provenance(root, manifest["provenance"], "manifest.provenance")
     result = _json(root / _relative(manifest["result"]["path"], "result"), "statistical result")
     receipt = _json(root / _relative(manifest["receipt"]["path"], "receipt"), "execution receipt")
     if result.get("status") != receipt.get("status") or result.get("status") != manifest["terminal_status"]:

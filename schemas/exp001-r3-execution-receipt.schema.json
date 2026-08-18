@@ -43,6 +43,11 @@
     "claim_ids": {"type": "array", "maxItems": 0},
     "evidence_eligible": {"const": false}, "expert_validated": {"const": false},
     "receipt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "provenance": {"type": "object", "additionalProperties": false, "properties": {
+      "implementation": {"$ref": "#/$defs/artifact"}, "authorization": {"$ref": "#/$defs/artifact"}, "integrity": {"$ref": "#/$defs/artifact"}, "feasibility": {"$ref": "#/$defs/artifact"}, "sealed_key_access": {"$ref": "#/$defs/artifact"}, "recovery": {"$ref": "#/$defs/artifact"}
+    }},
+    "external_response_asset": {"type": "object", "additionalProperties": false, "required": ["locator", "sha256"], "properties": {"locator": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\s]+$"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}},
     "reports": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\s]+$"}}
-  }
+  },
+  "$defs": {"artifact": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": {"path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))[^\\s]+$"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}}}
 }
