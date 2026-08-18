@@ -23,7 +23,8 @@
     "tool_edges": "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl",
     "source_exposures": "experiments/exp001-reference-integrated/fixtures/source-exposures.jsonl",
     "split_receipt": "experiments/exp001-reference-integrated/fixtures/split-receipt.json",
-    "sealed_targets": "artifacts/exp001-comparative/target-key/targets.jsonl"
+    "sealed_targets": "artifacts/exp001-r3/target-key/targets.jsonl",
+    "sealed_targets_sha256": "5dd8e3e42e074439f2934db900f233508cc5671c5299516a033d815d47ccaa97"
   },
   "strata": {
     "TRIZ-blinded-transfer": {
