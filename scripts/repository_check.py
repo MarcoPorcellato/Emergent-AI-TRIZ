@@ -35,12 +35,12 @@ def _ensure_writable_tempdir() -> str:
     default lookup is unavailable.
     """
 
-    candidates = []
+    candidates = ["/dev/shm"]
     try:
         candidates.append(tempfile.gettempdir())
     except FileNotFoundError:
         pass
-    candidates.extend(("/dev/shm", "/tmp"))
+    candidates.append("/tmp")
 
     for candidate in dict.fromkeys(candidates):
         if not os.path.isdir(candidate):

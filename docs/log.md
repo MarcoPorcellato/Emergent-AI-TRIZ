@@ -10,15 +10,14 @@ last_verified: 2026-08-16
 
 ## 2026-08-18
 
-- The first R3 exact-head CCP attempt at `8a4df44` failed before any model or
-  target access: the read-only runtime had no writable `/tmp`, and the
-  dependency-light image correctly lacked the optional `torch` package needed
-  only by model-adapter synthetic tests. The corrective repository check now
-  probes a writable temp directory and exports `/dev/shm` to child checks,
-  skips only those optional model tests when the dependency is absent, and
-  excludes local `.venv` symlinks from copied-repository fixtures. A direct
-  read-only container diagnostic passed `repository_check`; a fresh exact-head
-  CCP receipt is still required before material execution.
+- The R3 exact-head CCP attempts at `8a4df44` and `db46782` failed before any
+  model or target access. The dependency-light image correctly lacked the
+  optional `torch` package needed only by model-adapter synthetic tests, and
+  CCP mounts a writable `/tmp` tmpfs capped at 64 MiB. The repository check now
+  prefers `/dev/shm`, skips only those optional model tests when the dependency
+  is absent, and excludes local `.venv` symlinks from copied-repository
+  fixtures. Direct Python 3.11/3.12 read-only diagnostics pass; a fresh
+  exact-head CCP receipt is still required before material execution.
 
 ## 2026-08-16
 

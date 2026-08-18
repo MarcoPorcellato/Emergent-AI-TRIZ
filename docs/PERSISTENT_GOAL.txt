@@ -36,7 +36,7 @@ is kept as a local preexecution artifact because the tracked dossier remains an
 immutable approval-request record. A prior exact-head CCP attempt failed because
 the read-only runtime exposed no writable temporary directory and the dependency-
 light image lacked `torch` for model-only synthetic tests. The corrective patch
-selects a writable `/dev/shm` tempdir for child checks, skips only tests that
+ prefers a writable `/dev/shm` tempdir over CCP's 64 MiB `/tmp` tmpfs for child checks, skips only tests that
 require the absent optional torch runtime, and excludes local `.venv` symlinks from
 the copied-repository e2e fixture. A direct read-only container diagnostic now
 passes `repository_check`; publish the corrective commit and obtain a fresh CCP
