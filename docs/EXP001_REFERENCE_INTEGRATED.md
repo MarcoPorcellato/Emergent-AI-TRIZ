@@ -125,10 +125,11 @@ open sealed targets, or alter A0-R2.
 **Exit evidence:** schema cross-validation, source/hash audit, rights audit,
 clean worktree, and a reviewable protocol diff.
 
-**Current status (2026-08-18):** the target-free protocol is frozen. The
-implementation, freeze manifest, and approval dossier still require exact-head
-qualification and review. This status authorizes neither a model load nor
-sealed-target access.
+**Current status (2026-08-18):** the target-free protocol, implementation
+binding, freeze manifest, and approval-request dossier are frozen and published
+on PR #75. Exact-head no-model qualification and operator approval remain
+separate gates. This status authorizes neither a model load nor sealed-target
+access.
 
 The current no-model source verifier is committed at `6316cd6`. It verifies
 the four immutable reference hashes, forty ordered principle records, eighteen
@@ -161,8 +162,9 @@ units across six domains, two families per domain, and two replicates per
 family. Correct-answer positions are rotated semantically in the future sealed
 key and are not stored in public fixtures. `2e7c510` adds synthetic-tested
 teacher-forced scoring that rejects tensor, prefix, architecture, or generation
-contract drift. R3.1 remains in delivery: Matrix and Panitz secondary fixtures
-still require execution-ready public records, and no protocol is frozen.
+contract drift. Matrix and Panitz secondary fixtures are now execution-ready,
+source-family separated, and bound by the public freeze manifest; R3.1 is
+verified complete without model or target access.
 
 **Operational decision pending freeze:** preserve the 72-record primary
 inventory unchanged and add 13 separately scored secondary records: nine
@@ -192,9 +194,10 @@ adapters/vectors must cover both strata and every terminal class.
 synthetic statistics tests, exact-head CCP qualification, and a separate
 operator approval dossier.
 
-**Checkpoint (2026-08-18):** `9e5d1fd` adds strict terminal receipt, response
-index, statistical-result, publication-manifest, freeze-manifest, and approval
-dossier schemas. They preserve the exploratory/no-claim envelope and are not
+**Checkpoint (2026-08-18):** the public freeze at `f1cc72b` binds the strict
+terminal receipt, response index, statistical-result, publication-manifest,
+freeze-manifest, and approval-request dossier to the frozen protocol and exact
+SmolLM2 receipts. They preserve the exploratory/no-claim envelope and are not
 an operator authorization or model result.
 
 ### R3.3 — one guarded model run
@@ -211,6 +214,10 @@ No tuning, model substitution, protocol change, post-output retry, or sealed
 target access outside the declared analysis boundary is permitted. If any
 runtime or tokenizer mismatch occurs, publish `incompatible` or `failed` and
 stop.
+
+**Current gate:** CCP is currently `resource=admit`, `active=false`,
+`queue_count=0`; execution is still blocked because the tracked dossier is
+`approval_requested` and `operator_approval_granted=false`.
 
 **Exit evidence:** exact runtime receipt, access receipt, activation/response
 index, terminal statistical result, recovery observation, and immutable logs.

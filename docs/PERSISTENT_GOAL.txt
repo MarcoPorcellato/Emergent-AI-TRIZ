@@ -3,16 +3,13 @@ Complete `docs/EXP001_REFERENCE_INTEGRATED.md` from verified public main
 `fe77dc6560e95dbb865cc1bf721552fd610782b5` only after verifying the live repository,
 ruleset, source corpus, artifacts, and receipts before acting.
 
-R3.0 target-free freeze is being completed on branch `agent/exp001-r3-reference-freeze`: a strict
-no-model protocol, sparse externally-referenced Matrix 2003 fixture, and
-rights-aware Panitz edge fixture are being prepared. Do not call this a frozen
-study until paired items, split/contamination receipts, implementation hash
-bindings, synthetic qualification, and an exact approval dossier exist.
-The public target-free fixture structurally satisfies the six-domain primary
-design. The protocol is frozen for no-model preparation; finish and verify the
-implementation, freeze manifest, approval dossier, and exact-head
-qualification before any model or sealed-target access. Resume instructions
-are in `docs/EXP001_R3_RESTART_HANDOFF.md`.
+R3.0-R3.2 target-free freeze is complete on branch
+`agent/exp001-r3-reference-freeze` and published in PR #75: the strict
+no-model protocol, sparse externally-referenced Matrix 2003 fixture,
+rights-aware Panitz edge fixture, implementation hash binding, freeze manifest,
+synthetic qualification, and approval-request dossier are all present. This is
+still a no-model freeze, not a sealed study result. Resume instructions are in
+`docs/EXP001_R3_RESTART_HANDOFF.md`.
 
 Prepare and freeze a new R3/EXP-001 TRIZ reference-integrated study without
 changing any A0-R2/C3 bytes. Keep `TRIZ-blinded-transfer` and
@@ -32,4 +29,9 @@ terminal outcome, the external dense locator/hash, exact-head CCP receipt, PR,
 fresh-clone verification, limitations, and final report. Complete only when the
 specification checklist is proven and no general TRIZ claim is promoted.
 
-Current checkpoint: public no-model freeze commit `d8d4e98fdd4ad7145e427eb270f3a8ca23b844fb`, PR #75. Local R3 and repository gates pass. Material execution remains blocked by CCP admission `active=true` with an empty queue and two corrupt/incomplete operator-required journals; never bypass this gate or edit cache state manually.
+Current checkpoint: public no-model freeze commit
+`f1cc72bac58051db11d7050b22edc22970b9e988`, PR #75. Local R3 and repository
+gates pass; CCP currently reports `decision=admit`, `active=false`, and an empty
+queue. Material execution remains blocked only by the tracked dossier’s
+`operator_approval_granted=false` state. Never bypass the approval gate or edit
+CCP cache/journals manually.
