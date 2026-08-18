@@ -4,7 +4,7 @@
 
 - Recorded: 2026-08-18, before operator-requested macOS restart.
 - Branch: `agent/exp001-r3-reference-freeze`.
-- Exact local checkpoint before this handoff commit: `fd7d3411abfc88dd7cbc36100544227e6667bf35`.
+- Exact local checkpoint before this handoff commit: `fe77dc6560e95dbb865cc1bf721552fd610782b5`.
 - Verified public delivery base: `db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c`.
 - Worktree at recording: clean; the four pre-existing stashes remain untouched.
 - Remote/ruleset/PR state has not been re-verified at this checkpoint and must
@@ -43,11 +43,11 @@
 ## Deliberately unfinished boundary
 
 The study is not frozen and no model, sealed target, CCP workload, or network
-operation has been started for R3. The public fixture is now structurally
-adequate for the declared six-domain exact primary, but it still lacks the
-frozen implementation binding, terminal-package schemas and writers, a
-human-independent/source-derived sealed-key procedure, and full exact-head
-no-model qualification.
+operation has been started for R3. The public fixture and terminal package
+path are now synthetic-tested. The approval-dossier builder and schema are
+present as an uncommitted checkpoint, but no real dossier has been created;
+the frozen implementation binding, source-derived sealed-key procedure, and
+full exact-head no-model qualification remain unfinished.
 
 The next milestone is to complete the R3-specific model scoring integration and
 immutable package/verification path, then freeze the implementation and
@@ -70,6 +70,19 @@ analysis boundary.
 5. Qualify the frozen no-model package before requesting any new operator
    authorization. CCP resource/admission checks apply only before a later
    material qualification or model run.
+
+## Restart safety (2026-08-18)
+
+- The only uncommitted files at this checkpoint are the bounded approval
+  layer: `schemas/exp001-r3-execution-authorization.schema.json`,
+  `src/latent_triz/exp001_r3_authorization.py`, and
+  `tests/test_exp001_r3_authorization.py`.
+- They build only an `approval_requested` in-memory dossier and perform no
+  model load, target read, network access, CCP run, or output generation.
+- Existing stashes `stash@{0}` through `stash@{5}` are preserved. Do not apply
+  or delete them during restart recovery.
+- Before publication or qualification, re-check the live branch, public main,
+  ruleset, open PRs, and CCP resource/admission state.
 
 No existing A0-R2/C3 artifact may be modified. No prior execution approval
 authorizes the eventual R3 model run.
