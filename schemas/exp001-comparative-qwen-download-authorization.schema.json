@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-qwen-download-authorization.schema.json",
+  "title": "EXP-001 Qwen download authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "authorization_id", "status", "operator_id", "model_id", "revision", "license_id", "runtime_root", "disk_budget_bytes", "runtime_files", "permissions", "authorization_text_sha256", "source_tree_url"],
+  "properties": {
+    "artifact_class": {"const": "exp001-comparative-qwen-download-authorization"},
+    "authorization_id": {"const": "exp001-qwen3-download-v1"},
+    "status": {"const": "operator_authorized"},
+    "operator_id": {"const": "MarcoPorcellato"},
+    "model_id": {"const": "Qwen/Qwen3-0.6B-Base"},
+    "revision": {"const": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"},
+    "license_id": {"const": "Apache-2.0"},
+    "runtime_root": {"const": "artifacts/models/qwen3-0.6b-base-da87bfb"},
+    "disk_budget_bytes": {"const": 1610612736},
+    "runtime_files": {
+      "type": "array", "minItems": 7, "maxItems": 7,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["path", "size_bytes", "source_oid", "source_kind"],
+        "properties": {
+          "path": {"type": "string", "pattern": "^[a-zA-Z0-9._-]+$"},
+          "size_bytes": {"type": "integer", "minimum": 1},
+          "source_oid": {"type": "string", "pattern": "^[a-f0-9]{40,64}$"},
+          "source_kind": {"enum": ["git_blob", "lfs_sha256"]}
+        }
+      }
+    },
+    "permissions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["download_runtime_files_only", "integrity_receipt", "model_load", "feasibility", "sealed_execution", "sealed_targets"],
+      "properties": {
+        "download_runtime_files_only": {"const": true},
+        "integrity_receipt": {"const": true},
+        "model_load": {"const": false},
+        "feasibility": {"const": false},
+        "sealed_execution": {"const": false},
+        "sealed_targets": {"const": false}
+      }
+    },
+    "authorization_text_sha256": {"type": "string", "minLength": 1},
+    "source_tree_url": {"type": "string", "pattern": "^https://huggingface\\.co/"}
+  }
+}
