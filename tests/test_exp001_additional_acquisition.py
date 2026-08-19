@@ -3,9 +3,11 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from urllib.request import Request
 
 from latent_triz.exp001_additional_acquisition import (
     MODEL_SPECS,
+    _BoundedRedirect,
     AdditionalAcquisitionError,
     acquire_additional,
     build_receipt_from_authorized,
@@ -61,6 +63,22 @@ class AdditionalAcquisitionTests(unittest.TestCase):
             mutated["candidates"][0][field] = value
             with self.assertRaises(AdditionalAcquisitionError):
                 validate_authorization(mutated, "openai-community/gpt2")
+
+    def test_huggingface_internal_redirect_is_case_insensitive_and_bound(self):
+        spec = MODEL_SPECS["openai-community/gpt2"]
+        request = Request(
+            "https://huggingface.co/openai-community/gpt2/resolve/" + spec.revision + "/config.json",
+            headers={"X-Latent-Triz-Model": spec.model_id, "X-Latent-Triz-Revision": spec.revision},
+        )
+        redirected = _BoundedRedirect().redirect_request(
+            request,
+            None,
+            307,
+            "temporary redirect",
+            {},
+            "/api/resolve-cache/models/openai-community/gpt2/" + spec.revision + "/config.json?etag=test",
+        )
+        self.assertIsNotNone(redirected)
 
     def test_streaming_fake_download_and_receipt(self):
         model_id = "openai-community/gpt2"
