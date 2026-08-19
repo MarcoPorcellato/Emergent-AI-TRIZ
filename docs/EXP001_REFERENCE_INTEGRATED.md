@@ -316,15 +316,17 @@ it is a within-family scale control for the already tested SmolLM2-360M. The
 five-model plan therefore increases architectural and scale variation without
 pretending that all five observations are independent replications.
 
-The machine-readable no-download dossier is
+The machine-readable dossier is
 `experiments/exp001-comparative-reference/additional-model-selection.json`,
-validated by `schemas/exp001-additional-model-selection.schema.json`. At this
-checkpoint no candidate weights or tokenizers have been acquired or loaded;
-no feasibility run, generation, or sealed-target access has occurred. The
-next gate is explicit operator approval for the exact allowlists, disk and
-runtime ceilings, one-run-per-candidate rule, and publication of every
-terminal outcome. A future incompatibility remains terminal and cannot be
-replaced by another model. The earlier R3 package at main
+validated by `schemas/exp001-additional-model-selection.schema.json`, with the
+operator authorization and integrity receipts under
+`experiments/exp001-comparative-reference/additional-model-authorization.json`
+and `results/exp001-comparative/preexecution/`. One authorized run completed
+for each model, with no generation, no network, one sealed-target read per
+model, and terminal status `null` for both. GPT-2 completed in 316.68 s at
+2,121,891,840 B peak RSS; SmolLM2-135M completed in 341.66 s at
+2,520,023,040 B. The primary p-values were 0.3125 and 0.5 respectively; both
+packages are exploratory nulls and remain non-pooled. The earlier R3 package at main
 `4cc1c6d862bffc9558b47a5cadd838a2ee22c465` remains immutable; this extension
 does not reopen it.
 
@@ -340,8 +342,9 @@ does not reopen it.
 - external dense locator and hash, immutable publication manifest, limitations,
   and fresh-clone verifier evidence;
 - public PR, exact-head CCP evidence branch, merge commit, and chronology entry.
-- separate additional-model selection dossier and no-download audit for GPT-2
-  and SmolLM2-135M; acquisition and execution remain open gates.
+- separate additional-model selection, authorization, integrity, and execution
+packages for GPT-2 and SmolLM2-135M, including the official tokenizer
+contract and public locator/hash bindings for local-only dense assets.
 
 ## 7. Delegation and cost policy
 
@@ -379,7 +382,9 @@ the checkpoint.
 - [x] Exact-head receipt and local CCP gates are terminally green.
 - [x] Publication verifiers pass with declared external assets and reject missing or mutated assets.
 - [x] Main, chronology, persistent goal, and this specification agree on status.
-- [x] Additional-model no-download selection is frozen without prior-score
-  conditioning; no candidate is yet acquired or loaded.
-- [ ] Exact GPT-2 and SmolLM2-135M acquisition, integrity, feasibility, and
-  one-run publication dossier is approved and completed.
+- [x] Additional-model selection is frozen without prior-score conditioning;
+  both snapshots are integrity-verified and their official tokenizer contracts
+  are documented.
+- [x] Exact GPT-2 and SmolLM2-135M one-run publication dossier is approved,
+  executed once per model, independently verified, and published as terminal
+  null outcomes.

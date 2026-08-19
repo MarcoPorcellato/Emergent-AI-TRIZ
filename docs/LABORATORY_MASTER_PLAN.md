@@ -110,27 +110,29 @@ The following decisions are now normative for future work:
    replication and additional principles are justified after the single
    operator contract and controls are stable. Composition and contradiction
    tasks come after the first causal gate; they cannot rescue a failed
-   single-operator result. A bounded no-download proposal for GPT-2 and
-   SmolLM2-135M is now recorded as a readiness control only: it does not
-   authorize acquisition, model loading, or broaden the evidence claim.
+   single-operator result. GPT-2 and SmolLM2-135M are now completed
+   architecture/scale controls under a separate one-run authorization; their
+   terminal null packages do not broaden the evidence claim.
 7. **Make the lab usable without weakening it.** A no-model quickstart should
    reproduce a synthetic result in under thirty minutes, expose the evidence
    profile and published nulls, and route all material execution through CCP
    and explicit approval. Infrastructure work that does not unlock a listed
    evidence gate is deferred.
 
-### Additional-model no-download checkpoint (2026-08-19)
+### Additional-model execution checkpoint (2026-08-19)
 
 The separate dossier
 `experiments/exp001-comparative-reference/additional-model-selection.json`
 and schema `schemas/exp001-additional-model-selection.schema.json` freeze two
 complementary candidates without consulting prior scores: GPT-2 as an
 architecture-diversity control and SmolLM2-135M as a same-family scale control
-against SmolLM2-360M. Deterministic validation reports 116 tracked schema
-pairs and 13 mutation cases rejected by both validators; the full repository
-suite reports 701 passing tests. These are no-model readiness results, not
-scientific evidence. Acquisition, feasibility, and sealed execution remain
-separate approval gates, and the existing three-model packages remain
+against SmolLM2-360M. Both snapshots were acquired under the exact allowlists,
+their SHA-256 receipts were verified, and the official tokenizer contracts are
+recorded in `docs/EXP001_ADDITIONAL_MODEL_RUNTIME.md`. One local CPU float32
+run per model completed under CCP: GPT-2 `null` (316.68 s, 2,121,891,840 B
+peak RSS, p=0.3125) and SmolLM2-135M `null` (341.66 s, 2,520,023,040 B peak
+RSS, p=0.5). Each opened sealed targets exactly once. Scores remain separate,
+all claim IDs are empty, and the existing three-model packages remain
 immutable.
 
 This ordering prevents the repository from confusing a positive automated
