@@ -14,8 +14,8 @@ Matrix-direction, unsupported-edge, abstention, random-label, and extreme
 domain-shift controls; demonstrate an out-of-sample direction; and prepare one
 validated-principle Lab 06 causal dossier. Defer composition and broad model
 scaling until that causal gate. A separate no-download dossier now proposes
-GPT-2 and SmolLM2-135M as complementary architecture/scale controls; do not
-acquire or load them until their exact approval and integrity gates are closed.
+GPT-2 and SmolLM2-135M are now completed one-run architecture/scale controls;
+their terminal outcomes are null, non-pooled, and not a general TRIZ claim.
 The official-source runtime/tokenizer contract and the pre-access failure
 prevention checklist are maintained in docs/EXP001_ADDITIONAL_MODEL_RUNTIME.md;
 SmolLM2-135M is Llama architecture but declares GPT2Tokenizer.
@@ -37,6 +37,9 @@ exact-head CCP receipt followed by explicit approval for the two named
 candidates. Continue until every checklist item in the canonical plan is
 proven or the precise human/external gate is recorded.
 
+The additional model execution packages are published under
+`results/exp001-comparative/` with public locators and hashes for dense assets
+retained locally; a fresh clone must reject those missing assets fail-closed.
 The earlier R3 SmolLM2 package remains published in main merge
 `4cc1c6d862bffc9558b47a5cadd838a2ee22c465` with terminal `null`, one sealed
 target read, and no promoted scientific claim; the current objective extends
