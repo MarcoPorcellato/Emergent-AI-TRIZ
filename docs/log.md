@@ -8,6 +8,27 @@ last_verified: 2026-08-16
 
 # Documentation Chronology
 
+## 2026-08-19
+
+- Official-source runtime review completed for the two additional controls.
+  GPT-2 is `GPT2LMHeadModel` with 12 layers/768 hidden units; SmolLM2-135M
+  is `LlamaForCausalLM` with 30 layers/576 hidden units but its pinned
+  tokenizer metadata explicitly declares `GPT2Tokenizer`. The contract and
+  preventative preflight are documented in
+  `docs/EXP001_ADDITIONAL_MODEL_RUNTIME.md`.
+- GPT-2 and SmolLM2-135M integrity receipts were verified from the exact
+  authorized snapshots. One local CPU float32 run per model then completed
+  under CCP with no network or generation and one sealed-target read each.
+  Both terminal outcomes are `null`: GPT-2 p=.3125 (316.68 s, peak RSS
+  2,121,891,840 B) and SmolLM2-135M p=.5 (341.66 s, peak RSS 2,520,023,040 B).
+  Dense response assets are hash-bound in the immutable package manifests but
+  retained locally; their contents are not publicly disclosed. A fresh clone
+  therefore rejects a missing external asset fail-closed; claim IDs remain
+  empty and scores are not pooled.
+- A pre-access authorization-digest stop occurred before GPT-2 model load;
+  no model or target was touched. The digest binding was corrected, locally
+  CCP-qualified, and merged at `86973b407e3e207f7ca22ecf91b4f9e5b8c7b154`.
+
 ## 2026-08-18
 
 - EXP-001 comparative tranche completed at exact head `c3027216853aa66faca77d35f28d11551a67be02`: CCP generation 6 passed on Python 3.11 and 3.12 after one non-material queue-timeout attempt.
