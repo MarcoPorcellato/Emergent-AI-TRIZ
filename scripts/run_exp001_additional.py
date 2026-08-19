@@ -43,6 +43,9 @@ MODELS = {
         "root": ROOT / "artifacts/models/gpt2-607a30d7",
         "key": "gpt2-607a30d7",
         "receipt": ROOT / "results/exp001-comparative/preexecution/gpt2-integrity-receipt.json",
+        "tokenizer_class": None,
+        "vocab_size": 50257,
+        "max_length": 1024,
     },
     "HuggingFaceTB/SmolLM2-135M": {
         "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
@@ -53,6 +56,9 @@ MODELS = {
         "root": ROOT / "artifacts/models/smollm2-135m-93efa2f0",
         "key": "smollm2-135m-93efa2f0",
         "receipt": ROOT / "results/exp001-comparative/preexecution/smollm2-135m-integrity-receipt.json",
+        "tokenizer_class": "GPT2Tokenizer",
+        "vocab_size": 49152,
+        "max_length": 8192,
     },
 }
 
@@ -77,6 +83,27 @@ def _verify_snapshot(model_id: str) -> dict:
         if not path.is_file() or _sha(path) != item["sha256"]:
             raise RuntimeError(f"additional snapshot hash mismatch: {item.get('path')}")
     return receipt
+
+
+def _verify_tokenizer_metadata(model_id: str) -> None:
+    """Check the pinned tokenizer contract before importing model weights.
+
+    SmolLM2-135M is a Llama architecture with a GPT-2 byte-level tokenizer;
+    the model card's ``llama`` tag must not be used to infer tokenizer class.
+    """
+    meta = MODELS[model_id]
+    config = json.loads((meta["root"] / "config.json").read_text(encoding="utf-8"))
+    tokenizer = json.loads((meta["root"] / "tokenizer_config.json").read_text(encoding="utf-8"))
+    if config.get("model_type") != meta["model_type"] or config.get("architectures") != [meta["architecture"]]:
+        raise RuntimeError("model config architecture drift")
+    if int(config.get("vocab_size", -1)) != meta["vocab_size"]:
+        raise RuntimeError("model/tokenizer vocabulary contract drift")
+    if int(tokenizer.get("vocab_size", meta["vocab_size"])) != meta["vocab_size"]:
+        raise RuntimeError("tokenizer vocabulary metadata drift")
+    if int(tokenizer.get("model_max_length", meta["max_length"])) != meta["max_length"]:
+        raise RuntimeError("tokenizer maximum length drift")
+    if tokenizer.get("tokenizer_class") != meta["tokenizer_class"]:
+        raise RuntimeError("tokenizer class drift from frozen official snapshot")
 
 
 def _target_reader(records):
@@ -152,6 +179,7 @@ def main(argv: list[str] | None = None) -> int:
         raise RuntimeError("additional authorization hash drift")
     gate = json.loads(args.ccp_gate.read_text(encoding="utf-8"))
     _verify_snapshot(model_id)
+    _verify_tokenizer_metadata(model_id)
     _install_extension_contract(model_id)
     os.environ["HF_HUB_OFFLINE"] = "1"
     os.environ["TRANSFORMERS_OFFLINE"] = "1"

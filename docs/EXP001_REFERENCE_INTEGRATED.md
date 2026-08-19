@@ -303,6 +303,12 @@ The exact source pages are [GPT-2 model card](https://huggingface.co/openai-comm
 [SmolLM2-135M frozen tree](https://huggingface.co/HuggingFaceTB/SmolLM2-135M/tree/93efa2f097d58c2a74874c7e644dbc9b0cee75a2),
 and [SmolLM2-135M config](https://huggingface.co/HuggingFaceTB/SmolLM2-135M/blob/93efa2f097d58c2a74874c7e644dbc9b0cee75a2/config.json).
 
+The source-backed runtime/tokenizer contract and the pre-access failure
+analysis are maintained in [`docs/EXP001_ADDITIONAL_MODEL_RUNTIME.md`](EXP001_ADDITIONAL_MODEL_RUNTIME.md).
+In particular, SmolLM2-135M is a Llama architecture whose pinned tokenizer
+metadata declares `GPT2Tokenizer`; architecture tags must never be used as a
+tokenizer-class shortcut.
+
 Selection was made without consulting any prior model score. GPT-2 supplies a
 provider, decoder-family, tokenizer, and training-corpus contrast to Pythia,
 SmolLM2, and Qwen3. SmolLM2-135M is deliberately not an independent family:
