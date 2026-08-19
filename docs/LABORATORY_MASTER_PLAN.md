@@ -154,11 +154,23 @@ metadata-only request
 now binds the official revision-tree allowlists: GPT-Neo has eight runtime
 files totalling 529,444,041 bytes under a 1 GiB ceiling; Qwen2.5 has seven
 runtime files totalling 999,586,188 bytes under a 1.5 GiB ceiling. Hub blob/LFS
-identifiers and canonical metadata hashes are recorded, but the request remains
-`approval_requested` with all permissions false. Acquisition, model load,
-feasibility, CCP material execution, and sealed-target access remain separate
-approval gates; the prior GPT-2/SmolLM2-135M approval does not authorize these
-new snapshots.
+identifiers and canonical metadata hashes are recorded. The operator approval
+for the exact two IDs/revisions is now recorded in the request; acquisition and
+each material run remain separately observable, one-shot gates. The prior
+GPT-2/SmolLM2-135M approval was not reused.
+
+#### Official documentation audit checkpoint (2026-08-19)
+
+`docs/EXP001_MODEL_OFFICIAL_DOC_AUDIT.md` records a read-only review of the
+official Hugging Face model pages and Transformers documentation for both
+snapshots. It freezes the implementation safeguards that are easy to miss in
+generic documentation: GPT-Neo's published defaults are not the exact 125M
+checkpoint, GPT-Neo requires right padding if padding is ever introduced, and
+Qwen2.5's tokenizer maximum (131,072) is larger than the model context
+(32,768). The audit also binds the no-generation/base-model prompt boundary,
+the fast-tokenizer rule for any future offsets, and the deliberate CPU
+float32 override. This checkpoint is metadata-only: it does not authorize
+acquisition, model load, feasibility, sealed-target access, or a retry.
 
 ## Evolution ledger
 

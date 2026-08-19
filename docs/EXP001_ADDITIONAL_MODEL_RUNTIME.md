@@ -98,9 +98,9 @@ The Qwen tokenizer metadata advertises a larger tokenizer maximum than the
 model's `max_position_embeddings`; the runner must bind both values and reject
 inputs that exceed the model context. Both contracts require fast offsets,
 `trust_remote_code=false`, offline local-only loading, CPU float32, and
-teacher-forced scoring without generation. The request remains
-`status=approval_requested` with every permission false. The earlier GPT-2 and
-SmolLM2-135M authorization cannot be reused for these exact snapshots.
+teacher-forced scoring without generation. The exact operator authorization is
+now recorded for these two snapshots. The earlier GPT-2 and SmolLM2-135M
+authorization cannot be reused for them.
 
 Primary official sources: [GPT-Neo model card](https://huggingface.co/EleutherAI/gpt-neo-125m),
 [GPT-Neo frozen tree](https://huggingface.co/EleutherAI/gpt-neo-125m/tree/21def0189f5705e2521767faed922f1f15e7d7db),

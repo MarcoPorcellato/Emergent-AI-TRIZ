@@ -49,6 +49,18 @@ last_verified: 2026-08-19
   hashes. It remains `approval_requested` with every permission false; the
   previous GPT-2/SmolLM2-135M approval is not reused. No weights, model, or
   sealed target was accessed.
+- The operator gave an explicit authorization for the two exact revisions,
+  including allowlisted acquisition, integrity receipts, CPU-float32 loading,
+  one run per model, and one sealed-target read at the analysis boundary. Its
+  canonical text digest is
+  `2f70403f386c1a573ae4cc133f25d4612af8b58f6c1c0fe285b30a4d7e5df5a1`. The
+  request grants no tuning, substitution, protocol change, or retry after
+  model/target access; no model or target has yet been accessed.
+- A target-free `exp001_next_model_contract` and dedicated runner were added
+  for the two architectures. Synthetic tests verify exact tokenizer/context
+  metadata, integrity-receipt prerequisites, offline/no-generation boundaries,
+  and refusal before model or target access. Material execution remains behind
+  the fresh CCP Admit gate.
 
 ## 2026-08-18
 

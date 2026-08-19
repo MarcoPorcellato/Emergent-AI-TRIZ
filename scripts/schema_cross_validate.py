@@ -220,19 +220,17 @@ def _additional_authorization_mutations(authorization: Any) -> Iterable[tuple[st
 
 
 def _next_model_authorization_mutations(authorization: Any) -> Iterable[tuple[str, Any]]:
-    downloaded = deepcopy(authorization)
-    downloaded["candidates"][0]["permissions"]["download"] = True
-    yield "next_authorization_premature_download", ("schemas/exp001-next-model-authorization.schema.json", downloaded)
+    revoked = deepcopy(authorization)
+    revoked["candidates"][0]["permissions"]["download"] = False
+    yield "next_authorization_permission_revoked", ("schemas/exp001-next-model-authorization.schema.json", revoked)
 
     unknown = deepcopy(authorization)
     unknown["candidates"][0]["model_id"] = "unknown/model"
     yield "next_authorization_unknown_model", ("schemas/exp001-next-model-authorization.schema.json", unknown)
 
     approval = deepcopy(authorization)
-    approval["operator_approval"]["granted"] = True
-    approval["operator_approval"]["approved_at"] = "2026-08-19"
-    approval["operator_approval"]["approval_text_sha256"] = "a" * 64
-    yield "next_authorization_status_mismatch", ("schemas/exp001-next-model-authorization.schema.json", approval)
+    approval["operator_approval"]["operator_id"] = "other"
+    yield "next_authorization_operator_mismatch", ("schemas/exp001-next-model-authorization.schema.json", approval)
 
 
 def _instances(path: Path) -> Iterable[tuple[int, Any]]:

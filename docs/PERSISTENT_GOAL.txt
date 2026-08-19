@@ -47,10 +47,16 @@ the comparative proposal without reopening that package.
 The next no-download selection dossier names exactly two further candidates:
 EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db and
 Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987. Keep them
-unacquired until the exact acquisition/one-run approval is recorded. The
-metadata-only authorization request binds 529,444,041 bytes across eight
-GPT-Neo files and 999,586,188 bytes across seven Qwen2.5 files, with 1 GiB and
-1.5 GiB ceilings, source OIDs/LFS OIDs, and all permissions false. Do not load
-a model, read sealed targets, or run CCP material execution from this
-checkpoint. Continue from the dossier and its schema, preserving prior
-packages and non-pooled terminal outcomes.
+The exact acquisition/one-run approval is now recorded in the authorization
+request. It binds 529,444,041 bytes across eight GPT-Neo files and 999,586,188
+bytes across seven Qwen2.5 files, with 1 GiB and 1.5 GiB ceilings and source
+OIDs/LFS OIDs. Continue with one integrity-gated acquisition per model, then
+one CCP-guarded run per model; preserve prior packages and non-pooled terminal
+outcomes.
+
+The official documentation audit is recorded in
+`docs/EXP001_MODEL_OFFICIAL_DOC_AUDIT.md`; it is metadata-only and does not
+authorize model access. Before any material run, enforce the exact checkpoint
+config, the Qwen 32,768 effective context bound, GPT-Neo right-padding rule,
+fast-tokenizer boundary, offline/no-generation mode, and receipt fields from
+that audit.
