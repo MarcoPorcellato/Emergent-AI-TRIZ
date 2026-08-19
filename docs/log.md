@@ -2,6 +2,17 @@
 
 ## 2026-08-19
 
+- Merged the final two-model publication checkpoints: GPT-Neo PR #96 at
+  `74926e15fe06a6e41ef1aa0d96e731b70636531a` and Qwen2.5 PR #97 at
+  `a081e612feca348b28253ee0cc9e67c24b45ed3a`. Exact-head CCP receipts are
+  public on `ccp-evidence/df6ed20c070884f516c02c73c6adcc2307981b9d` and
+  `ccp-evidence/e7947e4380b6cef82bb34fa0b51e80f049217b88`. A fresh public
+  clone passed both publication verifiers when the locally retained dense
+  response assets matched their declared hashes, and rejected missing and
+  one-byte-mutated assets fail-closed. The seven-model comparative record is
+  now complete as independent exploratory terminal packages; no claim IDs are
+  promoted and no model is rerun.
+
 - Completed the two authorized complementary-model controls, one run each from
   merged `main`, with CCP `Admit`, inactive admission, and an empty queue.
   GPT-Neo (`EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db`)
