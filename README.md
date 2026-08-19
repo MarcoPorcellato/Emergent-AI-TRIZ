@@ -89,6 +89,24 @@ A probe score, attractive cluster, or behavioral anecdote is insufficient. Stron
 
 Promotion is evidence-bound: a claim may advance only when its preregistration, immutable dataset snapshot, run records, results, and replication links satisfy the level's proof obligations. See the [Evidence Ladder](docs/EVIDENCE_LADDER.md) and machine-readable [claim registry](data/claims.jsonl). The initial claims are all E0 and untested.
 
+## Results so far
+
+The public record now contains both positive exploratory proxy observations and
+carefully published null controls. They are not pooled, and none is expert-
+validated TRIZ evidence.
+
+| Study | Result | What it means |
+| --- | --- | --- |
+| A0 automated proxy | positive, `p=0.005`, 24/24 paired-family successes | A frozen procedural proxy produced a cross-domain signal; it is E0 exploratory evidence, not a TRIZ construct validation. |
+| A0-R1 independent replication | positive, `p=0.002`, 23/24 family successes | The same proxy persisted on an independent procedural corpus; it remains exploratory and claim-free. |
+| EXP-001 reference-integrated SmolLM2 | `null` | The source-blinded/source-exposed reference-task design did not meet its frozen primary endpoint. |
+| EXP-001 comparative models | seven independent terminal `null` packages | Pythia, SmolLM2-360M, Qwen3, GPT-2, SmolLM2-135M, GPT-Neo, and Qwen2.5 produced no robust pooled signal. Qwen3 was a descriptive near-threshold case (`p=0.0625`) but correctly remained `null`. |
+
+The [current status page](docs/CURRENT_STATUS.md) contains the per-model p-values,
+effect estimates, resource receipts, package links, and fresh-clone integrity
+results. The [hypothesis contract](docs/HYPOTHESES_AND_FALSIFICATION.md) explains
+why these observations neither prove nor falsify the construct-level hypothesis.
+
 ## From visible behavior to mechanism
 
 The planned experimental route deliberately grows in complexity:
