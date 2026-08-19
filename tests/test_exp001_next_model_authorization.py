@@ -14,11 +14,11 @@ INSTANCE = json.loads((ROOT / "experiments/exp001-comparative-reference/next-mod
 
 
 class NextModelAuthorizationTests(unittest.TestCase):
-    def test_exact_request_is_valid_and_download_free(self):
+    def test_exact_request_is_valid_and_operator_authorized(self):
         self.assertEqual(validate_minimal(INSTANCE, SCHEMA), [])
         self.assertEqual(list(Draft202012Validator(SCHEMA).iter_errors(INSTANCE)), [])
-        self.assertEqual(INSTANCE["status"], "approval_requested")
-        self.assertFalse(INSTANCE["operator_approval"]["granted"])
+        self.assertEqual(INSTANCE["status"], "authorized")
+        self.assertTrue(INSTANCE["operator_approval"]["granted"])
         self.assertFalse(INSTANCE["source_metadata"]["content_bytes_downloaded"])
         self.assertEqual(
             {candidate["model_id"] for candidate in INSTANCE["candidates"]},
@@ -34,15 +34,15 @@ class NextModelAuthorizationTests(unittest.TestCase):
 
     def test_mutations_fail_closed(self):
         mutations = []
-        early_download = copy.deepcopy(INSTANCE)
-        early_download["candidates"][0]["permissions"]["download"] = True
-        mutations.append(early_download)
+        revoked_status = copy.deepcopy(INSTANCE)
+        revoked_status["status"] = "approval_requested"
+        mutations.append(revoked_status)
         wrong_revision = copy.deepcopy(INSTANCE)
         wrong_revision["candidates"][1]["revision"] = "0" * 40
         mutations.append(wrong_revision)
-        approved_without_status = copy.deepcopy(INSTANCE)
-        approved_without_status["operator_approval"] = {"granted": True, "operator_id": "MarcoPorcellato", "approved_at": "2026-08-19", "approval_text_sha256": "a" * 64}
-        mutations.append(approved_without_status)
+        wrong_operator = copy.deepcopy(INSTANCE)
+        wrong_operator["operator_approval"]["operator_id"] = "other"
+        mutations.append(wrong_operator)
         for mutation in mutations:
             self.assertTrue(validate_minimal(mutation, SCHEMA))
             self.assertTrue(list(Draft202012Validator(SCHEMA).iter_errors(mutation)))
