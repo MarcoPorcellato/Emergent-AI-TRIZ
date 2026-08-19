@@ -42,6 +42,13 @@ last_verified: 2026-08-19
 - A pre-access authorization-digest stop occurred before GPT-2 model load;
   no model or target was touched. The digest binding was corrected, locally
   CCP-qualified, and merged at `86973b407e3e207f7ca22ecf91b4f9e5b8c7b154`.
+- Official revision-tree metadata was then fetched without model bytes for the
+  next two candidates. The exact authorization request binds GPT-Neo's
+  eight-file 529,444,041-byte allowlist and Qwen2.5's seven-file 999,586,188-
+  byte allowlist, including Hub blob/LFS identifiers and canonical metadata
+  hashes. It remains `approval_requested` with every permission false; the
+  previous GPT-2/SmolLM2-135M approval is not reused. No weights, model, or
+  sealed target was accessed.
 
 ## 2026-08-18
 

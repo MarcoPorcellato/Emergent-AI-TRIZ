@@ -121,7 +121,9 @@ class ComparativeAdapterTests(unittest.TestCase):
         variants = (
             contract(),
             contract(model_type="gpt2", architecture="GPT2LMHeadModel"),
+            contract(model_type="gpt_neo", architecture="GPTNeoForCausalLM"),
             contract(model_type="llama", architecture="LlamaForCausalLM"),
+            contract(model_type="qwen2", architecture="Qwen2ForCausalLM"),
             contract(model_type="qwen3", architecture="Qwen3ForCausalLM"),
         )
         for value in variants:

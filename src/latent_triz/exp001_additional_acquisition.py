@@ -81,6 +81,39 @@ MODEL_SPECS: dict[str, AdditionalModelSpec] = {
             ("vocab.json", 800_662),
         ),
     ),
+    "EleutherAI/gpt-neo-125m": AdditionalModelSpec(
+        model_id="EleutherAI/gpt-neo-125m",
+        revision="21def0189f5705e2521767faed922f1f15e7d7db",
+        license_id="MIT",
+        root_locator="artifacts/models/gpt-neo-125m-21def018",
+        disk_budget_bytes=1_073_741_824,
+        files=(
+            ("config.json", 1007),
+            ("generation_config.json", 119),
+            ("merges.txt", 456318),
+            ("model.safetensors", 525979192),
+            ("special_tokens_map.json", 357),
+            ("tokenizer.json", 2107652),
+            ("tokenizer_config.json", 727),
+            ("vocab.json", 898669),
+        ),
+    ),
+    "Qwen/Qwen2.5-0.5B": AdditionalModelSpec(
+        model_id="Qwen/Qwen2.5-0.5B",
+        revision="060db6499f32faf8b98477b0a26969ef7d8b9987",
+        license_id="Apache-2.0",
+        root_locator="artifacts/models/qwen2.5-0.5b-060db649",
+        disk_budget_bytes=1_610_612_736,
+        files=(
+            ("config.json", 681),
+            ("generation_config.json", 138),
+            ("merges.txt", 1671839),
+            ("model.safetensors", 988097824),
+            ("tokenizer.json", 7031645),
+            ("tokenizer_config.json", 7228),
+            ("vocab.json", 2776833),
+        ),
+    ),
 }
 
 

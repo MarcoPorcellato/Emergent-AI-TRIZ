@@ -110,6 +110,7 @@ VALIDATION_PAIRS = (
     ("schemas/exp001-comparative-model-registry.schema.json", "experiments/exp001-comparative-reference/model-registry.json"),
     ("schemas/exp001-additional-model-selection.schema.json", "experiments/exp001-comparative-reference/additional-model-selection.json"),
     ("schemas/exp001-next-model-selection.schema.json", "experiments/exp001-comparative-reference/next-model-selection.json"),
+    ("schemas/exp001-next-model-authorization.schema.json", "experiments/exp001-comparative-reference/next-model-authorization.json"),
     ("schemas/exp001-additional-model-authorization.schema.json", "experiments/exp001-comparative-reference/additional-model-authorization.json"),
     ("schemas/exp001-comparative-protocol.schema.json", "experiments/exp001-comparative-reference/protocol.json"),
     ("schemas/exp001-comparative-analysis-plan.schema.json", "experiments/exp001-comparative-reference/analysis-plan.json"),
@@ -218,6 +219,22 @@ def _additional_authorization_mutations(authorization: Any) -> Iterable[tuple[st
     yield "additional_authorization_network_enabled", ("schemas/exp001-additional-model-authorization.schema.json", network_enabled)
 
 
+def _next_model_authorization_mutations(authorization: Any) -> Iterable[tuple[str, Any]]:
+    downloaded = deepcopy(authorization)
+    downloaded["candidates"][0]["permissions"]["download"] = True
+    yield "next_authorization_premature_download", ("schemas/exp001-next-model-authorization.schema.json", downloaded)
+
+    unknown = deepcopy(authorization)
+    unknown["candidates"][0]["model_id"] = "unknown/model"
+    yield "next_authorization_unknown_model", ("schemas/exp001-next-model-authorization.schema.json", unknown)
+
+    approval = deepcopy(authorization)
+    approval["operator_approval"]["granted"] = True
+    approval["operator_approval"]["approved_at"] = "2026-08-19"
+    approval["operator_approval"]["approval_text_sha256"] = "a" * 64
+    yield "next_authorization_status_mismatch", ("schemas/exp001-next-model-authorization.schema.json", approval)
+
+
 def _instances(path: Path) -> Iterable[tuple[int, Any]]:
     if path.suffix == ".jsonl":
         for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
@@ -310,13 +327,25 @@ def main() -> int:
                 f"reference_rejects={reference_rejects}"
             )
 
+    next_authorization = json.loads((ROOT / "experiments/exp001-comparative-reference/next-model-authorization.json").read_text(encoding="utf-8"))
+    for mutation_name, (schema_name, mutation) in _next_model_authorization_mutations(next_authorization):
+        schema = json.loads((ROOT / schema_name).read_text(encoding="utf-8"))
+        reference = Draft202012Validator(schema)
+        minimal_rejects = bool(validate_minimal(mutation, schema))
+        reference_rejects = bool(list(reference.iter_errors(mutation)))
+        if not minimal_rejects or not reference_rejects:
+            errors.append(
+                f"mutation {mutation_name}: minimal_rejects={minimal_rejects} "
+                f"reference_rejects={reference_rejects}"
+            )
+
     if errors:
         for error in errors:
             print(f"schema-cross-validate: {error}", file=sys.stderr)
         return 1
     print(
         f"schema-cross-validate: {len(VALIDATION_PAIRS)} tracked pairs agree; "
-        "16 mutations rejected by both validators"
+        "19 mutations rejected by both validators"
     )
     return 0
 

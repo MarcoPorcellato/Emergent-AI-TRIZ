@@ -147,10 +147,18 @@ The no-download dossier
 `gpt_neo`, 125M) and `Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987`
 (Apache-2.0, `qwen2`, 0.5B) without consulting any prior score. They are
 complementary controls for architecture and within-provider scale, not pooled
-replications. The exact source/config/tokenizer links, estimated runtime
-allowlists, rejected alternatives, and fail-closed boundaries are documented
-in the dossier and schema. Acquisition, model load, feasibility, CCP material
-execution, and sealed-target access remain separate approval gates.
+replications. The exact source/config/tokenizer links, rejected alternatives,
+and fail-closed boundaries are documented in the dossier and schema. The
+metadata-only request
+`experiments/exp001-comparative-reference/next-model-authorization.json`
+now binds the official revision-tree allowlists: GPT-Neo has eight runtime
+files totalling 529,444,041 bytes under a 1 GiB ceiling; Qwen2.5 has seven
+runtime files totalling 999,586,188 bytes under a 1.5 GiB ceiling. Hub blob/LFS
+identifiers and canonical metadata hashes are recorded, but the request remains
+`approval_requested` with all permissions false. Acquisition, model load,
+feasibility, CCP material execution, and sealed-target access remain separate
+approval gates; the prior GPT-2/SmolLM2-135M approval does not authorize these
+new snapshots.
 
 ## Evolution ledger
 
