@@ -26,6 +26,7 @@ class ComparativeAdapterError(RuntimeError):
 
 
 _SUPPORTED_CONFIGS: dict[str, str] = {
+    "gpt2": "GPT2LMHeadModel",
     "gpt_neox": "GPTNeoXForCausalLM",
     "llama": "LlamaForCausalLM",
     "qwen3": "Qwen3ForCausalLM",
