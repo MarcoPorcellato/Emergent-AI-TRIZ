@@ -4,11 +4,15 @@
 
 Latent TRIZ is an open laboratory for testing whether language models learn internal, cross-domain, and causally active transformations that resemble TRIZ Inventive Principles. The project combines reproducible experiments, mechanistic interpretability, blinded evaluation, and explicit falsification criteria.
 
-> **Current evidence boundary:** the repository now contains one positive,
-> exact-revision A0 automated-proxy exploration. It found a cross-domain
-> decodable signal for frozen procedural proxies, not expert-validated TRIZ
-> constructs. The result is exploratory, not claim-eligible, and every
-> registered scientific claim remains at E0: hypothesis.
+> **Current evidence boundary:** the repository contains immutable positive
+> A0/R1 automated-proxy packages and published `null` packages from the
+> reference-integrated and seven-model comparative studies. These results are
+> exploratory automated proxies, not expert-validated TRIZ constructs, causal
+> evidence, or evidence for the Strong Latent TRIZ Hypothesis. Every registered
+> claim remains at E0.
+
+The current public checkpoint, model-by-model results, integrity boundaries, and
+next evidence gate are summarized in [Current Laboratory Status](docs/CURRENT_STATUS.md).
 
 ## Run the laboratory
 
@@ -114,6 +118,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 
 ## Start here
 
+- [Current laboratory status](docs/CURRENT_STATUS.md) — public checkpoint, seven-model result table, and next gate
 - [Documentation portal](docs/index.md) — maintained documentation map
 - [Evidence Ladder](docs/EVIDENCE_LADDER.md) — claim promotion rules E0–E6
 - [Local visual laboratory suite](docs/LAB_SUITE.md) — one-command Lab 00–05 dashboard and scientific boundary
@@ -152,7 +157,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Matryca-Knowledge-style maintained documentation bundle: implemented
 - CI cost boundary: docs-only pull requests use lightweight documentation checks; code and scientific changes follow the stable merge-policy/gate with Python 3.11 and 3.12 compatibility checks plus exact-head CCP where required
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
-- Annotation ontology v1.1: current on `main`; the v1.2 amendment is in delivery with separate operator scores and a real three-expert cognitive-pilot gate still pending
+- Annotation ontology v1.1: current on `main`; the v1.2 packet is ready for collection, with a real three-expert cognitive-pilot gate still pending
 - Lab 00 public visual surface: implemented, infrastructure-only, not claim-attached
 - Lab 01 model anatomy: implemented on an exact-revision didactic model; empirical instrumentation only, not claim-eligible
 - Model-backed representation bridge: implemented for exact-revision Pythia smoke runs; real activations remain exploratory and not claim-eligible
@@ -163,6 +168,11 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - A0 automated proxy exploration: published positive exploratory result with
   frozen controls and immutable receipts; not expert-validated and not
   claim-eligible
+- EXP-001 reference-integrated study: published `null` SmolLM2 package with
+  separate `TRIZ-blinded-transfer` and `source-exposed-competence` strata
+- EXP-001 comparative study: seven independent, non-pooled, terminal `null`
+  model packages with exact model/runtime receipts, one-shot CCP gates, and
+  fresh-clone asset-integrity verification
 - Empirical support for registered Latent TRIZ claims: none claimed; all remain E0
 
 ## License and attribution

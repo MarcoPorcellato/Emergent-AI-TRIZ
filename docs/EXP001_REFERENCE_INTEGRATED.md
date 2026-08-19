@@ -249,7 +249,7 @@ provided and rejected both a missing and a mutated asset. The score asset is
 intentionally external/local: its locator and SHA-256 are public, while its
 contents require a separate explicit publication authorization. This boundary
 does not alter the terminal result or permit a scientific claim.
-### Comparative extension — three-model terminal evidence (2026-08-18)
+### Historical comparative extension — three-model terminal evidence (2026-08-18)
 
 The separately frozen comparative dossier applied the same 85-record
 TRIZ-reference inventory, blinded/source-exposed separation, six held-out
@@ -284,7 +284,7 @@ This extension closes the automated three-model evidence tranche. Human TRIZ
 review remains a separate next step; no post-hoc tuning, pooling, model
 substitution, or retry is permitted.
 
-### Additional model extension — two-model no-download selection (2026-08-19)
+### Historical additional model extension — two-model no-download selection (2026-08-19)
 
 The three-model tranche above remains immutable. It is not amended, rerun, or
 pooled with the following separately frozen proposal. This proposal widens the
@@ -330,7 +330,7 @@ packages are exploratory nulls and remain non-pooled. The earlier R3 package at 
 `4cc1c6d862bffc9558b47a5cadd838a2ee22c465` remains immutable; this extension
 does not reopen it.
 
-### Next complementary-model dossier — two no-download candidates (2026-08-19)
+### Historical complementary-model dossier — two no-download candidates (2026-08-19)
 
 The five-model record above remains historical terminal evidence. A separate
 no-download dossier names two further candidates so the next comparison adds a
@@ -398,6 +398,21 @@ and
 Each package passed the comparative publication verifier, binds an external
 dense response asset by SHA-256, records `claim_ids: []`, and states no
 general TRIZ claim. No rerun or tuning is permitted for either model.
+
+### Final comparative closeout (2026-08-19)
+
+The two complementary controls completed their authorized one-shot runs and
+were merged through PRs #96 and #97. GPT-Neo 125M is `null` (`p=0.6875`,
+323.899 s, peak RSS 1,858,076,672 B); Qwen2.5 0.5B is `null` (`p=0.96875`,
+935.267 s, peak RSS 4,876,828,672 B). Both packages passed their publication
+verifier and fresh-clone checks, including rejection of missing and mutated
+external dense assets. The public documentation/result closeout is merged in
+PR #98 at `0123ce467408becbf127b66da1fcd4166bbbd431`.
+
+Together with the historical Pythia, SmolLM2, Qwen3, GPT-2, and SmolLM2-135M
+packages, the comparative record now contains seven independent terminal
+`null` packages. They remain non-pooled, exploratory, and claim-free. No
+additional run is authorized by this specification.
 
 ## 6. Required deliverables
 

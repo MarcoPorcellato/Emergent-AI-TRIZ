@@ -3,7 +3,7 @@ type: Roadmap
 title: Research Laboratory Roadmap
 description: Delivered foundation and staged route to a complete, visual, falsifiable Latent TRIZ laboratory.
 status: canonical
-last_verified: 2026-08-18
+last_verified: 2026-08-19
 ---
 
 # Roadmap
@@ -25,7 +25,7 @@ as a separate no-TRIZ-term controlled-emergence route and must not inherit
 Track A selections.
 
 This priority reflects the published record: A0/R1 contain positive
-exploratory procedural-proxy observations, while the three-model
+exploratory procedural-proxy observations, while the seven-model
 reference-task comparison is terminally null. Both are valuable E0 evidence;
 neither closes the expert or causal construct gates.
 
@@ -206,7 +206,7 @@ The public E0-E6 ladder remains the concise communication layer. Before claim pr
 
 The normative definitions and falsification rules for Weak and Strong Latent
 TRIZ are maintained in [HYPOTHESES_AND_FALSIFICATION.md](./HYPOTHESES_AND_FALSIFICATION.md).
-The current A0/R1 positives and comparative three-model nulls remain E0
+The current A0/R1 positives and comparative seven-model nulls remain E0
 exploratory evidence; they do not close the human construct or causal gates.
 
 ### Immediate sequence
