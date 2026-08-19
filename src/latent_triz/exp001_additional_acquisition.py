@@ -88,8 +88,9 @@ class _BoundedRedirect(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):  # type: ignore[no-untyped-def]
         absolute = urljoin(req.full_url, newurl)
         parsed = urlparse(absolute)
-        model_id = req.headers.get("X-Latent-Triz-Model", "")
-        revision = req.headers.get("X-Latent-Triz-Revision", "")
+        request_headers = {str(key).lower(): str(value) for key, value in req.headers.items()}
+        model_id = request_headers.get("x-latent-triz-model", "")
+        revision = request_headers.get("x-latent-triz-revision", "")
         internal = (
             parsed.hostname == "huggingface.co"
             and parsed.path.startswith(f"/api/resolve-cache/models/{model_id}/{revision}/")
