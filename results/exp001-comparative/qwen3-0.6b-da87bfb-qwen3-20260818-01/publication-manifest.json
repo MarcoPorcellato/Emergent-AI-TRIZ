@@ -1,0 +1,74 @@
+{
+  "artifact_class": "exp001-comparative-publication-manifest",
+  "bindings": {
+    "execution-receipt.json": {
+      "path": "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/execution-receipt.json",
+      "sha256": "61330222f8720dbbd2db437d2a0d6fa7efbc1bf054e31f1112e4606cb80947e6"
+    },
+    "recovery-observation.json": {
+      "path": "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/recovery-observation.json",
+      "sha256": "baac7d744a1c88f7f8c0c4370e3307477eebbff2ed5ba7a60a823c92e0f56215"
+    },
+    "report.md": {
+      "path": "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/report.md",
+      "sha256": "5b64de23f84cfb029727bb52fae6883b6e6629e3fc49a8350d35cc3e2dc632b7"
+    },
+    "response-index.json": {
+      "path": "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/response-index.json",
+      "sha256": "aa0a203b9a7d93a5006e1e882d84c9fe2c6b23abfd20e59e7c7b554b909955b1"
+    },
+    "sealed-key-access.json": {
+      "path": "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/sealed-key-access.json",
+      "sha256": "44402a3860a7f296e9d7ca2dcc8f67df9ff544e6b85c8252d0e46d5e74d73f03"
+    },
+    "statistical-result.json": {
+      "path": "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/statistical-result.json",
+      "sha256": "8543494dca6a5e44ab74be5bbe0dee395218a54e4896d8c4c8dfeb21184ed144"
+    }
+  },
+  "claim_ids": [],
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "external_response_asset": {
+    "locator": "artifacts/exp001-comparative/qwen3-0.6b-da87bfb/qwen3-20260818-01/response-scores.json",
+    "sha256": "4a4fb307e0953b5638460d3deacd219a005dcba1b29596f8d4b5a3b03c6ec866"
+  },
+  "model_id": "Qwen/Qwen3-0.6B-Base",
+  "package": "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01",
+  "protocol_id": "exp001-reference-comparative-v1.0.0",
+  "provenance": {
+    "analysis_plan": {
+      "path": "experiments/exp001-comparative-reference/analysis-plan.json",
+      "sha256": "05369ad981e8927e3944dfa4f93b5abce15cd8b03ebe5fd58cae064517ef3e33"
+    },
+    "execution_authorization": {
+      "path": "experiments/exp001-comparative-reference/execution-authorization.json",
+      "sha256": "f4b43a84d4c1ead448d4d74b8f2c9d89ebd564b5b04c2722492e424bd7dfe1c9"
+    },
+    "execution_code_commit": "c3027216853aa66faca77d35f28d11551a67be02",
+    "execution_code_files": {
+      "scripts/run_exp001_comparative.py": "2d576c5a62e69cd5e1fefbfe5887e4fbe0398d8fcdd7b0a2f4a7c0fba57ad07d",
+      "src/latent_triz/exp001_comparative_contract.py": "d1548b9ed166c73d6c083ca9ca92812ac1f6cf5bae7e20853724916ff4cdce6a",
+      "src/latent_triz/exp001_comparative_material_runner.py": "0e7d87ad359ea8ba546007036d909fb9f8cb61f0fe77df841a70ee0e39f0de90",
+      "src/latent_triz/exp001_comparative_report.py": "f7e5d4b8a00b065a689771d511ba7e9601ec07918aac1413d861d90194175b01"
+    },
+    "model_integrity_receipt": {
+      "path": "results/exp001-comparative/preexecution/qwen-integrity-receipt.json",
+      "sha256": "97dc04943ddf7bffcc709028d67aec4e6edc08a1c5bad160ef50d49028580519"
+    },
+    "protocol": {
+      "path": "experiments/exp001-comparative-reference/protocol.json",
+      "sha256": "4e404bfa61255288e3336c1c3a82ee3b87a52ee6f8b0c45cfc3851f3bb3d0e4b"
+    },
+    "qwen_acquisition_dossier": {
+      "path": "experiments/exp001-comparative-reference/qwen-acquisition-dossier.json",
+      "sha256": "74119eec769e60abb0b640441c54490a76f6eebb190b725b75c36d2d51ad6a2e"
+    }
+  },
+  "report": {
+    "path": "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/report.md",
+    "sha256": "5b64de23f84cfb029727bb52fae6883b6e6629e3fc49a8350d35cc3e2dc632b7"
+  },
+  "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "terminal_status": "null"
+}

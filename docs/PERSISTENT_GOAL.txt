@@ -1,40 +1,40 @@
-Complete `docs/EXP001_REFERENCE_INTEGRATED.md` from verified public main
-`db4cf6d32d263f1df059f6fd376d4cb2bfd38a9c`, resuming local R3 checkpoint
-`fe77dc6560e95dbb865cc1bf721552fd610782b5` only after verifying the live repository,
-ruleset, source corpus, artifacts, and receipts before acting.
+Complete the canonical improvement plan in `docs/LABORATORY_MASTER_PLAN.md`,
+using `docs/HYPOTHESES_AND_FALSIFICATION.md` as the normative Weak/Strong
+contract. The current local working anchor is comparative exact-head
+`809d874bc6045deb55f056591af08d3342c5dbf0`; verify `origin/main`, PR #77, the
+ruleset, and the receipt branch live before the next publication or mutation.
 
-R3.0-R3.2 target-free freeze is complete on branch
-`agent/exp001-r3-reference-freeze` and published in PR #75: the strict
-no-model protocol, sparse externally-referenced Matrix 2003 fixture,
-rights-aware Panitz edge fixture, implementation hash binding, freeze manifest,
-synthetic qualification, and approval-request dossier are all present. This is
-still a no-model freeze, not a sealed study result. Resume instructions are in
-`docs/EXP001_R3_RESTART_HANDOFF.md`.
+Treat A0/R1 positives, the R3 reference-integrated package, and the
+Pythia/SmolLM2/Qwen3 comparative null packages as immutable exploratory
+evidence. Do not rerun or tune them. The immediate priority is the real-human
+H1 gate: three independent TRIZ experts and immutable raw/agreement,
+abstention, disagreement, adjudication, and keep/amend receipts. Then freeze
+stronger lexical, template, source, near-neighbour, generic, cosmetic,
+Matrix-direction, unsupported-edge, abstention, random-label, and extreme
+domain-shift controls; demonstrate an out-of-sample direction; and prepare one
+validated-principle Lab 06 causal dossier. Defer composition and broad model
+scaling until that causal gate. A separate no-download dossier now proposes
+GPT-2 and SmolLM2-135M as complementary architecture/scale controls; do not
+acquire or load them until their exact approval and integrity gates are closed.
+Keep Track B as a separate no-TRIZ-term
+from-scratch protocol with independent seeds and checkpoints. Its no-model
+contract is now recorded under `experiments/track-b-emergence/`; training and
+corpus access remain forbidden until a separate exact dossier and approval.
 
-Prepare and freeze a new R3/EXP-001 TRIZ reference-integrated study without
-changing any A0-R2/C3 bytes. Keep `TRIZ-blinded-transfer` and
-`source-exposed-competence` physically and statistically separate; include the
-40 principles, a double-checked sparse Matrix 2003 fixture, and a rights-aware
-Panitz tool-edge fixture with lexical, direction-swap, unsupported-edge,
-abstention, source-family, and held-out-domain controls. Use deterministic tools
-first and delegate inventory, mechanical checks, and test/log work to GPT-5.6
-Luna; keep architecture, statistics, security, CCP, interpretation, release,
-and merge decisions with GPT-5.6 Terra.
+Do not load models, read sealed targets, train models, or run CCP until the
+relevant no-model contract, hashes, resource envelope, and explicit operator
+approval are complete. Publish every positive, null, failed, or
+non-interpretable result; preserve historical artifacts; use deterministic
+tools first; delegate bounded inventory, tests, and documentation to cheaper
+workers; require a no-model contributor quickstart; and keep architecture,
+statistics, security, CCP, publication, and merge decisions under primary
+review. Current no-download checkpoint is the local extension dossier on
+`agent/exp001-comparative-reference`; the next material checkpoint is a fresh
+exact-head CCP receipt followed by explicit approval for the two named
+candidates. Continue until every checklist item in the canonical plan is
+proven or the precise human/external gate is recorded.
 
-Do not load a model, access sealed targets, download new sources, or produce
-model output until the protocol, fixtures, hashes, primary endpoint, and
-resource envelope are frozen and an explicit operator approval is recorded.
-After approval, perform exactly one guarded local SmolLM2 run, publish every
-terminal outcome, the external dense locator/hash, exact-head CCP receipt, PR,
-fresh-clone verification, limitations, and final report. Complete only when the
-specification checklist is proven and no general TRIZ claim is promoted.
-
-Current checkpoint: the complete R3 SmolLM2 test is published in `main` merge
-`4cc1c6d862bffc9558b47a5cadd838a2ee22c465` (PR #75). The terminal result is
-`null`; CCP passed on Python 3.11/3.12, the single guarded run used 299.054
-seconds and 2,824,798,208 bytes peak RSS, read sealed targets exactly once,
-and performed no retry. The package, report, provenance, and exact-head CCP
-receipt are public. Clone verification passed with the declared external
-score asset and failed closed for missing/mutated variants. The asset remains
-external/local because public content publication needs separate explicit
-authorization; no scientific claim is promoted.
+The earlier R3 SmolLM2 package remains published in main merge
+`4cc1c6d862bffc9558b47a5cadd838a2ee22c465` with terminal `null`, one sealed
+target read, and no promoted scientific claim; the current objective extends
+the comparative proposal without reopening that package.

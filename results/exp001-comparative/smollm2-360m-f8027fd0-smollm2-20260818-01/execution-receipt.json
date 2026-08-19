@@ -1,0 +1,70 @@
+{
+  "access": {
+    "model_loaded": true,
+    "model_output_accessed": true,
+    "sealed_targets_accessed": true,
+    "target_reads": 1
+  },
+  "artifact_class": "exp001-comparative-execution-receipt",
+  "ccp_gate": {
+    "admission_active": false,
+    "commit_sha": "c3027216853aa66faca77d35f28d11551a67be02",
+    "generation": false,
+    "network": false,
+    "policy_version": "macos-v4",
+    "queue_count": 0,
+    "repository": "MarcoPorcellato/Latent-TRIZ",
+    "resource_decision": "admit",
+    "schema_version": "1.0",
+    "source": "commit-ci-preflight resource/admission status --json"
+  },
+  "claim_ids": [],
+  "evidence_eligible": false,
+  "execution": {
+    "device": "cpu",
+    "dtype": "float32",
+    "generation": false,
+    "network": "disabled",
+    "new_dense_output_bytes": 20631,
+    "peak_rss_bytes": 2900295680,
+    "run_count": 1,
+    "runtime_status": "completed",
+    "wall_seconds": 365.3769802500028
+  },
+  "expert_validated": false,
+  "external_response_asset": {
+    "locator": "artifacts/exp001-comparative/smollm2-360m-f8027fd0/smollm2-20260818-01/response-scores.json",
+    "sha256": "d9cc94a2e1ad82707ecd4bc3b77ecb93d107cc3844fc4947e2fec35195334972"
+  },
+  "model": {
+    "id": "HuggingFaceTB/SmolLM2-360M",
+    "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"
+  },
+  "protocol_id": "exp001-reference-comparative-v1.0.0",
+  "provenance": {
+    "analysis_plan": {
+      "path": "experiments/exp001-comparative-reference/analysis-plan.json",
+      "sha256": "05369ad981e8927e3944dfa4f93b5abce15cd8b03ebe5fd58cae064517ef3e33"
+    },
+    "execution_authorization": {
+      "path": "experiments/exp001-comparative-reference/execution-authorization.json",
+      "sha256": "f4b43a84d4c1ead448d4d74b8f2c9d89ebd564b5b04c2722492e424bd7dfe1c9"
+    },
+    "execution_code_commit": "c3027216853aa66faca77d35f28d11551a67be02",
+    "execution_code_files": {
+      "scripts/run_exp001_comparative.py": "2d576c5a62e69cd5e1fefbfe5887e4fbe0398d8fcdd7b0a2f4a7c0fba57ad07d",
+      "src/latent_triz/exp001_comparative_contract.py": "d1548b9ed166c73d6c083ca9ca92812ac1f6cf5bae7e20853724916ff4cdce6a",
+      "src/latent_triz/exp001_comparative_material_runner.py": "0e7d87ad359ea8ba546007036d909fb9f8cb61f0fe77df841a70ee0e39f0de90",
+      "src/latent_triz/exp001_comparative_report.py": "f7e5d4b8a00b065a689771d511ba7e9601ec07918aac1413d861d90194175b01"
+    },
+    "model_integrity_receipt": {
+      "path": "results/a0r2/preexecution/smollm2-360m-f8027fd0/integrity-receipt.json",
+      "sha256": "57424b6ef65ea1ffe94f98170eee0aa5c884158f85fa92b251bb67a78a749cd3"
+    },
+    "protocol": {
+      "path": "experiments/exp001-comparative-reference/protocol.json",
+      "sha256": "4e404bfa61255288e3336c1c3a82ee3b87a52ee6f8b0c45cfc3851f3bb3d0e4b"
+    }
+  },
+  "status": "null"
+}

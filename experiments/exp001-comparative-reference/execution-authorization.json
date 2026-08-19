@@ -1,0 +1,47 @@
+{
+  "artifact_class": "exp001-comparative-execution-authorization",
+  "dossier_id": "exp001-comparative-execution-approval-v1",
+  "protocol_id": "exp001-reference-comparative-v1.0.0",
+  "status": "authorized",
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "exact_models": [
+    {"model_id": "EleutherAI/pythia-70m-deduped", "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c", "local_root": "artifacts/models/pythia-70m-deduped-e93a9faa"},
+    {"model_id": "HuggingFaceTB/SmolLM2-360M", "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49", "local_root": "artifacts/models/smollm2-360m-f8027fd0"},
+    {"model_id": "Qwen/Qwen3-0.6B-Base", "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd", "local_root": "artifacts/models/qwen3-0.6b-base-da87bfb"}
+  ],
+  "permissions_requested": {
+    "download_qwen_runtime_files_only": true,
+    "load_existing_pythia_once": true,
+    "load_existing_smollm2_once": true,
+    "load_qwen_once_after_integrity": true,
+    "local_cpu_float32": true,
+    "network": false,
+    "generation": false,
+    "sealed_target_read": "exactly_one_per_model_at_analysis_boundary",
+    "publish_every_terminal_outcome": true,
+    "publish_dense_asset_content": false
+  },
+  "limits": {
+    "wall_time_seconds_per_model": 1800,
+    "peak_rss_bytes_per_model": 8589934592,
+    "new_dense_output_bytes_per_model": 134217728,
+    "qwen_disk_budget_bytes": 1610612736
+  },
+  "prohibitions": [
+    "model_substitution",
+    "protocol_mutation",
+    "post_access_retry",
+    "cross_model_score_pooling",
+    "general_triz_claim",
+    "target_access_before_analysis_boundary"
+  ],
+  "operator_approval": {
+    "granted": true,
+    "operator_id": "MarcoPorcellato",
+    "approved_at": "2026-08-18",
+    "approval_text_sha256": "9d5d36c7f0e4a6593d6d5504abebe46e89cc02d9e23870013c3138f6e37dfadd"
+  }
+}

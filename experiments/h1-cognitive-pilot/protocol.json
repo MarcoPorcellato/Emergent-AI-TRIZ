@@ -1,0 +1,42 @@
+{
+  "artifact_class": "h1-cognitive-pilot-protocol",
+  "protocol_id": "h1-cognitive-pilot-v1.2",
+  "status": "ready_for_collection",
+  "scientific_status": "exploratory",
+  "non_empirical": true,
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "case_count": 6,
+  "required_independent_raters": 3,
+  "minimum_case_coverage_per_rater": 6,
+  "labels": ["segmentation", "inversion", "both", "other", "abstain"],
+  "guide": "experiments/h1-cognitive-pilot/annotation-guide-v1.2.json",
+  "cases": "experiments/h1-cognitive-pilot/cases.jsonl",
+  "allocation": "experiments/h1-cognitive-pilot/allocation.json",
+  "input_hashes": {
+    "guide_sha256": "f510abb90058d03297bae7ca7440f18103083882112b678fcf5ac8a13f96d40a",
+    "cases_sha256": "a3798e257f2e602e76744b9e2cd87987aacc4eb1d6ea436f12bdaed514f7eea7",
+    "allocation_sha256": "5feafdc1961a69eba19f7c5c720f36058b263c6341fe4f1a28e2dd088fb6cbbc"
+  },
+  "randomization_seed": 20260818,
+  "blinded": true,
+  "model_output_accessed": false,
+  "source_exposed_context": false,
+  "sealed_targets_accessed": false,
+  "collection_rules": {
+    "one_raw_file_per_rater": true,
+    "rater_ids_pseudonymous": true,
+    "no_rater_discussion_before_submission": true,
+    "raw_files_immutable": true,
+    "adjudication_additive_only": true,
+    "keep_or_amend_required": true
+  },
+  "closure_requires": [
+    "three independent raw files",
+    "complete six-case coverage",
+    "agreement and abstention audit",
+    "disagreement and exclusion ledgers",
+    "adjudication receipt",
+    "versioned keep-or-amend decision"
+  ]
+}

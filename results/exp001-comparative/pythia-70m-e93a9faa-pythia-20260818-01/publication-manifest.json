@@ -1,0 +1,70 @@
+{
+  "artifact_class": "exp001-comparative-publication-manifest",
+  "bindings": {
+    "execution-receipt.json": {
+      "path": "results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/execution-receipt.json",
+      "sha256": "c76e1cc0de782d4d9484fd5b6e3614ec14613286efeebad532fef733b5c18848"
+    },
+    "recovery-observation.json": {
+      "path": "results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/recovery-observation.json",
+      "sha256": "baac7d744a1c88f7f8c0c4370e3307477eebbff2ed5ba7a60a823c92e0f56215"
+    },
+    "report.md": {
+      "path": "results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/report.md",
+      "sha256": "716785d2826a6086d24b4735018f76b1cc584db67cf3a508e556913e81971083"
+    },
+    "response-index.json": {
+      "path": "results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/response-index.json",
+      "sha256": "ff5753bdde8edf37a2f8f46171029b99fc13b10e082848a1698c170dae28d485"
+    },
+    "sealed-key-access.json": {
+      "path": "results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/sealed-key-access.json",
+      "sha256": "44402a3860a7f296e9d7ca2dcc8f67df9ff544e6b85c8252d0e46d5e74d73f03"
+    },
+    "statistical-result.json": {
+      "path": "results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/statistical-result.json",
+      "sha256": "253cec6905431e5cef78c22fd5c884365c7b1a409083236d13a8429fe6e472f3"
+    }
+  },
+  "claim_ids": [],
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "external_response_asset": {
+    "locator": "artifacts/exp001-comparative/pythia-70m-e93a9faa/pythia-20260818-01/response-scores.json",
+    "sha256": "8f12365d2e8953466e92aabe3be340583f453e857546dd39fd0858f8088801e6"
+  },
+  "model_id": "EleutherAI/pythia-70m-deduped",
+  "package": "results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01",
+  "protocol_id": "exp001-reference-comparative-v1.0.0",
+  "provenance": {
+    "analysis_plan": {
+      "path": "experiments/exp001-comparative-reference/analysis-plan.json",
+      "sha256": "05369ad981e8927e3944dfa4f93b5abce15cd8b03ebe5fd58cae064517ef3e33"
+    },
+    "execution_authorization": {
+      "path": "experiments/exp001-comparative-reference/execution-authorization.json",
+      "sha256": "f4b43a84d4c1ead448d4d74b8f2c9d89ebd564b5b04c2722492e424bd7dfe1c9"
+    },
+    "execution_code_commit": "c3027216853aa66faca77d35f28d11551a67be02",
+    "execution_code_files": {
+      "scripts/run_exp001_comparative.py": "2d576c5a62e69cd5e1fefbfe5887e4fbe0398d8fcdd7b0a2f4a7c0fba57ad07d",
+      "src/latent_triz/exp001_comparative_contract.py": "d1548b9ed166c73d6c083ca9ca92812ac1f6cf5bae7e20853724916ff4cdce6a",
+      "src/latent_triz/exp001_comparative_material_runner.py": "0e7d87ad359ea8ba546007036d909fb9f8cb61f0fe77df841a70ee0e39f0de90",
+      "src/latent_triz/exp001_comparative_report.py": "f7e5d4b8a00b065a689771d511ba7e9601ec07918aac1413d861d90194175b01"
+    },
+    "model_integrity_receipt": {
+      "path": "results/lab01/model-anatomy/model_receipt.json",
+      "sha256": "461325fd10bed8ab61ead6a5f6fa22f11adc23300594ff63a9dba9e61e1f0572"
+    },
+    "protocol": {
+      "path": "experiments/exp001-comparative-reference/protocol.json",
+      "sha256": "4e404bfa61255288e3336c1c3a82ee3b87a52ee6f8b0c45cfc3851f3bb3d0e4b"
+    }
+  },
+  "report": {
+    "path": "results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/report.md",
+    "sha256": "716785d2826a6086d24b4735018f76b1cc584db67cf3a508e556913e81971083"
+  },
+  "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+  "terminal_status": "null"
+}

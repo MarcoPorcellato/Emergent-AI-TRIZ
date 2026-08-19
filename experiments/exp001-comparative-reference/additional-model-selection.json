@@ -1,0 +1,110 @@
+{
+  "artifact_class": "exp001-additional-model-selection",
+  "selection_id": "exp001-additional-models-v1.0.0",
+  "selection_status": "proposal_frozen_no_download",
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "selection_observed_prior_result": false,
+  "selection_basis": [
+    "architecture_and_provider_diversity_without using prior model scores",
+    "public exact revision and permissive license evidence",
+    "causal teacher-forced compatibility through Transformers",
+    "small CPU-feasible snapshots with explicit runtime allowlists",
+    "separate scale control for the existing SmolLM2 family"
+  ],
+  "existing_model_families": ["gpt_neox", "llama", "qwen3"],
+  "candidates": [
+    {
+      "role": "architecture_diversity_control",
+      "model_id": "openai-community/gpt2",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "source_url": "https://huggingface.co/openai-community/gpt2",
+      "revision_url": "https://huggingface.co/openai-community/gpt2/tree/607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "config_url": "https://huggingface.co/openai-community/gpt2/blob/607a30d783dfa663caf39e06633721c8d4cfcd7e/config.json",
+      "license_id": "MIT",
+      "gated": false,
+      "provider": "OpenAI community",
+      "architecture": "GPT2LMHeadModel",
+      "model_type": "gpt2",
+      "parameter_count": 124000000,
+      "num_hidden_layers": 12,
+      "hidden_size": 768,
+      "vocab_size": 50257,
+      "training_corpus_summary": "English causal LM trained on WebText; corpus is distinct from the declared Pythia/SmolLM2/Qwen3 sources as far as official documentation establishes.",
+      "local_root": "artifacts/models/gpt2-607a30d7",
+      "runtime_files": [
+        "config.json", "generation_config.json", "merges.txt",
+        "model.safetensors", "tokenizer.json", "tokenizer_config.json", "vocab.json"
+      ],
+      "declared_runtime_bytes": 550959861,
+      "acquisition_status": "not_acquired",
+      "compatibility_mapping": {
+        "causal_teacher_forced": true,
+        "fast_tokenizer_offsets_required": true,
+        "hidden_state_semantics": "embedding plus post-block hidden states; primary semantic endpoint is the final transformer block, not literal layer 6",
+        "incompatibility_is_terminal": true
+      },
+      "unknown_until_authorized_feasibility": [
+        "exact per-file SHA-256 rechecked at acquisition",
+        "installed Transformers hidden-state tuple and fast-offset behavior",
+        "CPU float32 peak RSS and latency",
+        "deterministic repeatability under the pinned runtime",
+        "example-level training-data overlap with the other families"
+      ]
+    },
+    {
+      "role": "same_family_scale_control",
+      "model_id": "HuggingFaceTB/SmolLM2-135M",
+      "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M",
+      "revision_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M/tree/93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+      "config_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M/blob/93efa2f097d58c2a74874c7e644dbc9b0cee75a2/config.json",
+      "license_id": "Apache-2.0",
+      "gated": false,
+      "provider": "HuggingFaceTB",
+      "architecture": "LlamaForCausalLM",
+      "model_type": "llama",
+      "parameter_count": 135000000,
+      "num_hidden_layers": 30,
+      "hidden_size": 576,
+      "vocab_size": 49152,
+      "training_corpus_summary": "SmolLM2 family base model trained on the documented SmolLM2 corpus; this candidate is a preregistered within-family scale control against SmolLM2-360M, not an independent provider family.",
+      "local_root": "artifacts/models/smollm2-135m-93efa2f0",
+      "runtime_files": [
+        "config.json", "generation_config.json", "merges.txt",
+        "model.safetensors", "special_tokens_map.json", "tokenizer.json",
+        "tokenizer_config.json", "vocab.json"
+      ],
+      "declared_runtime_bytes": 272437465,
+      "acquisition_status": "not_acquired",
+      "compatibility_mapping": {
+        "causal_teacher_forced": true,
+        "fast_tokenizer_offsets_required": true,
+        "hidden_state_semantics": "embedding plus post-block hidden states; primary semantic endpoint is the final transformer block, mapped by endpoint semantics",
+        "incompatibility_is_terminal": true
+      },
+      "unknown_until_authorized_feasibility": [
+        "exact per-file SHA-256 rechecked at acquisition",
+        "installed Transformers hidden-state tuple and fast-offset behavior",
+        "CPU float32 conversion from the published BF16 checkpoint",
+        "CPU float32 peak RSS and latency",
+        "deterministic repeatability under the pinned runtime"
+      ]
+    }
+  ],
+  "comparison_policy": {
+    "run_independently": true,
+    "pool_scores_across_models": false,
+    "preserve_terminal_outcomes": true,
+    "no_post_hoc_substitution": true
+  },
+  "approval_required_before": [
+    "download of any candidate runtime file",
+    "license or terms acceptance beyond the recorded public metadata",
+    "model load or material CPU feasibility",
+    "sealed-target access",
+    "any claim-bearing comparative publication"
+  ]
+}

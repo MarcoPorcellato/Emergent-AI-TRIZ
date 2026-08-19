@@ -1,0 +1,18 @@
+{
+  "artifact_class": "h1-cognitive-pilot-allocation",
+  "allocation_id": "h1-allocation-20260818",
+  "status": "frozen_for_collection",
+  "seed": 20260818,
+  "case_order": [
+    "h1_case_04",
+    "h1_case_01",
+    "h1_case_06",
+    "h1_case_02",
+    "h1_case_05",
+    "h1_case_03"
+  ],
+  "rater_slots": ["rater_a", "rater_b", "rater_c"],
+  "rater_identity_map": "external_private_operator_record",
+  "non_empirical": true,
+  "evidence_eligible": false
+}

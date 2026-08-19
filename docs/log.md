@@ -10,6 +10,58 @@ last_verified: 2026-08-16
 
 ## 2026-08-18
 
+- EXP-001 comparative tranche completed at exact head `c3027216853aa66faca77d35f28d11551a67be02`: CCP generation 6 passed on Python 3.11 and 3.12 after one non-material queue-timeout attempt.
+- Exactly one authorized local CPU-float32 run completed for each model: Pythia (`null`, p=.6875), SmolLM2 (`null`, p=.65625), and Qwen3 (`null`, p=.0625).
+- Each receipt records network disabled, generation false, exactly one sealed-target read, and approved resource ceilings. Publication verifiers pass for all three packages; dense assets remain external and hash-bound.
+- Qwen3 produced a strong exploratory near-signal (mean domain delta +.9323; bootstrap CI [+0.5353, +1.2063]) but failed the preregistered p<=.05 and all-domain-positive gates because agriculture was slightly negative. No TRIZ claim is promoted.
+
+- The comparative execution runner is fully bound at exact head
+  `80b1de1df9c86c09b839327b3e89538cecead616`, with CCP v2 PASS published on
+  `ccp-evidence/80b1de1df9c86c09b839327b3e89538cecead616`. Before the first
+  model run, the required fresh admission check reported `active=true`,
+  `queue_count=0`; live process inspection identifies an independent Matryca
+  CCP/OrbStack run `909548b6ce14-ready-20260818T082051Z-58918` (guard PID
+  58918, container `matryca-local-ci-*`). No process was terminated and no
+  model or sealed target was accessed. Resume only after admission returns
+  inactive with an empty queue.
+
+- Corrected comparative receipts to bind the actual serialized external-score
+  asset size instead of reporting zero dense bytes. The correction is published
+  at `481cc082f8559b76bac3fa193820c83e07a8348e`; it awaits a fresh exact-head
+  CCP receipt once the independent admission holder releases the slot.
+
+- Operator authorization was recorded for the exact Qwen3 seven-file runtime
+  acquisition at `da87bfb608c14b7cf20ba1ce41287e8de496c0cd`, capped at
+  1,610,612,736 bytes and limited to streaming SHA-256 integrity receipts.
+  Model load, feasibility, generation, and sealed-target access remain
+  explicitly forbidden. A fail-closed downloader now binds the authorization
+  before any request, permits only official Hugging Face CDN redirects, rejects
+  symlink/path escapes, and removes interrupted partials. The transfer is in
+  progress; no model or target has been accessed.
+
+- Qwen3 acquisition completed at the exact pinned revision. Seven files are
+  present under the ignored runtime root, total `1,203,625,970` bytes, and the
+  immutable receipt `results/exp001-comparative/preexecution/qwen-integrity-receipt.json`
+  records per-file SHA-256 plus official Git/LFS source OIDs. No model load,
+  generation, feasibility test, or sealed-target access occurred. The next
+  gate is exact-head CCP qualification before the three one-run material
+  executions.
+
+- The comparative target-free tranche is committed at `a4ee5c74f3e0436f969f2411eb5b03385cbeaa87`.
+  Live resource status is `Admit`, but exact-head CCP admission remains
+  fail-closed because the shared coordinator reports an incompatible
+  `.../leases` layout. No CCP qualification, model load, download, or sealed
+  target access was attempted past that gate; the stale-layout report is
+  ready for the CCP maintainer.
+
+- Froze the target-free EXP-001 comparative dossier for the first-model Pythia
+  retest and a third Qwen3 model. The dossier reuses the 40-principle,
+  Matrix-2003, and Panitz fixtures without pooling strata or model scores,
+  binds Qwen3 at exact revision `da87bfb608c14b7cf20ba1ce41287e8de496c0cd`,
+  and records all unknown acquisition/feasibility fields. No model or sealed
+  target was accessed; explicit approval remains required before download,
+  model load, or material execution.
+
 - Closed the R3 publication checkpoint after PR #75 merged at
   `4cc1c6d862bffc9558b47a5cadd838a2ee22c465`. The exact-head CCP receipt is
   public on `ccp-evidence/48a354eaa2f06e0e6eabf016c42a7387a1ab1b65`. Fresh-clone

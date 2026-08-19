@@ -1,0 +1,88 @@
+{
+  "artifact_class": "exp001-comparative-model-registry",
+  "registry_id": "exp001-reference-comparative-models-v1.0.0",
+  "registry_status": "authorized",
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "selection_observed_prior_result": false,
+  "selection_basis": [
+    "architecture_and_provider_independence",
+    "public_revision_and_license",
+    "teacher_forced_causal_lm_compatibility",
+    "bounded_cpu_feasibility"
+  ],
+  "models": [
+    {
+      "role": "first_model_retest",
+      "model_id": "EleutherAI/pythia-70m-deduped",
+      "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+      "source_url": "https://huggingface.co/EleutherAI/pythia-70m-deduped",
+      "revision_url": "https://huggingface.co/EleutherAI/pythia-70m-deduped/tree/e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+      "license_id": "Apache-2.0",
+      "provider": "EleutherAI",
+      "architecture": "GPTNeoXForCausalLM",
+      "model_type": "gpt_neox",
+      "num_hidden_layers": 6,
+      "hidden_size": 512,
+      "local_root": "artifacts/models/pythia-70m-deduped-e93a9faa",
+      "runtime_files": ["config.json", "model.safetensors"],
+      "acquisition_status": "already_acquired_integrity_bound_elsewhere"
+    },
+    {
+      "role": "prior_reference_model",
+      "model_id": "HuggingFaceTB/SmolLM2-360M",
+      "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+      "source_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M",
+      "revision_url": "https://huggingface.co/HuggingFaceTB/SmolLM2-360M/tree/f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+      "license_id": "Apache-2.0",
+      "provider": "HuggingFaceTB",
+      "architecture": "LlamaForCausalLM",
+      "model_type": "llama",
+      "num_hidden_layers": 32,
+      "hidden_size": 960,
+      "local_root": "artifacts/models/smollm2-360m-f8027fd0",
+      "runtime_files": [
+        "config.json", "generation_config.json", "merges.txt",
+        "model.safetensors", "special_tokens_map.json", "tokenizer.json",
+        "tokenizer_config.json", "vocab.json"
+      ],
+      "acquisition_status": "already_acquired_integrity_bound_elsewhere"
+    },
+    {
+      "role": "third_model",
+      "model_id": "Qwen/Qwen3-0.6B-Base",
+      "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "source_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base",
+      "revision_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/tree/da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "config_url": "https://huggingface.co/Qwen/Qwen3-0.6B-Base/blob/da87bfb608c14b7cf20ba1ce41287e8de496c0cd/config.json",
+      "license_id": "Apache-2.0",
+      "provider": "Qwen",
+      "architecture": "Qwen3ForCausalLM",
+      "model_type": "qwen3",
+      "num_hidden_layers": 28,
+      "hidden_size": 1024,
+      "vocab_size": 151936,
+      "local_root": "artifacts/models/qwen3-0.6b-base-da87bfb",
+      "runtime_files": [
+        "config.json", "generation_config.json", "merges.txt",
+        "model.safetensors", "tokenizer.json", "tokenizer_config.json",
+        "vocab.json"
+      ],
+      "acquisition_status": "integrity_verified",
+      "unknown_until_authorized_feasibility": [
+        "exact_file_sizes_and_sha256",
+        "installed_transformers_compatibility",
+        "fast_tokenizer_prefix_boundary_behavior",
+        "cpu_peak_rss_and_latency",
+        "float32_load_repeatability",
+        "training_data_overlap_with_existing_models"
+      ]
+    }
+  ],
+  "substitution_policy": "no_model_substitution_after_freeze",
+  "download_authorization": "granted_exact_files",
+  "model_load_authorization": "granted_exact_models",
+  "sealed_target_authorization": "granted_one_read_per_model"
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-recovery-observation.schema.json",
+  "type": "object",
+  "required": ["artifact_class", "status", "terminal_status", "retry_performed"],
+  "properties": {"artifact_class": {"const": "exp001-comparative-recovery-observation"}, "status": {"type": "string"}, "terminal_status": {"type": "string"}, "retry_performed": {"const": false}},
+  "additionalProperties": true
+}

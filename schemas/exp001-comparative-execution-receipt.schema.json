@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-execution-receipt.schema.json",
+  "type": "object",
+  "required": ["artifact_class", "protocol_id", "model", "status", "execution", "ccp_gate", "access", "external_response_asset", "provenance", "claim_ids", "evidence_eligible", "expert_validated"],
+  "properties": {
+    "artifact_class": {"const": "exp001-comparative-execution-receipt"},
+    "protocol_id": {"const": "exp001-reference-comparative-v1.0.0"},
+    "status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]},
+    "model": {"type": "object", "required": ["id", "revision"], "properties": {"id": {"type": "string"}, "revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"}}, "additionalProperties": true},
+    "execution": {"type": "object", "required": ["runtime_status", "device", "dtype", "network", "generation", "run_count", "wall_seconds", "peak_rss_bytes", "new_dense_output_bytes"], "properties": {"runtime_status": {"type": "string"}, "device": {"const": "cpu"}, "dtype": {"const": "float32"}, "network": {"const": "disabled"}, "generation": {"const": false}, "run_count": {"const": 1}, "wall_seconds": {"type": "number", "maximum": 1800}, "peak_rss_bytes": {"type": "integer", "maximum": 8589934592}, "new_dense_output_bytes": {"type": "integer", "maximum": 134217728}}, "additionalProperties": true},
+    "ccp_gate": {"type": "object", "required": ["resource_decision", "admission_active", "queue_count"], "properties": {"resource_decision": {"const": "admit"}, "admission_active": {"const": false}, "queue_count": {"const": 0}}, "additionalProperties": true},
+    "access": {"type": "object", "required": ["target_reads", "sealed_targets_accessed"], "properties": {"target_reads": {"const": 1}, "sealed_targets_accessed": {"const": true}}, "additionalProperties": true},
+    "external_response_asset": {"type": "object", "required": ["locator", "sha256"], "properties": {"locator": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": true},
+    "provenance": {"type": "object", "required": ["protocol", "analysis_plan", "execution_authorization", "model_integrity_receipt", "execution_code_commit"], "additionalProperties": true},
+    "claim_ids": {"const": []}, "evidence_eligible": {"const": false}, "expert_validated": {"const": false}
+  },
+  "additionalProperties": true
+}

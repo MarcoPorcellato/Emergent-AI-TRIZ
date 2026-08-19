@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/track-b-protocol.schema.json",
+  "title": "Track B controlled-emergence no-model protocol",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "protocol_id", "status", "execution_readiness",
+    "empirical", "evidence_eligible", "expert_validated", "claim_ids",
+    "scope_boundary", "reference_exclusion", "frozen_inputs",
+    "independent_runs", "held_out_evaluation", "control_families",
+    "terminal_outcomes", "publication_boundary", "authorization_boundary"
+  ],
+  "properties": {
+    "artifact_class": {"const": "track-b-controlled-emergence-protocol"},
+    "protocol_id": {"const": "track-b-controlled-emergence-v1.0.0"},
+    "status": {"const": "planned"},
+    "execution_readiness": {"const": "no_model_ready"},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "scope_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["training_permitted", "model_load_permitted", "target_access_permitted", "network_permitted", "ccp_permitted", "execution_permitted"],
+      "properties": {
+        "training_permitted": {"const": false},
+        "model_load_permitted": {"const": false},
+        "target_access_permitted": {"const": false},
+        "network_permitted": {"const": false},
+        "ccp_permitted": {"const": false},
+        "execution_permitted": {"const": false}
+      }
+    },
+    "reference_exclusion": {
+      "type": "object", "additionalProperties": false,
+      "required": ["named_reference_terms_permitted", "reference_sources_permitted", "canonical_examples_permitted", "reference_lookup_permitted"],
+      "properties": {
+        "named_reference_terms_permitted": {"const": false},
+        "reference_sources_permitted": {"const": false},
+        "canonical_examples_permitted": {"const": false},
+        "reference_lookup_permitted": {"const": false}
+      }
+    },
+    "frozen_inputs": {
+      "type": "object", "additionalProperties": false,
+      "required": ["corpus", "splits", "seeds", "checkpoints"],
+      "properties": {
+        "corpus": {
+          "type": "object", "additionalProperties": false,
+          "required": ["freeze_state", "content_accessed", "locator", "sha256", "revision"],
+          "properties": {
+            "freeze_state": {"const": "pre_execution_frozen"},
+            "content_accessed": {"const": false},
+            "locator": {"const": null},
+            "sha256": {"const": null},
+            "revision": {"const": null}
+          }
+        },
+        "splits": {
+          "type": "object", "additionalProperties": false,
+          "required": ["freeze_state", "strategy", "family_overlap_permitted", "post_freeze_modification_permitted"],
+          "properties": {
+            "freeze_state": {"const": "pre_execution_frozen"},
+            "strategy": {"const": "held_out_domains_and_operator_codes"},
+            "family_overlap_permitted": {"const": false},
+            "post_freeze_modification_permitted": {"const": false}
+          }
+        },
+        "seeds": {
+          "type": "object", "additionalProperties": false,
+          "required": ["freeze_state", "split_seed", "random_control_seed", "run_seeds"],
+          "properties": {
+            "freeze_state": {"const": "pre_execution_frozen"},
+            "split_seed": {"const": 2026081801},
+            "random_control_seed": {"const": 2026081802},
+            "run_seeds": {"const": [2026081811, 2026081812, 2026081813]}
+          }
+        },
+        "checkpoints": {
+          "type": "object", "additionalProperties": false,
+          "required": ["freeze_state", "registry", "checkpoint_load_permitted", "substitution_permitted"],
+          "properties": {
+            "freeze_state": {"const": "pre_execution_frozen"},
+            "registry": {"const": []},
+            "checkpoint_load_permitted": {"const": false},
+            "substitution_permitted": {"const": false}
+          }
+        }
+      }
+    },
+    "independent_runs": {
+      "type": "object", "additionalProperties": false,
+      "required": ["planned_run_ids", "execution_unit", "input_binding", "cross_run_output_transfer_permitted", "retry_after_access_permitted"],
+      "properties": {
+        "planned_run_ids": {"const": ["track-b-independent-01", "track-b-independent-02", "track-b-independent-03"]},
+        "execution_unit": {"const": "independent_isolated_run"},
+        "input_binding": {"const": "same_frozen_pre_execution_inputs"},
+        "cross_run_output_transfer_permitted": {"const": false},
+        "retry_after_access_permitted": {"const": false}
+      }
+    },
+    "held_out_evaluation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["domain_codes", "held_out_domain_codes", "operator_codes", "held_out_operator_codes", "selection_after_access_permitted"],
+      "properties": {
+        "domain_codes": {"const": ["domain-01", "domain-02", "domain-03", "domain-04", "domain-05", "domain-06"]},
+        "held_out_domain_codes": {"const": ["domain-05", "domain-06"]},
+        "operator_codes": {"const": ["operator-01", "operator-02", "operator-03", "operator-04"]},
+        "held_out_operator_codes": {"const": ["operator-03", "operator-04"]},
+        "selection_after_access_permitted": {"const": false}
+      }
+    },
+    "control_families": {
+      "const": [
+        {"control_id": "contamination", "required": true, "pass_required_for_interpretation": true},
+        {"control_id": "shortcut", "required": true, "pass_required_for_interpretation": true},
+        {"control_id": "random", "required": true, "pass_required_for_interpretation": true},
+        {"control_id": "generic", "required": true, "pass_required_for_interpretation": true}
+      ]
+    },
+    "terminal_outcomes": {"const": ["positive", "null", "failed", "non_interpretable"]},
+    "publication_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["publish_every_terminal_outcome", "claim_promotion_allowed", "post_hoc_tuning_allowed"],
+      "properties": {
+        "publish_every_terminal_outcome": {"const": true},
+        "claim_promotion_allowed": {"const": false},
+        "post_hoc_tuning_allowed": {"const": false}
+      }
+    },
+    "authorization_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operator_approval_present", "model_load_authorized", "target_access_authorized", "training_authorized", "run_authorized"],
+      "properties": {
+        "operator_approval_present": {"const": false},
+        "model_load_authorized": {"const": false},
+        "target_access_authorized": {"const": false},
+        "training_authorized": {"const": false},
+        "run_authorized": {"const": false}
+      }
+    }
+  }
+}

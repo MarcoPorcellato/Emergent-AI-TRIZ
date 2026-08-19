@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-comparative-analysis-plan.schema.json",
+  "title": "EXP-001 comparative analysis plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "plan_id", "status", "primary", "secondary", "uncertainty", "model_comparison"],
+  "properties": {
+    "artifact_class": {"const": "exp001-comparative-analysis-plan"},
+    "plan_id": {"const": "exp001-reference-comparative-analysis-v1.0.0"},
+    "status": {"const": "frozen"},
+    "primary": {"type": "object", "additionalProperties": true, "required": ["name", "unit_count", "domain_count", "families_per_domain", "replicates_per_family", "required_units", "required_domains", "required_problem_families_per_domain", "required_replicates_per_problem_family", "test", "permutation_count", "alpha", "positive_requires"], "properties": {"name": {"type": "string"}, "unit_count": {"const": 24}, "domain_count": {"const": 6}, "families_per_domain": {"const": 2}, "replicates_per_family": {"const": 2}, "required_units": {"const": 24}, "required_domains": {"const": 6}, "required_problem_families_per_domain": {"const": 2}, "required_replicates_per_problem_family": {"const": 2}, "test": {"const": "exact_two_sided_domain_sign_flip_permutation"}, "permutation_count": {"const": 64}, "alpha": {"const": 0.05}, "positive_requires": {"type": "array", "minItems": 4}}},
+    "secondary": {"type": "array", "minItems": 3, "items": {"type": "object", "required": ["name", "status"], "properties": {"name": {"type": "string"}, "status": {"const": "descriptive_non_pooled"}}}},
+    "uncertainty": {"type": "object", "additionalProperties": false, "required": ["bootstrap_resamples", "bootstrap_seed"], "properties": {"bootstrap_resamples": {"const": 10000}, "bootstrap_seed": {"const": 20260818}}},
+    "model_comparison": {"type": "object", "additionalProperties": false, "required": ["pooling", "token_id_comparison", "post_hoc_tuning"], "properties": {"pooling": {"const": false}, "token_id_comparison": {"const": false}, "post_hoc_tuning": {"const": false}}}
+  }
+}

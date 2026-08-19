@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/track-b-freeze-manifest.schema.json",
+  "title": "Track B controlled-emergence no-model freeze manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "manifest_id", "status", "protocol_status",
+    "execution_readiness", "empirical", "evidence_eligible",
+    "expert_validated", "claim_ids", "protocol", "freeze_inventory",
+    "access_receipt", "authorization_boundary", "publication_boundary"
+  ],
+  "properties": {
+    "artifact_class": {"const": "track-b-controlled-emergence-freeze-manifest"},
+    "manifest_id": {"const": "track-b-controlled-emergence-freeze-v1.0.0"},
+    "status": {"const": "planned"},
+    "protocol_status": {"const": "planned"},
+    "execution_readiness": {"const": "no_model_ready"},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "protocol": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "size"],
+      "properties": {
+        "path": {"const": "experiments/track-b-emergence/protocol.json"},
+        "sha256": {"const": "ae4a272ddc6651aa31c6abdb29370cbae7562aaea1233de1ff6af35d035432b3"},
+        "size": {"const": 3051}
+      }
+    },
+    "freeze_inventory": {
+      "type": "object", "additionalProperties": false,
+      "required": ["corpus", "splits", "seeds", "checkpoints", "run_plan", "held_out_evaluation", "controls"],
+      "properties": {
+        "corpus": {"const": "pre_execution_frozen_without_content_access"},
+        "splits": {"const": "pre_execution_frozen"},
+        "seeds": {"const": "pre_execution_frozen"},
+        "checkpoints": {"const": "pre_execution_frozen_empty_registry"},
+        "run_plan": {"const": "three_independent_isolated_runs"},
+        "held_out_evaluation": {"const": "domains_and_operator_codes_frozen"},
+        "controls": {"const": "contamination_shortcut_random_generic_required"}
+      }
+    },
+    "access_receipt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_loaded", "model_output_accessed", "target_accessed", "corpus_content_accessed", "network_accessed", "ccp_accessed", "training_started"],
+      "properties": {
+        "model_loaded": {"const": false},
+        "model_output_accessed": {"const": false},
+        "target_accessed": {"const": false},
+        "corpus_content_accessed": {"const": false},
+        "network_accessed": {"const": false},
+        "ccp_accessed": {"const": false},
+        "training_started": {"const": false}
+      }
+    },
+    "authorization_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["approval_present", "model_load_authorized", "target_access_authorized", "training_authorized", "run_authorized"],
+      "properties": {
+        "approval_present": {"const": false},
+        "model_load_authorized": {"const": false},
+        "target_access_authorized": {"const": false},
+        "training_authorized": {"const": false},
+        "run_authorized": {"const": false}
+      }
+    },
+    "publication_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["terminal_outcomes", "claim_promotion_allowed"],
+      "properties": {
+        "terminal_outcomes": {"const": ["positive", "null", "failed", "non_interpretable"]},
+        "claim_promotion_allowed": {"const": false}
+      }
+    }
+  }
+}

@@ -2,9 +2,9 @@
 type: research-specification
 title: EXP-001 Reference-Integrated TRIZ Study
 description: Durable preregistration for a source-aware, source-blinded, label-safe study using the public TRIZ reference layer.
-status: draft_preregistration
-version: 0.1.0
-last_verified: 2026-08-18
+status: published_exploratory_results
+version: 0.3.0
+last_verified: 2026-08-19
 ---
 
 # EXP-001 — reference-integrated TRIZ study
@@ -249,6 +249,78 @@ provided and rejected both a missing and a mutated asset. The score asset is
 intentionally external/local: its locator and SHA-256 are public, while its
 contents require a separate explicit publication authorization. This boundary
 does not alter the terminal result or permit a scientific claim.
+### Comparative extension — three-model terminal evidence (2026-08-18)
+
+The separately frozen comparative dossier applied the same 85-record
+TRIZ-reference inventory, blinded/source-exposed separation, six held-out
+domains, and exact teacher-forced analysis independently to all three
+authorized model families. Each run passed the live CCP gate (`Admit`, inactive,
+empty queue), ran once on local CPU float32 with network and generation
+disabled, read the sealed target exactly once at the analysis boundary, and
+stayed within the approved 1,800-second / 8-GiB / 128-MiB limits.
+
+| Model | Terminal state | Exact two-sided p | Mean domain delta | Bootstrap 95% CI | Positive domains | Wall/RSS |
+|---|---:|---:|---:|---|---:|---|
+| Pythia 70M | `null` | 0.6875 | +0.0545 | [-0.1485, +0.2956] | 3/6 | 312.4 s / 1.92 GiB |
+| SmolLM2 360M | `null` | 0.65625 | -0.0247 | [-0.1095, +0.0602] | 2/6 | 365.4 s / 2.90 GiB |
+| Qwen3 0.6B | `null` | 0.0625 | +0.9323 | [+0.5353, +1.2063] | 5/6 | 948.8 s / 4.66 GiB |
+
+All three publication verifiers pass and all receipts record one target read,
+`claim_ids=[]`, `evidence_eligible=false`, and `expert_validated=false`.
+Qwen3 is an exploratory near-signal, not a positive result: it misses the
+preregistered `p<=0.05` threshold and has one slightly negative domain
+(`agriculture`, -0.0043), so the frozen terminal classifier correctly remains
+`null`. The results do not establish latent TRIZ rediscovery or any general
+TRIZ claim. Dense response assets remain external and are bound by the
+published SHA-256 locators in each execution receipt.
+
+The immutable packages are:
+
+- `results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/`
+- `results/exp001-comparative/smollm2-360m-f8027fd0-smollm2-20260818-01/`
+- `results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/`
+
+This extension closes the automated three-model evidence tranche. Human TRIZ
+review remains a separate next step; no post-hoc tuning, pooling, model
+substitution, or retry is permitted.
+
+### Additional model extension — two-model no-download selection (2026-08-19)
+
+The three-model tranche above remains immutable. It is not amended, rerun, or
+pooled with the following separately frozen proposal. This proposal widens the
+future comparison to five model runs only after a new approval, acquisition,
+integrity, feasibility, and one-run dossier has been completed.
+
+| Candidate | Exact revision | Role | License | Declared runtime bytes |
+|---|---|---|---|---:|
+| GPT-2 (`openai-community/gpt2`) | `607a30d783dfa663caf39e06633721c8d4cfcd7e` | architecture-diversity control | MIT | 550,959,861 |
+| SmolLM2-135M (`HuggingFaceTB/SmolLM2-135M`) | `93efa2f097d58c2a74874c7e644dbc9b0cee75a2` | same-family scale control | Apache-2.0 | 272,437,465 |
+
+The exact source pages are [GPT-2 model card](https://huggingface.co/openai-community/gpt2),
+[GPT-2 frozen tree](https://huggingface.co/openai-community/gpt2/tree/607a30d783dfa663caf39e06633721c8d4cfcd7e),
+[GPT-2 config](https://huggingface.co/openai-community/gpt2/blob/607a30d783dfa663caf39e06633721c8d4cfcd7e/config.json),
+[SmolLM2-135M model card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M),
+[SmolLM2-135M frozen tree](https://huggingface.co/HuggingFaceTB/SmolLM2-135M/tree/93efa2f097d58c2a74874c7e644dbc9b0cee75a2),
+and [SmolLM2-135M config](https://huggingface.co/HuggingFaceTB/SmolLM2-135M/blob/93efa2f097d58c2a74874c7e644dbc9b0cee75a2/config.json).
+
+Selection was made without consulting any prior model score. GPT-2 supplies a
+provider, decoder-family, tokenizer, and training-corpus contrast to Pythia,
+SmolLM2, and Qwen3. SmolLM2-135M is deliberately not an independent family:
+it is a within-family scale control for the already tested SmolLM2-360M. The
+five-model plan therefore increases architectural and scale variation without
+pretending that all five observations are independent replications.
+
+The machine-readable no-download dossier is
+`experiments/exp001-comparative-reference/additional-model-selection.json`,
+validated by `schemas/exp001-additional-model-selection.schema.json`. At this
+checkpoint no candidate weights or tokenizers have been acquired or loaded;
+no feasibility run, generation, or sealed-target access has occurred. The
+next gate is explicit operator approval for the exact allowlists, disk and
+runtime ceilings, one-run-per-candidate rule, and publication of every
+terminal outcome. A future incompatibility remains terminal and cannot be
+replaced by another model. The earlier R3 package at main
+`4cc1c6d862bffc9558b47a5cadd838a2ee22c465` remains immutable; this extension
+does not reopen it.
 
 ## 6. Required deliverables
 
@@ -262,6 +334,8 @@ does not alter the terminal result or permit a scientific claim.
 - external dense locator and hash, immutable publication manifest, limitations,
   and fresh-clone verifier evidence;
 - public PR, exact-head CCP evidence branch, merge commit, and chronology entry.
+- separate additional-model selection dossier and no-download audit for GPT-2
+  and SmolLM2-135M; acquisition and execution remain open gates.
 
 ## 7. Delegation and cost policy
 
@@ -289,13 +363,17 @@ the checkpoint.
 
 ## 9. Completion checklist
 
-- [ ] R3.0 schemas and no-model source audit pass.
-- [ ] R3.1 fixtures, rights, contamination, source-family, and domain audits pass.
-- [ ] R3.2 primary/statistics/code hashes are frozen before model output.
-- [ ] Exact model/runtime/CCP approval dossier is recorded.
-- [ ] Exactly one guarded run completes or publishes a terminal failure.
-- [ ] Blinded, exposed, matrix, and tool endpoints remain non-pooled.
-- [ ] Every terminal class and limitation is published with claim IDs empty.
-- [ ] Exact-head receipt and hosted gates are terminally green.
-- [ ] Fresh clone passes with the declared external asset and rejects missing or mutated assets.
-- [ ] Main, chronology, persistent goal, and this specification agree on status.
+- [x] R3.0 schemas and no-model source audit pass.
+- [x] R3.1 fixtures, rights, contamination, source-family, and domain audits pass.
+- [x] R3.2 primary/statistics/code hashes are frozen before model output.
+- [x] Exact model/runtime/CCP approval dossier is recorded.
+- [x] Exactly one guarded run completes for each authorized model.
+- [x] Blinded, exposed, matrix, and tool endpoints remain non-pooled.
+- [x] Every terminal result and limitation is published with claim IDs empty.
+- [x] Exact-head receipt and local CCP gates are terminally green.
+- [x] Publication verifiers pass with declared external assets and reject missing or mutated assets.
+- [x] Main, chronology, persistent goal, and this specification agree on status.
+- [x] Additional-model no-download selection is frozen without prior-score
+  conditioning; no candidate is yet acquired or loaded.
+- [ ] Exact GPT-2 and SmolLM2-135M acquisition, integrity, feasibility, and
+  one-run publication dossier is approved and completed.

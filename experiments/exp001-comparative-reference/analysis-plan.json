@@ -1,0 +1,27 @@
+{
+  "artifact_class": "exp001-comparative-analysis-plan",
+  "plan_id": "exp001-reference-comparative-analysis-v1.0.0",
+  "status": "frozen",
+  "primary": {
+    "name": "blinded_transfer_minus_lexical_control",
+    "unit_count": 24,
+    "domain_count": 6,
+    "families_per_domain": 2,
+    "replicates_per_family": 2,
+    "required_units": 24,
+    "required_domains": 6,
+    "required_problem_families_per_domain": 2,
+    "required_replicates_per_problem_family": 2,
+    "test": "exact_two_sided_domain_sign_flip_permutation",
+    "permutation_count": 64,
+    "alpha": 0.05,
+    "positive_requires": ["two_sided_p<=alpha", "mean_domain_delta>0", "all_domains_positive", "bootstrap_lower>0"]
+  },
+  "secondary": [
+    {"name": "principle_retrieval", "status": "descriptive_non_pooled"},
+    {"name": "matrix_direction_aware_cell_agreement", "status": "descriptive_non_pooled"},
+    {"name": "panitz_supported_edge_or_abstention", "status": "descriptive_non_pooled"}
+  ],
+  "uncertainty": {"bootstrap_resamples": 10000, "bootstrap_seed": 20260818},
+  "model_comparison": {"pooling": false, "token_id_comparison": false, "post_hoc_tuning": false}
+}

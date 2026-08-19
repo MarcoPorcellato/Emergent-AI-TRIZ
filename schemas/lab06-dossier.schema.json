@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarcoPorcellato/Latent-TRIZ/schemas/lab06-dossier.schema.json",
+  "title": "Lab 06 one-principle causal pilot dossier",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_class", "status", "empirical", "evidence_eligible",
+    "expert_validated", "claim_ids", "operator_selection", "preconditions",
+    "intervention_arms", "statistical_plan", "publication_boundary",
+    "approval_boundary", "terminal_classes"
+  ],
+  "properties": {
+    "artifact_class": {"const": "lab06-causal-dossier"},
+    "status": {"const": "blocked_by_h1"},
+    "empirical": {"const": false},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "operator_selection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["selection_status", "operator_id", "selection_rule", "candidate_operator_ids"],
+      "properties": {
+        "selection_status": {"const": "awaiting_h1_and_lab05"},
+        "operator_id": {"type": ["string", "null"]},
+        "selection_rule": {"const": "freeze_after_h1_and_held_out_direction_before_causal_outcome"},
+        "candidate_operator_ids": {
+          "type": "array", "minItems": 2, "uniqueItems": true,
+          "items": {"enum": ["segmentation", "inversion"]}
+        }
+      }
+    },
+    "preconditions": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "h1_closed", "canonical_labels_frozen", "lab05_out_of_sample_direction",
+        "controls_frozen", "model_identity_bound", "resource_approval",
+        "dossier_hash_bound"
+      ],
+      "properties": {
+        "h1_closed": {"const": false},
+        "canonical_labels_frozen": {"const": false},
+        "lab05_out_of_sample_direction": {"const": false},
+        "controls_frozen": {"const": false},
+        "model_identity_bound": {"const": false},
+        "resource_approval": {"const": false},
+        "dossier_hash_bound": {"const": false}
+      }
+    },
+    "intervention_arms": {
+      "type": "array", "minItems": 8, "maxItems": 8, "uniqueItems": true,
+      "items": {"enum": [
+        "positive_steering", "opposite_sign_steering", "ablation",
+        "dose_response_three_levels", "norm_matched_random",
+        "unrelated_label_direction", "no_intervention_baseline",
+        "fluency_capability_preservation"
+      ]}
+    },
+    "statistical_plan": {
+      "type": "object", "additionalProperties": false,
+      "required": ["primary_outcome", "multiplicity", "permutation_or_bootstrap", "seed", "sample_size", "stopping_rule"],
+      "properties": {
+        "primary_outcome": {"const": "held_out_domain_operator_behavior"},
+        "multiplicity": {"const": "frozen_after_h1_before_causal_output"},
+        "permutation_or_bootstrap": {"const": "frozen_after_h1_before_causal_output"},
+        "seed": {"type": ["integer", "null"]},
+        "sample_size": {"type": ["integer", "null"]},
+        "stopping_rule": {"type": ["string", "null"]}
+      }
+    },
+    "publication_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_output_accessed", "sealed_targets_accessed", "dense_vectors_published", "claim_promotion_allowed"],
+      "properties": {
+        "model_output_accessed": {"const": false},
+        "sealed_targets_accessed": {"const": false},
+        "dense_vectors_published": {"const": false},
+        "claim_promotion_allowed": {"const": false}
+      }
+    },
+    "approval_boundary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model_load_authorized", "target_read_authorized", "training_authorized", "run_authorized"],
+      "properties": {
+        "model_load_authorized": {"const": false},
+        "target_read_authorized": {"const": false},
+        "training_authorized": {"const": false},
+        "run_authorized": {"const": false}
+      }
+    },
+    "terminal_classes": {
+      "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true,
+      "items": {"enum": ["positive", "null", "failed", "non_interpretable"]}
+    }
+  }
+}

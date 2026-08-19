@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check schema-cross-validate preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-approval-dossier-verify a0r2-authorization-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0r2-execution-verify a0r2-run a0r2-run-verify a0r2-publication-verify a0r2c1-contract-verify a0r2c1-run a0r2c2-contract-verify a0r2c2-run a0r2c3-contract-verify a0r2c3-run a0
+.PHONY: test validate docs-audit check schema-cross-validate no-model-quickstart preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit h1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-approval-dossier-verify a0r2-authorization-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0r2-execution-verify a0r2-run a0r2-run-verify a0r2-publication-verify a0r2c1-contract-verify a0r2c1-run a0r2c2-contract-verify a0r2c2-run a0r2c3-contract-verify a0r2c3-run a0
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -72,6 +72,14 @@ check:
 
 schema-cross-validate:
 	PYTHONPATH=$(PYTHONPATH) python3 scripts/schema_cross_validate.py
+
+no-model-quickstart:
+	@echo "Latent-TRIZ no-model quickstart: synthetic dashboard, schemas, H1 packet, CV2, and Lab06 readiness"
+	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) -m latent_triz.cli lab-suite --root . --output $(LAB_SUITE_OUTPUT)
+	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/schema_cross_validate.py
+	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/h1_packet_audit.py
+	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) -m unittest tests.test_cv2_lab06_schemas tests.test_h1_packet_audit
+	@echo "No model, sealed target, training, generation, or dense scientific output was accessed."
 
 a0-corpus:
 	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli a0-corpus \
@@ -288,6 +296,13 @@ wave1-annotation-audit:
 	  --minimum-distinct-raters 2 --agreement-threshold 0.8 \
 	  --maximum-abstention-rate 0.2 \
 	  --output artifacts/annotations/wave1-audit.json
+
+h1-annotation-audit:
+	@test -n "$(ANNOTATION_FILES)" || (echo "ANNOTATION_FILES requires exactly three v1.2 H1 JSONL paths"; exit 2)
+	@test $$(printf '%s\n' $(ANNOTATION_FILES) | wc -l | tr -d ' ') -eq 3 || (echo "H1 requires exactly three independent files"; exit 2)
+	PYTHONPATH=$(PYTHONPATH) python3 scripts/h1_collection_audit.py \
+	  --annotations $(ANNOTATION_FILES) \
+	  --output artifacts/annotations/h1-v1.2-audit.json
 
 readiness:
 	@if [ "$(TARGET)" = "foundation" ]; then \
