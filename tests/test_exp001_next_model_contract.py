@@ -1,4 +1,5 @@
 import json
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,9 +16,22 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class NextModelContractTests(unittest.TestCase):
     def test_refuses_material_execution_without_receipts(self):
-        for model_id in NEXT_MODELS:
-            with self.assertRaises(NextModelContractError):
-                validate_next_model_contract(ROOT, model_id, material_execution=True)
+        # Keep this regression independent from the now-published integrity
+        # receipts: material execution must fail closed when the receipt is
+        # absent, even though the selection and authorization are valid.
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory)
+            for relative in (
+                "experiments/exp001-comparative-reference/next-model-selection.json",
+                "experiments/exp001-comparative-reference/next-model-authorization.json",
+                "experiments/exp001-comparative-reference/protocol.json",
+            ):
+                destination = repo / relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / relative, destination)
+            for model_id in NEXT_MODELS:
+                with self.assertRaises(NextModelContractError):
+                    validate_next_model_contract(repo, model_id, material_execution=True)
 
     def test_target_free_audit_accepts_unapproved_checkpoint(self):
         for model_id in NEXT_MODELS:

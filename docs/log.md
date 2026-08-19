@@ -2,6 +2,21 @@
 
 ## 2026-08-19
 
+- Operator authorization was recorded for exactly one local-only CPU float32
+  run per `EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db`
+  and `Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987`, with
+  allowlisted downloads, 1,800-second/8-GiB/128-MiB ceilings, no network or
+  generation, one sealed-target read at the analysis boundary, and publication
+  of every terminal outcome. GPT-Neo acquisition completed at exactly
+  529,444,041 bytes (model SHA-256
+  `52738cbfb54e25a232598242f60ef19ee193d36090b98fe649b10c02724b3521`), and
+  Qwen2.5 acquisition completed at exactly 999,586,188 bytes (model SHA-256
+  `88c142557820ccad55bb59756bfcfcf891de9cc6202816bd346445188a0ed342`).
+  Integrity receipts are recorded under
+  `results/exp001-comparative/preexecution/`; both explicitly state that no
+  model output or sealed target was accessed. Material runs remain pending
+  CCP `Admit` with inactive, empty admission and the one-run boundary.
+
 - Studied official Hugging Face cards, frozen configs, tokenizer metadata, and
   licenses for two further tiny complementary candidates. Frozen a separate
   no-download dossier for `EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db`

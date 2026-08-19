@@ -60,3 +60,14 @@ authorize model access. Before any material run, enforce the exact checkpoint
 config, the Qwen 32,768 effective context bound, GPT-Neo right-padding rule,
 fast-tokenizer boundary, offline/no-generation mode, and receipt fields from
 that audit.
+
+Acquisition checkpoint (2026-08-19): the exact authorized GPT-Neo and Qwen2.5
+snapshots are integrity-verified. Receipts are
+`results/exp001-comparative/preexecution/gpt-neo-125m-integrity-receipt.json`
+and `results/exp001-comparative/preexecution/qwen2.5-0.5b-integrity-receipt.json`;
+their model SHA-256 values are `52738cbfb54e25a232598242f60ef19ee193d36090b98fe649b10c02724b3521`
+and `88c142557820ccad55bb59756bfcfcf891de9cc6202816bd346445188a0ed342`.
+No model load, generation, dense output, or sealed-target access has occurred
+for either candidate. The next checkpoint is one sequential CCP-guarded run
+per model after publication of these receipts; do not retry after model or
+target access and do not alter the frozen protocol.
