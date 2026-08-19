@@ -316,6 +316,10 @@ def acquire_additional(
                     break
             else:
                 raise AdditionalAcquisitionError(f"download size mismatch after resume attempts: {name}")
+        except TimeoutError:
+            # Keep only the bounded, ignored partial so a later authorized
+            # acquisition can resume with an explicit Range request.
+            raise
         except BaseException:
             temporary.unlink(missing_ok=True)
             raise

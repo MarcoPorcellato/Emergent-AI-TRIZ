@@ -42,6 +42,14 @@ class _RangeResponse(_Response):
     status = 206
 
 
+class _TimeoutResponse(_Response):
+    def read(self, size: int = -1) -> bytes:
+        if self.payload:
+            value, self.payload = self.payload, b""
+            return value
+        raise TimeoutError("synthetic timeout")
+
+
 class AdditionalAcquisitionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -190,6 +198,46 @@ class AdditionalAcquisitionTests(unittest.TestCase):
                 )
                 self.assertEqual((root / "config.json").read_bytes(), b"abcde")
                 self.assertEqual(requests[0]["Range"], "bytes=2-")
+        finally:
+            MODEL_SPECS[model_id] = original
+
+    def test_timeout_preserves_bounded_partial_for_resume(self):
+        model_id = "openai-community/gpt2"
+        original = MODEL_SPECS[model_id]
+        tiny = type(original)(
+            model_id=original.model_id,
+            revision=original.revision,
+            license_id=original.license_id,
+            root_locator="artifacts/models/_additional-acquisition-timeout-test",
+            disk_budget_bytes=64,
+            files=(("config.json", 5),),
+        )
+        MODEL_SPECS[model_id] = tiny
+        try:
+            authorization = copy.deepcopy(self.authorization)
+            authorization["candidates"][0]["runtime_root"] = tiny.root_locator
+            authorization["candidates"][0]["disk_budget_bytes"] = tiny.disk_budget_bytes
+            authorization["candidates"][0]["runtime_files"] = [{"path": "config.json", "size_bytes": 5}]
+            with tempfile.TemporaryDirectory(prefix="latent-triz-additional-timeout-") as workspace:
+                workspace_root = Path(workspace)
+                root = workspace_root / tiny.root_locator
+
+                def open_response(request, timeout):
+                    response = _TimeoutResponse(b"ab")
+                    response.url = request.full_url
+                    return response
+
+                with self.assertRaises(TimeoutError):
+                    acquire_additional(
+                        model_id,
+                        root,
+                        authorization=authorization,
+                        allow_download=True,
+                        opener=open_response,
+                        repository_root=workspace_root,
+                    )
+                self.assertEqual((root / ".config.json.tmp").read_bytes(), b"ab")
+                self.assertFalse((root / "config.json").exists())
         finally:
             MODEL_SPECS[model_id] = original
 
