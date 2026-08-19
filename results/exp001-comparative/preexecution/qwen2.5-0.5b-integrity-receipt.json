@@ -1,0 +1,56 @@
+{
+  "artifact_class": "exp001-additional-model-integrity-receipt",
+  "authorization_sha256": "4270e81cb0e7c45f656002f84e1669941e22e81f1b60b9212f93f3b1cbdb94f8",
+  "claim_ids": [],
+  "disk_budget_bytes": 1610612736,
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "license_id": "Apache-2.0",
+  "model_id": "Qwen/Qwen2.5-0.5B",
+  "model_loaded": false,
+  "model_output_accessed": false,
+  "retrieved_at": "2026-08-19T11:32:57.516677+00:00",
+  "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+  "runtime_files": [
+    {
+      "path": "config.json",
+      "sha256": "479dcf0c5286339e41ad3992cd08ae88a467c4187587936248e2b7c96283484b",
+      "size_bytes": 681
+    },
+    {
+      "path": "generation_config.json",
+      "sha256": "8c970692323e3ea0e9b8b0a4dca79388d31226e41f83c9fd6014804280ebf6e8",
+      "size_bytes": 138
+    },
+    {
+      "path": "merges.txt",
+      "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "size_bytes": 1671839
+    },
+    {
+      "path": "model.safetensors",
+      "sha256": "88c142557820ccad55bb59756bfcfcf891de9cc6202816bd346445188a0ed342",
+      "size_bytes": 988097824
+    },
+    {
+      "path": "tokenizer.json",
+      "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "size_bytes": 7031645
+    },
+    {
+      "path": "tokenizer_config.json",
+      "sha256": "c91efca15ceff6e9ee9424db58a6f59cd41294e550a86cbd07e3c1fb500b34f9",
+      "size_bytes": 7228
+    },
+    {
+      "path": "vocab.json",
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "size_bytes": 2776833
+    }
+  ],
+  "runtime_root": "artifacts/models/qwen2.5-0.5b-060db649",
+  "scientific_status": "exploratory",
+  "sealed_targets_accessed": false,
+  "status": "integrity_verified",
+  "total_bytes": 999586188
+}

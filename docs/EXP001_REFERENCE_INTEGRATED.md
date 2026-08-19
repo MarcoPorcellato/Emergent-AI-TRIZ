@@ -361,6 +361,25 @@ self-contained tokenizer contract. These are documented re-evaluation options,
 not substitutions. No candidate is downloaded, loaded, or allowed to read
 sealed targets by this dossier.
 
+### Additional-model acquisition checkpoint (2026-08-19)
+
+The operator subsequently authorized the exact two candidates and the
+allowlisted runtime downloads. Both snapshots are now integrity-verified,
+without model load, generation, dense output, or sealed-target access:
+
+| Model | Receipt | Total bytes | Model SHA-256 |
+|---|---|---:|---|
+| `EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db` | `results/exp001-comparative/preexecution/gpt-neo-125m-integrity-receipt.json` | 529,444,041 | `52738cbfb54e25a232598242f60ef19ee193d36090b98fe649b10c02724b3521` |
+| `Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987` | `results/exp001-comparative/preexecution/qwen2.5-0.5b-integrity-receipt.json` | 999,586,188 | `88c142557820ccad55bb59756bfcfcf891de9cc6202816bd346445188a0ed342` |
+
+The receipts bind the exact allowlists, authorization digest, and explicit
+negative access flags. They do not authorize a pooled analysis: after this
+checkpoint, each model still receives exactly one sequential CPU-float32 run
+under CCP `Admit` with inactive admission and an empty queue, using the frozen
+protocol and the declared 1,800-second, 8-GiB RSS, and 128-MiB dense-output
+ceilings. A terminal `null`, `failed`, or `non_interpretable` package is
+publishable; no retry is permitted after model or target access.
+
 ## 6. Required deliverables
 
 - `experiments/exp001-reference-integrated/protocol.json` and freeze manifest;
@@ -419,3 +438,7 @@ the checkpoint.
 - [x] Exact GPT-2 and SmolLM2-135M one-run publication dossier is approved,
   executed once per model, independently verified, and published as terminal
   null outcomes.
+- [x] GPT-Neo and Qwen2.5 exact snapshots are acquired from the authorized
+  revisions and integrity-verified without model or target access.
+- [ ] One CCP-guarded GPT-Neo run and one CCP-guarded Qwen2.5 run are complete,
+  with immutable terminal packages and fresh-clone publication verification.
