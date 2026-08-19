@@ -1,0 +1,78 @@
+{
+  "artifact_class": "exp001-additional-model-authorization",
+  "authorization_id": "exp001-additional-models-v1.0.0",
+  "selection_dossier": "experiments/exp001-comparative-reference/additional-model-selection.json",
+  "status": "authorized",
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "candidates": [
+    {
+      "model_id": "openai-community/gpt2",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "license_id": "MIT",
+      "runtime_root": "artifacts/models/gpt2-607a30d7",
+      "disk_budget_bytes": 1073741824,
+      "runtime_files": [
+        {"path": "config.json", "size_bytes": 665},
+        {"path": "generation_config.json", "size_bytes": 124},
+        {"path": "merges.txt", "size_bytes": 456318},
+        {"path": "model.safetensors", "size_bytes": 548105171},
+        {"path": "tokenizer.json", "size_bytes": 1355256},
+        {"path": "tokenizer_config.json", "size_bytes": 26},
+        {"path": "vocab.json", "size_bytes": 1042301}
+      ],
+      "permissions": {
+        "download_runtime_files_only": true,
+        "integrity_receipt": true,
+        "model_load": true,
+        "feasibility": true,
+        "sealed_execution": true
+      }
+    },
+    {
+      "model_id": "HuggingFaceTB/SmolLM2-135M",
+      "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+      "license_id": "Apache-2.0",
+      "runtime_root": "artifacts/models/smollm2-135m-93efa2f0",
+      "disk_budget_bytes": 1073741824,
+      "runtime_files": [
+        {"path": "config.json", "size_bytes": 704},
+        {"path": "generation_config.json", "size_bytes": 111},
+        {"path": "merges.txt", "size_bytes": 466391},
+        {"path": "model.safetensors", "size_bytes": 269060552},
+        {"path": "special_tokens_map.json", "size_bytes": 831},
+        {"path": "tokenizer.json", "size_bytes": 2104556},
+        {"path": "tokenizer_config.json", "size_bytes": 3658},
+        {"path": "vocab.json", "size_bytes": 800662}
+      ],
+      "permissions": {
+        "download_runtime_files_only": true,
+        "integrity_receipt": true,
+        "model_load": true,
+        "feasibility": true,
+        "sealed_execution": true
+      }
+    }
+  ],
+  "execution": {
+    "one_run_per_model": true,
+    "local_cpu_float32": true,
+    "network": false,
+    "generation": false,
+    "wall_time_seconds_per_model": 1800,
+    "peak_rss_bytes_per_model": 8589934592,
+    "new_dense_output_bytes_per_model": 134217728,
+    "sealed_target_reads": "exactly_one_at_analysis_boundary",
+    "publish_every_terminal_outcome": true,
+    "no_tuning_substitution_or_retry": true,
+    "pool_scores_across_models": false
+  },
+  "operator_approval": {
+    "granted": true,
+    "operator_id": "MarcoPorcellato",
+    "approved_at": "2026-08-19",
+    "approval_text_sha256": "0e81eef34dc67e9673cb69dfcdf4d60c655f3149e316d57ddf3865ced0b1b4ae"
+  }
+}

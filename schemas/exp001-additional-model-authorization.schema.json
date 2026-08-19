@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-additional-model-authorization.schema.json",
+  "title": "EXP-001 additional model authorization",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "authorization_id", "selection_dossier", "status", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids", "candidates", "execution", "operator_approval"],
+  "properties": {
+    "artifact_class": {"const": "exp001-additional-model-authorization"},
+    "authorization_id": {"const": "exp001-additional-models-v1.0.0"},
+    "selection_dossier": {"const": "experiments/exp001-comparative-reference/additional-model-selection.json"},
+    "status": {"const": "authorized"},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "candidates": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/candidate"}},
+    "execution": {"$ref": "#/$defs/execution"},
+    "operator_approval": {"$ref": "#/$defs/approval"}
+  },
+  "$defs": {
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_id", "revision", "license_id", "runtime_root", "disk_budget_bytes", "runtime_files", "permissions"],
+      "properties": {
+        "model_id": {"enum": ["openai-community/gpt2", "HuggingFaceTB/SmolLM2-135M"]},
+        "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "license_id": {"enum": ["MIT", "Apache-2.0"]},
+        "runtime_root": {"type": "string", "pattern": "^artifacts/models/[a-z0-9.-]+$"},
+        "disk_budget_bytes": {"const": 1073741824},
+        "runtime_files": {"type": "array", "minItems": 7, "maxItems": 8, "items": {"$ref": "#/$defs/file"}},
+        "permissions": {"$ref": "#/$defs/permissions"}
+      }
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "size_bytes"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^[A-Za-z0-9._-]+$"},
+        "size_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["download_runtime_files_only", "integrity_receipt", "model_load", "feasibility", "sealed_execution"],
+      "properties": {
+        "download_runtime_files_only": {"const": true},
+        "integrity_receipt": {"const": true},
+        "model_load": {"const": true},
+        "feasibility": {"const": true},
+        "sealed_execution": {"const": true}
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["one_run_per_model", "local_cpu_float32", "network", "generation", "wall_time_seconds_per_model", "peak_rss_bytes_per_model", "new_dense_output_bytes_per_model", "sealed_target_reads", "publish_every_terminal_outcome", "no_tuning_substitution_or_retry", "pool_scores_across_models"],
+      "properties": {
+        "one_run_per_model": {"const": true},
+        "local_cpu_float32": {"const": true},
+        "network": {"const": false},
+        "generation": {"const": false},
+        "wall_time_seconds_per_model": {"const": 1800},
+        "peak_rss_bytes_per_model": {"const": 8589934592},
+        "new_dense_output_bytes_per_model": {"const": 134217728},
+        "sealed_target_reads": {"const": "exactly_one_at_analysis_boundary"},
+        "publish_every_terminal_outcome": {"const": true},
+        "no_tuning_substitution_or_retry": {"const": true},
+        "pool_scores_across_models": {"const": false}
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["granted", "operator_id", "approved_at", "approval_text_sha256"],
+      "properties": {
+        "granted": {"const": true},
+        "operator_id": {"const": "MarcoPorcellato"},
+        "approved_at": {"const": "2026-08-19"},
+        "approval_text_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    }
+  }
+}
