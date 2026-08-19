@@ -1,7 +1,7 @@
 Complete the canonical improvement plan in `docs/LABORATORY_MASTER_PLAN.md`,
 using `docs/HYPOTHESES_AND_FALSIFICATION.md` as the normative Weak/Strong
 contract. The current local working anchor is comparative exact-head
-`b6f2c090cdffa62b539980dd21ae5f0d15112b3f`; verify `origin/main`, PR #77, the
+`809d874bc6045deb55f056591af08d3342c5dbf0`; verify `origin/main`, PR #77, the
 ruleset, and the receipt branch live before the next publication or mutation.
 
 Treat A0/R1 positives, the R3 reference-integrated package, and the

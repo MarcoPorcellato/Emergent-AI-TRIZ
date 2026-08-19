@@ -46,11 +46,11 @@ It is normative for new WLT/SLT work and does not rewrite historical packages.
 | Current authentic-TRIZ milestone | H1 v1.2 collection packet | public packet is `ready_for_collection`; closure is blocked by three independent human TRIZ experts |
 | Claim state | all registered claims remain E0 | `data/claims.jsonl` |
 | First dataset attempt | rejected for scientific freeze | retained Wave 1 surface-audit artifacts |
-| Comparative reference tranche | three terminal `null` packages | PR 77 working head `10d249a`; exploratory and claim-free; live PR/base state must be rechecked before mutation |
+| Comparative reference tranche | three terminal `null` packages | PR 77 public head `c3d747c`; local two-model selection extension `809d874` is pending exact-head qualification and publication; exploratory and claim-free |
 
 The implementation checkpoint for this planning tranche is branch
-`agent/exp001-comparative-reference` at `b6f2c09` (full local commit
-`b6f2c090cdffa62b539980dd21ae5f0d15112b3f`). Subsequent documentation-only
+`agent/exp001-comparative-reference` at `809d874` (full local commit
+`809d874bc6045deb55f056591af08d3342c5dbf0`). Subsequent documentation-only
 checkpoint commits may follow it; verify the actual branch head before
 publication.
 It is not a protected-main claim: the remote base, ruleset, PR state, and
