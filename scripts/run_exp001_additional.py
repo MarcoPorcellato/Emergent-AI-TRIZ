@@ -31,7 +31,7 @@ AUTH_PATH = ROOT / "experiments/exp001-comparative-reference/additional-model-au
 TARGET_PATH = ROOT / "artifacts/exp001-r3/target-key/targets.jsonl"
 TARGET_SHA256 = "5dd8e3e42e074439f2934db900f233508cc5671c5299516a033d815d47ccaa97"
 PLAN_PATH = ROOT / "experiments/exp001-comparative-reference/analysis-plan.json"
-AUTH_SHA256 = "0e81eef34dc67e9673cb69dfcdf4d60c655f3149e316d57ddf3865ced0b1b4ae"
+AUTH_SHA256 = "e284ed8152afb767746773d55aee5dd4bf437d6315450ac3dc307a81196ebfd8"
 
 MODELS = {
     "openai-community/gpt2": {
