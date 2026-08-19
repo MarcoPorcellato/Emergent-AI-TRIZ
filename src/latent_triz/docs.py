@@ -126,10 +126,15 @@ def audit_docs(profile: OkfProfile, root: Path, as_of: date) -> List[DocsIssue]:
         with path.open("r", encoding="utf-8") as handle:
             text = handle.read()
 
+        reserved_nested_index = rel.endswith("/index.md") and rel != "docs/index.md"
         frontmatter, fm_issues = _parse_frontmatter(rel, text)
+        if reserved_nested_index and frontmatter is None and any(issue.code == "DOCS_MISSING_FRONTMATTER" for issue in fm_issues):
+            fm_issues = []
         issues.extend(fm_issues)
 
         if frontmatter is None:
+            if reserved_nested_index:
+                issues.extend(_validate_markdown_links(path, rel, root, text))
             continue
 
         for field in profile.required_fields:

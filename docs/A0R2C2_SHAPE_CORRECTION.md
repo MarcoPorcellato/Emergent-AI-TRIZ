@@ -1,3 +1,6 @@
+---
+type: Document
+---
 # A0-R2-C2 Llama hidden-state shape correction
 
 Status: terminal failed package published on public `main`; no further C2

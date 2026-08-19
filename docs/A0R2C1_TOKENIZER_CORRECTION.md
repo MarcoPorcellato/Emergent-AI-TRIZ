@@ -1,3 +1,6 @@
+---
+type: Document
+---
 # A0-R2-C1 tokenizer correction and approval request
 
 Status: terminal failed; the single authorized material execution is consumed.

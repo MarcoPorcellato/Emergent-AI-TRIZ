@@ -2,6 +2,7 @@
 title: Decision Records
 status: canonical
 last_verified: 2026-08-13
+type: Document
 ---
 
 # Decision Records

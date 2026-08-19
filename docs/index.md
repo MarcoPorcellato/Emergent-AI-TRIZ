@@ -4,6 +4,7 @@ title: Documentation Index
 description: Maintained documentation portal for the Latent TRIZ open laboratory.
 status: canonical
 last_verified: 2026-08-17
+okf_version: "0.2"
 ---
 
 # Documentation Index
