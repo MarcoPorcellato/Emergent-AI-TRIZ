@@ -119,11 +119,12 @@ def _spec(model_id: str) -> AdditionalModelSpec:
         raise AdditionalAcquisitionError("model is not in the frozen additional selection") from exc
 
 
-def _safe_root(root: Path, spec: AdditionalModelSpec) -> Path:
+def _safe_root(root: Path, spec: AdditionalModelSpec, repository_root: Path | None = None) -> Path:
     if root.is_symlink():
         raise AdditionalAcquisitionError("runtime root must not be a symlink")
     resolved = root.resolve()
-    expected = (Path(__file__).resolve().parents[2] / spec.root_locator).resolve()
+    anchor = repository_root if repository_root is not None else Path(__file__).resolve().parents[2]
+    expected = (anchor / spec.root_locator).resolve()
     if resolved != expected:
         raise AdditionalAcquisitionError("runtime root does not match the frozen locator")
     resolved.mkdir(parents=True, exist_ok=True)
@@ -198,11 +199,12 @@ def acquire_additional(
     authorization: Mapping[str, Any],
     allow_download: bool,
     opener: Callable[..., Any] | None = None,
+    repository_root: Path | None = None,
 ) -> None:
     if not allow_download:
         raise AdditionalAcquisitionError("explicit --allow-download is required")
     spec = validate_authorization(authorization, model_id)
-    base = _safe_root(root, spec)
+    base = _safe_root(root, spec, repository_root)
     _assert_clean_root(base, spec)
     existing = 0
     for name, expected_size in spec.files:
@@ -254,9 +256,10 @@ def build_receipt_from_authorized(
     authorization: Mapping[str, Any],
     authorization_sha256: str,
     retrieved_at: str | None = None,
+    repository_root: Path | None = None,
 ) -> dict[str, Any]:
     spec = validate_authorization(authorization, model_id)
-    base = _safe_root(root, spec)
+    base = _safe_root(root, spec, repository_root)
     _assert_clean_root(base, spec)
     files = []
     for name, expected_size in spec.files:

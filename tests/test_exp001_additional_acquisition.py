@@ -1,7 +1,7 @@
 import copy
 import json
 from pathlib import Path
-import shutil
+import tempfile
 import unittest
 
 from latent_triz.exp001_additional_acquisition import (
@@ -79,20 +79,33 @@ class AdditionalAcquisitionTests(unittest.TestCase):
             authorization["candidates"][0]["runtime_root"] = tiny.root_locator
             authorization["candidates"][0]["disk_budget_bytes"] = tiny.disk_budget_bytes
             authorization["candidates"][0]["runtime_files"] = [{"path": n, "size_bytes": s} for n, s in tiny.files]
-            root = ROOT / tiny.root_locator
-            shutil.rmtree(root, ignore_errors=True)
-            try:
+            with tempfile.TemporaryDirectory(prefix="latent-triz-additional-acquisition-") as workspace:
+                workspace_root = Path(workspace)
+                root = workspace_root / tiny.root_locator
                 responses = iter((_Response(b"abc"), _Response(b"de")))
+
                 def open_response(request, timeout):
                     response = next(responses)
                     response.url = request.full_url
                     return response
-                acquire_additional(model_id, root, authorization=authorization, allow_download=True, opener=open_response)
-                receipt = build_receipt_from_authorized(model_id, root, authorization=authorization, authorization_sha256="a" * 64)
+
+                acquire_additional(
+                    model_id,
+                    root,
+                    authorization=authorization,
+                    allow_download=True,
+                    opener=open_response,
+                    repository_root=workspace_root,
+                )
+                receipt = build_receipt_from_authorized(
+                    model_id,
+                    root,
+                    authorization=authorization,
+                    authorization_sha256="a" * 64,
+                    repository_root=workspace_root,
+                )
                 self.assertEqual(receipt["total_bytes"], 5)
                 self.assertFalse(receipt["model_loaded"])
-            finally:
-                shutil.rmtree(root, ignore_errors=True)
         finally:
             MODEL_SPECS[model_id] = original
 
