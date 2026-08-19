@@ -81,13 +81,14 @@ The correction must pass a new exact-head CCP qualification before material
 execution. This document is updated with terminal receipts and results only
 after that qualification and the two authorised runs complete.
 
-## Next complementary controls: metadata-only preflight
+## Next complementary controls: authorization and acquisition preflight
 
 The next candidates are deliberately documented in a separate, non-authorising
 request at
 `experiments/exp001-comparative-reference/next-model-authorization.json`.
-Official revision-tree metadata was read on 2026-08-19; no runtime bytes were
-downloaded. The exact contracts are:
+Official revision-tree metadata was read on 2026-08-19; the authorization was
+then recorded against the exact revisions and allowlists below. Acquisition
+remains a separate, receipt-producing gate.
 
 | model | revision | loader/config | tokenizer metadata | runtime allowlist | ceiling |
 | --- | --- | --- | --- | --- | --- |
@@ -101,6 +102,13 @@ inputs that exceed the model context. Both contracts require fast offsets,
 teacher-forced scoring without generation. The exact operator authorization is
 now recorded for these two snapshots. The earlier GPT-2 and SmolLM2-135M
 authorization cannot be reused for them.
+
+The acquisition CLI is deliberately independent of model libraries. It streams
+each allowlisted file into an atomic temporary path, enforces the declared byte
+ceiling and exact size, and emits no receipt until every SHA-256 digest matches.
+The official CDN read timeout is bounded at 1,800 seconds so a slow large blob
+is not mistaken for a corrupt snapshot; a timeout or redirect violation still
+fails closed and leaves no partial runtime file or receipt.
 
 Primary official sources: [GPT-Neo model card](https://huggingface.co/EleutherAI/gpt-neo-125m),
 [GPT-Neo frozen tree](https://huggingface.co/EleutherAI/gpt-neo-125m/tree/21def0189f5705e2521767faed922f1f15e7d7db),

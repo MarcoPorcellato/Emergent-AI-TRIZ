@@ -20,7 +20,11 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 
 _BLOCK = 1 << 20
-_TIMEOUT_SECONDS = 300
+# Large model blobs can legitimately take longer than five minutes on a
+# throttled official CDN.  Keep the transfer bounded, but do not classify a
+# slow response as a corrupt snapshot; size and SHA-256 verification remain
+# mandatory before a receipt is emitted.
+_TIMEOUT_SECONDS = 1_800
 _ALLOWED_CDN_HOSTS = frozenset({
     "cdn-lfs.huggingface.co",
     "cdn-lfs-us-1.hf.co",
