@@ -120,6 +120,7 @@ class ComparativeAdapterTests(unittest.TestCase):
     def test_loads_supported_gpt_neox_llama_and_qwen_contracts_locally(self):
         variants = (
             contract(),
+            contract(model_type="gpt2", architecture="GPT2LMHeadModel"),
             contract(model_type="llama", architecture="LlamaForCausalLM"),
             contract(model_type="qwen3", architecture="Qwen3ForCausalLM"),
         )
