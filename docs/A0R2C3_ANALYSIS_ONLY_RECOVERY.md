@@ -1,3 +1,6 @@
+---
+type: Document
+---
 # A0-R2-C3 analysis-only metadata recovery
 
 Status: pre-output corrective specification. No C3 target access or statistical

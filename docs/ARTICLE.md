@@ -1,3 +1,6 @@
+---
+type: Document
+---
 # Do Large Language Models Rediscover TRIZ?
 
 ## The Latent TRIZ Hypothesis and a Public Experiment on the Internal Geometry of Inventive Thinking

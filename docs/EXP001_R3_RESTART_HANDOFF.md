@@ -1,3 +1,6 @@
+---
+type: Document
+---
 # EXP-001 R3 restart handoff
 
 ## Checkpoint
