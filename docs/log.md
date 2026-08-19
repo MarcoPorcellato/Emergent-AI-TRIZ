@@ -2,6 +2,18 @@
 
 ## 2026-08-19
 
+- Completed the two authorized complementary-model controls, one run each from
+  merged `main`, with CCP `Admit`, inactive admission, and an empty queue.
+  GPT-Neo (`EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db`)
+  terminated `null` at p=.6875 (mean domain delta +.01553), 323.899 s wall,
+  1,858,076,672 B peak RSS, and 20,599 B dense output. Qwen2.5
+  (`Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987`) terminated
+  `null` at p=.96875 (mean domain delta - .00587), 935.267 s wall,
+  4,876,828,672 B peak RSS, and 20,699 B dense output. Both used CPU float32,
+  no network/generation, exactly one sealed-target read, and no retry; claim
+  IDs remain empty and pooling remains forbidden. Packages are published only
+  after verifier PASS, with dense response assets external/hash-bound.
+
 - Operator authorization was recorded for exactly one local-only CPU float32
   run per `EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db`
   and `Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987`, with

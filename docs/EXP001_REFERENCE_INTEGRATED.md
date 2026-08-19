@@ -380,6 +380,25 @@ protocol and the declared 1,800-second, 8-GiB RSS, and 128-MiB dense-output
 ceilings. A terminal `null`, `failed`, or `non_interpretable` package is
 publishable; no retry is permitted after model or target access.
 
+### Additional-model execution checkpoint (2026-08-19)
+
+Both authorized one-shot runs completed from merged public `main`, under CCP
+`Admit` with inactive admission and an empty queue. They remain independent,
+non-pooled exploratory controls:
+
+| Model | Terminal | Primary p | Mean domain delta | Wall s | Peak RSS B | Dense B | Target reads |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `EleutherAI/gpt-neo-125m` | `null` | 0.6875 | +0.01553 | 323.899 | 1,858,076,672 | 20,599 | 1 |
+| `Qwen/Qwen2.5-0.5B` | `null` | 0.96875 | -0.00587 | 935.267 | 4,876,828,672 | 20,699 | 1 |
+
+The immutable packages are under
+`results/exp001-comparative/gpt-neo-125m-21def018-gpt-neo-125m-20260819-01/`
+and
+`results/exp001-comparative/qwen2.5-0.5b-060db649-qwen2.5-0.5b-20260819-01/`.
+Each package passed the comparative publication verifier, binds an external
+dense response asset by SHA-256, records `claim_ids: []`, and states no
+general TRIZ claim. No rerun or tuning is permitted for either model.
+
 ## 6. Required deliverables
 
 - `experiments/exp001-reference-integrated/protocol.json` and freeze manifest;
@@ -440,5 +459,7 @@ the checkpoint.
   null outcomes.
 - [x] GPT-Neo and Qwen2.5 exact snapshots are acquired from the authorized
   revisions and integrity-verified without model or target access.
-- [ ] One CCP-guarded GPT-Neo run and one CCP-guarded Qwen2.5 run are complete,
-  with immutable terminal packages and fresh-clone publication verification.
+- [x] One CCP-guarded GPT-Neo run and one CCP-guarded Qwen2.5 run are complete,
+  with immutable terminal packages and publication-verifier PASS.
+- [ ] Qwen2.5 terminal package publication/merge and fresh-clone verification
+  (including missing/mutated external-asset rejection) are complete.
