@@ -33,3 +33,8 @@ review. Current no-download checkpoint is the local extension dossier on
 exact-head CCP receipt followed by explicit approval for the two named
 candidates. Continue until every checklist item in the canonical plan is
 proven or the precise human/external gate is recorded.
+
+The earlier R3 SmolLM2 package remains published in main merge
+`4cc1c6d862bffc9558b47a5cadd838a2ee22c465` with terminal `null`, one sealed
+target read, and no promoted scientific claim; the current objective extends
+the comparative proposal without reopening that package.

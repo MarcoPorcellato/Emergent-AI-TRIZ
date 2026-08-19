@@ -249,7 +249,6 @@ provided and rejected both a missing and a mutated asset. The score asset is
 intentionally external/local: its locator and SHA-256 are public, while its
 contents require a separate explicit publication authorization. This boundary
 does not alter the terminal result or permit a scientific claim.
-
 ### Comparative extension — three-model terminal evidence (2026-08-18)
 
 The separately frozen comparative dossier applied the same 85-record
@@ -319,7 +318,9 @@ no feasibility run, generation, or sealed-target access has occurred. The
 next gate is explicit operator approval for the exact allowlists, disk and
 runtime ceilings, one-run-per-candidate rule, and publication of every
 terminal outcome. A future incompatibility remains terminal and cannot be
-replaced by another model.
+replaced by another model. The earlier R3 package at main
+`4cc1c6d862bffc9558b47a5cadd838a2ee22c465` remains immutable; this extension
+does not reopen it.
 
 ## 6. Required deliverables
 
