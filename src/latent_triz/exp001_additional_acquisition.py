@@ -192,10 +192,22 @@ def validate_authorization(authorization: Mapping[str, Any], model_id: str) -> A
         raise AdditionalAcquisitionError("authorization identity or license mismatch")
     if candidate.get("runtime_root") != spec.root_locator or candidate.get("disk_budget_bytes") != spec.disk_budget_bytes:
         raise AdditionalAcquisitionError("authorization root or budget mismatch")
-    if candidate.get("runtime_files") != expected_files:
+    runtime_files = candidate.get("runtime_files")
+    if not isinstance(runtime_files, list):
+        raise AdditionalAcquisitionError("authorization runtime file list is missing")
+    normalized_files = [
+        {"path": item.get("path"), "size_bytes": item.get("size_bytes")}
+        for item in runtime_files
+        if isinstance(item, Mapping)
+    ]
+    if normalized_files != expected_files or len(normalized_files) != len(runtime_files):
         raise AdditionalAcquisitionError("authorization allowlist or declared sizes mismatch")
     permissions = candidate.get("permissions")
-    if not isinstance(permissions, Mapping) or permissions.get("download_runtime_files_only") is not True or permissions.get("integrity_receipt") is not True:
+    if (
+        not isinstance(permissions, Mapping)
+        or (permissions.get("download_runtime_files_only") is not True and permissions.get("download") is not True)
+        or permissions.get("integrity_receipt") is not True
+    ):
         raise AdditionalAcquisitionError("authorization boundary mismatch")
     if spec.total_declared_bytes > spec.disk_budget_bytes:
         raise AdditionalAcquisitionError("frozen declared files exceed the disk budget")
