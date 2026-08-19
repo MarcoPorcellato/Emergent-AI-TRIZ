@@ -1,9 +1,23 @@
 ---
+
+## 2026-08-19
+
+- Studied official Hugging Face cards, frozen configs, tokenizer metadata, and
+  licenses for two further tiny complementary candidates. Frozen a separate
+  no-download dossier for `EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db`
+  (MIT, GPTNeoForCausalLM, 12 layers, 768 hidden) and
+  `Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987` (Apache-2.0,
+  Qwen2ForCausalLM, 24 layers, 896 hidden). The former supplies an architecture
+  control distinct from GPT-NeoX Pythia; the latter is a within-provider
+  Qwen2/Qwen3 control. OpenELM-270M and Mamba2-130M remain rejected alternatives
+  because of remote-code/AMLR or missing self-contained tokenizer contracts.
+  No model, weights, or sealed target was accessed; acquisition and material
+  execution remain explicit later gates.
 type: chronology-log
 title: Documentation Chronology
 description: Time-ordered notes for maintained documentation and governance updates.
 status: canonical
-last_verified: 2026-08-16
+last_verified: 2026-08-19
 ---
 
 # Documentation Chronology
