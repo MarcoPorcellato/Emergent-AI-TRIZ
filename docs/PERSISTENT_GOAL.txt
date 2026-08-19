@@ -31,8 +31,8 @@ non-interpretable result; preserve historical artifacts; use deterministic
 tools first; delegate bounded inventory, tests, and documentation to cheaper
 workers; require a no-model contributor quickstart; and keep architecture,
 statistics, security, CCP, publication, and merge decisions under primary
-review. Current no-download checkpoint is the local extension dossier on
-`agent/exp001-comparative-reference`; the next material checkpoint is a fresh
+review. Current public no-download checkpoint is merged at main
+`2a8857b8ced98936e6f3eb5d6c75711adc71e9da`; the next material checkpoint is a fresh
 exact-head CCP receipt followed by explicit approval for the two named
 candidates. Continue until every checklist item in the canonical plan is
 proven or the precise human/external gate is recorded.
