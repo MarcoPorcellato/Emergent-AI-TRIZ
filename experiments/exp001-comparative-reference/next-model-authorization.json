@@ -2,7 +2,7 @@
   "artifact_class": "exp001-next-model-authorization",
   "authorization_id": "exp001-next-models-v1.0.0",
   "selection_dossier": "experiments/exp001-comparative-reference/next-model-selection.json",
-  "status": "approval_requested",
+  "status": "authorized",
   "scientific_status": "exploratory",
   "evidence_eligible": false,
   "expert_validated": false,
@@ -37,7 +37,7 @@
       ],
       "declared_total_bytes": 529444041,
       "source_tree_metadata_sha256": "d1ccf3ef0d557671bddcc36d212b4d911bc1acdb3f80d54847270b316dd3692b",
-      "permissions": {"download": false, "integrity_receipt": false, "model_load": false, "feasibility": false, "sealed_execution": false}
+      "permissions": {"download": true, "integrity_receipt": true, "model_load": true, "feasibility": true, "sealed_execution": true}
     },
     {
       "role": "provider_scale_control",
@@ -57,7 +57,7 @@
       ],
       "declared_total_bytes": 999586188,
       "source_tree_metadata_sha256": "ef8a4ae0108fc7582ce1104466c49dc37d1fa057dc854a01d0e1342f76b6efab",
-      "permissions": {"download": false, "integrity_receipt": false, "model_load": false, "feasibility": false, "sealed_execution": false}
+      "permissions": {"download": true, "integrity_receipt": true, "model_load": true, "feasibility": true, "sealed_execution": true}
     }
   ],
   "execution": {
@@ -74,10 +74,10 @@
     "pool_scores_across_models": false
   },
   "operator_approval": {
-    "granted": false,
+    "granted": true,
     "operator_id": "MarcoPorcellato",
-    "approved_at": null,
-    "approval_text_sha256": null
+    "approved_at": "2026-08-19",
+    "approval_text_sha256": "2f70403f386c1a573ae4cc133f25d4612af8b58f6c1c0fe285b30a4d7e5df5a1"
   },
   "approval_required_before": [
     "download of only the listed runtime files at the exact revisions",

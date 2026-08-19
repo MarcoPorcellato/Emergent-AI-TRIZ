@@ -44,7 +44,7 @@
       "if": {"properties": {"status": {"const": "authorized"}}, "required": ["status"]},
       "then": {
         "properties": {
-          "operator_approval": {"properties": {"granted": {"const": true}, "approved_at": {"type": "string"}, "approval_text_sha256": {"type": "string"}}},
+          "operator_approval": {"properties": {"granted": {"const": true}, "approved_at": {"const": "2026-08-19"}, "approval_text_sha256": {"const": "2f70403f386c1a573ae4cc133f25d4612af8b58f6c1c0fe285b30a4d7e5df5a1"}}},
           "candidates": {"items": {"properties": {"permissions": {"properties": {"download": {"const": true}, "integrity_receipt": {"const": true}, "model_load": {"const": true}, "feasibility": {"const": true}, "sealed_execution": {"const": true}}}}}}
         }
       }

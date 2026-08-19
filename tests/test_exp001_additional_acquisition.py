@@ -60,21 +60,21 @@ class AdditionalAcquisitionTests(unittest.TestCase):
             with self.assertRaises(AdditionalAcquisitionError):
                 acquire_additional(model_id, ROOT / MODEL_SPECS[model_id].root_locator, authorization=self.authorization, allow_download=False)
 
-    def test_next_models_are_exactly_bound_but_not_authorized(self):
+    def test_next_models_are_exactly_bound_and_authorized(self):
         expected = {
             "EleutherAI/gpt-neo-125m": ("21def0189f5705e2521767faed922f1f15e7d7db", 529444041, 8),
             "Qwen/Qwen2.5-0.5B": ("060db6499f32faf8b98477b0a26969ef7d8b9987", 999586188, 7),
         }
-        self.assertEqual(self.next_authorization["status"], "approval_requested")
+        self.assertEqual(self.next_authorization["status"], "authorized")
         for model_id, (revision, total, count) in expected.items():
             frozen = MODEL_SPECS[model_id]
             self.assertEqual(frozen.revision, revision)
             self.assertEqual(frozen.total_declared_bytes, total)
             self.assertEqual(len(frozen.files), count)
             candidate = next(item for item in self.next_authorization["candidates"] if item["model_id"] == model_id)
-            self.assertFalse(any(candidate["permissions"].values()))
-            with self.assertRaises(AdditionalAcquisitionError):
-                validate_authorization(self.next_authorization, model_id)
+            self.assertTrue(all(candidate["permissions"].values()))
+            validated = validate_authorization(self.next_authorization, model_id)
+            self.assertEqual(validated.revision, revision)
 
     def test_identity_budget_and_permissions_mutations_fail_closed(self):
         for field, value in (("revision", "0" * 40), ("disk_budget_bytes", 1), ("permissions", {})):
