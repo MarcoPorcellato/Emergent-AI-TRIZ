@@ -1,3 +1,11 @@
+---
+type: Research Note
+title: EXP-001 Additional Model Runtime Dossier
+description: Source-backed record for the authorised additional model controls and their fail-closed execution boundary.
+status: active
+last_verified: 2026-08-19
+---
+
 # EXP-001 additional model runtime dossier
 
 This note is the pre-execution, source-backed record for the two additional
