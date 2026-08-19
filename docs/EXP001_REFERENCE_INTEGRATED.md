@@ -330,6 +330,37 @@ packages are exploratory nulls and remain non-pooled. The earlier R3 package at 
 `4cc1c6d862bffc9558b47a5cadd838a2ee22c465` remains immutable; this extension
 does not reopen it.
 
+### Next complementary-model dossier — two no-download candidates (2026-08-19)
+
+The five-model record above remains historical terminal evidence. A separate
+no-download dossier names two further candidates so the next comparison adds a
+GPT-Neo architecture control and a Qwen2/Qwen3 within-provider control without
+pooling them with prior scores:
+
+| Candidate | Exact revision | Role | License | Architecture | Estimated runtime bytes |
+|---|---|---|---|---|---:|
+| `EleutherAI/gpt-neo-125m` | `21def0189f5705e2521767faed922f1f15e7d7db` | architecture-family control | MIT | `GPTNeoForCausalLM`, 12 layers, hidden 768 | 540,000,000 |
+| `Qwen/Qwen2.5-0.5B` | `060db6499f32faf8b98477b0a26969ef7d8b9987` | provider/scale control | Apache-2.0 | `Qwen2ForCausalLM`, 24 layers, hidden 896 | 1,100,000,000 |
+
+The exact source-backed records are in
+`experiments/exp001-comparative-reference/next-model-selection.json`, validated
+by `schemas/exp001-next-model-selection.schema.json`. GPT-Neo is a public MIT
+causal model with a self-contained GPT-2-compatible fast tokenizer and a
+documented Pile lineage; it adds a `gpt_neo` architecture distinct from the
+existing GPT-NeoX Pythia. Qwen2.5 is public Apache-2.0, uses
+`Qwen2ForCausalLM` with a 32,768-token context and a complete tokenizer/runtime
+tree; it is explicitly a within-provider control against tested Qwen3, not an
+independent provider replication. Exact file sizes, SHA-256 receipts, runtime
+compatibility, and CPU feasibility remain unknown until separately approved
+acquisition.
+
+OpenELM-270M and Mamba2-130M were rejected for this immediate tranche despite
+their small size: the official OpenELM snapshot requires remote code and Apple
+AMLR research-only terms, while the official Mamba2 snapshot exposes no
+self-contained tokenizer contract. These are documented re-evaluation options,
+not substitutions. No candidate is downloaded, loaded, or allowed to read
+sealed targets by this dossier.
+
 ## 6. Required deliverables
 
 - `experiments/exp001-reference-integrated/protocol.json` and freeze manifest;

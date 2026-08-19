@@ -139,6 +139,19 @@ This ordering prevents the repository from confusing a positive automated
 proxy with the construct itself, and prevents infrastructure expansion from
 outpacing the human and causal evidence needed to test the hypothesis.
 
+### Next complementary-model selection checkpoint (2026-08-19)
+
+The no-download dossier
+`experiments/exp001-comparative-reference/next-model-selection.json` freezes
+`EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db` (MIT,
+`gpt_neo`, 125M) and `Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987`
+(Apache-2.0, `qwen2`, 0.5B) without consulting any prior score. They are
+complementary controls for architecture and within-provider scale, not pooled
+replications. The exact source/config/tokenizer links, estimated runtime
+allowlists, rejected alternatives, and fail-closed boundaries are documented
+in the dossier and schema. Acquisition, model load, feasibility, CCP material
+execution, and sealed-target access remain separate approval gates.
+
 ## Evolution ledger
 
 ### Phase A — hypothesis, governance, and public laboratory foundation

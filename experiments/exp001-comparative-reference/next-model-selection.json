@@ -1,0 +1,126 @@
+{
+  "artifact_class": "exp001-next-model-selection",
+  "selection_id": "exp001-next-models-v1.0.0",
+  "selection_status": "proposal_frozen_no_download",
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "selection_observed_prior_result": false,
+  "baseline_cohort": {
+    "original_three_model_ids": ["EleutherAI/pythia-70m-deduped", "HuggingFaceTB/SmolLM2-360M", "Qwen/Qwen3-0.6B-Base"],
+    "already_tested_control_ids": ["openai-community/gpt2", "HuggingFaceTB/SmolLM2-135M"],
+    "pooling_forbidden": true
+  },
+  "selection_basis": [
+    "architecture and provider diversity selected without consulting any prior score",
+    "public exact revision with official model-card and configuration evidence",
+    "permissive MIT or Apache-2.0 licensing with no gated terms acceptance",
+    "self-contained seven-file runtime allowlist including a fast tokenizer",
+    "small CPU-feasible scale with conservative acquisition estimates below 1.2 GiB per model",
+    "causal teacher-forced compatibility with the frozen EXP-001 protocol"
+  ],
+  "candidates": [
+    {
+      "role": "architecture_family_control",
+      "model_id": "EleutherAI/gpt-neo-125m",
+      "revision": "21def0189f5705e2521767faed922f1f15e7d7db",
+      "source_url": "https://huggingface.co/EleutherAI/gpt-neo-125m",
+      "revision_url": "https://huggingface.co/EleutherAI/gpt-neo-125m/tree/21def0189f5705e2521767faed922f1f15e7d7db",
+      "config_url": "https://huggingface.co/EleutherAI/gpt-neo-125m/blob/21def0189f5705e2521767faed922f1f15e7d7db/config.json",
+      "license_id": "MIT",
+      "license_url": "https://huggingface.co/EleutherAI/gpt-neo-125m",
+      "gated": false,
+      "provider": "EleutherAI",
+      "architecture": "GPTNeoForCausalLM",
+      "model_type": "gpt_neo",
+      "parameter_count": 125000000,
+      "num_hidden_layers": 12,
+      "hidden_size": 768,
+      "vocab_size": 50257,
+      "context_length": 2048,
+      "training_corpus_summary": "English causal LM trained on the Pile for 300 billion tokens; this is an EleutherAI architecture control distinct from GPT-NeoX Pythia while sharing a documented Pile lineage.",
+      "runtime_files": ["config.json", "generation_config.json", "merges.txt", "model.safetensors", "special_tokens_map.json", "tokenizer.json", "tokenizer_config.json", "vocab.json"],
+      "estimated_runtime_bytes": 540000000,
+      "local_root": "artifacts/models/gpt-neo-125m-21def018",
+      "acquisition_status": "not_acquired",
+      "source_evidence": [
+        "https://huggingface.co/EleutherAI/gpt-neo-125m",
+        "https://huggingface.co/EleutherAI/gpt-neo-125m/tree/21def0189f5705e2521767faed922f1f15e7d7db",
+        "https://huggingface.co/EleutherAI/gpt-neo-125m/blob/21def0189f5705e2521767faed922f1f15e7d7db/tokenizer_config.json"
+      ],
+      "compatibility_mapping": {
+        "causal_teacher_forced": true,
+        "fast_tokenizer_offsets_required": true,
+        "trust_remote_code": false,
+        "hidden_state_semantics": "embedding plus twelve post-block hidden states; primary is the final transformer-block output at tuple index 12",
+        "incompatibility_is_terminal": true
+      },
+      "unknown_until_authorized_acquisition": [
+        "exact per-file sizes and SHA-256 receipts",
+        "installed Transformers hidden-state tuple and fast-offset behavior",
+        "CPU float32 peak RSS, latency, and deterministic repeatability",
+        "example-level overlap with Pythia and other Pile-derived models"
+      ]
+    },
+    {
+      "role": "provider_scale_control",
+      "model_id": "Qwen/Qwen2.5-0.5B",
+      "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+      "source_url": "https://huggingface.co/Qwen/Qwen2.5-0.5B",
+      "revision_url": "https://huggingface.co/Qwen/Qwen2.5-0.5B/tree/060db6499f32faf8b98477b0a26969ef7d8b9987",
+      "config_url": "https://huggingface.co/Qwen/Qwen2.5-0.5B/blob/060db6499f32faf8b98477b0a26969ef7d8b9987/config.json",
+      "license_id": "Apache-2.0",
+      "license_url": "https://huggingface.co/Qwen/Qwen2.5-0.5B",
+      "gated": false,
+      "provider": "Qwen / Alibaba Cloud",
+      "architecture": "Qwen2ForCausalLM",
+      "model_type": "qwen2",
+      "parameter_count": 494000000,
+      "num_hidden_layers": 24,
+      "hidden_size": 896,
+      "vocab_size": 151936,
+      "context_length": 32768,
+      "training_corpus_summary": "Qwen2.5 base causal LM; this is a within-provider architecture and scale control against the already tested Qwen3-0.6B, not an independent provider claim.",
+      "runtime_files": ["config.json", "generation_config.json", "merges.txt", "model.safetensors", "tokenizer.json", "tokenizer_config.json", "vocab.json"],
+      "estimated_runtime_bytes": 1100000000,
+      "local_root": "artifacts/models/qwen2.5-0.5b-060db649",
+      "acquisition_status": "not_acquired",
+      "source_evidence": [
+        "https://huggingface.co/Qwen/Qwen2.5-0.5B",
+        "https://huggingface.co/Qwen/Qwen2.5-0.5B/blob/060db6499f32faf8b98477b0a26969ef7d8b9987/config.json",
+        "https://huggingface.co/Qwen/Qwen2.5-0.5B/blob/main/LICENSE"
+      ],
+      "compatibility_mapping": {
+        "causal_teacher_forced": true,
+        "fast_tokenizer_offsets_required": true,
+        "trust_remote_code": false,
+        "hidden_state_semantics": "embedding plus twenty-four post-block hidden states; primary is the final transformer-block output at tuple index 24",
+        "incompatibility_is_terminal": true
+      },
+      "unknown_until_authorized_acquisition": [
+        "exact per-file sizes and SHA-256 receipts",
+        "installed Transformers Qwen2 hidden-state tuple and fast-offset behavior",
+        "CPU float32 conversion peak RSS, latency, and deterministic repeatability",
+        "example-level overlap with Qwen3 and other Qwen2.5 training data"
+      ]
+    }
+  ],
+  "rejected_alternatives": [
+    {"model_id": "apple/OpenELM-270M", "reason": "official snapshot requires trust_remote_code and an Apple AMLR research-only license; the visible runtime tree does not provide a self-contained tokenizer allowlist"},
+    {"model_id": "state-spaces/mamba2-130m", "reason": "official snapshot is Apache-2.0 and tiny but contains only config and weights; tokenizer provenance and hidden-state adapter semantics are not self-contained for this protocol"}
+  ],
+  "comparison_policy": {
+    "run_independently": true,
+    "pool_scores_across_models": false,
+    "preserve_terminal_outcomes": true,
+    "no_post_hoc_substitution": true,
+    "same_frozen_protocol": true
+  },
+  "approval_required_before": [
+    "download of either candidate runtime allowlist",
+    "model load or material CPU feasibility measurement",
+    "one sealed-target read per candidate",
+    "any claim-bearing comparative publication"
+  ]
+}

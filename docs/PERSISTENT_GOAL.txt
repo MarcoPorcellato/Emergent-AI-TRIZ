@@ -44,3 +44,10 @@ The earlier R3 SmolLM2 package remains published in main merge
 `4cc1c6d862bffc9558b47a5cadd838a2ee22c465` with terminal `null`, one sealed
 target read, and no promoted scientific claim; the current objective extends
 the comparative proposal without reopening that package.
+The next no-download selection dossier names exactly two further candidates:
+EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db and
+Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987. Keep them
+unacquired until the exact acquisition/one-run approval is recorded; do not
+load a model, read sealed targets, or run CCP material execution from this
+checkpoint. Continue from the dossier and its schema, preserving prior
+packages and non-pooled terminal outcomes.
