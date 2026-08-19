@@ -25,6 +25,7 @@ _BLOCK = 1 << 20
 # slow response as a corrupt snapshot; size and SHA-256 verification remain
 # mandatory before a receipt is emitted.
 _TIMEOUT_SECONDS = 1_800
+_MAX_RESUME_ATTEMPTS = 8
 _ALLOWED_CDN_HOSTS = frozenset({
     "cdn-lfs.huggingface.co",
     "cdn-lfs-us-1.hf.co",
@@ -171,7 +172,12 @@ def _safe_root(root: Path, spec: AdditionalModelSpec, repository_root: Path | No
 
 def _assert_clean_root(root: Path, spec: AdditionalModelSpec) -> None:
     allowed = {name for name, _size in spec.files}
-    extras = sorted(item.name for item in root.iterdir() if item.name not in allowed)
+    allowed_temporary = {f".{name}.tmp" for name in allowed}
+    extras = sorted(
+        item.name
+        for item in root.iterdir()
+        if item.name not in allowed and item.name not in allowed_temporary
+    )
     if extras:
         raise AdditionalAcquisitionError("unexpected files in runtime root: " + ",".join(extras))
 
@@ -218,16 +224,16 @@ def validate_authorization(authorization: Mapping[str, Any], model_id: str) -> A
     return spec
 
 
-def _fetch(spec: AdditionalModelSpec, name: str, opener: Callable[..., Any] | None) -> Any:
+def _fetch(spec: AdditionalModelSpec, name: str, opener: Callable[..., Any] | None, *, offset: int = 0) -> Any:
     url = f"https://huggingface.co/{spec.model_id}/resolve/{spec.revision}/{name}"
-    request = Request(
-        url,
-        headers={
+    headers = {
             "Accept-Encoding": "identity",
             "X-Latent-Triz-Model": spec.model_id,
             "X-Latent-Triz-Revision": spec.revision,
-        },
-    )
+    }
+    if offset:
+        headers["Range"] = f"bytes={offset}-"
+    request = Request(url, headers=headers)
     response = opener(request, timeout=_TIMEOUT_SECONDS) if opener else _HTTP.open(request, timeout=_TIMEOUT_SECONDS)
     status = getattr(response, "status", 200)
     final_url = str(getattr(response, "url", url))
@@ -236,7 +242,7 @@ def _fetch(spec: AdditionalModelSpec, name: str, opener: Callable[..., Any] | No
         parsed_final.hostname == "huggingface.co"
         and parsed_final.path.startswith(f"/api/resolve-cache/models/{spec.model_id}/{spec.revision}/")
     )
-    if status != 200 or (final_url != url and parsed_final.hostname not in _ALLOWED_CDN_HOSTS and not internal):
+    if status not in {200, 206} or (final_url != url and parsed_final.hostname not in _ALLOWED_CDN_HOSTS and not internal):
         response.close()
         raise AdditionalAcquisitionError(f"download failed or unsafe redirect for {name}")
     return response
@@ -273,30 +279,46 @@ def acquire_additional(
         if destination.exists():
             continue
         remaining = spec.disk_budget_bytes - existing
-        response = _fetch(spec, name, opener)
         temporary = base / f".{name}.tmp"
-        size = 0
-        digest = hashlib.sha256()
         try:
-            with temporary.open("wb") as output:
-                while True:
-                    chunk = response.read(_BLOCK)
-                    if not chunk:
-                        break
-                    size += len(chunk)
-                    if size > expected_size or size > remaining:
-                        raise AdditionalAcquisitionError(f"download budget exceeded: {name}")
-                    output.write(chunk)
-                    digest.update(chunk)
-            if size != expected_size:
-                raise AdditionalAcquisitionError(f"download size mismatch: {name}")
-            temporary.replace(destination)
-            existing += size
+            for _attempt in range(_MAX_RESUME_ATTEMPTS):
+                offset = temporary.stat().st_size if temporary.exists() else 0
+                if offset > expected_size or offset > remaining:
+                    raise AdditionalAcquisitionError(f"download budget exceeded: {name}")
+                response = _fetch(spec, name, opener, offset=offset)
+                status = getattr(response, "status", 200)
+                if offset and status == 200:
+                    response.close()
+                    temporary.unlink(missing_ok=True)
+                    offset = 0
+                    response = _fetch(spec, name, opener)
+                    status = getattr(response, "status", 200)
+                if offset and status != 206:
+                    response.close()
+                    raise AdditionalAcquisitionError(f"range response missing for resumed file: {name}")
+                mode = "ab" if offset else "wb"
+                try:
+                    with temporary.open(mode) as output:
+                        while True:
+                            chunk = response.read(_BLOCK)
+                            if not chunk:
+                                break
+                            current = output.tell() + len(chunk)
+                            if current > expected_size or current > remaining:
+                                raise AdditionalAcquisitionError(f"download budget exceeded: {name}")
+                            output.write(chunk)
+                finally:
+                    response.close()
+                current_size = temporary.stat().st_size
+                if current_size == expected_size:
+                    temporary.replace(destination)
+                    existing += current_size
+                    break
+            else:
+                raise AdditionalAcquisitionError(f"download size mismatch after resume attempts: {name}")
         except BaseException:
             temporary.unlink(missing_ok=True)
             raise
-        finally:
-            response.close()
 
 
 def build_receipt_from_authorized(

@@ -107,8 +107,10 @@ The acquisition CLI is deliberately independent of model libraries. It streams
 each allowlisted file into an atomic temporary path, enforces the declared byte
 ceiling and exact size, and emits no receipt until every SHA-256 digest matches.
 The official CDN read timeout is bounded at 1,800 seconds so a slow large blob
-is not mistaken for a corrupt snapshot; a timeout or redirect violation still
-fails closed and leaves no partial runtime file or receipt.
+is not mistaken for a corrupt snapshot. Interrupted large blobs may resume only
+with an explicit byte-range response and remain inside the same exact-size
+budget; a timeout, invalid range, or redirect violation still fails closed and
+leaves no unverified runtime file or receipt.
 
 Primary official sources: [GPT-Neo model card](https://huggingface.co/EleutherAI/gpt-neo-125m),
 [GPT-Neo frozen tree](https://huggingface.co/EleutherAI/gpt-neo-125m/tree/21def0189f5705e2521767faed922f1f15e7d7db),

@@ -38,6 +38,10 @@ class _Response:
         self.closed = True
 
 
+class _RangeResponse(_Response):
+    status = 206
+
+
 class AdditionalAcquisitionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -143,6 +147,49 @@ class AdditionalAcquisitionTests(unittest.TestCase):
                 )
                 self.assertEqual(receipt["total_bytes"], 5)
                 self.assertFalse(receipt["model_loaded"])
+        finally:
+            MODEL_SPECS[model_id] = original
+
+    def test_streaming_resume_uses_range_and_exact_size(self):
+        model_id = "openai-community/gpt2"
+        original = MODEL_SPECS[model_id]
+        tiny = type(original)(
+            model_id=original.model_id,
+            revision=original.revision,
+            license_id=original.license_id,
+            root_locator="artifacts/models/_additional-acquisition-resume-test",
+            disk_budget_bytes=64,
+            files=(("config.json", 5),),
+        )
+        MODEL_SPECS[model_id] = tiny
+        try:
+            authorization = copy.deepcopy(self.authorization)
+            authorization["candidates"][0]["runtime_root"] = tiny.root_locator
+            authorization["candidates"][0]["disk_budget_bytes"] = tiny.disk_budget_bytes
+            authorization["candidates"][0]["runtime_files"] = [{"path": "config.json", "size_bytes": 5}]
+            with tempfile.TemporaryDirectory(prefix="latent-triz-additional-resume-") as workspace:
+                workspace_root = Path(workspace)
+                root = workspace_root / tiny.root_locator
+                root.mkdir(parents=True)
+                (root / ".config.json.tmp").write_bytes(b"ab")
+                requests = []
+
+                def open_response(request, timeout):
+                    requests.append(dict(request.header_items()))
+                    response = _RangeResponse(b"cde")
+                    response.url = request.full_url
+                    return response
+
+                acquire_additional(
+                    model_id,
+                    root,
+                    authorization=authorization,
+                    allow_download=True,
+                    opener=open_response,
+                    repository_root=workspace_root,
+                )
+                self.assertEqual((root / "config.json").read_bytes(), b"abcde")
+                self.assertEqual(requests[0]["Range"], "bytes=2-")
         finally:
             MODEL_SPECS[model_id] = original
 
