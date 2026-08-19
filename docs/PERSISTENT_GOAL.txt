@@ -71,3 +71,16 @@ No model load, generation, dense output, or sealed-target access has occurred
 for either candidate. The next checkpoint is one sequential CCP-guarded run
 per model after publication of these receipts; do not retry after model or
 target access and do not alter the frozen protocol.
+
+Execution checkpoint (2026-08-19): both one-shot runs completed and are
+terminal `null`. GPT-Neo is published in
+`results/exp001-comparative/gpt-neo-125m-21def018-gpt-neo-125m-20260819-01`
+with p=.6875, 323.899 s, peak RSS 1,858,076,672 B, and dense asset hash
+`53222272e786045156d86ad8aaf9ea123bc8e6efa26778d39008809393850c52`.
+Qwen2.5 is published in
+`results/exp001-comparative/qwen2.5-0.5b-060db649-qwen2.5-0.5b-20260819-01`
+with p=.96875, 935.267 s, peak RSS 4,876,828,672 B, and dense asset hash
+`577bea7e3161de630e5e9a649c152d301bc01658827a90d26d24eda48c627b3c`.
+Each package records one sealed-target read, no network/generation, and empty
+claim IDs. The next task is package publication/merge and fresh-clone
+verification; no further runs of these models are authorized by this dossier.
