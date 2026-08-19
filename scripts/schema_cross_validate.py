@@ -108,6 +108,7 @@ VALIDATION_PAIRS = (
     ("schemas/exp001-r3-analysis-plan.schema.json", "experiments/exp001-reference-integrated/analysis-plan.json"),
     ("schemas/exp001-r3-primary-unit.schema.json", "experiments/exp001-reference-integrated/fixtures/primary-units.jsonl"),
     ("schemas/exp001-comparative-model-registry.schema.json", "experiments/exp001-comparative-reference/model-registry.json"),
+    ("schemas/exp001-additional-model-selection.schema.json", "experiments/exp001-comparative-reference/additional-model-selection.json"),
     ("schemas/exp001-comparative-protocol.schema.json", "experiments/exp001-comparative-reference/protocol.json"),
     ("schemas/exp001-comparative-analysis-plan.schema.json", "experiments/exp001-comparative-reference/analysis-plan.json"),
     ("schemas/exp001-comparative-qwen-acquisition.schema.json", "experiments/exp001-comparative-reference/qwen-acquisition-dossier.json"),
@@ -187,6 +188,20 @@ def _track_b_mutations(protocol: Any, manifest: Any) -> Iterable[tuple[str, Any]
     yield "track_b_model_loaded", ("schemas/track-b-freeze-manifest.schema.json", model_loaded)
 
 
+def _additional_model_mutations(selection: Any) -> Iterable[tuple[str, Any]]:
+    extra_candidate = deepcopy(selection)
+    extra_candidate["candidates"].append(deepcopy(extra_candidate["candidates"][0]))
+    yield "additional_model_extra_candidate", ("schemas/exp001-additional-model-selection.schema.json", extra_candidate)
+
+    prior_result_selection = deepcopy(selection)
+    prior_result_selection["selection_observed_prior_result"] = True
+    yield "additional_model_observed_prior_result", ("schemas/exp001-additional-model-selection.schema.json", prior_result_selection)
+
+    downloaded_candidate = deepcopy(selection)
+    downloaded_candidate["candidates"][0]["acquisition_status"] = "integrity_verified"
+    yield "additional_model_premature_download", ("schemas/exp001-additional-model-selection.schema.json", downloaded_candidate)
+
+
 def _instances(path: Path) -> Iterable[tuple[int, Any]]:
     if path.suffix == ".jsonl":
         for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
@@ -255,13 +270,25 @@ def main() -> int:
                 f"reference_rejects={reference_rejects}"
             )
 
+    additional_selection = json.loads((ROOT / "experiments/exp001-comparative-reference/additional-model-selection.json").read_text(encoding="utf-8"))
+    for mutation_name, (schema_name, mutation) in _additional_model_mutations(additional_selection):
+        schema = json.loads((ROOT / schema_name).read_text(encoding="utf-8"))
+        reference = Draft202012Validator(schema)
+        minimal_rejects = bool(validate_minimal(mutation, schema))
+        reference_rejects = bool(list(reference.iter_errors(mutation)))
+        if not minimal_rejects or not reference_rejects:
+            errors.append(
+                f"mutation {mutation_name}: minimal_rejects={minimal_rejects} "
+                f"reference_rejects={reference_rejects}"
+            )
+
     if errors:
         for error in errors:
             print(f"schema-cross-validate: {error}", file=sys.stderr)
         return 1
     print(
         f"schema-cross-validate: {len(VALIDATION_PAIRS)} tracked pairs agree; "
-        "10 mutations rejected by both validators"
+        "13 mutations rejected by both validators"
     )
     return 0
 

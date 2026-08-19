@@ -3,8 +3,8 @@ type: research-specification
 title: EXP-001 Reference-Integrated TRIZ Study
 description: Durable preregistration for a source-aware, source-blinded, label-safe study using the public TRIZ reference layer.
 status: published_exploratory_results
-version: 0.2.0
-last_verified: 2026-08-18
+version: 0.3.0
+last_verified: 2026-08-19
 ---
 
 # EXP-001 — reference-integrated TRIZ study
@@ -285,6 +285,42 @@ This extension closes the automated three-model evidence tranche. Human TRIZ
 review remains a separate next step; no post-hoc tuning, pooling, model
 substitution, or retry is permitted.
 
+### Additional model extension — two-model no-download selection (2026-08-19)
+
+The three-model tranche above remains immutable. It is not amended, rerun, or
+pooled with the following separately frozen proposal. This proposal widens the
+future comparison to five model runs only after a new approval, acquisition,
+integrity, feasibility, and one-run dossier has been completed.
+
+| Candidate | Exact revision | Role | License | Declared runtime bytes |
+|---|---|---|---|---:|
+| GPT-2 (`openai-community/gpt2`) | `607a30d783dfa663caf39e06633721c8d4cfcd7e` | architecture-diversity control | MIT | 550,959,861 |
+| SmolLM2-135M (`HuggingFaceTB/SmolLM2-135M`) | `93efa2f097d58c2a74874c7e644dbc9b0cee75a2` | same-family scale control | Apache-2.0 | 272,437,465 |
+
+The exact source pages are [GPT-2 model card](https://huggingface.co/openai-community/gpt2),
+[GPT-2 frozen tree](https://huggingface.co/openai-community/gpt2/tree/607a30d783dfa663caf39e06633721c8d4cfcd7e),
+[GPT-2 config](https://huggingface.co/openai-community/gpt2/blob/607a30d783dfa663caf39e06633721c8d4cfcd7e/config.json),
+[SmolLM2-135M model card](https://huggingface.co/HuggingFaceTB/SmolLM2-135M),
+[SmolLM2-135M frozen tree](https://huggingface.co/HuggingFaceTB/SmolLM2-135M/tree/93efa2f097d58c2a74874c7e644dbc9b0cee75a2),
+and [SmolLM2-135M config](https://huggingface.co/HuggingFaceTB/SmolLM2-135M/blob/93efa2f097d58c2a74874c7e644dbc9b0cee75a2/config.json).
+
+Selection was made without consulting any prior model score. GPT-2 supplies a
+provider, decoder-family, tokenizer, and training-corpus contrast to Pythia,
+SmolLM2, and Qwen3. SmolLM2-135M is deliberately not an independent family:
+it is a within-family scale control for the already tested SmolLM2-360M. The
+five-model plan therefore increases architectural and scale variation without
+pretending that all five observations are independent replications.
+
+The machine-readable no-download dossier is
+`experiments/exp001-comparative-reference/additional-model-selection.json`,
+validated by `schemas/exp001-additional-model-selection.schema.json`. At this
+checkpoint no candidate weights or tokenizers have been acquired or loaded;
+no feasibility run, generation, or sealed-target access has occurred. The
+next gate is explicit operator approval for the exact allowlists, disk and
+runtime ceilings, one-run-per-candidate rule, and publication of every
+terminal outcome. A future incompatibility remains terminal and cannot be
+replaced by another model.
+
 ## 6. Required deliverables
 
 - `experiments/exp001-reference-integrated/protocol.json` and freeze manifest;
@@ -297,6 +333,8 @@ substitution, or retry is permitted.
 - external dense locator and hash, immutable publication manifest, limitations,
   and fresh-clone verifier evidence;
 - public PR, exact-head CCP evidence branch, merge commit, and chronology entry.
+- separate additional-model selection dossier and no-download audit for GPT-2
+  and SmolLM2-135M; acquisition and execution remain open gates.
 
 ## 7. Delegation and cost policy
 
@@ -334,3 +372,7 @@ the checkpoint.
 - [x] Exact-head receipt and local CCP gates are terminally green.
 - [x] Publication verifiers pass with declared external assets and reject missing or mutated assets.
 - [x] Main, chronology, persistent goal, and this specification agree on status.
+- [x] Additional-model no-download selection is frozen without prior-score
+  conditioning; no candidate is yet acquired or loaded.
+- [ ] Exact GPT-2 and SmolLM2-135M acquisition, integrity, feasibility, and
+  one-run publication dossier is approved and completed.

@@ -3,7 +3,7 @@ type: master-plan
 title: Laboratory Master Plan
 description: Canonical evolution ledger and gated route from the verified laboratory foundation to falsifiable, reproducible Latent TRIZ experiments.
 status: canonical
-last_verified: 2026-08-18
+last_verified: 2026-08-19
 ---
 
 # Laboratory Master Plan
@@ -110,12 +110,28 @@ The following decisions are now normative for future work:
    replication and additional principles are justified after the single
    operator contract and controls are stable. Composition and contradiction
    tasks come after the first causal gate; they cannot rescue a failed
-   single-operator result.
+   single-operator result. A bounded no-download proposal for GPT-2 and
+   SmolLM2-135M is now recorded as a readiness control only: it does not
+   authorize acquisition, model loading, or broaden the evidence claim.
 7. **Make the lab usable without weakening it.** A no-model quickstart should
    reproduce a synthetic result in under thirty minutes, expose the evidence
    profile and published nulls, and route all material execution through CCP
    and explicit approval. Infrastructure work that does not unlock a listed
    evidence gate is deferred.
+
+### Additional-model no-download checkpoint (2026-08-19)
+
+The separate dossier
+`experiments/exp001-comparative-reference/additional-model-selection.json`
+and schema `schemas/exp001-additional-model-selection.schema.json` freeze two
+complementary candidates without consulting prior scores: GPT-2 as an
+architecture-diversity control and SmolLM2-135M as a same-family scale control
+against SmolLM2-360M. Deterministic validation reports 116 tracked schema
+pairs and 13 mutation cases rejected by both validators; the full repository
+suite reports 701 passing tests. These are no-model readiness results, not
+scientific evidence. Acquisition, feasibility, and sealed execution remain
+separate approval gates, and the existing three-model packages remain
+immutable.
 
 This ordering prevents the repository from confusing a positive automated
 proxy with the construct itself, and prevents infrastructure expansion from
@@ -836,6 +852,10 @@ inspection, or a receipt for another commit are not a pass.
 - [x] Publish the sub-thirty-minute no-model contributor quickstart and a
   positive/null evidence-profile walkthrough entry point (`make
   no-model-quickstart`); the walkthrough remains readiness-only.
+- [x] Freeze and validate the separate no-download dossier for GPT-2 and
+  SmolLM2-135M without conditioning on prior model scores.
+- [ ] Acquire, integrity-verify, feasibility-test, and execute the two new
+  candidates under separate exact approvals and one-run limits.
 
 The unchecked items are genuine prerequisites, not missing documentation. A
 future run may not be called WLT or SLT evidence while any applicable item is

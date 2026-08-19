@@ -13,7 +13,10 @@ stronger lexical, template, source, near-neighbour, generic, cosmetic,
 Matrix-direction, unsupported-edge, abstention, random-label, and extreme
 domain-shift controls; demonstrate an out-of-sample direction; and prepare one
 validated-principle Lab 06 causal dossier. Defer composition and broad model
-scaling until that causal gate. Keep Track B as a separate no-TRIZ-term
+scaling until that causal gate. A separate no-download dossier now proposes
+GPT-2 and SmolLM2-135M as complementary architecture/scale controls; do not
+acquire or load them until their exact approval and integrity gates are closed.
+Keep Track B as a separate no-TRIZ-term
 from-scratch protocol with independent seeds and checkpoints. Its no-model
 contract is now recorded under `experiments/track-b-emergence/`; training and
 corpus access remain forbidden until a separate exact dossier and approval.
@@ -25,5 +28,8 @@ non-interpretable result; preserve historical artifacts; use deterministic
 tools first; delegate bounded inventory, tests, and documentation to cheaper
 workers; require a no-model contributor quickstart; and keep architecture,
 statistics, security, CCP, publication, and merge decisions under primary
-review. Continue until every checklist item in the canonical plan is proven or
-the precise human/external gate is recorded.
+review. Current no-download checkpoint is the local extension dossier on
+`agent/exp001-comparative-reference`; the next material checkpoint is a fresh
+exact-head CCP receipt followed by explicit approval for the two named
+candidates. Continue until every checklist item in the canonical plan is
+proven or the precise human/external gate is recorded.

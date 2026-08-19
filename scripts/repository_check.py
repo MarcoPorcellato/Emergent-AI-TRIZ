@@ -147,6 +147,7 @@ def main() -> int:
         ("schemas/exp001-r3-analysis-plan.schema.json", "experiments/exp001-reference-integrated/analysis-plan.json"),
         ("schemas/exp001-r3-primary-unit.schema.json", "experiments/exp001-reference-integrated/fixtures/primary-units.jsonl"),
         ("schemas/exp001-comparative-model-registry.schema.json", "experiments/exp001-comparative-reference/model-registry.json"),
+        ("schemas/exp001-additional-model-selection.schema.json", "experiments/exp001-comparative-reference/additional-model-selection.json"),
         ("schemas/exp001-comparative-protocol.schema.json", "experiments/exp001-comparative-reference/protocol.json"),
         ("schemas/exp001-comparative-analysis-plan.schema.json", "experiments/exp001-comparative-reference/analysis-plan.json"),
         ("schemas/exp001-comparative-qwen-acquisition.schema.json", "experiments/exp001-comparative-reference/qwen-acquisition-dossier.json"),
