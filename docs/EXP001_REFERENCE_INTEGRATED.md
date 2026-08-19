@@ -461,5 +461,7 @@ the checkpoint.
   revisions and integrity-verified without model or target access.
 - [x] One CCP-guarded GPT-Neo run and one CCP-guarded Qwen2.5 run are complete,
   with immutable terminal packages and publication-verifier PASS.
-- [ ] Qwen2.5 terminal package publication/merge and fresh-clone verification
-  (including missing/mutated external-asset rejection) are complete.
+- [x] Qwen2.5 terminal package publication/merge and fresh-clone verification
+  (including missing/mutated external-asset rejection) are complete. PR #97
+  merged at `a081e612feca348b28253ee0cc9e67c24b45ed3a`; the GPT-Neo companion
+  PR #96 merged at `74926e15fe06a6e41ef1aa0d96e731b70636531a`.

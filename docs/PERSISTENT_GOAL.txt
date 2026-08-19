@@ -82,5 +82,9 @@ Qwen2.5 is published in
 with p=.96875, 935.267 s, peak RSS 4,876,828,672 B, and dense asset hash
 `577bea7e3161de630e5e9a649c152d301bc01658827a90d26d24eda48c627b3c`.
 Each package records one sealed-target read, no network/generation, and empty
-claim IDs. The next task is package publication/merge and fresh-clone
-verification; no further runs of these models are authorized by this dossier.
+claim IDs. Qwen2.5 publication is merged in `main` at
+`a081e612feca348b28253ee0cc9e67c24b45ed3a` (PR #97); GPT-Neo publication is
+merged at `74926e15fe06a6e41ef1aa0d96e731b70636531a` (PR #96). Fresh-clone
+verification passed for both packages with the declared external assets and
+rejected both missing and one-byte-mutated assets. No further runs of these
+models are authorized by this dossier.
