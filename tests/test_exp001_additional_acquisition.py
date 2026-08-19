@@ -17,6 +17,7 @@ from latent_triz.exp001_additional_acquisition import (
 
 ROOT = Path(__file__).resolve().parents[1]
 AUTH_PATH = ROOT / "experiments/exp001-comparative-reference/additional-model-authorization.json"
+NEXT_AUTH_PATH = ROOT / "experiments/exp001-comparative-reference/next-model-authorization.json"
 
 
 class _Response:
@@ -41,9 +42,11 @@ class AdditionalAcquisitionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.authorization = json.loads(AUTH_PATH.read_text(encoding="utf-8"))
+        cls.next_authorization = json.loads(NEXT_AUTH_PATH.read_text(encoding="utf-8"))
 
     def test_exact_authorization_binds_both_candidates(self):
-        for model_id, spec in MODEL_SPECS.items():
+        for model_id in ("openai-community/gpt2", "HuggingFaceTB/SmolLM2-135M"):
+            spec = MODEL_SPECS[model_id]
             validated = validate_authorization(self.authorization, model_id)
             self.assertEqual(validated.revision, spec.revision)
             self.assertEqual(validated.total_declared_bytes, sum(size for _name, size in spec.files))
@@ -51,11 +54,27 @@ class AdditionalAcquisitionTests(unittest.TestCase):
     def test_approval_requested_and_missing_flag_fail_before_downloader(self):
         refused = copy.deepcopy(self.authorization)
         refused["status"] = "approval_requested"
-        for model_id in MODEL_SPECS:
+        for model_id in ("openai-community/gpt2", "HuggingFaceTB/SmolLM2-135M"):
             with self.assertRaises(AdditionalAcquisitionError):
                 acquire_additional(model_id, ROOT / MODEL_SPECS[model_id].root_locator, authorization=refused, allow_download=True)
             with self.assertRaises(AdditionalAcquisitionError):
                 acquire_additional(model_id, ROOT / MODEL_SPECS[model_id].root_locator, authorization=self.authorization, allow_download=False)
+
+    def test_next_models_are_exactly_bound_but_not_authorized(self):
+        expected = {
+            "EleutherAI/gpt-neo-125m": ("21def0189f5705e2521767faed922f1f15e7d7db", 529444041, 8),
+            "Qwen/Qwen2.5-0.5B": ("060db6499f32faf8b98477b0a26969ef7d8b9987", 999586188, 7),
+        }
+        self.assertEqual(self.next_authorization["status"], "approval_requested")
+        for model_id, (revision, total, count) in expected.items():
+            frozen = MODEL_SPECS[model_id]
+            self.assertEqual(frozen.revision, revision)
+            self.assertEqual(frozen.total_declared_bytes, total)
+            self.assertEqual(len(frozen.files), count)
+            candidate = next(item for item in self.next_authorization["candidates"] if item["model_id"] == model_id)
+            self.assertFalse(any(candidate["permissions"].values()))
+            with self.assertRaises(AdditionalAcquisitionError):
+                validate_authorization(self.next_authorization, model_id)
 
     def test_identity_budget_and_permissions_mutations_fail_closed(self):
         for field, value in (("revision", "0" * 40), ("disk_budget_bytes", 1), ("permissions", {})):

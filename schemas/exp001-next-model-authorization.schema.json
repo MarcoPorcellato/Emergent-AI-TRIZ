@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp001-next-model-authorization.schema.json",
+  "title": "EXP-001 exact authorization request for next complementary models",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "authorization_id", "selection_dossier", "status", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids", "source_metadata", "candidates", "execution", "operator_approval", "approval_required_before"],
+  "properties": {
+    "artifact_class": {"const": "exp001-next-model-authorization"},
+    "authorization_id": {"const": "exp001-next-models-v1.0.0"},
+    "selection_dossier": {"const": "experiments/exp001-comparative-reference/next-model-selection.json"},
+    "status": {"enum": ["approval_requested", "authorized"]},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "source_metadata": {"$ref": "#/$defs/source_metadata"},
+    "candidates": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"$ref": "#/$defs/candidate"}},
+    "execution": {"$ref": "#/$defs/execution"},
+    "operator_approval": {"$ref": "#/$defs/operator_approval"},
+    "approval_required_before": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+  },
+  "allOf": [
+    {
+      "properties": {
+        "candidates": {
+          "allOf": [
+            {"contains": {"type": "object", "properties": {"model_id": {"const": "EleutherAI/gpt-neo-125m"}, "revision": {"const": "21def0189f5705e2521767faed922f1f15e7d7db"}, "license_id": {"const": "MIT"}, "runtime_root": {"const": "artifacts/models/gpt-neo-125m-21def018"}, "disk_budget_bytes": {"const": 1073741824}}, "required": ["model_id", "revision", "license_id", "runtime_root", "disk_budget_bytes"]}},
+            {"contains": {"type": "object", "properties": {"model_id": {"const": "Qwen/Qwen2.5-0.5B"}, "revision": {"const": "060db6499f32faf8b98477b0a26969ef7d8b9987"}, "license_id": {"const": "Apache-2.0"}, "runtime_root": {"const": "artifacts/models/qwen2.5-0.5b-060db649"}, "disk_budget_bytes": {"const": 1610612736}}, "required": ["model_id", "revision", "license_id", "runtime_root", "disk_budget_bytes"]}}
+          ]
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "approval_requested"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "operator_approval": {"properties": {"granted": {"const": false}}},
+          "candidates": {"items": {"properties": {"permissions": {"properties": {"download": {"const": false}, "integrity_receipt": {"const": false}, "model_load": {"const": false}, "feasibility": {"const": false}, "sealed_execution": {"const": false}}}}}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "authorized"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "operator_approval": {"properties": {"granted": {"const": true}, "approved_at": {"type": "string"}, "approval_text_sha256": {"type": "string"}}},
+          "candidates": {"items": {"properties": {"permissions": {"properties": {"download": {"const": true}, "integrity_receipt": {"const": true}, "model_load": {"const": true}, "feasibility": {"const": true}, "sealed_execution": {"const": true}}}}}}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "source_metadata": {
+      "type": "object", "additionalProperties": false,
+      "required": ["provider", "retrieved_at", "network_used_for_metadata_only", "content_bytes_downloaded", "metadata_urls"],
+      "properties": {
+        "provider": {"const": "Hugging Face Hub official revision trees"},
+        "retrieved_at": {"type": "string", "pattern": "^2026-08-19$"},
+        "network_used_for_metadata_only": {"const": true},
+        "content_bytes_downloaded": {"const": false},
+        "metadata_urls": {"type": "array", "const": ["https://huggingface.co/api/models/EleutherAI/gpt-neo-125m/tree/21def0189f5705e2521767faed922f1f15e7d7db?recursive=true&expand=true", "https://huggingface.co/api/models/Qwen/Qwen2.5-0.5B/tree/060db6499f32faf8b98477b0a26969ef7d8b9987?recursive=true&expand=true"]}
+      }
+    },
+    "candidate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["role", "model_id", "revision", "license_id", "runtime_root", "disk_budget_bytes", "runtime_files", "declared_total_bytes", "source_tree_metadata_sha256", "permissions"],
+      "properties": {
+        "role": {"enum": ["architecture_family_control", "provider_scale_control"]},
+        "model_id": {"enum": ["EleutherAI/gpt-neo-125m", "Qwen/Qwen2.5-0.5B"]},
+        "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "license_id": {"enum": ["MIT", "Apache-2.0"]},
+        "runtime_root": {"type": "string", "pattern": "^artifacts/models/[a-z0-9.-]+$"},
+        "disk_budget_bytes": {"type": "integer", "minimum": 1},
+        "runtime_files": {"type": "array", "minItems": 7, "maxItems": 8, "items": {"$ref": "#/$defs/file"}},
+        "declared_total_bytes": {"type": "integer", "minimum": 1},
+        "source_tree_metadata_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "permissions": {"$ref": "#/$defs/permissions"}
+      }
+    },
+    "file": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "size_bytes", "source_oid"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^[A-Za-z0-9._-]+$"},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "source_oid": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+        "source_lfs_oid": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "permissions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["download", "integrity_receipt", "model_load", "feasibility", "sealed_execution"],
+      "properties": {
+        "download": {"type": "boolean"},
+        "integrity_receipt": {"type": "boolean"},
+        "model_load": {"type": "boolean"},
+        "feasibility": {"type": "boolean"},
+        "sealed_execution": {"type": "boolean"}
+      }
+    },
+    "execution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["one_run_per_model", "local_cpu_float32", "network", "generation", "wall_time_seconds_per_model", "peak_rss_bytes_per_model", "new_dense_output_bytes_per_model", "sealed_target_reads", "publish_every_terminal_outcome", "no_tuning_substitution_or_retry", "pool_scores_across_models"],
+      "properties": {
+        "one_run_per_model": {"const": true}, "local_cpu_float32": {"const": true}, "network": {"const": false}, "generation": {"const": false},
+        "wall_time_seconds_per_model": {"const": 1800}, "peak_rss_bytes_per_model": {"const": 8589934592}, "new_dense_output_bytes_per_model": {"const": 134217728},
+        "sealed_target_reads": {"const": "exactly_one_at_analysis_boundary"}, "publish_every_terminal_outcome": {"const": true},
+        "no_tuning_substitution_or_retry": {"const": true}, "pool_scores_across_models": {"const": false}
+      }
+    },
+    "operator_approval": {
+      "type": "object", "additionalProperties": false,
+      "required": ["granted", "operator_id", "approved_at", "approval_text_sha256"],
+      "properties": {
+        "granted": {"type": "boolean"}, "operator_id": {"const": "MarcoPorcellato"},
+        "approved_at": {"type": ["string", "null"], "pattern": "^2026-08-19$"},
+        "approval_text_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"}
+      }
+    }
+  }
+}

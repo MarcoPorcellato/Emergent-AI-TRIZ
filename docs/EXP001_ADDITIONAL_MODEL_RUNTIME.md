@@ -80,3 +80,31 @@ adapter load. This makes the two failure classes observable and fail-closed:
 The correction must pass a new exact-head CCP qualification before material
 execution. This document is updated with terminal receipts and results only
 after that qualification and the two authorised runs complete.
+
+## Next complementary controls: metadata-only preflight
+
+The next candidates are deliberately documented in a separate, non-authorising
+request at
+`experiments/exp001-comparative-reference/next-model-authorization.json`.
+Official revision-tree metadata was read on 2026-08-19; no runtime bytes were
+downloaded. The exact contracts are:
+
+| model | revision | loader/config | tokenizer metadata | runtime allowlist | ceiling |
+| --- | --- | --- | --- | --- | --- |
+| `EleutherAI/gpt-neo-125m` | `21def0189f5705e2521767faed922f1f15e7d7db` | `gpt_neo`, `GPTNeoForCausalLM`, 12 layers, hidden 768, vocab 50,257 | `GPT2Tokenizer`, `model_max_length=2048` | 8 files, 529,444,041 bytes | 1 GiB |
+| `Qwen/Qwen2.5-0.5B` | `060db6499f32faf8b98477b0a26969ef7d8b9987` | `qwen2`, `Qwen2ForCausalLM`, 24 layers, hidden 896, vocab 151,936, model context 32,768 | `Qwen2Tokenizer`, `model_max_length=131072` | 7 files, 999,586,188 bytes | 1.5 GiB |
+
+The Qwen tokenizer metadata advertises a larger tokenizer maximum than the
+model's `max_position_embeddings`; the runner must bind both values and reject
+inputs that exceed the model context. Both contracts require fast offsets,
+`trust_remote_code=false`, offline local-only loading, CPU float32, and
+teacher-forced scoring without generation. The request remains
+`status=approval_requested` with every permission false. The earlier GPT-2 and
+SmolLM2-135M authorization cannot be reused for these exact snapshots.
+
+Primary official sources: [GPT-Neo model card](https://huggingface.co/EleutherAI/gpt-neo-125m),
+[GPT-Neo frozen tree](https://huggingface.co/EleutherAI/gpt-neo-125m/tree/21def0189f5705e2521767faed922f1f15e7d7db),
+[GPT-Neo tokenizer config](https://huggingface.co/EleutherAI/gpt-neo-125m/blob/21def0189f5705e2521767faed922f1f15e7d7db/tokenizer_config.json),
+[Qwen2.5 model card](https://huggingface.co/Qwen/Qwen2.5-0.5B),
+[Qwen2.5 frozen config](https://huggingface.co/Qwen/Qwen2.5-0.5B/blob/060db6499f32faf8b98477b0a26969ef7d8b9987/config.json),
+and [Qwen2.5 tokenizer config](https://huggingface.co/Qwen/Qwen2.5-0.5B/blob/060db6499f32faf8b98477b0a26969ef7d8b9987/tokenizer_config.json).

@@ -27,8 +27,10 @@ class ComparativeAdapterError(RuntimeError):
 
 _SUPPORTED_CONFIGS: dict[str, str] = {
     "gpt2": "GPT2LMHeadModel",
+    "gpt_neo": "GPTNeoForCausalLM",
     "gpt_neox": "GPTNeoXForCausalLM",
     "llama": "LlamaForCausalLM",
+    "qwen2": "Qwen2ForCausalLM",
     "qwen3": "Qwen3ForCausalLM",
 }
 _LABELS = frozenset(("A", "B", "C", "D"))

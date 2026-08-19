@@ -47,7 +47,10 @@ the comparative proposal without reopening that package.
 The next no-download selection dossier names exactly two further candidates:
 EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db and
 Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987. Keep them
-unacquired until the exact acquisition/one-run approval is recorded; do not
-load a model, read sealed targets, or run CCP material execution from this
+unacquired until the exact acquisition/one-run approval is recorded. The
+metadata-only authorization request binds 529,444,041 bytes across eight
+GPT-Neo files and 999,586,188 bytes across seven Qwen2.5 files, with 1 GiB and
+1.5 GiB ceilings, source OIDs/LFS OIDs, and all permissions false. Do not load
+a model, read sealed targets, or run CCP material execution from this
 checkpoint. Continue from the dossier and its schema, preserving prior
 packages and non-pooled terminal outcomes.
