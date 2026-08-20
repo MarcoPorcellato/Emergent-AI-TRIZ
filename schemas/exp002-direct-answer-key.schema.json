@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-direct-answer-key.schema.json",
+  "title": "EXP-002 direct TRIZ answer-key gate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "key_id", "protocol_id", "status", "question_bank", "question_bank_sha256", "records", "expert_review", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-direct-answer-key"},
+    "key_id": {"const": "exp002-direct-answer-key-v1.0.0"},
+    "protocol_id": {"const": "exp002-qwen3-followup-v1.0.0"},
+    "status": {"enum": ["not_ready", "expert_review", "frozen"]},
+    "question_bank": {"const": "experiments/exp002-qwen3-followup/question-bank-manifest.json"},
+    "question_bank_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "records": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["question_id", "key_type", "expert_status"], "properties": {"question_id": {"type": "string", "pattern": "^exp002-"}, "key_type": {"enum": ["exact", "abstention", "rubric_required", "non_evidential"]}, "expected": {}, "unsupported": {"type": "boolean"}, "expert_status": {"enum": ["pending", "reviewed"]}}}},
+    "expert_review": {"type": "object", "additionalProperties": false, "required": ["required", "status", "reviewer_count"], "properties": {"required": {"const": true}, "status": {"enum": ["pending", "complete"]}, "reviewer_count": {"type": "integer", "minimum": 0}}},
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}
