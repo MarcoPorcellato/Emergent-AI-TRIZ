@@ -15,6 +15,25 @@ class Exp002KnowledgeError(ValueError):
     """Raised when direct-question outcomes are incomplete or malformed."""
 
 
+_ABSTENTION_WORDS = {
+    "abstain", "abstention", "uncertain", "insufficient_information",
+    "not_established", "unsupported",
+}
+
+
+def _key_info(key: Any) -> tuple[Any, bool]:
+    if isinstance(key, Mapping):
+        return key.get("answer"), bool(key.get("unsupported", False))
+    return key, isinstance(key, str) and key.strip().lower() in _ABSTENTION_WORDS
+
+
+def _is_abstention(row: Mapping[str, Any]) -> bool:
+    prediction = row.get("prediction")
+    return bool(row.get("abstained")) or (
+        isinstance(prediction, str) and prediction.strip().lower() in _ABSTENTION_WORDS
+    )
+
+
 def evaluate_direct_questions(
     outcomes: Sequence[Mapping[str, Any]], answer_key: Mapping[str, Any],
 ) -> dict[str, Any]:
@@ -38,21 +57,37 @@ def evaluate_direct_questions(
     modules: dict[str, Any] = {}
     for module, module_rows in sorted(by_module.items()):
         scored = [row for row in module_rows if row.get("scientific_role") != "familiarity_diagnostic"]
-        correct = sum(row["prediction"] == answer_key[row["question_id"]] for row in scored)
-        abstained = sum(row["abstained"] for row in scored)
+        correct = 0
+        abstained = 0
+        abstention_correct = 0
+        unsupported_total = 0
+        unsupported_false_accepts = 0
         unsupported = 0
         for row in scored:
-            key = answer_key[row["question_id"]]
-            if isinstance(key, Mapping) and bool(key.get("unsupported", False)) and row["prediction"] == key.get("answer"):
+            key, key_is_unsupported = _key_info(answer_key[row["question_id"]])
+            is_abstention = _is_abstention(row)
+            correct += row["prediction"] == key
+            abstained += is_abstention
+            if key_is_unsupported:
+                unsupported_total += 1
+                abstention_correct += is_abstention
+                unsupported_false_accepts += not is_abstention
+            if key_is_unsupported and row["prediction"] == key:
                 unsupported += 1
+        scored_count = len(scored)
         modules[module] = {
             "record_count": len(module_rows),
-            "scored_count": len(scored),
-            "self_report_excluded": len(module_rows) - len(scored),
-            "accuracy": correct / len(scored) if scored else None,
-            "abstention_rate": abstained / len(scored) if scored else None,
+            "scored_count": scored_count,
+            "self_report_excluded": len(module_rows) - scored_count,
+            "accuracy": correct / scored_count if scored_count else None,
+            "exact_precision": correct / (scored_count - abstained) if scored_count - abstained else None,
+            "exact_recall": correct / scored_count if scored_count else None,
+            "abstention_rate": abstained / scored_count if scored_count else None,
+            "abstention_precision": abstention_correct / abstained if abstained else None,
+            "abstention_recall": abstention_correct / unsupported_total if unsupported_total else None,
             "unsupported_claim_count": unsupported,
-            "unsupported_claim_rate": unsupported / len(scored) if scored else None,
+            "unsupported_claim_rate": unsupported / scored_count if scored_count else None,
+            "unsupported_false_accept_rate": unsupported_false_accepts / unsupported_total if unsupported_total else None,
         }
     return {"modules": modules, "self_report_is_non_evidential": True, "claim_ids": [], "evidence_eligible": False}
 

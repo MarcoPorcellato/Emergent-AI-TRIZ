@@ -30,6 +30,13 @@ def validate_answer_key(
     review = artifact.get("expert_review")
     if not isinstance(records, Sequence) or isinstance(records, (str, bytes, bytearray)) or not isinstance(review, Mapping):
         raise Exp002AnswerKeyError("answer-key records/review are malformed")
+    reviewer_ids = review.get("reviewer_ids")
+    if isinstance(reviewer_ids, (str, bytes, bytearray)) or not isinstance(reviewer_ids, Sequence):
+        raise Exp002AnswerKeyError("reviewer_ids must be a sequence")
+    if len(set(reviewer_ids)) != len(reviewer_ids) or any(not isinstance(value, str) or not value.strip() for value in reviewer_ids):
+        raise Exp002AnswerKeyError("reviewer_ids must be unique non-empty pseudonyms")
+    if review.get("disagreement_policy") != "unresolved_records_remain_rubric_required":
+        raise Exp002AnswerKeyError("answer-key disagreement policy drift")
     expected_ids = set(question_ids)
     seen: set[str] = set()
     for record in records:
@@ -45,7 +52,7 @@ def validate_answer_key(
         seen.add(question_id)
     status = artifact.get("status")
     if status == "not_ready":
-        if records or review.get("status") != "pending":
+        if records or review.get("status") != "pending" or reviewer_ids:
             raise Exp002AnswerKeyError("not_ready key contains reviewed material")
         return
     if status == "expert_review":
@@ -57,7 +64,7 @@ def validate_answer_key(
     if status == "frozen":
         if seen != expected_ids or not records:
             raise Exp002AnswerKeyError("frozen key must cover every question exactly once")
-        if review.get("status") != "complete" or int(review.get("reviewer_count", 0)) < 3:
+        if review.get("status") != "complete" or int(review.get("reviewer_count", 0)) < 3 or len(reviewer_ids) < 3 or int(review.get("reviewer_count", 0)) != len(reviewer_ids):
             raise Exp002AnswerKeyError("frozen key lacks three completed expert reviews")
         if any(record.get("expert_status") != "reviewed" for record in records):
             raise Exp002AnswerKeyError("frozen key contains unreviewed records")

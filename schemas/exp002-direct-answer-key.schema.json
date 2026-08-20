@@ -13,7 +13,7 @@
     "question_bank": {"const": "experiments/exp002-qwen3-followup/question-bank-manifest.json"},
     "question_bank_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "records": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["question_id", "key_type", "expert_status"], "properties": {"question_id": {"type": "string", "pattern": "^exp002-"}, "key_type": {"enum": ["exact", "abstention", "rubric_required", "non_evidential"]}, "expected": {}, "unsupported": {"type": "boolean"}, "expert_status": {"enum": ["pending", "reviewed"]}}}},
-    "expert_review": {"type": "object", "additionalProperties": false, "required": ["required", "status", "reviewer_count"], "properties": {"required": {"const": true}, "status": {"enum": ["pending", "complete"]}, "reviewer_count": {"type": "integer", "minimum": 0}}},
+    "expert_review": {"type": "object", "additionalProperties": false, "required": ["required", "status", "reviewer_count", "reviewer_ids", "disagreement_policy"], "properties": {"required": {"const": true}, "status": {"enum": ["pending", "complete"]}, "reviewer_count": {"type": "integer", "minimum": 0}, "reviewer_ids": {"type": "array", "items": {"type": "string", "pattern": "^[A-Za-z0-9_-]{2,64}$"}, "uniqueItems": true}, "disagreement_policy": {"const": "unresolved_records_remain_rubric_required"}}},
     "model_access": {"const": false},
     "sealed_target_access": {"const": false},
     "scientific_status": {"const": "exploratory"},

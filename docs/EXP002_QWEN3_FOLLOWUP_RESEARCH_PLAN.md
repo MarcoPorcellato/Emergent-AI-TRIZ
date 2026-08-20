@@ -27,6 +27,16 @@ was admitted with inactive/empty admission and a responsive empty runtime;
 post-run handoffs returned the slot to `free`. Manual lock or quarantine
 mutation was never used.
 
+The no-model EXP-002B/C preparation now also includes a fail-closed answer-key
+gate requiring three pseudonymous reviewers and an explicit disagreement policy,
+plus an EXP-002C transfer-corpus schema/validator. The public transfer template
+is intentionally empty (`design_ready_no_model`): it cannot be frozen until
+independent authors, source-proximity audit, held-out/sealed-novel splits, and
+power calibration are supplied. The validator rejects EXP-001 reuse, TRIZ/source
+cues in the blinded primary, answer-bearing fields, duplicate fingerprints, and
+shared expert/generator locators. These additions perform no model load,
+generation, tokenizer access, or sealed-target read.
+
 ### EXP-002A baseline result (2026-08-20)
 
 All seven exact models produced an exploratory `null` terminal result under the

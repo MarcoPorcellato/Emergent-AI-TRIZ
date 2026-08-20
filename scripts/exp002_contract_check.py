@@ -23,6 +23,7 @@ from latent_triz.exp002_followup import (  # noqa: E402
 from latent_triz.exp002_question_bank import build_question_bank, validate_question_bank  # noqa: E402
 from latent_triz.exp002_terminal import TERMINAL_STATUSES, build_terminal_result, validate_terminal_result  # noqa: E402
 from latent_triz.exp002_analysis import evaluate_transfer, validate_analysis_result  # noqa: E402
+from latent_triz.exp002_transfer_corpus import validate_transfer_fixture  # noqa: E402
 
 
 def load(relative: str) -> Any:
@@ -76,6 +77,10 @@ def main() -> int:
     validate_schema("schemas/exp002-response-surface-plan.schema.json", response_surface)
     transfer_plan = load("experiments/exp002-qwen3-followup/transfer-corpus-plan.json")
     validate_schema("schemas/exp002-transfer-corpus-plan.schema.json", transfer_plan)
+    transfer_corpus = load("experiments/exp002-qwen3-followup/transfer-corpus-template.json")
+    validate_schema("schemas/exp002-transfer-corpus.schema.json", transfer_corpus)
+    if transfer_corpus["status"] != "design_ready_no_model" or transfer_corpus["records"]:
+        raise AssertionError("EXP-002C public template must remain design-only and empty")
     analysis_contract = load("experiments/exp002-qwen3-followup/analysis-contract.json")
     validate_schema("schemas/exp002-analysis-contract.schema.json", analysis_contract)
     source_plan = load("experiments/exp002-qwen3-followup/source-familiarity-plan.json")
