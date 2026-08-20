@@ -56,13 +56,15 @@ latent rediscovery, and the strata are not pooled.
 ### EXP-002 Qwen3 follow-up — no-model implementation
 
 Branch [`exp002-qwen3-followup`](https://github.com/MarcoPorcellato/Latent-TRIZ/tree/exp002-qwen3-followup)
-is published through exact head `7b06136` with the no-model tranche of the
+is published through exact head `5a5c9ad` with the no-model tranche of the
 follow-up plan: tokenizer and label-surface audits, source-familiarity and
 rights controls, a 351-record direct TRIZ bank (eight task types for each of
 the 40 principles), transfer-corpus/statistical contracts, terminal receipts,
-and an approval dossier. This branch has not loaded a model, generated text,
-run CCP materially, or read sealed targets. Execution remains a separate
-operator-approval gate and is not represented as public evidence.
+and an operator-authorized seven-model dossier. This branch has not loaded a
+model, generated text, run CCP materially, or read sealed targets. The current
+CCP coordinator gate is `unknown` because its `quarantine` layout is unsafe;
+material execution remains fail-closed until a fresh Admit/inactive/empty
+snapshot is available.
 
 ## Published model-backed record
 
