@@ -4,6 +4,12 @@
   "status": "published",
   "packages": [
     {
+      "model_id": "Qwen/Qwen2.5-0.5B",
+      "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/qwen-qwen2-5-0-5b/exp002-qwen2-5-0-5b-exp002a-20260820-01"
+    },
+    {
       "model_id": "EleutherAI/gpt-neo-125m",
       "revision": "21def0189f5705e2521767faed922f1f15e7d7db",
       "terminal_status": "null",
@@ -41,6 +47,10 @@
     }
   ],
   "external_dense_assets": [
+    {
+      "locator": "artifacts/exp002/qwen-qwen2-5-0-5b/exp002-qwen2-5-0-5b-exp002a-20260820-01/response-scores.json",
+      "sha256": "c9b6662a320d4820bc3ba9d07c691eec066bdd6ff7eb16e681c5baaea33e2fca"
+    },
     {
       "locator": "artifacts/exp002/eleutherai-gpt-neo-125m/exp002-gpt-neo-125m-exp002a-20260820-01/response-scores.json",
       "sha256": "f835ce4f6377001cfdd45face21f0c757140d6c72d7f58df6b3c1bd63d2855d8"
