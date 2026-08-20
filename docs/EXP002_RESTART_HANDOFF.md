@@ -146,6 +146,8 @@ before assigning `measurement_robust` or `measurement_artifact_supported`.
 The direct-question scorer treats `bounded_completion` as a separate generation
 capability and rejects it unless an explicit generation authorization is passed;
 structured/abstention probes remain the no-generation path.
+The injected runner now dispatches EXP-002B through this direct-question path;
+EXP-002A and EXP-002C retain the response-surface path.
 Source-familiarity metrics use the same injected-observation boundary and are
 descriptive only; they never become a provenance claim.
 
