@@ -29,6 +29,12 @@
     "scientific_status": {"const": "exploratory"},
     "claim_ids": {"type": "array", "maxItems": 0}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "frozen_no_model"}}},
+      "then": {"properties": {"records": {"minItems": 1}}}
+    }
+  ],
   "$defs": {
     "record": {
       "type": "object",

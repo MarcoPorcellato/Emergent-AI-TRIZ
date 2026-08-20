@@ -15,10 +15,13 @@ class Exp002SchemaGuardTests(unittest.TestCase):
         self.answer_template = json.loads((ROOT / "results/exp002/preexecution/direct-answer-key-template.json").read_text(encoding="utf-8"))
         self.collection_schema = json.loads((ROOT / "schemas/exp002-expert-review-collection.schema.json").read_text(encoding="utf-8"))
         self.collection_template = json.loads((ROOT / "experiments/exp002-qwen3-followup/expert-review-collection.json").read_text(encoding="utf-8"))
+        self.transfer_schema = json.loads((ROOT / "schemas/exp002-transfer-corpus.schema.json").read_text(encoding="utf-8"))
+        self.transfer_template = json.loads((ROOT / "experiments/exp002-qwen3-followup/transfer-corpus-template.json").read_text(encoding="utf-8"))
 
     def test_tracked_empty_templates_validate(self):
         self.assertFalse(list(Draft202012Validator(self.answer_schema).iter_errors(self.answer_template)))
         self.assertFalse(list(Draft202012Validator(self.collection_schema).iter_errors(self.collection_template)))
+        self.assertFalse(list(Draft202012Validator(self.transfer_schema).iter_errors(self.transfer_template)))
 
     def test_exact_answer_and_frozen_review_requirements_are_schema_bound(self):
         invalid_record = copy.deepcopy(self.answer_template)
@@ -38,6 +41,11 @@ class Exp002SchemaGuardTests(unittest.TestCase):
         invalid["status"] = "submitted"
         invalid["packets"] = []
         self.assertTrue(list(Draft202012Validator(self.collection_schema).iter_errors(invalid)))
+
+    def test_frozen_transfer_corpus_cannot_be_empty(self):
+        invalid = copy.deepcopy(self.transfer_template)
+        invalid["status"] = "frozen_no_model"
+        self.assertTrue(list(Draft202012Validator(self.transfer_schema).iter_errors(invalid)))
 
 
 if __name__ == "__main__":
