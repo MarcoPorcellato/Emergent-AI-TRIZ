@@ -82,6 +82,10 @@ def main() -> int:
     validate_schema("schemas/exp002-source-familiarity-plan.schema.json", source_plan)
     source_manifest = load("experiments/exp002-qwen3-followup/source-proximity-manifest.json")
     validate_schema("schemas/exp002-source-proximity-manifest.schema.json", source_manifest)
+    execution_receipt = load("results/exp002/preexecution/execution-receipt-template.json")
+    validate_schema("schemas/exp002-execution-receipt.schema.json", execution_receipt)
+    if execution_receipt["status"] != "not_started" or execution_receipt["access"]["model_loaded"]:
+        raise AssertionError("execution receipt template crossed its boundary")
     approval = load("experiments/exp002-qwen3-followup/approval-dossier.json")
     validate_schema("schemas/exp002-approval-dossier.schema.json", approval)
     if approval["status"] != "approval_requested" or approval["operator_approval"]["granted"] is not False:
