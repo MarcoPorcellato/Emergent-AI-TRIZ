@@ -4,6 +4,12 @@
   "status": "published",
   "packages": [
     {
+      "model_id": "openai-community/gpt2",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/openai-community-gpt2/exp002-gpt2-exp002a-20260820-01"
+    },
+    {
       "model_id": "HuggingFaceTB/SmolLM2-360M",
       "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
       "terminal_status": "null",
@@ -23,6 +29,10 @@
     }
   ],
   "external_dense_assets": [
+    {
+      "locator": "artifacts/exp002/openai-community-gpt2/exp002-gpt2-exp002a-20260820-01/response-scores.json",
+      "sha256": "0cd2093fbf233e4a3c3cebf9570277746fd1fd4f155ade86a5f7e55241f7ad04"
+    },
     {
       "locator": "artifacts/exp002/huggingfacetb-smollm2-360m/exp002-smollm2-360m-exp002a-20260820-01/response-scores.json",
       "sha256": "989cf01890c472c7f9643b336952c1987be88d72a82fd15faef0b2862bdbdbf1"
