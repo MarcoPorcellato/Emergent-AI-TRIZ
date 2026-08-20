@@ -83,7 +83,7 @@ exp002-publication-verify:
 	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/exp002_publication_verify.py
 
 exp002-runner-test:
-	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) -m unittest tests.test_exp002_runner tests.test_exp002_stage_cli tests.test_exp002_answer_key tests.test_exp002_freeze_answer_key_cli tests.test_exp002_transfer_corpus tests.test_exp002_validate_transfer_corpus_cli tests.test_exp002_stage_preflight tests.test_exp002_stage_gate tests.test_exp002_expert_review tests.test_exp002_source_familiarity tests.test_exp002_power
+	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) -m unittest tests.test_exp002_runner tests.test_exp002_stage_cli tests.test_exp002_answer_key tests.test_exp002_freeze_answer_key_cli tests.test_exp002_transfer_corpus tests.test_exp002_validate_transfer_corpus_cli tests.test_exp002_stage_preflight tests.test_exp002_stage_gate tests.test_exp002_expert_review tests.test_exp002_source_familiarity tests.test_exp002_power tests.test_exp002_schema_guards
 
 no-model-quickstart:
 	@echo "Latent-TRIZ no-model quickstart: synthetic dashboard, schemas, H1 packet, CV2, and Lab06 readiness"

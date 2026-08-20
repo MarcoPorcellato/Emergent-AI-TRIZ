@@ -63,8 +63,9 @@ no expert decisions have been fabricated or inferred.
 The answer-key module now exposes a deterministic freeze function that accepts
 only three validated packets. Exact agreement is copied into the frozen key;
 disagreement is retained as `rubric_required`, and missing exact answers fail
-closed. No majority vote, model output, or sealed target can resolve a
-disagreement implicitly.
+closed. The JSON schema enforces the same exact-answer and three-reviewer
+requirements before a consumer can treat the artifact as `frozen`. No majority
+vote, model output, or sealed target can resolve a disagreement implicitly.
 
 The source-familiarity arm now has a separate locator-only fixture and
 validator. Its public records can carry only a logical prompt locator, a
