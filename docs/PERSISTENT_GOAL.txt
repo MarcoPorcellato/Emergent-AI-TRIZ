@@ -1,5 +1,5 @@
 EXP-002 checkpoint (2026-08-20): branch `exp002-qwen3-followup` is the active
-implementation branch at exact head `ede29f6`. The no-model protocol,
+implementation branch at exact head `21917e3`. The no-model protocol,
 seven-model identity registry, target-free 351-question TRIZ bank,
 tokenizer-audit gate, public label-surface diagnostic, injected material
 runner, immutable publication contracts, guarded EXP-002A CLI, direct-answer
