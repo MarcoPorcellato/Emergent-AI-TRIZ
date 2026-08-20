@@ -24,6 +24,10 @@ _NO_MODEL_BOUNDARY = (
     "new_download",
 )
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_MATERIAL_BINDINGS = (
+    "runner_sha256", "adapter_sha256", "analysis_sha256",
+    "sealed_key_schema_sha256", "model_registry_sha256", "public_key_template_sha256",
+)
 
 
 def _models() -> list[dict[str, str]]:
@@ -122,6 +126,12 @@ def validate_auto_dossier(dossier: Mapping[str, Any], *, protocol_sha256: str) -
         raise Exp002AutoContractError("AUTO dossier protocol hash drift")
     _sha256(dossier.get("schedule_sha256"), "schedule_sha256")
     _sha256(dossier.get("input_manifest_sha256"), "input_manifest_sha256")
+    bindings = dossier.get("material_bindings")
+    if bindings is not None:
+        if not isinstance(bindings, Mapping) or set(bindings) != set(_MATERIAL_BINDINGS):
+            raise Exp002AutoContractError("AUTO material binding inventory drift")
+        for field in _MATERIAL_BINDINGS:
+            _sha256(bindings.get(field), f"material_bindings.{field}")
     _validate_models(dossier.get("exact_models"), "exact_models")
     if dossier.get("claim_ids") != []:
         raise Exp002AutoContractError("AUTO dossier cannot promote claims")

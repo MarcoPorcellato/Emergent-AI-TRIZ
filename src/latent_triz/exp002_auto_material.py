@@ -151,6 +151,10 @@ def prepare_auto_shard(
         raise Exp002AutoMaterialError("AUTO material dossier is not authorized")
     if dossier.get("schedule_sha256") != schedule_sha256 or dossier.get("input_manifest_sha256") != input_manifest_sha256:
         raise Exp002AutoMaterialError("AUTO schedule or input manifest hash drift")
+    bindings = dossier.get("material_bindings")
+    required_bindings = {"runner_sha256", "adapter_sha256", "analysis_sha256", "sealed_key_schema_sha256", "model_registry_sha256", "public_key_template_sha256"}
+    if not isinstance(bindings, Mapping) or set(bindings) != required_bindings or any(not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{64}", value) for value in bindings.values()):
+        raise Exp002AutoMaterialError("AUTO material code/key bindings are missing")
     if not _gate_ok(gate):
         raise Exp002AutoMaterialError("CCP gate must be Admit with inactive empty admission")
     if EXPECTED_MODELS.get(model_id) is None or EXPECTED_MODELS[model_id] != next((item.get("revision") for item in dossier["exact_models"] if item.get("model_id") == model_id), None):
