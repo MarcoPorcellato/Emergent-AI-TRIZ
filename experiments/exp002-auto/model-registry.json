@@ -1,0 +1,17 @@
+{
+  "artifact_class": "exp002-auto-model-registry",
+  "protocol_id": "exp002-auto-v1.0.0",
+  "source_protocol": "experiments/exp002-auto/protocol.json",
+  "models": [
+    {"model_id": "EleutherAI/pythia-70m-deduped", "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c", "runtime_root": "artifacts/models/pythia-70m-deduped-e93a9faa"},
+    {"model_id": "HuggingFaceTB/SmolLM2-360M", "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49", "runtime_root": "artifacts/models/smollm2-360m-f8027fd0"},
+    {"model_id": "Qwen/Qwen3-0.6B-Base", "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd", "runtime_root": "artifacts/models/qwen3-0.6b-base-da87bfb"},
+    {"model_id": "openai-community/gpt2", "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e", "runtime_root": "artifacts/models/gpt2-607a30d7"},
+    {"model_id": "HuggingFaceTB/SmolLM2-135M", "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2", "runtime_root": "artifacts/models/smollm2-135m-93efa2f0"},
+    {"model_id": "EleutherAI/gpt-neo-125m", "revision": "21def0189f5705e2521767faed922f1f15e7d7db", "runtime_root": "artifacts/models/gpt-neo-125m-21def018"},
+    {"model_id": "Qwen/Qwen2.5-0.5B", "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987", "runtime_root": "artifacts/models/qwen2.5-0.5b-060db649"}
+  ],
+  "model_access": false,
+  "sealed_target_access": false,
+  "claim_ids": []
+}

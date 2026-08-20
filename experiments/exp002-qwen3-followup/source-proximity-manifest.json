@@ -1,0 +1,15 @@
+{
+  "artifact_class": "exp002-source-proximity-manifest",
+  "manifest_id": "exp002-source-proximity-v1.0.0",
+  "status": "ready_no_model",
+  "sources": [
+    {"source_id": "triz-ref-inventive-principles-2023", "registry_path": "data/triz-reference-sources.json", "rights_status": "copyrighted_public_download", "allowed_exposure_modes": ["metadata_only", "human_reviewed_excerpt", "citation_only"], "public_bank_uses": ["principle_names_and_independently_authored_operators"]},
+    {"source_id": "triz-ref-matrix-2003", "registry_path": "data/triz-reference-sources.json", "rights_status": "permission_reported_no_general_open_license", "allowed_exposure_modes": ["metadata_only", "human_reviewed_excerpt", "citation_only"], "public_bank_uses": ["three_double_checked_sparse_cells_only"]},
+    {"source_id": "triz-ref-tools-overview-panitz", "registry_path": "data/triz-reference-sources.json", "rights_status": "rights_unverified", "allowed_exposure_modes": ["metadata_only", "human_reviewed_excerpt", "citation_only"], "public_bank_uses": ["registered_edges_and_abstention_controls"]}
+  ],
+  "canonical_excerpts_in_blinded_primary": false,
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}

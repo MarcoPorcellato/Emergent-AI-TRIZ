@@ -1,0 +1,17 @@
+{
+  "artifact_class": "exp002-interpretation-matrix",
+  "matrix_id": "exp002-interpretation-matrix-v1.0.0",
+  "status": "ready_no_model",
+  "cells": [
+    {"direct_knowledge": "low", "source_fingerprint": "low", "blinded_transfer": "low", "interpretation": "No evidence under these probes."},
+    {"direct_knowledge": "high", "source_fingerprint": "high", "blinded_transfer": "low", "interpretation": "Source familiarity or retrieval without transfer."},
+    {"direct_knowledge": "high", "source_fingerprint": "uncertain", "blinded_transfer": "low", "interpretation": "Declarative competence without operator transfer."},
+    {"direct_knowledge": "high", "source_fingerprint": "high", "blinded_transfer": "high", "interpretation": "Transfer may be source-derived; provenance remains unresolved."},
+    {"direct_knowledge": "low", "source_fingerprint": "low", "blinded_transfer": "high", "interpretation": "Candidate latent-transfer pattern requiring expert and causal validation."},
+    {"direct_knowledge": "low", "source_fingerprint": "high", "blinded_transfer": "high", "interpretation": "Possible implicit source familiarity; provenance remains unresolved."}
+  ],
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}

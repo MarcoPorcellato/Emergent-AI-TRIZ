@@ -3,7 +3,7 @@ type: master-plan
 title: Laboratory Master Plan
 description: Canonical evolution ledger and gated route from the verified laboratory foundation to falsifiable, reproducible Latent TRIZ experiments.
 status: canonical
-last_verified: 2026-08-19
+last_verified: 2026-08-20
 ---
 
 # Laboratory Master Plan
@@ -59,6 +59,46 @@ read together with its protocol, receipt, and external-asset verifier.
 
 The checkout used for unrelated local work is not an authoritative integration
 base. Delivery uses an isolated worktree created from an exact verified commit.
+
+### EXP-002 Qwen3 follow-up implementation checkpoint (2026-08-20)
+
+The new branch `exp002-qwen3-followup` publishes the implementation of
+[`EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md`](./EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md)
+through implementation checkpoint `e47937c`. Its frozen seven-model dossier was executed once
+per exact snapshot under the current CCP `origin/main` binary. The EXP-002A
+baseline packages are all terminal `null`, exploratory, non-pooled, and claim
+free; each records CPU float32, no network/generation, and one target read at
+the analysis boundary. The aggregate manifest is
+`results/exp002/preexecution/publication-manifest.json`. The remaining
+label-permutation/tokenizer, direct TRIZ/source-familiarity, and independent
+blinded-transfer stages remain pending and cannot be inferred from this
+baseline.
+
+The no-model tranche also freezes the EXP-002B answer-key gate (three
+pseudonymous reviewers plus an explicit disagreement policy), the locator-only
+source-familiarity boundary, deterministic EXP-002C power calibration, and the
+target-free corpus schema/validator, label-free candidate runner, and the
+`not_ready` sealed transfer target-key contract. The public corpus template remains empty
+until independent authoring, source-proximity review, and held-out/sealed-novel
+splits are complete; these gates do not authorize model or sealed-target
+access. Separate `approval_requested` dossiers for EXP-002B and EXP-002C bind
+the seven exact models and fixed resource envelope while remaining unapproved;
+incomplete prerequisites are explicitly marked pending.
+
+### EXP-002-AUTO pre-expert checkpoint (2026-08-20)
+
+[`EXP002_AUTO_PREEXPERT_CAMPAIGN.md`](./EXP002_AUTO_PREEXPERT_CAMPAIGN.md)
+is a separate, fully automated exploratory programme. Its frozen no-model
+tranche defines tokenizer audit, 24-record cyclic/label-free response-surface
+controls, 178 factual automatic items, 160 source-familiarity formulations,
+an eight-domain procedural proxy, and the full 24-permutation schedule for
+each of the seven already registered model snapshots. Public fixtures contain
+no expected answer; factual and procedural labels remain one combined,
+unmaterialized key outside the public tree. The approval dossier is explicitly
+`approval_requested`, so this checkpoint authorizes neither model/tokenizer
+construction nor target access. It is designed to diagnose surface sensitivity
+such as Qwen3's balanced labels, not to replace expert TRIZ validation or make
+a general TRIZ claim.
 
 ## Evidence boundary
 

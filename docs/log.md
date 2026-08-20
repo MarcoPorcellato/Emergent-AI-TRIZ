@@ -1,4 +1,84 @@
 ---
+type: chronology
+title: Laboratory chronology
+description: Event-by-event record of the Latent-TRIZ laboratory.
+status: canonical
+last_verified: 2026-08-20
+---
+
+## 2026-08-20 — EXP-002 no-model checkpoint
+
+- Completed and published the EXP-002 no-model implementation on branch
+  `exp002-qwen3-followup`. The direct-question path is now stage-aware and
+  keeps bounded generation disabled by default; EXP-002C has a label-free
+  candidate-description scorer that emits four candidate scores without
+  label-token scores.
+- Added stage-specific response-index validation and a separate EXP-002C
+  transfer-target-key schema/template. The public template remains
+  `not_ready`, with no sealed answers or target-content hash until the
+  independently authored corpus and expert labels are frozen.
+- Refreshed the canonical plan, status, roadmap, master plan, persistent goal,
+  and restart handoff to implementation checkpoint `e47937c`; subsequent
+  documentation-only commits preserve that code checkpoint. The branch is
+  publicly synchronized at the preceding checkpoint
+  `ef030107f31a6ab436c91409479424703f34599e`.
+- Deterministic validation remains model-free: 50 EXP-002 tests, 146 schema
+  pairs, the contract/question-bank audit, and the full repository suite pass.
+  Fresh EXP-002B/C preflight returns `approval_required` without model or
+  sealed-target access because independent expert packets and the EXP-002C
+  corpus/target key are still absent.
+- Added the `make exp002-stage-preflight` convenience target so both material
+  dossiers can be checked together before any CCP or model capability is
+  consulted.
+- Added `make exp002-review-packet-verify PACKET=...`, a single-packet audit
+  that checks all 351 IDs, rationale hashes, answer presence, and the
+  no-model/no-target boundary before a reviewer submits their packet.
+- Added the EXP-002C transfer-corpus author quickstart, documenting the
+  eight-domain minimum, independent source/proximity audit, required controls,
+  and the rule that the sealed target key stays `not_ready` until review.
+
+---
+
+## 2026-08-20
+
+- Advanced the published EXP-002 no-model tranche through exact head `278dcf2`:
+  added the three-pseudonymous-reviewer answer-key gate, direct-question
+  abstention/precision/recall metrics, and a target-free EXP-002C corpus schema
+  and validator. The validator rejects EXP-001 reuse, TRIZ/source leakage in
+  the blinded primary, duplicate fingerprints, and shared expert/generator
+  locators. All changes remain model-free and claim-free.
+- Refreshed the CCP coordination reference to current `origin/main`
+  `5f2ef665be4dc47fd354befcba53251a4e51744f`; the runbook forbids manual lock
+  or lease quarantine and requires fresh host-wide admission checks.
+- Added separate unapproved EXP-002B and EXP-002C dossiers and a stage gate
+  that requires their frozen prerequisites plus a fresh Admit/inactive/queue-0
+  snapshot before material execution.
+
+- Completed the authorised EXP-002A baseline on all seven exact snapshots under
+  CCP `origin/main` `104d48d`: Pythia, SmolLM2-360M, Qwen3, GPT-2,
+  SmolLM2-135M, GPT-Neo, and Qwen2.5. All seven terminal outcomes are `null`,
+  with one analysis-boundary target read per model and no promoted claim.
+  Immutable packages and external response-score hashes are published in
+  `results/exp002/preexecution/publication-manifest.json` on branch
+  `exp002-qwen3-followup` through exact head `9cbe6f5`.
+
+- Created and published branch `exp002-qwen3-followup` for the Qwen3 outlier
+  follow-up research plan. The no-model implementation is current through
+  exact head `7b06136` (implementation commits are preserved in the branch
+  history).
+- Added the frozen seven-model protocol, tokenizer-audit receipt in
+  `not_started` state, response-surface permutations and label-prior
+  diagnostics, source-familiarity and rights/proximity plans, transfer-corpus
+  and exact sign-flip analysis contracts, fail-closed terminal and CCP guards,
+  restart handoff, and preexecution publication manifest.
+- Expanded the direct TRIZ bank to 351 target-free questions: eight balanced
+  task types for each of the 40 principles plus self-report, foundational,
+  Matrix-direction, Panitz-edge, and false-concept controls. Public records
+  contain no answer keys; locators remain sealed.
+- Contract audit and 16 focused synthetic tests passed. No model/tokenizer,
+  network, generation, CCP material run, or sealed target was accessed. The
+  next material step remains a fresh operator approval bound to the exact
+  dossier; no result or TRIZ claim is promoted.
 
 ## 2026-08-19
 

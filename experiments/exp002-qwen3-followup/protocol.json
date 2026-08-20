@@ -1,0 +1,71 @@
+{
+  "artifact_class": "exp002-qwen3-followup-protocol",
+  "protocol_id": "exp002-qwen3-followup-v1.0.0",
+  "status": "frozen_no_model",
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "source_evidence": {
+    "outlier_analysis": "docs/EXP001_QWEN3_OUTLIER_ANALYSIS.md",
+    "outlier_analysis_sha256": "98cda7c529956cc970f83168cb1dfda32a44de78fae221ac445b5ec68c2be015",
+    "comparative_protocol": "experiments/exp001-comparative-reference/protocol.json",
+    "comparative_protocol_sha256": "4e404bfa61255288e3336c1c3a82ee3b87a52ee6f8b0c45cfc3851f3bb3d0e4b",
+    "comparative_analysis_plan": "experiments/exp001-comparative-reference/analysis-plan.json",
+    "comparative_analysis_plan_sha256": "05369ad981e8927e3944dfa4f93b5abce15cd8b03ebe5fd58cae064517ef3e33"
+  },
+  "models": [
+    {"model_id": "EleutherAI/pythia-70m-deduped", "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c", "registry": "experiments/exp001-comparative-reference/model-registry.json"},
+    {"model_id": "HuggingFaceTB/SmolLM2-360M", "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49", "registry": "experiments/exp001-comparative-reference/model-registry.json"},
+    {"model_id": "Qwen/Qwen3-0.6B-Base", "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd", "registry": "experiments/exp001-comparative-reference/model-registry.json"},
+    {"model_id": "openai-community/gpt2", "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e", "registry": "experiments/exp001-comparative-reference/model-registry.json"},
+    {"model_id": "HuggingFaceTB/SmolLM2-135M", "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2", "registry": "experiments/exp001-comparative-reference/model-registry.json"},
+    {"model_id": "EleutherAI/gpt-neo-125m", "revision": "21def0189f5705e2521767faed922f1f15e7d7db", "registry": "experiments/exp001-comparative-reference/model-registry.json"},
+    {"model_id": "Qwen/Qwen2.5-0.5B", "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987", "registry": "experiments/exp001-comparative-reference/model-registry.json"}
+  ],
+  "stages": [
+    {"stage_id": "EXP-002A", "purpose": "measurement_validity", "model_access": false, "target_access": false, "status": "ready_no_model"},
+    {"stage_id": "EXP-002B", "purpose": "direct_triz_knowledge_and_source_familiarity", "model_access": false, "target_access": false, "status": "question_bank_ready_no_model"},
+    {"stage_id": "EXP-002C", "purpose": "new_blinded_transfer_replication", "model_access": false, "target_access": false, "status": "design_ready_no_model"},
+    {"stage_id": "EXP-002D", "purpose": "representation_and_causal_follow_up", "model_access": false, "target_access": false, "status": "blocked_until_002c"}
+  ],
+  "question_modules": {
+    "principle_count": 40,
+    "principle_task_types": ["number_to_name", "name_to_operator", "operator_to_name", "real_vs_invented", "adjacent_discrimination", "example_to_principle", "short_example_generation", "insufficient_information"],
+    "foundational_concepts": ["contradiction", "ideal_final_result", "resources", "separation_principles", "substance_field", "evolution_trends", "ariz", "nine_windows", "effects"],
+    "matrix_direction_and_abstention": true,
+    "panitz_supported_uncertain_and_abstention": true,
+    "false_concept_canaries": true,
+    "self_report_is_non_evidential": true
+  },
+  "response_surfaces": {
+    "primary": "label_free_candidate_description_scoring",
+    "diagnostics": ["original_abcd", "balanced_cyclic_labels", "all_24_label_permutations", "numeric_labels", "neutral_symbols", "answer_boundary_variants"],
+    "generation": "separate_authorization_required",
+    "base_models_chat_template": "forbidden"
+  },
+  "analysis": {
+    "model_pooling": false,
+    "new_transfer_domains_minimum": 8,
+    "new_transfer_domains_preferred": 12,
+    "domain_count_and_threshold": "freeze_after_synthetic_power_calibration_before_model_access",
+    "label_prior_adjustment": "diagnostic_only_until_preregistered",
+    "direct_knowledge_modules_non_pooled": true,
+    "source_familiarity_is_not_training_membership": true,
+    "positive_claim": "none_without_expert_and_control_gates"
+  },
+  "approval_boundary": {
+    "model_load": false,
+    "generation": false,
+    "sealed_target_read": false,
+    "network": false,
+    "ccp_material_run": false,
+    "new_download": false
+  },
+  "publication": {
+    "publish_every_terminal_outcome": true,
+    "claim_ids_must_remain_empty": true,
+    "general_triz_claim_promotion": false,
+    "external_dense_assets_require_separate_authorization": true
+  }
+}

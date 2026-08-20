@@ -1,0 +1,26 @@
+{
+  "artifact_class": "exp002-direct-question-bank-manifest",
+  "manifest_id": "exp002-direct-question-bank-v1.0.0",
+  "status": "ready_no_model",
+  "generator": "src/latent_triz/exp002_question_bank.py",
+  "source_principles": "data/triz-reference/principles.jsonl",
+  "source_matrix": "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl",
+  "source_tool_edges": "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl",
+  "expected_counts": {
+    "principle_recognition": 320,
+    "self_report_metadata": 4,
+    "foundational_concepts": 9,
+    "matrix": 6,
+    "tool_relationship": 4,
+    "false_concept_canary": 8,
+    "total": 351
+  },
+  "principle_task_types": ["number_to_name", "name_to_operator", "operator_to_name", "real_vs_invented", "adjacent_discrimination", "example_to_principle", "short_example_generation", "insufficient_information"],
+  "expected_answer_fields_in_public_bank": false,
+  "sealed_answer_locator_prefix": "sealed://exp002/direct-question/",
+  "source_exposure": "direct_query_only",
+  "automatic_ground_truth": false,
+  "scientific_status": "exploratory",
+  "expert_validated": false,
+  "claim_ids": []
+}

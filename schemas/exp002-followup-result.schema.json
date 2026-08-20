@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-followup-result.schema.json",
+  "title": "EXP-002 follow-up terminal result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "study_id", "model_id", "revision", "status", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids", "access"],
+  "properties": {
+    "artifact_class": {"const": "exp002-followup-terminal-result"},
+    "protocol_id": {"const": "exp002-qwen3-followup-v1.0.0"},
+    "study_id": {"enum": ["EXP-002A", "EXP-002B", "EXP-002C", "EXP-002D"]},
+    "model_id": {"type": "string", "minLength": 1},
+    "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "access": {"type": "object", "additionalProperties": false, "required": ["model_loaded", "model_output_accessed", "generation_used", "sealed_target_accessed", "target_reads"], "properties": {"model_loaded": {"type": "boolean"}, "model_output_accessed": {"type": "boolean"}, "generation_used": {"type": "boolean"}, "sealed_target_accessed": {"type": "boolean"}, "target_reads": {"type": "integer", "minimum": 0}}}
+  }
+}

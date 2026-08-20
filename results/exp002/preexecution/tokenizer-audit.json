@@ -1,0 +1,15 @@
+{
+  "artifact_class": "exp002-tokenizer-audit-receipt",
+  "plan_id": "exp002-tokenizer-audit-v1.0.0",
+  "status": "not_started",
+  "model_access": false,
+  "weights_access": false,
+  "sealed_target_access": false,
+  "network": false,
+  "observations": [],
+  "failure_state": null,
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": []
+}

@@ -1,0 +1,82 @@
+{
+  "artifact_class": "exp002-publication-manifest",
+  "protocol_id": "exp002-qwen3-followup-v1.0.0",
+  "status": "published",
+  "packages": [
+    {
+      "model_id": "Qwen/Qwen2.5-0.5B",
+      "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/qwen-qwen2-5-0-5b/exp002-qwen2-5-0-5b-exp002a-20260820-01"
+    },
+    {
+      "model_id": "EleutherAI/gpt-neo-125m",
+      "revision": "21def0189f5705e2521767faed922f1f15e7d7db",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/eleutherai-gpt-neo-125m/exp002-gpt-neo-125m-exp002a-20260820-01"
+    },
+    {
+      "model_id": "HuggingFaceTB/SmolLM2-135M",
+      "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/huggingfacetb-smollm2-135m/exp002-smollm2-135m-exp002a-20260820-01"
+    },
+    {
+      "model_id": "openai-community/gpt2",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/openai-community-gpt2/exp002-gpt2-exp002a-20260820-01"
+    },
+    {
+      "model_id": "HuggingFaceTB/SmolLM2-360M",
+      "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/huggingfacetb-smollm2-360m/exp002-smollm2-360m-exp002a-20260820-01"
+    },
+    {
+      "model_id": "EleutherAI/pythia-70m-deduped",
+      "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/eleutherai-pythia-70m-deduped/exp002-pythia-70m-exp002a-20260820-01"
+    },
+    {
+      "model_id": "Qwen/Qwen3-0.6B-Base",
+      "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/qwen-qwen3-0-6b-base/exp002-qwen3-0-6b-exp002a-20260820-01"
+    }
+  ],
+  "external_dense_assets": [
+    {
+      "locator": "artifacts/exp002/qwen-qwen2-5-0-5b/exp002-qwen2-5-0-5b-exp002a-20260820-01/response-scores.json",
+      "sha256": "c9b6662a320d4820bc3ba9d07c691eec066bdd6ff7eb16e681c5baaea33e2fca"
+    },
+    {
+      "locator": "artifacts/exp002/eleutherai-gpt-neo-125m/exp002-gpt-neo-125m-exp002a-20260820-01/response-scores.json",
+      "sha256": "f835ce4f6377001cfdd45face21f0c757140d6c72d7f58df6b3c1bd63d2855d8"
+    },
+    {
+      "locator": "artifacts/exp002/huggingfacetb-smollm2-135m/exp002-smollm2-135m-exp002a-20260820-01/response-scores.json",
+      "sha256": "f2f5aaade9750b89e097a00718c79f841c54de127b65245397e4268c58d6ede2"
+    },
+    {
+      "locator": "artifacts/exp002/openai-community-gpt2/exp002-gpt2-exp002a-20260820-01/response-scores.json",
+      "sha256": "0cd2093fbf233e4a3c3cebf9570277746fd1fd4f155ade86a5f7e55241f7ad04"
+    },
+    {
+      "locator": "artifacts/exp002/huggingfacetb-smollm2-360m/exp002-smollm2-360m-exp002a-20260820-01/response-scores.json",
+      "sha256": "989cf01890c472c7f9643b336952c1987be88d72a82fd15faef0b2862bdbdbf1"
+    },
+    {
+      "locator": "artifacts/exp002/eleutherai-pythia-70m-deduped/exp002-pythia-70m-exp002a-20260820-01/response-scores.json",
+      "sha256": "faabce06464a904dddeea74089d2e45d717e889f892eda113ef3918b1030ec47"
+    },
+    {
+      "locator": "artifacts/exp002/qwen-qwen3-0-6b-base/exp002-qwen3-0-6b-exp002a-20260820-01/response-scores.json",
+      "sha256": "1a519c36ef749140a5710c41908b46f3bac4a612efc9cee7e67aeef9a121592b"
+    }
+  ],
+  "claim_ids": [],
+  "evidence_eligible": false,
+  "expert_validated": false
+}

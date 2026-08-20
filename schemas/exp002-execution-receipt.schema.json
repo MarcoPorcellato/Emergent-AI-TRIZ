@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-execution-receipt.schema.json",
+  "title": "EXP-002 execution receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "run_id", "model_id", "revision", "status", "execution", "access", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-execution-receipt"},
+    "protocol_id": {"const": "exp002-qwen3-followup-v1.0.0"},
+    "run_id": {"type": "string", "pattern": "^exp002-[a-z0-9-]+$"},
+    "model_id": {"type": "string", "minLength": 1},
+    "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "status": {"enum": ["not_started", "positive", "null", "failed", "non_interpretable", "incompatible"]},
+    "execution": {"type": "object", "additionalProperties": false, "required": ["device", "dtype", "network", "generation", "run_count", "wall_seconds", "peak_rss_bytes", "new_dense_output_bytes"], "properties": {"device": {"const": "cpu"}, "dtype": {"const": "float32"}, "network": {"const": false}, "generation": {"const": false}, "run_count": {"type": "integer", "minimum": 0, "maximum": 1}, "wall_seconds": {"type": "number", "minimum": 0, "maximum": 1800}, "peak_rss_bytes": {"type": "integer", "minimum": 0, "maximum": 8589934592}, "new_dense_output_bytes": {"type": "integer", "minimum": 0, "maximum": 134217728}}},
+    "access": {"type": "object", "additionalProperties": false, "required": ["model_loaded", "model_output_accessed", "sealed_target_accessed", "target_reads"], "properties": {"model_loaded": {"type": "boolean"}, "model_output_accessed": {"type": "boolean"}, "sealed_target_accessed": {"type": "boolean"}, "target_reads": {"type": "integer", "minimum": 0, "maximum": 1}}},
+    "external_response_asset": {"type": "object", "additionalProperties": false, "required": ["locator", "sha256"], "properties": {"locator": {"type": "string", "pattern": "^artifacts/exp002/"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "not_started"}}}, "then": {"properties": {"execution": {"properties": {"run_count": {"const": 0}}}, "access": {"properties": {"model_loaded": {"const": false}, "model_output_accessed": {"const": false}, "sealed_target_accessed": {"const": false}, "target_reads": {"const": 0}}}}}}
+  ]
+}

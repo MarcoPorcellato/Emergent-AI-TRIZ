@@ -1,0 +1,25 @@
+{
+  "artifact_class": "exp002-tokenizer-audit-plan",
+  "plan_id": "exp002-tokenizer-audit-v1.0.0",
+  "status": "ready_no_model",
+  "model_access": false,
+  "weights_access": false,
+  "sealed_target_access": false,
+  "network": false,
+  "required_observations": [
+    "exact_tokenizer_revision_and_runtime_hashes",
+    "space_plus_label_token_ids_for_A_B_C_D",
+    "label_continuation_token_counts",
+    "prefix_full_boundary_agreement",
+    "bos_eos_padding_and_special_token_behavior",
+    "prompt_and_option_token_counts",
+    "transfer_control_length_difference",
+    "tokenizer_library_version"
+  ],
+  "models": "experiments/exp002-qwen3-followup/protocol.json#/models",
+  "failure_state": "incompatible",
+  "no_inference": true,
+  "no_target_read": true,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}

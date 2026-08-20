@@ -3,7 +3,7 @@ type: status-report
 title: Current Laboratory Status
 description: Public, receipt-backed snapshot of the Latent-TRIZ laboratory and its evidence boundary.
 status: canonical
-last_verified: 2026-08-19
+last_verified: 2026-08-20
 ---
 
 # Current laboratory status
@@ -52,6 +52,26 @@ The original public PDFs and bulk tables are not redistributed. The corpus is
 used in two explicitly separate strata: `TRIZ-blinded-transfer` and
 `source-exposed-competence`. The exposed arm measures reference use, never
 latent rediscovery, and the strata are not pooled.
+
+### EXP-002 Qwen3 follow-up — EXP-002A baseline published
+
+Branch [`exp002-qwen3-followup`](https://github.com/MarcoPorcellato/Latent-TRIZ/tree/exp002-qwen3-followup)
+has the frozen no-model tranche at implementation checkpoint `e47937c`, with
+the guarded EXP-002A baseline. The seven exact snapshots were each loaded once
+under the exact `commit-ci-preflight` `origin/main` binary, CPU float32,
+local-only, no generation, and one sealed-target read at analysis. Every
+terminal outcome is `null`; no claim is promoted. The aggregate manifest is
+`results/exp002/preexecution/publication-manifest.json`. Label-permutation and
+tokenizer diagnostics, direct TRIZ knowledge/source-familiarity scoring, and
+the independently authored EXP-002C corpus remain separate pending stages. The
+no-model tranche now includes the three-reviewer answer-key gate, direct-question
+and label-free candidate runners, a fail-closed EXP-002C corpus
+validator/template, locator-only source-familiarity fixture, deterministic power
+calibration, and the `not_ready` sealed transfer target-key contract; neither
+authorizes a model load
+or sealed-target read. Separate EXP-002B and EXP-002C approval-requested
+dossiers are present but intentionally unapproved, with incomplete
+prerequisites represented as pending.
 
 ## Published model-backed record
 
@@ -112,3 +132,9 @@ See the [Roadmap](./ROADMAP.md) for the short sequence, the [Laboratory Master
 Plan](./LABORATORY_MASTER_PLAN.md) for dependencies and exit evidence, and the
 [Hypotheses and Falsification](./HYPOTHESES_AND_FALSIFICATION.md) contract for
 the normative interpretation rules.
+The current CCP coordination runbook is `commit-ci-preflight` `origin/main`
+`5f2ef66`: admission is host-wide and manual lock/lease quarantine is
+unsupported. The installed CCP preflight is currently fail-closed with an
+unsafe `.../quarantine` layout and an unreadable OrbStack Docker API; no
+material EXP-002 execution is permitted until the CCP owner restores a
+readable Admit/inactive/queue-0 gate.

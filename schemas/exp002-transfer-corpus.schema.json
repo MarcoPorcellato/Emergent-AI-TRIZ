@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-transfer-corpus.schema.json",
+  "title": "EXP-002C target-free transfer corpus",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "corpus_id", "status", "minimum_domains", "preferred_domains", "records", "freeze_requirements", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-transfer-corpus"},
+    "corpus_id": {"const": "exp002-transfer-corpus-v1.0.0"},
+    "status": {"enum": ["design_ready_no_model", "frozen_no_model"]},
+    "minimum_domains": {"const": 8},
+    "preferred_domains": {"type": "integer", "minimum": 8},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/record"}},
+    "freeze_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["no_exp001_reuse", "no_primary_triz_cues", "separate_expert_and_generator", "source_proximity_pass", "power_calibration_before_model"],
+      "properties": {
+        "no_exp001_reuse": {"const": true},
+        "no_primary_triz_cues": {"const": true},
+        "separate_expert_and_generator": {"const": true},
+        "source_proximity_pass": {"const": true},
+        "power_calibration_before_model": {"const": true}
+      }
+    },
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "frozen_no_model"}}},
+      "then": {"properties": {"records": {"minItems": 1}}}
+    }
+  ],
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "domain", "family_id", "replicate_id", "split", "problem", "candidate_descriptions", "option_order", "source_exposure", "author_id", "generator_intent_locator", "expert_label_locator", "source_proximity_status"],
+      "properties": {
+        "case_id": {"type": "string", "pattern": "^exp002c-[a-z0-9-]+$"},
+        "domain": {"type": "string", "minLength": 1},
+        "family_id": {"type": "string", "minLength": 1},
+        "replicate_id": {"type": "string", "minLength": 1},
+        "split": {"enum": ["discovery", "validation", "held_out_domain", "sealed_novel"]},
+        "problem": {"type": "string", "minLength": 1},
+        "candidate_descriptions": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "string", "minLength": 1}},
+        "option_order": {"const": [0, 1, 2, 3]},
+        "source_exposure": {"enum": ["blinded_primary", "lexical_control", "generic_heuristic", "common_sense_control"]},
+        "author_id": {"type": "string", "minLength": 1},
+        "generator_intent_locator": {"type": "string", "pattern": "^sealed://exp002c/intent/"},
+        "expert_label_locator": {"type": "string", "pattern": "^sealed://exp002c/expert/"},
+        "source_proximity_status": {"const": "pass"}
+      }
+    }
+  }
+}

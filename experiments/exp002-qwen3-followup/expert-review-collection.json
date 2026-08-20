@@ -1,0 +1,13 @@
+{
+  "artifact_class": "exp002-expert-review-collection",
+  "collection_id": "exp002-expert-review-v1.0.0",
+  "status": "ready_for_collection",
+  "question_bank": "experiments/exp002-qwen3-followup/question-bank-manifest.json",
+  "question_bank_sha256": "4e39f6132a95fdde3c0a7e765185de5d7763c90a2c7cbc3530bd15d84d413591",
+  "required_reviewers": 3,
+  "packets": [],
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}

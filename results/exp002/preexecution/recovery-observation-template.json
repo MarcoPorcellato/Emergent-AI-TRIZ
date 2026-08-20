@@ -1,0 +1,6 @@
+{
+  "artifact_class": "exp002-recovery-observation",
+  "terminal_status": "non_interpretable",
+  "retry_performed": false,
+  "cleanup_status": "not_started"
+}

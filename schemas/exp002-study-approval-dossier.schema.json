@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-study-approval-dossier.schema.json",
+  "title": "EXP-002B/C study approval dossier",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "dossier_id", "protocol_id", "stage_id", "status", "exact_models", "prerequisites", "permissions", "limits", "prohibitions", "operator_approval", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-study-approval-dossier"},
+    "dossier_id": {"type": "string", "pattern": "^exp002-exp-002[bc]-approval-v1$"},
+    "protocol_id": {"const": "exp002-qwen3-followup-v1.0.0"},
+    "stage_id": {"enum": ["EXP-002B", "EXP-002C"]},
+    "status": {"enum": ["approval_requested", "authorized", "consumed"]},
+    "exact_models": {"type": "array", "minItems": 7, "maxItems": 7, "items": {"type": "object", "additionalProperties": false, "required": ["model_id", "revision", "local_root"], "properties": {"model_id": {"type": "string", "minLength": 1}, "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"}, "local_root": {"type": "string", "pattern": "^artifacts/models/[a-z0-9.-]+$"}}}},
+    "prerequisites": {"type": "object", "additionalProperties": false, "required": ["answer_key_status", "transfer_corpus_status", "source_proximity_status", "power_calibration_status"], "properties": {"answer_key_status": {"enum": ["frozen", "pending", "not_applicable"]}, "transfer_corpus_status": {"enum": ["frozen_no_model", "pending", "not_applicable"]}, "source_proximity_status": {"enum": ["pass", "pending"]}, "power_calibration_status": {"enum": ["pass", "pending", "not_applicable"]}}},
+    "permissions": {"type": "object", "additionalProperties": false, "required": ["model_load", "generation", "network", "sealed_target_read", "ccp_material_run", "publish_every_terminal_outcome"], "properties": {"model_load": {"const": true}, "generation": {"const": false}, "network": {"const": false}, "sealed_target_read": {"const": "exactly_one_at_analysis_boundary"}, "ccp_material_run": {"const": true}, "publish_every_terminal_outcome": {"const": true}}},
+    "limits": {"type": "object", "additionalProperties": false, "required": ["wall_time_seconds_per_model", "peak_rss_bytes_per_model", "new_dense_output_bytes_per_model"], "properties": {"wall_time_seconds_per_model": {"const": 1800}, "peak_rss_bytes_per_model": {"const": 8589934592}, "new_dense_output_bytes_per_model": {"const": 134217728}}},
+    "prohibitions": {"type": "array", "minItems": 6, "items": {"type": "string", "minLength": 1}},
+    "operator_approval": {"type": "object", "additionalProperties": false, "required": ["granted", "operator_id", "approved_at", "approval_text_sha256"], "properties": {"granted": {"type": "boolean"}, "operator_id": {"const": "MarcoPorcellato"}, "approved_at": {"type": ["string", "null"]}, "approval_text_sha256": {"type": ["string", "null"]}}},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "approval_requested"}}}, "then": {"properties": {"operator_approval": {"properties": {"granted": {"const": false}}}}}},
+    {"if": {"properties": {"status": {"const": "authorized"}}}, "then": {"properties": {"operator_approval": {"properties": {"granted": {"const": true}, "approved_at": {"type": "string", "minLength": 1}, "approval_text_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}, "required": ["granted", "approved_at", "approval_text_sha256"]}, "prerequisites": {"properties": {"source_proximity_status": {"const": "pass"}}, "required": ["source_proximity_status"]}}}}
+  ]
+}

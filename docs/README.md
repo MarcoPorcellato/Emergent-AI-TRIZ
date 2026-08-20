@@ -29,6 +29,8 @@ Use this navigation when preparing proposals, reviews, or PRs.
 - [SmolLM2 runtime contract](./reference/smollm2-runtime-contract.md)
 - [EXP-001 comparative reference study](./EXP001_COMPARATIVE_REFERENCE_STUDY.md)
 - [Official model documentation audit](./EXP001_MODEL_OFFICIAL_DOC_AUDIT.md)
+- [EXP-002 expert review quickstart](./EXP002_EXPERT_REVIEW_QUICKSTART.md)
+- [EXP-002C transfer-corpus author quickstart](./EXP002_TRANSFER_CORPUS_AUTHOR_QUICKSTART.md)
 - [A0-R2.3 sealed-execution approval dossier](./A0R2_SEALED_EXECUTION_APPROVAL.md)
 - [Decision ledger](./decisions/index.md)
 - [ADR 0001 — Official lab foundation](./decisions/0001-official-lab-foundation.md)

@@ -1,0 +1,31 @@
+{
+  "artifact_class": "exp002-label-surface-diagnostic",
+  "diagnostic_id": "exp002-label-surface-v1.0.0",
+  "status": "completed_no_model",
+  "source_response_indices": [
+    {"model_id": "EleutherAI/pythia-70m-deduped", "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c", "path": "results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/response-index.json", "sha256": "ff5753bdde8edf37a2f8f46171029b99fc13b10e082848a1698c170dae28d485"},
+    {"model_id": "HuggingFaceTB/SmolLM2-360M", "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49", "path": "results/exp001-comparative/smollm2-360m-f8027fd0-smollm2-20260818-01/response-index.json", "sha256": "4d6195adbbaa92fd9bfdb2b764bbd2a21921774b62131297d38b43356e8fa2c9"},
+    {"model_id": "Qwen/Qwen3-0.6B-Base", "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd", "path": "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/response-index.json", "sha256": "aa0a203b9a7d93a5006e1e882d84c9fe2c6b23abfd20e59e7c7b554b909955b1"},
+    {"model_id": "openai-community/gpt2", "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e", "path": "results/exp001-comparative/gpt2-607a30d7-gpt2-20260819-01/response-index.json", "sha256": "aaef483cd65bf90b45c473a1ff3ee8f26cec82a18662111fa044e21e92ffc644"},
+    {"model_id": "HuggingFaceTB/SmolLM2-135M", "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2", "path": "results/exp001-comparative/smollm2-135m-93efa2f0-smollm2-135m-20260819-01/response-index.json", "sha256": "cbee06df7ef246eaa75a07a7bb98c3a47fd295621db9d7b0f1ab004be76b5711"},
+    {"model_id": "EleutherAI/gpt-neo-125m", "revision": "21def0189f5705e2521767faed922f1f15e7d7db", "path": "results/exp001-comparative/gpt-neo-125m-21def018-gpt-neo-125m-20260819-01/response-index.json", "sha256": "0894b3eab9b66e9a023bc7b0f66c280051ac4827dcbb1d685ed8531f1d17d3bd"},
+    {"model_id": "Qwen/Qwen2.5-0.5B", "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987", "path": "results/exp001-comparative/qwen2.5-0.5b-060db649-qwen2.5-0.5b-20260819-01/response-index.json", "sha256": "aebff0a74d957abb09f36c0a7f3898fedc0783c76211cfbc68b5db556e40b64b"}
+  ],
+  "summaries": [
+    {"model_id": "EleutherAI/pythia-70m-deduped", "record_count": 24, "top_label_counts": {"A": 24, "B": 0, "C": 0, "D": 0}, "top_label_entropy_bits": 0.0},
+    {"model_id": "HuggingFaceTB/SmolLM2-360M", "record_count": 24, "top_label_counts": {"A": 24, "B": 0, "C": 0, "D": 0}, "top_label_entropy_bits": 0.0},
+    {"model_id": "Qwen/Qwen3-0.6B-Base", "record_count": 24, "top_label_counts": {"A": 6, "B": 6, "C": 6, "D": 6}, "top_label_entropy_bits": 2.0},
+    {"model_id": "openai-community/gpt2", "record_count": 24, "top_label_counts": {"A": 24, "B": 0, "C": 0, "D": 0}, "top_label_entropy_bits": 0.0},
+    {"model_id": "HuggingFaceTB/SmolLM2-135M", "record_count": 24, "top_label_counts": {"A": 24, "B": 0, "C": 0, "D": 0}, "top_label_entropy_bits": 0.0},
+    {"model_id": "EleutherAI/gpt-neo-125m", "record_count": 24, "top_label_counts": {"A": 24, "B": 0, "C": 0, "D": 0}, "top_label_entropy_bits": 0.0},
+    {"model_id": "Qwen/Qwen2.5-0.5B", "record_count": 24, "top_label_counts": {"A": 24, "B": 0, "C": 0, "D": 0}, "top_label_entropy_bits": 0.0}
+  ],
+  "model_access": false,
+  "generation": false,
+  "sealed_target_access": false,
+  "network": false,
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": []
+}

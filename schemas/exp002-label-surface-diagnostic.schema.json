@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-label-surface-diagnostic.schema.json",
+  "title": "EXP-002 public label-surface diagnostic",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "diagnostic_id", "status", "source_response_indices", "summaries", "model_access", "generation", "sealed_target_access", "network", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-label-surface-diagnostic"},
+    "diagnostic_id": {"const": "exp002-label-surface-v1.0.0"},
+    "status": {"const": "completed_no_model"},
+    "source_response_indices": {"type": "array", "minItems": 7, "maxItems": 7, "items": {"$ref": "#/$defs/source"}},
+    "summaries": {"type": "array", "minItems": 7, "maxItems": 7, "items": {"$ref": "#/$defs/summary"}},
+    "model_access": {"const": false},
+    "generation": {"const": false},
+    "sealed_target_access": {"const": false},
+    "network": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "source": {"type": "object", "additionalProperties": false, "required": ["model_id", "revision", "path", "sha256"], "properties": {"model_id": {"type": "string", "minLength": 1}, "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"}, "path": {"type": "string", "pattern": "^results/exp001-comparative/.+/response-index\\.json$"}, "sha256": {"$ref": "#/$defs/hash"}}},
+    "summary": {"type": "object", "additionalProperties": false, "required": ["model_id", "record_count", "top_label_counts", "top_label_entropy_bits"], "properties": {"model_id": {"type": "string", "minLength": 1}, "record_count": {"const": 24}, "top_label_counts": {"type": "object", "additionalProperties": false, "required": ["A", "B", "C", "D"], "properties": {"A": {"type": "integer", "minimum": 0}, "B": {"type": "integer", "minimum": 0}, "C": {"type": "integer", "minimum": 0}, "D": {"type": "integer", "minimum": 0}}}, "top_label_entropy_bits": {"type": "number", "minimum": 0}}}
+  }
+}
