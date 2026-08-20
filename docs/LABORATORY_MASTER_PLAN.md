@@ -85,6 +85,21 @@ access. Separate `approval_requested` dossiers for EXP-002B and EXP-002C bind
 the seven exact models and fixed resource envelope while remaining unapproved;
 incomplete prerequisites are explicitly marked pending.
 
+### EXP-002-AUTO pre-expert checkpoint (2026-08-20)
+
+[`EXP002_AUTO_PREEXPERT_CAMPAIGN.md`](./EXP002_AUTO_PREEXPERT_CAMPAIGN.md)
+is a separate, fully automated exploratory programme. Its frozen no-model
+tranche defines tokenizer audit, 24-record cyclic/label-free response-surface
+controls, 178 factual automatic items, 160 source-familiarity formulations,
+an eight-domain procedural proxy, and the full 24-permutation schedule for
+each of the seven already registered model snapshots. Public fixtures contain
+no expected answer; factual and procedural labels remain one combined,
+unmaterialized key outside the public tree. The approval dossier is explicitly
+`approval_requested`, so this checkpoint authorizes neither model/tokenizer
+construction nor target access. It is designed to diagnose surface sensitivity
+such as Qwen3's balanced labels, not to replace expert TRIZ validation or make
+a general TRIZ claim.
+
 ## Evidence boundary
 
 The following may qualify engineering, documentation, or readiness, but never

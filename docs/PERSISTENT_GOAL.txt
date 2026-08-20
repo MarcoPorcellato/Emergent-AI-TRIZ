@@ -112,3 +112,16 @@ The next scientific gate is human construct validation: three independent TRIZ
 experts, blinded ratings, agreement/abstention/disagreement receipts, and a
 keep/amend decision. Until that gate is closed, do not scale models, pool
 results, or promote any TRIZ claim.
+
+EXP-002-AUTO checkpoint (2026-08-20): an independent no-model, pre-expert
+campaign is being prepared under `docs/EXP002_AUTO_PREEXPERT_CAMPAIGN.md` and
+`experiments/exp002-auto/`. It freezes AUTO-0 tokenizer audit; AUTO-1 cyclic
+and label-free response surfaces over the published 24 records; AUTO-2 178
+automatic factual records; AUTO-3 160 source-familiarity formulations;
+AUTO-4 an eight-domain procedural proxy; and AUTO-5 all 24 label permutations
+for all seven already registered exact models. The combined factual/procedural
+key remains unmaterialized and private; the approval dossier is
+`approval_requested`. No model, tokenizer, network, CCP material run, or
+sealed target is authorized until the exact frozen dossier hash and a new
+operator authorization are recorded. Outcomes remain exploratory, claim-free,
+and non-substitutive for the H1 expert gate.

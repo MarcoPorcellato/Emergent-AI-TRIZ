@@ -51,18 +51,18 @@ existing `jsonschema` validation, `unittest`, repository cross-validator, and
 **Produces:** `validate_auto_protocol(protocol)`,
 `validate_auto_schedule(schedule)`, and `validate_auto_dossier(dossier)`.
 
-- [ ] Write failing tests that accept exactly seven `EXPECTED_MODELS`, the five
+- [x] Write failing tests that accept exactly seven `EXPECTED_MODELS`, the five
   AUTO stage IDs, all false no-model access flags, and reject a changed revision,
   missing stage, claim ID, or an authorized dossier without the exact protocol
   hash.
 - [ ] Run `PYTHONPATH=src python3 -m unittest tests.test_exp002_auto_contract`
   and confirm the missing module failure.
-- [ ] Implement only strict mapping/type/hash validators, copied model identity
+- [x] Implement only strict mapping/type/hash validators, copied model identity
   from `EXPECTED_MODELS`, and explicit statuses `draft`, `frozen_no_model`,
   `approval_requested`, and `authorized`.
-- [ ] Add schemas that reject extra capability flags, unknown terminal states,
+- [x] Add schemas that reject extra capability flags, unknown terminal states,
   invalid SHA-256 values, and model registry drift.
-- [ ] Re-run the focused suite and commit the contract unit.
+- [x] Re-run the focused suite. Local commit remains an explicit pending gate.
 
 ### Task 2: Build deterministic public and sealed fixture inventories
 
@@ -79,20 +79,19 @@ existing `jsonschema` validation, `unittest`, repository cross-validator, and
 **Produces:** `build_factual_records`, `build_formulation_records`,
 `build_procedural_records`, `build_combined_key`, and `validate_public_records`.
 
-- [ ] Write failing tests proving exact counts `178`, `160`, and `48`; the
+- [x] Write failing tests proving exact counts `178`, `160`, and `48`; the
   factual family split `40/40/40/40/8/6/4`; exactly eight named domains with
   six procedural records each; no expected answer in a public record; and no
   TRIZ token, principle number, or canonical example in procedural prompts.
 - [ ] Run the focused suite and confirm the fixture builder is absent.
-- [ ] Implement deterministic builders from the registered principle, Matrix,
+- [x] Implement deterministic builders from the registered principle, Matrix,
   and Panitz fixtures. Use deterministic text templates and local IDs; never
   copy source paragraphs or invoke a model.
-- [ ] Implement a combined-key object with automatic provenance,
+- [x] Implement a combined-key object with automatic provenance,
   `sealed_target_accessed: false`, and no public target content. Its emitted
   template remains `not_ready` until a later approval flow writes the sealed
   materialization outside the public tree.
-- [ ] Generate and validate public JSONL manifests; re-run the focused suite
-  and commit the fixture unit.
+- [x] Generate and validate public JSONL manifests; re-run the focused suite.
 
 ### Task 3: Freeze schedules and shard boundaries
 
@@ -104,17 +103,17 @@ existing `jsonschema` validation, `unittest`, repository cross-validator, and
 
 **Produces:** `build_auto_schedule` and `validate_auto_schedule`.
 
-- [ ] Write failing tests that require: AUTO-1 exactly four cyclic plus one
+- [x] Write failing tests that require: AUTO-1 exactly four cyclic plus one
   label-free condition over 24 IDs; AUTO-2 shard sizes `[45,45,44,44]`; AUTO-3
   four formulations for 40 facts; AUTO-4 eight domains; AUTO-5 lexicographic
   24 permutations in six shards of four; no duplicated record-condition pair.
 - [ ] Run the test and observe the missing schedule module.
-- [ ] Implement schedule generation using existing pure
+- [x] Implement schedule generation using existing pure
   `cyclic_permutations` and `all_label_permutations`, then bind every public
   input by SHA-256 in the manifest.
-- [ ] Reject missing, reordered, extra, duplicate, or changed mappings before
+- [x] Reject missing, reordered, extra, duplicate, or changed mappings before
   writing a schedule.
-- [ ] Re-run the test and commit the schedule unit.
+- [x] Re-run the test; local commit remains pending.
 
 ### Task 4: Add target-free execution and authorization gates
 
@@ -128,17 +127,17 @@ existing `jsonschema` validation, `unittest`, repository cross-validator, and
 **Produces:** `score_auto_surface`, `score_auto_candidates`,
 `authorize_auto_shard`, and `build_preexecution_receipt`.
 
-- [ ] Write failing injected-scorer tests showing public score records preserve
+- [x] Write failing injected-scorer tests showing public score records preserve
   identity, condition, finite score vectors, and no target field; all unsafe
   conditions (network, generation, wrong CPU dtype, over-limit, retry count,
   non-Admit CCP, active admission, queue) raise before scorer invocation.
 - [ ] Run the focused suite and confirm the new gate is absent.
-- [ ] Implement pure injected scoring only; do not import transformers, torch,
+- [x] Implement pure injected scoring only; do not import transformers, torch,
   or tokenizers. Dossier state must default to `approval_requested` with an
   ungranted operator approval and empty material receipt.
-- [ ] Bind all shard IDs, public-input hashes, combined-key hash placeholder,
+- [x] Bind all shard IDs, public-input hashes, combined-key hash placeholder,
   code hashes, seven model identities, and resource ceilings in the dossier.
-- [ ] Re-run the focused suite and commit the gate unit.
+- [x] Re-run the focused suite; local commit remains pending.
 
 ### Task 5: Build one-read analysis, result envelopes, and publication verifier
 
@@ -155,19 +154,19 @@ existing `jsonschema` validation, `unittest`, repository cross-validator, and
 **Produces:** `analyze_auto_results`, `verify_auto_publication`, and one
 claim-free terminal package per model/stage.
 
-- [ ] Write failing tests for: one combined-key reader call after all score
+- [x] Write failing tests for: one combined-key reader call after all score
   asset/hash checks; refusal on a missing or one-byte-mutated score asset;
   no key reader for AUTO-1/3/5; eight-domain AUTO-4 signal/null boundary;
   separated model summaries; and publication rejection if a result has a
   general TRIZ claim or `expert_validated: true`.
 - [ ] Run the focused suites and confirm the missing modules fail.
-- [ ] Implement fixed AUTO-4 sign-flip analysis through the existing pure
+- [x] Implement fixed AUTO-4 sign-flip analysis through the existing pure
   `evaluate_transfer`, translating `positive` only to `auto_proxy_signal` in
   public wording. Preserve `null`, `failed`, and `non_interpretable`.
-- [ ] Implement immutable hash bindings for receipt, result, response index,
+- [x] Implement immutable hash bindings for receipt, result, response index,
   report, recovery observation, and external score asset; never copy dense
   bytes into Git.
-- [ ] Re-run focused suites and commit the analysis/publication unit.
+- [x] Re-run focused suites; local commit remains pending.
 
 ### Task 6: Register repository integration and documentation
 
@@ -183,18 +182,18 @@ claim-free terminal package per model/stage.
 **Produces:** `make exp002-auto-verify`,
 `make exp002-auto-stage-preflight`, and a no-model handoff checkpoint.
 
-- [ ] Write failing CLI tests proving no-model verification never imports a
+- [x] Write failing CLI tests proving no-model verification never imports a
   model library or opens the combined key, while stage preflight returns
   `approval_required` for every AUTO material shard.
 - [ ] Run the test and confirm targets do not exist.
-- [ ] Add Make targets that run contract/schema/fixture/schedule/analysis
+- [x] Add Make targets that run contract/schema/fixture/schedule/analysis
   checks locally; do not add a material run target until the dossier is
   frozen and explicitly authorized.
-- [ ] Register every tracked instance/schema pair and mutation rejection in
+- [x] Register every tracked instance/schema pair and mutation rejection in
   both repository validators.
-- [ ] Update canonical documentation and persistent goal to state that AUTO is
+- [x] Update canonical documentation and persistent goal to state that AUTO is
   an independent, pre-expert exploratory path and record its exact checkpoint.
-- [ ] Re-run focused tests, `make docs-audit`, and commit the integration unit.
+- [x] Re-run focused tests and `make docs-audit`; local commit remains pending.
 
 ### Task 7: Qualify and publish the no-model checkpoint
 

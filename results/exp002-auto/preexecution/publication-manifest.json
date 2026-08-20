@@ -1,0 +1,11 @@
+{
+  "artifact_class": "exp002-auto-publication-manifest",
+  "protocol_id": "exp002-auto-v1.0.0",
+  "status": "not_ready",
+  "packages": [],
+  "external_score_assets": [],
+  "scientific_status": "exploratory",
+  "claim_ids": [],
+  "evidence_eligible": false,
+  "expert_validated": false
+}

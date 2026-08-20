@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["artifact_class", "protocol_id", "protocol_sha256", "schedule_sha256", "input_manifest_sha256", "status", "operator_approval", "exact_models", "permissions", "limits", "shards", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-auto-approval-dossier"},
+    "protocol_id": {"const": "exp002-auto-v1.0.0"},
+    "protocol_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "schedule_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "input_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "status": {"enum": ["approval_requested", "authorized"]},
+    "operator_approval": {"type": "object", "required": ["granted", "operator_id", "approval_text_sha256"], "properties": {"granted": {"type": "boolean"}, "operator_id": {"const": "MarcoPorcellato"}, "approval_text_sha256": {"type": ["null", "string"], "pattern": "^[a-f0-9]{64}$"}}, "additionalProperties": false},
+    "exact_models": {"type": "array", "minItems": 7, "maxItems": 7},
+    "permissions": {"type": "object"},
+    "limits": {"type": "object"},
+    "shards": {"type": "array"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "status", "packages", "external_score_assets", "claim_ids", "evidence_eligible", "expert_validated", "scientific_status"],
+  "properties": {
+    "artifact_class": {"const": "exp002-auto-publication-manifest"},
+    "protocol_id": {"const": "exp002-auto-v1.0.0"},
+    "status": {"enum": ["not_ready", "ready", "published"]},
+    "packages": {"type": "array"},
+    "external_score_assets": {"type": "array"},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false}
+  }
+}
