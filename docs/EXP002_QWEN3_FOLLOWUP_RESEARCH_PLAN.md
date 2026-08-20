@@ -20,6 +20,14 @@ gate reports `decision=admit`, `admission_active=false`, and `queue_count=0`.
 No model, tokenizer, generation, network, CCP material run, or sealed target
 has been accessed by this tranche.
 
+The CCP `origin/main` coordination runbook is pinned to `104d48d` and is
+normative for this gate. It treats admission as host-wide, requires a fresh
+runtime check, and forbids manual deletion or quarantine of locks, leases,
+tickets, counters, ownership markers, or the admission root. The installed
+CCP currently fails closed with an unsafe `.../quarantine` layout and the
+OrbStack Docker API is not readable from this activity; this must be resolved
+by the CCP/runtime owner before any model or target access.
+
 ## 1. Purpose
 
 This plan defines the next research programme motivated by the unusual
