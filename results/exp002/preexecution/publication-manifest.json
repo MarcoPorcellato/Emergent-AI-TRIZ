@@ -1,0 +1,10 @@
+{
+  "artifact_class": "exp002-publication-manifest",
+  "protocol_id": "exp002-qwen3-followup-v1.0.0",
+  "status": "not_ready",
+  "packages": [],
+  "external_dense_assets": [],
+  "claim_ids": [],
+  "evidence_eligible": false,
+  "expert_validated": false
+}
