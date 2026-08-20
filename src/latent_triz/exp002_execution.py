@@ -78,7 +78,7 @@ def score_injected_surface(
 
 
 def score_injected_direct_questions(
-    rows: Sequence[Mapping[str, Any]], scorer: Callable[[Mapping[str, Any]], Mapping[str, Any]],
+    rows: Sequence[Mapping[str, Any]], scorer: Callable[[Mapping[str, Any]], Mapping[str, Any]], *, allow_generation: bool = False,
 ) -> list[dict[str, Any]]:
     """Collect direct-question predictions without injecting answer keys.
 
@@ -86,12 +86,19 @@ def score_injected_direct_questions(
     public question records. Expected answers and sealed locators are rejected
     from the public input and are never copied into the output.
     """
+    if not isinstance(allow_generation, bool):
+        raise Exp002ExecutionError("generation authorization must be explicit")
     if isinstance(rows, (str, bytes, bytearray)) or not isinstance(rows, Sequence) or not rows:
         raise Exp002ExecutionError("direct-question rows must be non-empty")
     output: list[dict[str, Any]] = []
     for row in rows:
         if not isinstance(row, Mapping) or not isinstance(row.get("question_id"), str) or not isinstance(row.get("prompt"), str) or not row["prompt"].strip():
             raise Exp002ExecutionError("direct-question public identity is malformed")
+        response_mode = row.get("response_mode", "structured_completion")
+        if response_mode not in {"structured_completion", "bounded_completion", "abstention"}:
+            raise Exp002ExecutionError("direct-question response mode is unsupported")
+        if response_mode == "bounded_completion" and not allow_generation:
+            raise Exp002ExecutionError("bounded completion requires separate generation authorization")
         if any(field in row for field in ("expected_answer", "correct_choice", "target", "sealed_target")):
             raise Exp002ExecutionError("direct-question input contains answer material")
         try:
