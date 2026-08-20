@@ -24,7 +24,8 @@
   disagreement policy;
 - empty independent-review collection with a question-bank hash and a
   fail-closed packet validator; its JSON schema now binds packet identity,
-  independence/access attestations, decision enums, and rationale hashes;
+  independence/access attestations, decision enums, rationale hashes, and
+  conditional packet-count/answer requirements;
   no reviewer packet is present yet;
 - empty locator-only source-familiarity fixture with a fail-closed provenance
   validator; no canonical excerpt is stored;

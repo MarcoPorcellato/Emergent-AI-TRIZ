@@ -55,7 +55,8 @@ The independent-review collection is now an explicit tracked no-model gate
 `experiments/exp002-qwen3-followup/expert-review-collection.json` is
 `ready_for_collection` with exactly three required pseudonymous reviewers and
 an immutable question-bank hash. Its schema and validator require full question-bank
-coverage, distinct reviewers, rationale hashes, and explicit attestations that
+coverage, distinct reviewers, rationale hashes, conditional exact-answer fields,
+and explicit attestations that
 neither models nor sealed targets were accessed. Empty packets are intentional;
 no expert decisions have been fabricated or inferred.
 
