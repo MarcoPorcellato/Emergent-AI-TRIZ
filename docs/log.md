@@ -2,6 +2,16 @@
 
 ## 2026-08-20
 
+- Advanced the published EXP-002 no-model tranche through exact head `278dcf2`:
+  added the three-pseudonymous-reviewer answer-key gate, direct-question
+  abstention/precision/recall metrics, and a target-free EXP-002C corpus schema
+  and validator. The validator rejects EXP-001 reuse, TRIZ/source leakage in
+  the blinded primary, duplicate fingerprints, and shared expert/generator
+  locators. All changes remain model-free and claim-free.
+- Refreshed the CCP coordination reference to current `origin/main`
+  `5f2ef665be4dc47fd354befcba53251a4e51744f`; the runbook forbids manual lock
+  or lease quarantine and requires fresh host-wide admission checks.
+
 - Completed the authorised EXP-002A baseline on all seven exact snapshots under
   CCP `origin/main` `104d48d`: Pythia, SmolLM2-360M, Qwen3, GPT-2,
   SmolLM2-135M, GPT-Neo, and Qwen2.5. All seven terminal outcomes are `null`,

@@ -31,10 +31,12 @@ neither closes the expert or causal construct gates.
 
 The next automated research tranche is EXP-002, maintained on branch
 `exp002-qwen3-followup`. Its no-model contracts and synthetic gates are
-published at exact head `7b06136`: 351 direct TRIZ questions, tokenizer and
+published at exact head `278dcf2`: 351 direct TRIZ questions, tokenizer and
 label-surface audits, source-familiarity controls, new-transfer design, exact
-statistics, terminal receipts, and an approval dossier. It must not load a
-model or read a sealed target until that dossier is explicitly authorized.
+statistics, terminal receipts, an approval dossier, the three-reviewer
+answer-key gate, and a fail-closed EXP-002C corpus validator. It must not load
+a model or read a sealed target until the relevant exact dossier is explicitly
+authorized.
 
 The maintained Lab 00 through Lab 05 artifacts now have a single local visual entrance. `make lab` opens the dashboard and `make lab-render` produces the same deterministic page for headless use. The dashboard is a navigation and integrity surface; it does not recompute experiments or promote scientific claims.
 
