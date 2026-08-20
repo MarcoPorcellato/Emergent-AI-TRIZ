@@ -1,5 +1,29 @@
 ---
 
+## 2026-08-20 — EXP-002 no-model checkpoint
+
+- Completed and published the EXP-002 no-model implementation on branch
+  `exp002-qwen3-followup`. The direct-question path is now stage-aware and
+  keeps bounded generation disabled by default; EXP-002C has a label-free
+  candidate-description scorer that emits four candidate scores without
+  label-token scores.
+- Added stage-specific response-index validation and a separate EXP-002C
+  transfer-target-key schema/template. The public template remains
+  `not_ready`, with no sealed answers or target-content hash until the
+  independently authored corpus and expert labels are frozen.
+- Refreshed the canonical plan, status, roadmap, master plan, persistent goal,
+  and restart handoff to implementation checkpoint `e47937c`; subsequent
+  documentation-only commits preserve that code checkpoint. The branch is
+  publicly synchronized at the preceding checkpoint
+  `ef030107f31a6ab436c91409479424703f34599e`.
+- Deterministic validation remains model-free: 50 EXP-002 tests, 146 schema
+  pairs, the contract/question-bank audit, and the full repository suite pass.
+  Fresh EXP-002B/C preflight returns `approval_required` without model or
+  sealed-target access because independent expert packets and the EXP-002C
+  corpus/target key are still absent.
+
+---
+
 ## 2026-08-20
 
 - Advanced the published EXP-002 no-model tranche through exact head `278dcf2`:
