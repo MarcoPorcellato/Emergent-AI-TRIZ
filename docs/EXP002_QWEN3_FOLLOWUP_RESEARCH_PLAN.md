@@ -58,6 +58,12 @@ coverage, distinct reviewers, rationale hashes, and explicit attestations that
 neither models nor sealed targets were accessed. Empty packets are intentional;
 no expert decisions have been fabricated or inferred.
 
+The source-familiarity arm now has a separate locator-only fixture and
+validator. Its public records can carry only a logical prompt locator, a
+SHA-256, a source identifier, and an allowed exposure mode; source excerpts,
+answer fields, and model outputs are rejected. The tracked fixture is empty by
+design until independently authored pairs and rights/proximity review exist.
+
 The response-surface module now emits a deterministic schedule for the original,
 cyclic, all-24, numeric, neutral-symbol, label-free, and answer-boundary
 conditions, and classifies only `measurement_robust`,

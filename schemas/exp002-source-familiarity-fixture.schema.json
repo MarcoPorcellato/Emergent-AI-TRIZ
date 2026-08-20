@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-source-familiarity-fixture.schema.json",
+  "title": "EXP-002B source-familiarity locator-only fixture",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "fixture_id", "status", "source_proximity_manifest", "records", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-source-familiarity-fixture"},
+    "fixture_id": {"const": "exp002-source-familiarity-v1.0.0"},
+    "status": {"enum": ["design_ready_no_model", "frozen_no_model"]},
+    "source_proximity_manifest": {"const": "experiments/exp002-qwen3-followup/source-proximity-manifest.json"},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/record"}},
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  },
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "pair_id", "condition", "prompt_locator", "prompt_sha256", "source_id", "exposure_mode"],
+      "properties": {
+        "case_id": {"type": "string", "pattern": "^exp002b-source-[a-z0-9-]+$"},
+        "pair_id": {"type": "string", "pattern": "^exp002b-pair-[a-z0-9-]+$"},
+        "condition": {"enum": ["canonical_short_phrase", "independent_paraphrase", "matched_non_triz_lexical_control", "nonce_relation_edit", "source_attribution_with_unknown"]},
+        "prompt_locator": {"type": "string", "pattern": "^public://exp002b/source-familiarity/[a-z0-9._/-]+$"},
+        "prompt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "source_id": {"type": "string", "minLength": 1},
+        "exposure_mode": {"enum": ["metadata_only", "human_reviewed_excerpt", "citation_only"]}
+      }
+    }
+  }
+}

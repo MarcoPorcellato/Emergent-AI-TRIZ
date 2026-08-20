@@ -24,6 +24,8 @@
   disagreement policy;
 - empty independent-review collection with a question-bank hash and a
   fail-closed packet validator; no reviewer packet is present yet;
+- empty locator-only source-familiarity fixture with a fail-closed provenance
+  validator; no canonical excerpt is stored;
 - separate unapproved `EXP-002B` and `EXP-002C` dossiers with exact model
   identities, fixed limits, and a fresh-CCP stage gate;
 - injected direct-question scoring boundary and stage-aware runner dispatch;
