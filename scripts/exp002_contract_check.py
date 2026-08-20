@@ -26,6 +26,7 @@ from latent_triz.exp002_analysis import evaluate_transfer, validate_analysis_res
 from latent_triz.exp002_transfer_corpus import validate_transfer_fixture  # noqa: E402
 from latent_triz.exp002_stage_gate import validate_stage_dossier  # noqa: E402
 from latent_triz.exp002_expert_review import validate_review_packets  # noqa: E402
+from latent_triz.exp002_source_familiarity import validate_source_familiarity_fixture  # noqa: E402
 
 
 def load(relative: str) -> Any:
@@ -106,6 +107,11 @@ def main() -> int:
             [record["question_id"] for record in records],
             question_bank_sha256=review_collection["question_bank_sha256"],
         )
+    source_fixture = load("experiments/exp002-qwen3-followup/source-familiarity-fixture.json")
+    validate_schema("schemas/exp002-source-familiarity-fixture.schema.json", source_fixture)
+    if source_fixture["status"] != "design_ready_no_model" or source_fixture["records"]:
+        raise AssertionError("source-familiarity fixture must remain locator-only and empty before authoring")
+    validate_source_familiarity_fixture(source_fixture["records"], status="design")
     analysis_contract = load("experiments/exp002-qwen3-followup/analysis-contract.json")
     validate_schema("schemas/exp002-analysis-contract.schema.json", analysis_contract)
     source_plan = load("experiments/exp002-qwen3-followup/source-familiarity-plan.json")

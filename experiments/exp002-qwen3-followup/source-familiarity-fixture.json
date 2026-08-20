@@ -1,0 +1,11 @@
+{
+  "artifact_class": "exp002-source-familiarity-fixture",
+  "fixture_id": "exp002-source-familiarity-v1.0.0",
+  "status": "design_ready_no_model",
+  "source_proximity_manifest": "experiments/exp002-qwen3-followup/source-proximity-manifest.json",
+  "records": [],
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}
