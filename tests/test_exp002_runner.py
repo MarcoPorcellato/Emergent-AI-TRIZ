@@ -71,6 +71,10 @@ class Exp002RunnerTests(unittest.TestCase):
                 adapter=_FakeAdapter(),
             )
             self.assertEqual(result["status"], "null")
+            package = Path(directory) / result["package"]
+            response_schema = json.loads((ROOT / "schemas/exp002-response-index.schema.json").read_text())
+            response_index = json.loads((package / "response-index.json").read_text())
+            self.assertEqual(list(Draft202012Validator(response_schema).iter_errors(response_index)), [])
             self.assertEqual(len(target_reads), 1)
             package = Path(directory) / result["package"]
             self.assertTrue((package / "publication-manifest.json").is_file())
@@ -112,13 +116,33 @@ class Exp002RunnerTests(unittest.TestCase):
                 revision="da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
                 dossier=_stage_dossier(),
                 ccp_gate={"decision": "admit", "active": False, "queue_count": 0},
-                public_rows=[{"record_id": "r1", "prompt": "x"}],
-                scorer=lambda prompt: {"A": 1, "B": 0, "C": -1, "D": -2},
-                target_reader=lambda rows: [{"record_id": "r1", "expected": "A"}],
+                public_rows=[{"question_id": "exp002-q1", "module": "foundational_concepts", "prompt": "x", "response_mode": "structured_completion"}],
+                scorer=lambda row: {"prediction": "resource", "abstained": False},
+                target_reader=lambda rows: [{"question_id": "exp002-q1", "expected": "resource"}],
                 analysis=lambda rows, reader: {"status": "null", "target_count": len(reader())},
                 adapter=_FakeAdapter(),
             )
             self.assertEqual(result["status"], "null")
+
+    def test_stage_b_rejects_bounded_completion_without_generation_authorization(self):
+        with tempfile.TemporaryDirectory() as directory:
+            target_reads = []
+            result = run_exp002_stage(
+                root=directory,
+                run_id="exp002-qwen3-b-generation-closed",
+                study_id="EXP-002B",
+                model_id="Qwen/Qwen3-0.6B-Base",
+                revision="da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+                dossier=_stage_dossier(),
+                ccp_gate={"decision": "admit", "active": False, "queue_count": 0},
+                public_rows=[{"question_id": "exp002-q1", "module": "foundational_concepts", "prompt": "x", "response_mode": "bounded_completion"}],
+                scorer=lambda row: {"prediction": "resource", "abstained": False},
+                target_reader=lambda rows: target_reads.append(rows) or [],
+                analysis=lambda rows, reader: {"status": "null"},
+                adapter=_FakeAdapter(),
+            )
+            self.assertEqual(result["status"], "failed")
+            self.assertEqual(target_reads, [])
 
 
 if __name__ == "__main__":
