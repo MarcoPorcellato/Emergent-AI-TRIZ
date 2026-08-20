@@ -2,12 +2,23 @@
 type: research-plan
 title: Qwen3 Outlier Follow-up Research and Test Plan
 description: Staged preregistration plan for separating label bias, declarative TRIZ knowledge, source familiarity, and blinded transfer.
-status: draft_preregistration
+status: implementation_no_model_complete_pending_operator_approval
 version: 0.1.0
 last_verified: 2026-08-20
 ---
 
 # EXP-002 — Qwen3 outlier follow-up research and test plan
+
+## Current implementation checkpoint
+
+The no-model tranche is implemented on branch `exp002-qwen3-followup` and is
+verified by `make exp002-question-bank-audit`. It includes the frozen seven-
+model registry, tokenizer-audit gate, response-surface permutations, the
+target-free 71-question TRIZ bank, transfer-corpus design, fail-closed
+terminal-result helpers, approval dossier, and preexecution publication
+manifest. No model, tokenizer, generation, network, CCP material run, or
+sealed target has been accessed by this tranche. The next material action
+requires a fresh operator approval bound to the exact approval dossier.
 
 ## 1. Purpose
 

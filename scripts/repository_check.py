@@ -184,6 +184,8 @@ def main() -> int:
         ("schemas/exp002-label-surface-diagnostic.schema.json", "results/exp002/preexecution/label-surface-diagnostic.json"),
         ("schemas/exp002-response-surface-plan.schema.json", "experiments/exp002-qwen3-followup/response-surface-plan.json"),
         ("schemas/exp002-transfer-corpus-plan.schema.json", "experiments/exp002-qwen3-followup/transfer-corpus-plan.json"),
+        ("schemas/exp002-approval-dossier.schema.json", "experiments/exp002-qwen3-followup/approval-dossier.json"),
+        ("schemas/exp002-publication-manifest.schema.json", "results/exp002/preexecution/publication-manifest.json"),
         ("schemas/a0-corpus-manifest.schema.json", "data/a0/manifest.json"),
         ("schemas/a0-case.schema.json", "data/a0/cases.jsonl"),
         ("schemas/a0-procedural-target.schema.json", "data/a0/procedural-targets/calibration-targets.jsonl"),

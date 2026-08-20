@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-publication-manifest.schema.json",
+  "title": "EXP-002 preexecution publication manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "status", "packages", "external_dense_assets", "claim_ids", "evidence_eligible", "expert_validated"],
+  "properties": {
+    "artifact_class": {"const": "exp002-publication-manifest"},
+    "protocol_id": {"const": "exp002-qwen3-followup-v1.0.0"},
+    "status": {"enum": ["not_ready", "ready", "published"]},
+    "packages": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["model_id", "revision", "terminal_status", "package_locator"], "properties": {"model_id": {"type": "string"}, "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"}, "terminal_status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]}, "package_locator": {"type": "string", "pattern": "^results/exp002/"}}}},
+    "external_dense_assets": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["locator", "sha256"], "properties": {"locator": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}}},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false}
+  }
+}
