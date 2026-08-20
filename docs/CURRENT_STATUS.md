@@ -66,7 +66,8 @@ tokenizer diagnostics, direct TRIZ knowledge/source-familiarity scoring, and
 the independently authored EXP-002C corpus remain separate pending stages. The
 no-model tranche now includes the three-reviewer answer-key gate and a
 fail-closed EXP-002C corpus validator/template; neither authorizes a model load
-or sealed-target read.
+or sealed-target read. Separate EXP-002B and EXP-002C approval-requested
+dossiers are present but intentionally unapproved.
 
 ## Published model-backed record
 

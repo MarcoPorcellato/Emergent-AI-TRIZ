@@ -37,6 +37,13 @@ cues in the blinded primary, answer-bearing fields, duplicate fingerprints, and
 shared expert/generator locators. These additions perform no model load,
 generation, tokenizer access, or sealed-target read.
 
+Separate `approval_requested` dossiers now exist for EXP-002B and EXP-002C.
+They enumerate all seven exact snapshots, the fixed resource envelope, and the
+forbidden actions, but deliberately carry no operator approval. The stage gate
+requires the frozen answer key for B, the frozen transfer corpus and passed
+power calibration for C, and a fresh CCP `Admit`/inactive/queue-0 snapshot
+before any material call.
+
 ### EXP-002A baseline result (2026-08-20)
 
 All seven exact models produced an exploratory `null` terminal result under the

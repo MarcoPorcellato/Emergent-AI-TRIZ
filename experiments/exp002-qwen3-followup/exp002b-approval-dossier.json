@@ -1,0 +1,23 @@
+{
+  "artifact_class": "exp002-study-approval-dossier",
+  "dossier_id": "exp002-exp-002b-approval-v1",
+  "protocol_id": "exp002-qwen3-followup-v1.0.0",
+  "stage_id": "EXP-002B",
+  "status": "approval_requested",
+  "exact_models": [
+    {"model_id": "EleutherAI/pythia-70m-deduped", "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c", "local_root": "artifacts/models/pythia-70m-deduped-e93a9faa"},
+    {"model_id": "HuggingFaceTB/SmolLM2-360M", "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49", "local_root": "artifacts/models/smollm2-360m-f8027fd0"},
+    {"model_id": "Qwen/Qwen3-0.6B-Base", "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd", "local_root": "artifacts/models/qwen3-0.6b-base-da87bfb"},
+    {"model_id": "openai-community/gpt2", "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e", "local_root": "artifacts/models/gpt2-607a30d7"},
+    {"model_id": "HuggingFaceTB/SmolLM2-135M", "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2", "local_root": "artifacts/models/smollm2-135m-93efa2f0"},
+    {"model_id": "EleutherAI/gpt-neo-125m", "revision": "21def0189f5705e2521767faed922f1f15e7d7db", "local_root": "artifacts/models/gpt-neo-125m-21def018"},
+    {"model_id": "Qwen/Qwen2.5-0.5B", "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987", "local_root": "artifacts/models/qwen2.5-0.5b-060db649"}
+  ],
+  "prerequisites": {"answer_key_status": "frozen", "transfer_corpus_status": "not_applicable", "source_proximity_status": "pass", "power_calibration_status": "not_applicable"},
+  "permissions": {"model_load": true, "generation": false, "network": false, "sealed_target_read": "exactly_one_at_analysis_boundary", "ccp_material_run": true, "publish_every_terminal_outcome": true},
+  "limits": {"wall_time_seconds_per_model": 1800, "peak_rss_bytes_per_model": 8589934592, "new_dense_output_bytes_per_model": 134217728},
+  "prohibitions": ["no tuning", "no model substitution", "no retry after model access", "no protocol change", "no generation", "no network"],
+  "operator_approval": {"granted": false, "operator_id": "MarcoPorcellato", "approved_at": null, "approval_text_sha256": null},
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}
