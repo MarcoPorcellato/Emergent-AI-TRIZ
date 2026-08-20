@@ -21,7 +21,8 @@
   leakage, EXP-001 reuse, duplicate fingerprints, and merged expert/generator
   locators;
 - direct-answer key gate requiring three pseudonymous reviewers and a frozen
-  disagreement policy;
+  disagreement policy; the answer-key schema now binds conditional expected
+  answers and frozen-review cardinality;
 - empty independent-review collection with a question-bank hash and a
   fail-closed packet validator; its JSON schema now binds packet identity,
   independence/access attestations, decision enums, rationale hashes, and
