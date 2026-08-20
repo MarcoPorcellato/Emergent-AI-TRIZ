@@ -139,3 +139,17 @@ tokenizer, network, generation, or target access. The next gate is an
 exact-head no-model qualification and merge of this boundary, followed by a
 new final dossier hash and explicit operator approval; only then may the
 seven-model campaign be considered for execution.
+
+Final dossier checkpoint (2026-08-20): PR #102 merged at
+`9a86bedcc30eed63bd76e0b5d516c64347e478bc`. The public main branch now
+contains the exact material-binding dossier and its fail-closed runner. The
+canonical dossier SHA-256 is
+`d35921d0ac187ba5b9de4787927df7cb2a1211ba34b9370a778d37b5fa016431` and its
+status remains `approval_requested` with `operator_approval.granted=false`.
+The corresponding CCP exact-head receipt is published on
+`ccp-evidence/5f9c72a10f725a5369ddb982cdcdec74f0c8d186` and verified PASS for
+Python 3.11 and 3.12. The next and only material gate is explicit operator
+approval of that exact dossier, including the seven frozen model revisions,
+CPU-float32/no-network/no-generation limits, one analysis-boundary sealed-key
+read, and the stated 1,800-second/8-GiB/128-MiB ceilings. Until then, no
+model, tokenizer, generation, or sealed target access is authorized.
