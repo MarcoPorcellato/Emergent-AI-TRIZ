@@ -22,6 +22,8 @@
   locators;
 - direct-answer key gate requiring three pseudonymous reviewers and a frozen
   disagreement policy;
+- empty independent-review collection with a question-bank hash and a
+  fail-closed packet validator; no reviewer packet is present yet;
 - separate unapproved `EXP-002B` and `EXP-002C` dossiers with exact model
   identities, fixed limits, and a fresh-CCP stage gate;
 - injected direct-question scoring boundary and stage-aware runner dispatch;
@@ -47,9 +49,10 @@ PYTHONPATH=src .venv/bin/python -m unittest \
 ```
 
 These commands remain model-free. The EXP-002A baseline is complete, but do not
-rerun any model or reopen the target key. The next work is the separately
-frozen response-surface/tokenizer diagnostics, expert answer-key review, and
-independent EXP-002C authoring.
+rerun any model or reopen the target key. The next work is to obtain three
+independent review packets, freeze the answer key only after their full
+coverage and disagreement policy pass, and complete independent EXP-002C
+authoring. Do not add placeholder decisions to the collection.
 
 After the live gate is available, provide a fresh JSON snapshot containing
 `decision: "admit"`, `active: false`, and `queue_count: 0` to the material

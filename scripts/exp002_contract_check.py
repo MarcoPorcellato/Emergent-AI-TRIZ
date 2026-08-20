@@ -25,6 +25,7 @@ from latent_triz.exp002_terminal import TERMINAL_STATUSES, build_terminal_result
 from latent_triz.exp002_analysis import evaluate_transfer, validate_analysis_result  # noqa: E402
 from latent_triz.exp002_transfer_corpus import validate_transfer_fixture  # noqa: E402
 from latent_triz.exp002_stage_gate import validate_stage_dossier  # noqa: E402
+from latent_triz.exp002_expert_review import validate_review_packets  # noqa: E402
 
 
 def load(relative: str) -> Any:
@@ -93,6 +94,18 @@ def main() -> int:
             raise AssertionError(f"{stage_id} dossier must remain unapproved")
     interpretation_matrix = load("results/exp002/preexecution/interpretation-matrix.json")
     validate_schema("schemas/exp002-interpretation-matrix.schema.json", interpretation_matrix)
+    review_collection = load("experiments/exp002-qwen3-followup/expert-review-collection.json")
+    validate_schema("schemas/exp002-expert-review-collection.schema.json", review_collection)
+    if review_collection["status"] != "ready_for_collection" or review_collection["packets"]:
+        raise AssertionError("expert-review collection must remain empty before independent review")
+    if review_collection["question_bank_sha256"] != sha256(review_collection["question_bank"]):
+        raise AssertionError("expert-review question-bank hash drift")
+    if review_collection["packets"]:
+        validate_review_packets(
+            review_collection["packets"],
+            [record["question_id"] for record in records],
+            question_bank_sha256=review_collection["question_bank_sha256"],
+        )
     analysis_contract = load("experiments/exp002-qwen3-followup/analysis-contract.json")
     validate_schema("schemas/exp002-analysis-contract.schema.json", analysis_contract)
     source_plan = load("experiments/exp002-qwen3-followup/source-familiarity-plan.json")
