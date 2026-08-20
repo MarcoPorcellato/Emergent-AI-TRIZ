@@ -2,7 +2,7 @@
 type: research-plan
 title: Qwen3 Outlier Follow-up Research and Test Plan
 description: Staged preregistration plan for separating label bias, declarative TRIZ knowledge, source familiarity, and blinded transfer.
-status: implementation_no_model_complete_pending_operator_approval
+status: implementation_no_model_complete_operator_approved_ccp_blocked
 version: 0.1.0
 last_verified: 2026-08-20
 ---
@@ -12,13 +12,13 @@ last_verified: 2026-08-20
 ## Current implementation checkpoint
 
 The no-model tranche is implemented on branch `exp002-qwen3-followup` and is
-verified by `make exp002-question-bank-audit`. It includes the frozen seven-
-model registry, tokenizer-audit gate, response-surface permutations, the
-target-free 71-question TRIZ bank, transfer-corpus design, fail-closed
-terminal-result helpers, approval dossier, and preexecution publication
-manifest. No model, tokenizer, generation, network, CCP material run, or
-sealed target has been accessed by this tranche. The next material action
-requires a fresh operator approval bound to the exact approval dossier.
+verified by `make exp002-question-bank-audit`. The operator has now approved
+the exact seven-model dossier, CPU float32/local-only limits, one run per
+model, one sealed-target read at the analysis boundary, and publication of
+every terminal state. Material execution remains blocked until the live CCP
+gate reports `decision=admit`, `admission_active=false`, and `queue_count=0`.
+No model, tokenizer, generation, network, CCP material run, or sealed target
+has been accessed by this tranche.
 
 ## 1. Purpose
 
