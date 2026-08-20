@@ -3,7 +3,7 @@
 ## Current checkpoint
 
 - Branch: `exp002-qwen3-followup`
-- Last implementation checkpoint: `5efd867` (EXP-002 no-model gates, source-familiarity boundary, power calibration, review handoff, and package-binding verifier published)
+- Last implementation checkpoint: `797627f` (EXP-002 no-model gates, source-familiarity boundary, power calibration, review handoff, package-binding verifier, and canonical question-inventory preflight published)
 - Scientific state: exploratory, no claim IDs, no evidence promotion
 - Model access: one local CPU float32 pass per exact model, all terminal `null`
 - Generation/network: disabled for every pass
@@ -23,7 +23,9 @@
 - direct-answer key gate requiring three pseudonymous reviewers and a frozen
   disagreement policy;
 - empty independent-review collection with a question-bank hash and a
-  fail-closed packet validator; no reviewer packet is present yet;
+  fail-closed packet validator; its JSON schema now binds packet identity,
+  independence/access attestations, decision enums, and rationale hashes;
+  no reviewer packet is present yet;
 - empty locator-only source-familiarity fixture with a fail-closed provenance
   validator; no canonical excerpt is stored;
 - deterministic EXP-002C power calibration receipt selecting eight domains
