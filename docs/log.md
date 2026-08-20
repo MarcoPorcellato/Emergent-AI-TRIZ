@@ -4,7 +4,7 @@
 
 - Created and published branch `exp002-qwen3-followup` for the Qwen3 outlier
   follow-up research plan. The no-model implementation is current through
-  exact head `006e3c8` (implementation commits are preserved in the branch
+  exact head `51ba0ac` (implementation commits are preserved in the branch
   history).
 - Added the frozen seven-model protocol, tokenizer-audit receipt in
   `not_started` state, response-surface permutations and label-prior
