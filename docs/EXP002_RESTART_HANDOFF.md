@@ -113,3 +113,14 @@ then replace the answer-key dossier status with a separately hashed frozen
 artifact. Only that reviewed artifact can advance EXP-002B authorization.
 The repository now provides `freeze_answer_key_from_packets` for this step;
 its output remains exploratory and claim-free.
+
+Once the three packets are available, the file-level entry point is:
+
+```sh
+PYTHONPATH=src .venv/bin/python scripts/exp002_freeze_answer_key.py \
+  --packets /path/to/three-review-packets.json \
+  --output results/exp002/preexecution/direct-answer-key.json
+```
+
+The command recomputes the canonical question inventory and hash, refuses an
+existing output, and performs no model or target access.
