@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["artifact_class", "protocol_id", "status", "record_count", "records", "sealed_target_accessed", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-auto-combined-target-key"},
+    "protocol_id": {"const": "exp002-auto-v1.0.0"},
+    "status": {"const": "not_ready"},
+    "record_count": {"const": 226},
+    "records": {"type": "array", "maxItems": 0},
+    "sealed_target_accessed": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  },
+  "additionalProperties": false
+}

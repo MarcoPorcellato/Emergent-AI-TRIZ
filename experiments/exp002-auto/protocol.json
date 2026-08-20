@@ -1,0 +1,35 @@
+{
+  "artifact_class": "exp002-auto-protocol",
+  "protocol_id": "exp002-auto-v1.0.0",
+  "status": "frozen_no_model",
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "models": [
+    {"model_id": "EleutherAI/pythia-70m-deduped", "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c"},
+    {"model_id": "HuggingFaceTB/SmolLM2-360M", "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49"},
+    {"model_id": "Qwen/Qwen3-0.6B-Base", "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd"},
+    {"model_id": "openai-community/gpt2", "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e"},
+    {"model_id": "HuggingFaceTB/SmolLM2-135M", "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2"},
+    {"model_id": "EleutherAI/gpt-neo-125m", "revision": "21def0189f5705e2521767faed922f1f15e7d7db"},
+    {"model_id": "Qwen/Qwen2.5-0.5B", "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987"}
+  ],
+  "approval_boundary": {
+    "model_load": false,
+    "tokenizer_construction": false,
+    "generation": false,
+    "sealed_target_read": false,
+    "network": false,
+    "ccp_material_run": false,
+    "new_download": false
+  },
+  "stages": [
+    {"stage_id": "AUTO-0", "model_access": false, "target_access": false},
+    {"stage_id": "AUTO-1", "model_access": false, "target_access": false},
+    {"stage_id": "AUTO-2", "model_access": false, "target_access": false},
+    {"stage_id": "AUTO-3", "model_access": false, "target_access": false},
+    {"stage_id": "AUTO-4", "model_access": false, "target_access": false},
+    {"stage_id": "AUTO-5", "model_access": false, "target_access": false}
+  ]
+}

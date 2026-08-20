@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["record_id", "stage", "family", "prompt", "source_ids", "expected_answer_present", "response_mode"],
+  "properties": {
+    "record_id": {"type": "string", "pattern": "^exp002-auto-[a-z0-9_-]+$"},
+    "stage": {"enum": ["AUTO-2", "AUTO-3", "AUTO-4"]},
+    "family": {"type": "string", "minLength": 1},
+    "prompt": {"type": "string", "minLength": 1},
+    "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "expected_answer_present": {"const": false},
+    "response_mode": {"enum": ["candidate_description_scoring", "continuation_contrast"]},
+    "candidate_descriptions": {"type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "domain": {"type": "string", "minLength": 1},
+    "condition": {"enum": ["canonical_short_field", "structured_paraphrase", "matched_non_triz_control", "nonce_edit_control"]}
+  },
+  "allOf": [
+    {"if": {"properties": {"response_mode": {"const": "candidate_description_scoring"}}}, "then": {"required": ["candidate_descriptions"]}}
+  ],
+  "additionalProperties": false
+}

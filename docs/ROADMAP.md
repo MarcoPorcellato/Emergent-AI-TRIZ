@@ -38,6 +38,12 @@ answer-key gate, and a fail-closed EXP-002C corpus validator. It must not load
 a model or read a sealed target until the relevant exact dossier is explicitly
 authorized.
 
+EXP-002-AUTO is the independent pre-expert continuation: its public no-model
+protocol, fixtures, schedule, execution gates, and approval-requested dossier
+are maintained under `experiments/exp002-auto/`. It freezes the entire
+seven-model schedule before any material access and keeps automated factual
+and procedural proxy outcomes separate from human-validated TRIZ evidence.
+
 The maintained Lab 00 through Lab 05 artifacts now have a single local visual entrance. `make lab` opens the dashboard and `make lab-render` produces the same deterministic page for headless use. The dashboard is a navigation and integrity surface; it does not recompute experiments or promote scientific claims.
 
 ## Foundation — delivered

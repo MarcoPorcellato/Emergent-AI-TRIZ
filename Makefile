@@ -1,6 +1,6 @@
 PYTHONPATH := src
 
-.PHONY: test validate docs-audit check schema-cross-validate exp002-contract-verify exp002-question-bank-audit exp002-publication-verify exp002-runner-test exp002-stage-preflight exp002-review-packet-verify no-model-quickstart preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit h1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-approval-dossier-verify a0r2-authorization-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0r2-execution-verify a0r2-run a0r2-run-verify a0r2-publication-verify a0r2c1-contract-verify a0r2c1-run a0r2c2-contract-verify a0r2c2-run a0r2c3-contract-verify a0r2c3-run a0
+.PHONY: test validate docs-audit check schema-cross-validate exp002-contract-verify exp002-question-bank-audit exp002-publication-verify exp002-runner-test exp002-stage-preflight exp002-review-packet-verify exp002-auto-verify exp002-auto-stage-preflight no-model-quickstart preflight-plan preflight-run preflight-verify model-preflight dataset-audit dataset-wave1-audit wave1-surface-audit wave1-surface-audit-render wave1-annotation-audit h1-annotation-audit readiness lab00 lab00-render lab01-setup lab01-acquire lab01-bootstrap lab01 lab01-render lab01-representations lab02 lab02-render lab03 lab03-render lab04 lab04-render lab05 lab05-render annotate annotate-serve annotate-wave1 pilot-export-evaluator stage1-pilot-validate stage1-pilot-smoke lab lab-render a0-corpus a0-calibrate a0r1-verify a0r1-execution-verify a0r1-freeze a0r1-run a0r1-run-verify a0r1-publication-verify a0r2-acquisition-verify a0r2-approval-dossier-verify a0r2-authorization-verify a0r2-feasibility-contract-verify a0r2-feasibility-run a0r2-feasibility-verify a0r2-execution-verify a0r2-run a0r2-run-verify a0r2-publication-verify a0r2c1-contract-verify a0r2c1-run a0r2c2-contract-verify a0r2c2-run a0r2c3-contract-verify a0r2c3-run a0
 
 LAB01_MODEL_ROOT ?= artifacts/models/pythia-70m-deduped-e93a9faa
 LAB01_PYTHON ?= .venv/bin/python
@@ -71,7 +71,7 @@ check:
 	PYTHONPATH=$(PYTHONPATH) python3 scripts/repository_check.py
 
 schema-cross-validate:
-	PYTHONPATH=$(PYTHONPATH) python3 scripts/schema_cross_validate.py
+	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/schema_cross_validate.py
 
 exp002-contract-verify:
 	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/exp002_contract_check.py
@@ -92,6 +92,14 @@ exp002-stage-preflight:
 exp002-review-packet-verify:
 	@test -n "$(PACKET)" || (echo "PACKET=/path/to/reviewer-packet.json is required"; exit 2)
 	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/exp002_validate_review_packet.py --packet "$(PACKET)"
+
+exp002-auto-verify:
+	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/exp002_auto_contract_check.py
+	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) -m unittest tests.test_exp002_auto_contract tests.test_exp002_auto_fixtures tests.test_exp002_auto_schedule tests.test_exp002_auto_execution tests.test_exp002_auto_analysis tests.test_exp002_auto_stage_gate tests.test_exp002_auto_report tests.test_exp002_auto_contract_check tests.test_exp002_auto_cli
+	@echo "EXP-002-AUTO no-model checkpoint passed: no model, tokenizer, network, or sealed target access."
+
+exp002-auto-stage-preflight:
+	@echo "EXP-002-AUTO remains approval-required; use the exact hash-bound dossier only after a new operator authorization."
 
 no-model-quickstart:
 	@echo "Latent-TRIZ no-model quickstart: synthetic dashboard, schemas, H1 packet, CV2, and Lab06 readiness"
