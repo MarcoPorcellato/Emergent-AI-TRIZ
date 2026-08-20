@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-followup-protocol.schema.json",
+  "title": "EXP-002 Qwen3 follow-up protocol",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "status", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids", "source_evidence", "models", "stages", "question_modules", "response_surfaces", "analysis", "approval_boundary", "publication"],
+  "properties": {
+    "artifact_class": {"const": "exp002-qwen3-followup-protocol"},
+    "protocol_id": {"const": "exp002-qwen3-followup-v1.0.0"},
+    "status": {"enum": ["draft", "frozen_no_model", "approval_requested", "authorized", "published"]},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0},
+    "source_evidence": {"$ref": "#/$defs/source_evidence"},
+    "models": {"type": "array", "minItems": 7, "maxItems": 7, "items": {"$ref": "#/$defs/model"}},
+    "stages": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"$ref": "#/$defs/stage"}},
+    "question_modules": {"$ref": "#/$defs/question_modules"},
+    "response_surfaces": {"$ref": "#/$defs/response_surfaces"},
+    "analysis": {"$ref": "#/$defs/analysis"},
+    "approval_boundary": {"$ref": "#/$defs/approval_boundary"},
+    "publication": {"$ref": "#/$defs/publication"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "source_evidence": {"type": "object", "additionalProperties": false, "required": ["outlier_analysis", "outlier_analysis_sha256", "comparative_protocol", "comparative_protocol_sha256", "comparative_analysis_plan", "comparative_analysis_plan_sha256"], "properties": {"outlier_analysis": {"type": "string", "pattern": "^docs/"}, "outlier_analysis_sha256": {"$ref": "#/$defs/hash"}, "comparative_protocol": {"type": "string", "pattern": "^experiments/"}, "comparative_protocol_sha256": {"$ref": "#/$defs/hash"}, "comparative_analysis_plan": {"type": "string", "pattern": "^experiments/"}, "comparative_analysis_plan_sha256": {"$ref": "#/$defs/hash"}}},
+    "model": {"type": "object", "additionalProperties": false, "required": ["model_id", "revision", "registry"], "properties": {"model_id": {"type": "string", "minLength": 1}, "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"}, "registry": {"const": "experiments/exp001-comparative-reference/model-registry.json"}}},
+    "stage": {"type": "object", "additionalProperties": false, "required": ["stage_id", "purpose", "model_access", "target_access", "status"], "properties": {"stage_id": {"enum": ["EXP-002A", "EXP-002B", "EXP-002C", "EXP-002D"]}, "purpose": {"type": "string", "minLength": 1}, "model_access": {"const": false}, "target_access": {"const": false}, "status": {"type": "string", "minLength": 1}}},
+    "question_modules": {"type": "object", "additionalProperties": false, "required": ["principle_count", "foundational_concepts", "matrix_direction_and_abstention", "panitz_supported_uncertain_and_abstention", "false_concept_canaries", "self_report_is_non_evidential"], "properties": {"principle_count": {"const": 40}, "foundational_concepts": {"type": "array", "minItems": 9, "items": {"type": "string"}}, "matrix_direction_and_abstention": {"const": true}, "panitz_supported_uncertain_and_abstention": {"const": true}, "false_concept_canaries": {"const": true}, "self_report_is_non_evidential": {"const": true}}},
+    "response_surfaces": {"type": "object", "additionalProperties": false, "required": ["primary", "diagnostics", "generation", "base_models_chat_template"], "properties": {"primary": {"const": "label_free_candidate_description_scoring"}, "diagnostics": {"type": "array", "minItems": 6, "items": {"type": "string"}}, "generation": {"const": "separate_authorization_required"}, "base_models_chat_template": {"const": "forbidden"}}},
+    "analysis": {"type": "object", "additionalProperties": false, "required": ["model_pooling", "new_transfer_domains_minimum", "new_transfer_domains_preferred", "domain_count_and_threshold", "label_prior_adjustment", "direct_knowledge_modules_non_pooled", "source_familiarity_is_not_training_membership", "positive_claim"], "properties": {"model_pooling": {"const": false}, "new_transfer_domains_minimum": {"type": "integer", "minimum": 8}, "new_transfer_domains_preferred": {"type": "integer", "minimum": 8}, "domain_count_and_threshold": {"type": "string", "minLength": 1}, "label_prior_adjustment": {"const": "diagnostic_only_until_preregistered"}, "direct_knowledge_modules_non_pooled": {"const": true}, "source_familiarity_is_not_training_membership": {"const": true}, "positive_claim": {"const": "none_without_expert_and_control_gates"}}},
+    "approval_boundary": {"type": "object", "additionalProperties": false, "required": ["model_load", "generation", "sealed_target_read", "network", "ccp_material_run", "new_download"], "properties": {"model_load": {"const": false}, "generation": {"const": false}, "sealed_target_read": {"const": false}, "network": {"const": false}, "ccp_material_run": {"const": false}, "new_download": {"const": false}}},
+    "publication": {"type": "object", "additionalProperties": false, "required": ["publish_every_terminal_outcome", "claim_ids_must_remain_empty", "general_triz_claim_promotion", "external_dense_assets_require_separate_authorization"], "properties": {"publish_every_terminal_outcome": {"const": true}, "claim_ids_must_remain_empty": {"const": true}, "general_triz_claim_promotion": {"const": false}, "external_dense_assets_require_separate_authorization": {"const": true}}}
+  }
+}

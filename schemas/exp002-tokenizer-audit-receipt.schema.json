@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-tokenizer-audit-receipt.schema.json",
+  "title": "EXP-002 tokenizer audit receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "plan_id", "status", "model_access", "weights_access", "sealed_target_access", "network", "observations", "failure_state", "scientific_status", "evidence_eligible", "expert_validated", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-tokenizer-audit-receipt"},
+    "plan_id": {"const": "exp002-tokenizer-audit-v1.0.0"},
+    "status": {"enum": ["not_started", "completed", "incompatible", "failed"]},
+    "model_access": {"const": false},
+    "weights_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "network": {"const": false},
+    "observations": {"type": "array", "items": {"type": "object"}},
+    "failure_state": {"type": ["string", "null"]},
+    "scientific_status": {"const": "exploratory"},
+    "evidence_eligible": {"const": false},
+    "expert_validated": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}

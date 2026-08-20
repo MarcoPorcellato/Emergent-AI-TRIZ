@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-direct-question.schema.json",
+  "title": "EXP-002 direct question",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["question_id", "module", "prompt", "response_mode", "source_ids", "source_exposure", "answer_key_locator", "expected_answer_present", "scientific_role"],
+  "properties": {
+    "question_id": {"type": "string", "pattern": "^exp002-[a-z0-9-]+$"},
+    "module": {"enum": ["principle_recognition", "self_report_metadata", "foundational_concepts", "matrix", "tool_relationship", "false_concept_canary"]},
+    "prompt": {"type": "string", "minLength": 1},
+    "response_mode": {"enum": ["structured_completion", "bounded_completion", "abstention"]},
+    "source_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "source_exposure": {"enum": ["direct_query_only", "source_exposed_context", "source_blinded_control"]},
+    "answer_key_locator": {"type": "string", "pattern": "^sealed://exp002/direct-question/"},
+    "expected_answer_present": {"const": false},
+    "scientific_role": {"enum": ["familiarity_diagnostic", "knowledge_endpoint", "source_familiarity_diagnostic", "calibration_control"]}
+  }
+}

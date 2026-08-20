@@ -138,6 +138,13 @@ VALIDATION_PAIRS = (
     ("schemas/exp001-comparative-recovery-observation.schema.json", "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/recovery-observation.json"),
     ("schemas/exp001-comparative-publication-manifest.schema.json", "results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/publication-manifest.json"),
     ("schemas/triz-web-corpus.schema.json", "data/triz-consulting-web-corpus.json"),
+    ("schemas/exp002-followup-protocol.schema.json", "experiments/exp002-qwen3-followup/protocol.json"),
+    ("schemas/exp002-question-bank-manifest.schema.json", "experiments/exp002-qwen3-followup/question-bank-manifest.json"),
+    ("schemas/exp002-tokenizer-audit-plan.schema.json", "experiments/exp002-qwen3-followup/tokenizer-audit-plan.json"),
+    ("schemas/exp002-tokenizer-audit-receipt.schema.json", "results/exp002/preexecution/tokenizer-audit.json"),
+    ("schemas/exp002-label-surface-diagnostic.schema.json", "results/exp002/preexecution/label-surface-diagnostic.json"),
+    ("schemas/exp002-response-surface-plan.schema.json", "experiments/exp002-qwen3-followup/response-surface-plan.json"),
+    ("schemas/exp002-transfer-corpus-plan.schema.json", "experiments/exp002-qwen3-followup/transfer-corpus-plan.json"),
 )
 
 
