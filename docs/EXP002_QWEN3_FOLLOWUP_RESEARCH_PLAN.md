@@ -37,6 +37,9 @@ power calibration are supplied. The validator rejects EXP-001 reuse, TRIZ/source
 cues in the blinded primary, answer-bearing fields, duplicate fingerprints, and
 shared expert/generator locators. These additions perform no model load,
 generation, tokenizer access, or sealed-target read.
+Independent corpus authors have a no-model handoff in
+[`EXP002_TRANSFER_CORPUS_AUTHOR_QUICKSTART.md`](./EXP002_TRANSFER_CORPUS_AUTHOR_QUICKSTART.md);
+it preserves the frozen eight-domain, source-proximity, and target-key gates.
 
 Separate `approval_requested` dossiers now exist for EXP-002B and EXP-002C.
 They enumerate all seven exact snapshots, the fixed resource envelope, and the
