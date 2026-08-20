@@ -22,6 +22,7 @@ from latent_triz.exp002_followup import (  # noqa: E402
 )
 from latent_triz.exp002_question_bank import build_question_bank, validate_question_bank  # noqa: E402
 from latent_triz.exp002_terminal import TERMINAL_STATUSES, build_terminal_result, validate_terminal_result  # noqa: E402
+from latent_triz.exp002_analysis import evaluate_transfer, validate_analysis_result  # noqa: E402
 
 
 def load(relative: str) -> Any:
@@ -75,6 +76,8 @@ def main() -> int:
     validate_schema("schemas/exp002-response-surface-plan.schema.json", response_surface)
     transfer_plan = load("experiments/exp002-qwen3-followup/transfer-corpus-plan.json")
     validate_schema("schemas/exp002-transfer-corpus-plan.schema.json", transfer_plan)
+    analysis_contract = load("experiments/exp002-qwen3-followup/analysis-contract.json")
+    validate_schema("schemas/exp002-analysis-contract.schema.json", analysis_contract)
     approval = load("experiments/exp002-qwen3-followup/approval-dossier.json")
     validate_schema("schemas/exp002-approval-dossier.schema.json", approval)
     if approval["status"] != "approval_requested" or approval["operator_approval"]["granted"] is not False:
@@ -117,6 +120,10 @@ def main() -> int:
         terminal = build_terminal_result(study_id="EXP-002A", model_id="Qwen/Qwen3-0.6B-Base", status=status)
         validate_terminal_result(terminal)
         validate_schema(terminal_schema, terminal)
+    synthetic_analysis = evaluate_transfer([1.0] * 8, minimum_domains=8, margin=0.1)
+    validate_analysis_result(synthetic_analysis)
+    if synthetic_analysis["status"] != "positive":
+        raise AssertionError("synthetic positive analysis boundary drift")
 
     # This fixture is deliberately invalid for the model-access boundary and must fail closed.
     invalid = {"model_id": "Qwen/Qwen3-0.6B-Base", "revision": EXPECTED_MODELS["Qwen/Qwen3-0.6B-Base"], "tokenizer_files_sha256": "0" * 64, "label_token_ids": {label: 1 for label in "ABCD"}, "continuation_token_counts": {label: 1 for label in "ABCD"}, "prefix_boundary_ok": False, "special_tokens": {}, "runtime_versions": {}}

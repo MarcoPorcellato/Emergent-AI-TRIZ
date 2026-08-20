@@ -1,0 +1,12 @@
+{
+  "artifact_class": "exp002-analysis-contract",
+  "contract_id": "exp002-analysis-v1.0.0",
+  "status": "frozen_no_model",
+  "primary": {"surface": "label_free_candidate_description_scoring", "minimum_domains": 8, "margin": 0.1, "all_domains_positive": true},
+  "permutation": {"method": "exact_domain_sign_flip", "alpha": 0.05, "seed": 20260815, "multiplicity": 1},
+  "terminal_states": ["positive", "null", "failed", "non_interpretable", "incompatible"],
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}
