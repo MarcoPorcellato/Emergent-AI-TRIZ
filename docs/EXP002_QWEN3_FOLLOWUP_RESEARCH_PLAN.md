@@ -44,6 +44,12 @@ requires the frozen answer key for B, the frozen transfer corpus and passed
 power calibration for C, and a fresh CCP `Admit`/inactive/queue-0 snapshot
 before any material call.
 
+The injected runner now accepts the stage-specific dossiers and exposes a
+target-free direct-question scoring boundary that copies only question identity,
+prediction, and abstention metadata. It still refuses an unapproved dossier or
+an unknown CCP state. Actual B/C adapters, expert answer keys, and the new
+corpus remain intentionally unpopulated until their respective gates close.
+
 ### EXP-002A baseline result (2026-08-20)
 
 All seven exact models produced an exploratory `null` terminal result under the

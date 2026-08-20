@@ -77,4 +77,39 @@ def score_injected_surface(
     return output
 
 
-__all__ = ["Exp002ExecutionError", "authorize_material_run", "score_injected_surface", "validate_authorized_dossier", "validate_ccp_gate"]
+def score_injected_direct_questions(
+    rows: Sequence[Mapping[str, Any]], scorer: Callable[[Mapping[str, Any]], Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    """Collect direct-question predictions without injecting answer keys.
+
+    The callback may use a future authorized model adapter, but receives only
+    public question records. Expected answers and sealed locators are rejected
+    from the public input and are never copied into the output.
+    """
+    if isinstance(rows, (str, bytes, bytearray)) or not isinstance(rows, Sequence) or not rows:
+        raise Exp002ExecutionError("direct-question rows must be non-empty")
+    output: list[dict[str, Any]] = []
+    for row in rows:
+        if not isinstance(row, Mapping) or not isinstance(row.get("question_id"), str) or not isinstance(row.get("prompt"), str) or not row["prompt"].strip():
+            raise Exp002ExecutionError("direct-question public identity is malformed")
+        if any(field in row for field in ("expected_answer", "correct_choice", "target", "sealed_target")):
+            raise Exp002ExecutionError("direct-question input contains answer material")
+        try:
+            result = scorer(row)
+        except Exception as exc:
+            raise Exp002ExecutionError("direct-question scorer failed") from exc
+        if not isinstance(result, Mapping) or "prediction" not in result or not isinstance(result.get("abstained"), bool):
+            raise Exp002ExecutionError("direct-question scorer outcome is incomplete")
+        if result.get("prediction") is None:
+            raise Exp002ExecutionError("direct-question prediction is empty")
+        output.append({
+            "question_id": row["question_id"],
+            "module": row.get("module", "unknown"),
+            "scientific_role": row.get("scientific_role", "knowledge_endpoint"),
+            "prediction": result["prediction"],
+            "abstained": result["abstained"],
+        })
+    return output
+
+
+__all__ = ["Exp002ExecutionError", "authorize_material_run", "score_injected_direct_questions", "score_injected_surface", "validate_authorized_dossier", "validate_ccp_gate"]

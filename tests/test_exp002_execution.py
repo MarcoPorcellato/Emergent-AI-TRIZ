@@ -2,7 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
-from latent_triz.exp002_execution import Exp002ExecutionError, authorize_material_run, score_injected_surface
+from latent_triz.exp002_execution import Exp002ExecutionError, authorize_material_run, score_injected_direct_questions, score_injected_surface
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +26,17 @@ class Exp002ExecutionTests(unittest.TestCase):
         rows = [{"record_id": "synthetic-1", "prompt": "prompt"}]
         output = score_injected_surface(rows, lambda _: {"A": 1, "B": 0, "C": -1, "D": -2})
         self.assertEqual(output[0]["scores"]["A"], 1.0)
+
+    def test_injected_direct_questions_preserve_only_public_identity(self):
+        rows = [{"question_id": "exp002-q1", "module": "foundational_concepts", "prompt": "What is a resource?", "scientific_role": "knowledge_endpoint", "response_mode": "bounded_completion"}]
+        output = score_injected_direct_questions(rows, lambda row: {"prediction": "resource", "abstained": False})
+        self.assertEqual(output[0]["prediction"], "resource")
+        self.assertNotIn("expected_answer", output[0])
+
+    def test_injected_direct_questions_reject_malformed_outcome(self):
+        rows = [{"question_id": "exp002-q1", "module": "foundational_concepts", "prompt": "What is a resource?"}]
+        with self.assertRaises(Exp002ExecutionError):
+            score_injected_direct_questions(rows, lambda row: {"prediction": "resource"})
 
 
 if __name__ == "__main__":
