@@ -31,7 +31,7 @@ neither closes the expert or causal construct gates.
 
 The next automated research tranche is EXP-002, maintained on branch
 `exp002-qwen3-followup`. Its no-model contracts and synthetic gates are
-published at exact head `21917e3`: 351 direct TRIZ questions, tokenizer and
+published at exact head `5efd867`: 351 direct TRIZ questions, tokenizer and
 label-surface audits, source-familiarity controls, new-transfer design, exact
 statistics, terminal receipts, an approval dossier, the three-reviewer
 answer-key gate, and a fail-closed EXP-002C corpus validator. It must not load
