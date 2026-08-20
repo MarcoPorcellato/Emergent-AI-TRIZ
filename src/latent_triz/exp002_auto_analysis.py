@@ -44,11 +44,15 @@ def _rows(rows: Sequence[Mapping[str, Any]], required_field: str) -> dict[str, M
 
 def _read_key_once(reader: Callable[[], Mapping[str, Any]], expected_ids: set[str]) -> dict[str, int]:
     key = reader()
-    if not isinstance(key, Mapping) or key.get("artifact_class") != "exp002-auto-combined-target-key" or key.get("status") != "sealed":
+    if not isinstance(key, Mapping) or key.get("artifact_class") != "exp002-auto-combined-target-key" or key.get("protocol_id") != "exp002-auto-v1.0.0" or key.get("status") != "sealed":
         raise Exp002AutoAnalysisError("combined target key is not sealed")
+    if key.get("sealed_target_accessed") is not False or key.get("claim_ids") != []:
+        raise Exp002AutoAnalysisError("combined target key crossed its private boundary")
     rows = key.get("records")
     if isinstance(rows, (str, bytes, bytearray)) or not isinstance(rows, Sequence):
         raise Exp002AutoAnalysisError("combined target key records are malformed")
+    if key.get("record_count") != len(expected_ids) or len(rows) != len(expected_ids):
+        raise Exp002AutoAnalysisError("combined target key cardinality drift")
     indices: dict[str, int] = {}
     for row in rows:
         if not isinstance(row, Mapping) or not isinstance(row.get("record_id"), str) or isinstance(row.get("expected_candidate_index"), bool) or not isinstance(row.get("expected_candidate_index"), int) or row["expected_candidate_index"] not in range(4):

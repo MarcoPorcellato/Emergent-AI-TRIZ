@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EXP-002-AUTO private sealed combined target key",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "status", "record_count", "records", "sealed_target_accessed", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-auto-combined-target-key"},
+    "protocol_id": {"const": "exp002-auto-v1.0.0"},
+    "status": {"const": "sealed"},
+    "record_count": {"const": 226},
+    "records": {
+      "type": "array",
+      "minItems": 226,
+      "maxItems": 226,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["record_id", "expected_candidate_index"],
+        "properties": {
+          "record_id": {"type": "string", "pattern": "^exp002-auto-[a-z0-9_-]+$"},
+          "expected_candidate_index": {"type": "integer", "minimum": 0, "maximum": 3}
+        }
+      }
+    },
+    "sealed_target_accessed": {"const": false},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}

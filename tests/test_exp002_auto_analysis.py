@@ -21,7 +21,11 @@ class Exp002AutoAnalysisTests(unittest.TestCase):
         ]
         self.key = {
             "artifact_class": "exp002-auto-combined-target-key",
+            "protocol_id": "exp002-auto-v1.0.0",
             "status": "sealed",
+            "record_count": 10,
+            "sealed_target_accessed": False,
+            "claim_ids": [],
             "records": [
                 {"record_id": "f-1", "expected_candidate_index": 1},
                 {"record_id": "f-2", "expected_candidate_index": 0},
