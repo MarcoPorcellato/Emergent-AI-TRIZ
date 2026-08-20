@@ -64,7 +64,7 @@ base. Delivery uses an isolated worktree created from an exact verified commit.
 
 The new branch `exp002-qwen3-followup` publishes the no-model implementation
 of [`EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md`](./EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md)
-through exact head `51ba0ac`. The tranche contains a frozen seven-model
+through exact head `7b06136`. The tranche contains a frozen seven-model
 protocol, tokenizer-audit gate, balanced and full label-permutation utilities,
 label-free scoring interface, source-familiarity and rights/proximity plans,
 an eight-task-per-principle direct TRIZ bank (351 target-free questions), exact
