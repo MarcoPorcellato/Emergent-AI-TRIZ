@@ -156,9 +156,68 @@ def classify_measurement_surface(observation: Mapping[str, Any]) -> dict[str, An
     return {"status": "measurement_robust", "reason": "balanced_permutations_and_label_free_agree", "claim_ids": []}
 
 
+def evaluate_surface_conditions(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    """Summarize preregistered surface coverage and semantic invariance.
+
+    ``semantic_choice`` is an option identity supplied by an already completed
+    scorer; it is not an answer key. This function never opens targets or
+    interprets correctness.
+    """
+    if isinstance(rows, (str, bytes, bytearray)) or not isinstance(rows, Sequence) or not rows:
+        raise Exp002SurfaceError("surface observations must be non-empty")
+    grouped: dict[str, dict[str, list[Mapping[str, Any]]]] = {}
+    for row in rows:
+        if not isinstance(row, Mapping) or not isinstance(row.get("record_id"), str) or not row["record_id"].strip():
+            raise Exp002SurfaceError("surface observation identity is malformed")
+        condition = row.get("condition")
+        if condition not in CONDITIONS:
+            raise Exp002SurfaceError("surface observation condition is unknown")
+        choice = row.get("semantic_choice")
+        if not isinstance(choice, str) or not choice.strip():
+            raise Exp002SurfaceError("semantic_choice is required")
+        grouped.setdefault(row["record_id"], {}).setdefault(condition, []).append(row)
+    required = {"original_abcd", "balanced_cyclic_label_permutations", "all_24_label_permutations", "label_free_candidate_description_scoring"}
+    balanced_complete = True
+    all_complete = True
+    label_free_matches = 0
+    semantic_matches = 0
+    total_semantic = 0
+    for record_id, conditions in grouped.items():
+        if not required.issubset(conditions):
+            raise Exp002SurfaceError(f"record lacks required response surfaces: {record_id}")
+        original = conditions["original_abcd"]
+        label_free = conditions["label_free_candidate_description_scoring"]
+        if len(original) != 1 or len(label_free) != 1:
+            raise Exp002SurfaceError(f"original/label-free surface must be unique: {record_id}")
+        balanced_complete &= len(conditions["balanced_cyclic_label_permutations"]) == 4
+        all_complete &= len(conditions["all_24_label_permutations"]) == 24
+        label_free_matches += int(label_free[0]["semantic_choice"] == original[0]["semantic_choice"])
+        for condition in ("balanced_cyclic_label_permutations", "all_24_label_permutations"):
+            semantic_matches += sum(row["semantic_choice"] == original[0]["semantic_choice"] for row in conditions[condition])
+            total_semantic += len(conditions[condition])
+    record_count = len(grouped)
+    label_free_rate = label_free_matches / record_count
+    semantic_rate = semantic_matches / total_semantic if total_semantic else 0.0
+    decision = classify_measurement_surface({
+        "balanced_complete": balanced_complete,
+        "all_permutations_complete": all_complete,
+        "label_free_agreement": label_free_rate == 1.0,
+        "semantic_invariance": semantic_rate == 1.0,
+    })
+    return {
+        "record_count": record_count,
+        "balanced_rows_per_record": 4 if balanced_complete else None,
+        "permutation_rows_per_record": 24 if all_complete else None,
+        "label_free_agreement_rate": label_free_rate,
+        "semantic_invariance_rate": semantic_rate,
+        "observation": decision,
+        "claim_ids": [],
+    }
+
+
 __all__ = [
     "CONDITIONS", "Exp002SurfaceError", "LABELS", "adjust_label_prior", "all_label_permutations",
-    "build_surface_schedule", "classify_measurement_surface",
+    "build_surface_schedule", "classify_measurement_surface", "evaluate_surface_conditions",
     "cyclic_permutations", "label_entropy", "remap_scores", "score_candidate_descriptions",
     "summarize_surface", "top_label", "validate_score_mapping",
 ]

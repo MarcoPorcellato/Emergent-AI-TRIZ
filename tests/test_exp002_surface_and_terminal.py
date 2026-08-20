@@ -11,6 +11,7 @@ from latent_triz.exp002_surface import (
     score_candidate_descriptions,
     build_surface_schedule,
     classify_measurement_surface,
+    evaluate_surface_conditions,
     summarize_surface,
 )
 from latent_triz.exp002_terminal import build_terminal_result, validate_terminal_result
@@ -52,6 +53,18 @@ class Exp002SurfaceTests(unittest.TestCase):
         self.assertEqual(artifact["status"], "measurement_artifact_supported")
         with self.assertRaises(Exp002SurfaceError):
             classify_measurement_surface({"balanced_complete": True})
+
+    def test_surface_condition_evaluator_is_target_free_and_detects_artifact(self):
+        rows = []
+        rows.append({"record_id": "r1", "condition": "original_abcd", "semantic_choice": "0"})
+        rows.extend({"record_id": "r1", "condition": "balanced_cyclic_label_permutations", "semantic_choice": "0"} for _ in range(4))
+        rows.extend({"record_id": "r1", "condition": "all_24_label_permutations", "semantic_choice": "0"} for _ in range(24))
+        rows.append({"record_id": "r1", "condition": "label_free_candidate_description_scoring", "semantic_choice": "0"})
+        result = evaluate_surface_conditions(rows)
+        self.assertEqual(result["observation"]["status"], "measurement_robust")
+        rows[-1]["semantic_choice"] = "1"
+        result = evaluate_surface_conditions(rows)
+        self.assertEqual(result["observation"]["status"], "measurement_artifact_supported")
 
 
 class Exp002TerminalTests(unittest.TestCase):
