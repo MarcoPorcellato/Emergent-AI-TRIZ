@@ -7,7 +7,10 @@ model, tokenizer, target, or source file.
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+import json
 from typing import Any
+
+from .exp002_expert_review import validate_review_packets
 
 
 class Exp002AnswerKeyError(ValueError):
@@ -72,4 +75,67 @@ def validate_answer_key(
     raise Exp002AnswerKeyError("unsupported answer-key status")
 
 
-__all__ = ["Exp002AnswerKeyError", "validate_answer_key"]
+def freeze_answer_key_from_packets(
+    packets: Sequence[Mapping[str, Any]], question_ids: Sequence[str], *, question_bank: str,
+    question_bank_sha256: str,
+) -> dict[str, Any]:
+    """Build a frozen key only from three complete, independently reviewed packets.
+
+    A disagreement is preserved as ``rubric_required`` under the preregistered
+    policy; it is never resolved by majority vote or by inspecting model data.
+    """
+    try:
+        summary = validate_review_packets(packets, question_ids, question_bank_sha256=question_bank_sha256)
+    except Exception as exc:
+        raise Exp002AnswerKeyError("review packets are not ready for key freeze") from exc
+    by_question: dict[str, list[Mapping[str, Any]]] = {question_id: [] for question_id in question_ids}
+    for packet in packets:
+        for decision in packet["decisions"]:
+            if "answer" not in decision and decision.get("key_type") in {"exact", "abstention"}:
+                raise Exp002AnswerKeyError("exact or abstention decisions require an explicit answer")
+            by_question[decision["question_id"]].append(decision)
+    records: list[dict[str, Any]] = []
+    for question_id in question_ids:
+        decisions = by_question[question_id]
+        signatures = {
+            json.dumps({"key_type": item.get("key_type"), "answer": item.get("answer"), "unsupported": bool(item.get("unsupported", False))}, sort_keys=True, ensure_ascii=False)
+            for item in decisions
+        }
+        if len(signatures) != 1:
+            records.append({"question_id": question_id, "key_type": "rubric_required", "expert_status": "reviewed"})
+            continue
+        item = decisions[0]
+        record: dict[str, Any] = {"question_id": question_id, "key_type": item["key_type"], "expert_status": "reviewed"}
+        if "answer" in item:
+            record["expected"] = item["answer"]
+        if "unsupported" in item:
+            record["unsupported"] = bool(item["unsupported"])
+        records.append(record)
+    artifact = {
+        "artifact_class": "exp002-direct-answer-key",
+        "key_id": "exp002-direct-answer-key-v1.0.0",
+        "protocol_id": "exp002-qwen3-followup-v1.0.0",
+        "status": "frozen",
+        "question_bank": question_bank,
+        "question_bank_sha256": question_bank_sha256,
+        "records": records,
+        "expert_review": {
+            "required": True,
+            "status": "complete",
+            "reviewer_count": summary["reviewer_count"],
+            "reviewer_ids": [packet["reviewer_id"] for packet in packets],
+            "disagreement_policy": "unresolved_records_remain_rubric_required",
+        },
+        "model_access": False,
+        "sealed_target_access": False,
+        "scientific_status": "exploratory",
+        "claim_ids": [],
+    }
+    try:
+        validate_answer_key(artifact, question_ids, question_bank_sha256=question_bank_sha256)
+    except Exp002AnswerKeyError:
+        raise
+    return artifact
+
+
+__all__ = ["Exp002AnswerKeyError", "freeze_answer_key_from_packets", "validate_answer_key"]
