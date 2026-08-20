@@ -124,3 +124,13 @@ PYTHONPATH=src .venv/bin/python scripts/exp002_freeze_answer_key.py \
 
 The command recomputes the canonical question inventory and hash, refuses an
 existing output, and performs no model or target access.
+
+For independent EXP-002C authors, audit a public corpus before submitting it:
+
+```sh
+PYTHONPATH=src .venv/bin/python scripts/exp002_validate_transfer_corpus.py \
+  --corpus /path/to/transfer-corpus.json
+```
+
+An empty design template is reported as pending; a frozen corpus must meet the
+domain, split, independence, source-proximity, and power-calibration gates.
