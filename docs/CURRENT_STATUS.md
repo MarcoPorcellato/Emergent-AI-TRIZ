@@ -56,7 +56,7 @@ latent rediscovery, and the strata are not pooled.
 ### EXP-002 Qwen3 follow-up — no-model implementation
 
 Branch [`exp002-qwen3-followup`](https://github.com/MarcoPorcellato/Latent-TRIZ/tree/exp002-qwen3-followup)
-is published through exact head `006e3c8` with the no-model tranche of the
+is published through exact head `51ba0ac` with the no-model tranche of the
 follow-up plan: tokenizer and label-surface audits, source-familiarity and
 rights controls, a 351-record direct TRIZ bank (eight task types for each of
 the 40 principles), transfer-corpus/statistical contracts, terminal receipts,
