@@ -53,6 +53,8 @@ def validate_stage_dossier(dossier: Mapping[str, Any], stage_id: str) -> None:
     if prerequisites.get("answer_key_status") not in {"frozen", "pending", "not_applicable"} or prerequisites.get("transfer_corpus_status") not in {"frozen_no_model", "pending", "not_applicable"} or prerequisites.get("power_calibration_status") not in {"pass", "pending", "not_applicable"}:
         raise Exp002StageGateError("stage prerequisite status is unsupported")
     if dossier["status"] == "authorized":
+        if prerequisites.get("source_proximity_status") != "pass":
+            raise Exp002StageGateError("authorized stage requires a passed source-proximity audit")
         if stage_id == "EXP-002B" and prerequisites.get("answer_key_status") != "frozen":
             raise Exp002StageGateError("EXP-002B requires a frozen expert answer key")
         if stage_id == "EXP-002C":

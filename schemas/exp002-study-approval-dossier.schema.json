@@ -22,6 +22,6 @@
   },
   "allOf": [
     {"if": {"properties": {"status": {"const": "approval_requested"}}}, "then": {"properties": {"operator_approval": {"properties": {"granted": {"const": false}}}}}},
-    {"if": {"properties": {"status": {"const": "authorized"}}}, "then": {"properties": {"operator_approval": {"properties": {"granted": {"const": true}, "approved_at": {"type": "string", "minLength": 1}, "approval_text_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}}}}}
+    {"if": {"properties": {"status": {"const": "authorized"}}}, "then": {"properties": {"operator_approval": {"properties": {"granted": {"const": true}, "approved_at": {"type": "string", "minLength": 1}, "approval_text_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}, "required": ["granted", "approved_at", "approval_text_sha256"]}, "prerequisites": {"properties": {"source_proximity_status": {"const": "pass"}}, "required": ["source_proximity_status"]}}}}
   ]
 }
