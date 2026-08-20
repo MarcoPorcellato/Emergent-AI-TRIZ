@@ -3,7 +3,7 @@
 ## Current checkpoint
 
 - Branch: `exp002-qwen3-followup`
-- Last published checkpoint before this handoff update: `ac4a881`
+- Last implementation checkpoint: `439c2a8`
 - Scientific state: exploratory, no claim IDs, no evidence promotion
 - Model/tokenizer access: not performed by the EXP-002 tranche
 - Generation/network/CCP material run: not performed
