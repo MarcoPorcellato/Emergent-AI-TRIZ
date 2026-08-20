@@ -125,3 +125,17 @@ key remains unmaterialized and private; the approval dossier is
 sealed target is authorized until the exact frozen dossier hash and a new
 operator authorization are recorded. Outcomes remain exploratory, claim-free,
 and non-substitutive for the H1 expert gate.
+
+Material-boundary checkpoint (2026-08-20): `origin/main` is
+`b2c53ba9c4a4e7c71816e3a85e9902f69cbe84eb`. The no-model tranche now has a
+synthetic-tested, adapter-injected material boundary in
+`src/latent_triz/exp002_auto_material.py`. It streams exact runtime hashes,
+requires an authorized hash-bound dossier and a fresh CCP Admit/inactive/
+queue-zero receipt before adapter construction, refuses overwrites, records
+all terminal statuses, and gives analysis exactly one sealed-key reader. The
+private sealed-key schema is tracked separately while the public key template
+remains empty and `not_ready`. This checkpoint still authorizes no model,
+tokenizer, network, generation, or target access. The next gate is an
+exact-head no-model qualification and merge of this boundary, followed by a
+new final dossier hash and explicit operator approval; only then may the
+seven-model campaign be considered for execution.

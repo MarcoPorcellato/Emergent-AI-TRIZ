@@ -50,6 +50,7 @@ def _assert_no_ml_imports() -> None:
         "src/latent_triz/exp002_auto_stage_gate.py",
         "src/latent_triz/exp002_auto_analysis.py",
         "src/latent_triz/exp002_auto_report.py",
+        "src/latent_triz/exp002_auto_material.py",
     ):
         tree = ast.parse((ROOT / relative).read_text(encoding="utf-8"), filename=relative)
         for node in ast.walk(tree):

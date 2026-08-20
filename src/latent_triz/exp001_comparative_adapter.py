@@ -295,6 +295,30 @@ class ComparativeTeacherForcingAdapter:
         except R3ResponseAdapterError as exc:
             raise ComparativeAdapterError(str(exc)) from exc
 
+    def score_candidate_description(self, prompt: str, candidate: str) -> float:
+        """Score one complete public candidate by teacher forcing its text.
+
+        This is the label-free AUTO path.  It shares the same prefix-drift and
+        finite-logit checks as the four-label path and never calls generation.
+        """
+        if not isinstance(prompt, str) or not prompt or not isinstance(candidate, str) or not candidate:
+            raise ComparativeAdapterError("prompt and candidate must be non-empty strings")
+        prefix_batch, prefix = self._tokenize(prompt)
+        full_batch, full = self._tokenize(prompt + " " + candidate)
+        prefix_ids = prefix["input_ids"]
+        full_ids = full["input_ids"]
+        if len(full_ids) <= len(prefix_ids) or full_ids[:len(prefix_ids)] != prefix_ids:
+            raise ComparativeAdapterError("tokenizer prefix drift at candidate boundary")
+        continuation_ids = full_ids[len(prefix_ids):]
+        logits = self._forward_full(full_batch, len(full_ids))
+        positions = list(range(len(prefix_ids) - 1, len(full_ids) - 1))
+        try:
+            return score_teacher_forced_choice(
+                logits, continuation_ids, target_positions=positions, vocab_size=self.vocab_size,
+            )
+        except R3ResponseAdapterError as exc:
+            raise ComparativeAdapterError(str(exc)) from exc
+
 
 __all__ = [
     "ComparativeAdapterError",

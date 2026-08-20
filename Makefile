@@ -95,7 +95,7 @@ exp002-review-packet-verify:
 
 exp002-auto-verify:
 	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/exp002_auto_contract_check.py
-	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) -m unittest tests.test_exp002_auto_contract tests.test_exp002_auto_fixtures tests.test_exp002_auto_schedule tests.test_exp002_auto_execution tests.test_exp002_auto_analysis tests.test_exp002_auto_stage_gate tests.test_exp002_auto_report tests.test_exp002_auto_contract_check tests.test_exp002_auto_cli
+	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) -m unittest tests.test_exp002_auto_contract tests.test_exp002_auto_fixtures tests.test_exp002_auto_schedule tests.test_exp002_auto_execution tests.test_exp002_auto_analysis tests.test_exp002_auto_stage_gate tests.test_exp002_auto_report tests.test_exp002_auto_contract_check tests.test_exp002_auto_cli tests.test_exp002_auto_material
 	@echo "EXP-002-AUTO no-model checkpoint passed: no model, tokenizer, network, or sealed target access."
 
 exp002-auto-stage-preflight:

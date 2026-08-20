@@ -2,7 +2,7 @@
 type: research-specification
 title: EXP-002-AUTO pre-expert automated evidence campaign
 description: Independent, fully automated exploratory campaign for seven frozen models; it measures response-surface robustness and explicit procedural proxies without substituting for TRIZ expert validation.
-status: design_approved_implementation_pending
+status: no_model_contract_and_material_boundary_implemented
 version: 0.1.0
 last_verified: 2026-08-20
 ---
@@ -209,6 +209,24 @@ Before an authorization dossier can be emitted, implementation must provide:
    that rejects missing or one-byte-mutated external score assets;
 6. schema-cross-validation, repository-check registration, documentation audit,
    and an exact-head CCP qualification before material publication.
+
+The implementation checkpoint now includes `src/latent_triz/exp002_auto_material.py`.
+Its `prepare_auto_shard` function validates the authorized dossier, exact
+schedule/input hashes, live CCP Admit/inactive/queue-zero state, shard
+membership, and every runtime-file digest before an adapter factory can be
+called. `run_authorized_auto_shard` then injects one adapter, persists scores
+atomically, gives analysis a one-shot sealed-key reader, and publishes every
+terminal outcome with a receipt, statistical result, representation index,
+recovery observation, report, and publication manifest. Runtime hashing is
+streamed and the module imports no model library. The private sealed-key schema
+is `schemas/exp002-auto-sealed-target-key.schema.json`; the public
+`combined-target-key-template.json` remains `not_ready` and empty.
+
+Synthetic tests cover unapproved/busy preflight refusal before adapter
+construction, runtime hash mutation, one-shot key access, immutable package
+creation, finite candidate scores, and the claim-free terminal envelope.
+These tests are implementation evidence only and do not authorize a material
+model run.
 
 ## 8. Publication, recovery, and completion
 
