@@ -195,6 +195,7 @@ def main() -> int:
         ("schemas/exp002-interpretation-matrix.schema.json", "results/exp002/preexecution/interpretation-matrix.json"),
         ("schemas/exp002-expert-review-collection.schema.json", "experiments/exp002-qwen3-followup/expert-review-collection.json"),
         ("schemas/exp002-source-familiarity-fixture.schema.json", "experiments/exp002-qwen3-followup/source-familiarity-fixture.json"),
+        ("schemas/exp002-power-calibration.schema.json", "results/exp002/preexecution/power-calibration.json"),
         ("schemas/exp002-direct-answer-key.schema.json", "results/exp002/preexecution/direct-answer-key-template.json"),
         ("schemas/exp002-execution-receipt.schema.json", "results/exp002/preexecution/execution-receipt-template.json"),
         ("schemas/exp002-statistical-result.schema.json", "results/exp002/preexecution/statistical-result-template.json"),

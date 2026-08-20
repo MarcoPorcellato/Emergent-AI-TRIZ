@@ -27,6 +27,7 @@ from latent_triz.exp002_transfer_corpus import validate_transfer_fixture  # noqa
 from latent_triz.exp002_stage_gate import validate_stage_dossier  # noqa: E402
 from latent_triz.exp002_expert_review import validate_review_packets  # noqa: E402
 from latent_triz.exp002_source_familiarity import validate_source_familiarity_fixture  # noqa: E402
+from latent_triz.exp002_power import validate_calibration  # noqa: E402
 
 
 def load(relative: str) -> Any:
@@ -93,6 +94,10 @@ def main() -> int:
         validate_stage_dossier(dossier, stage_id)
         if dossier["status"] != "approval_requested" or dossier["operator_approval"]["granted"]:
             raise AssertionError(f"{stage_id} dossier must remain unapproved")
+        if stage_id == "EXP-002B" and dossier["prerequisites"]["answer_key_status"] != "pending":
+            raise AssertionError("EXP-002B answer key must not be declared frozen before review")
+        if stage_id == "EXP-002C" and dossier["prerequisites"]["transfer_corpus_status"] != "pending":
+            raise AssertionError("EXP-002C transfer corpus must not be declared frozen before authoring")
     interpretation_matrix = load("results/exp002/preexecution/interpretation-matrix.json")
     validate_schema("schemas/exp002-interpretation-matrix.schema.json", interpretation_matrix)
     review_collection = load("experiments/exp002-qwen3-followup/expert-review-collection.json")
@@ -112,6 +117,9 @@ def main() -> int:
     if source_fixture["status"] != "design_ready_no_model" or source_fixture["records"]:
         raise AssertionError("source-familiarity fixture must remain locator-only and empty before authoring")
     validate_source_familiarity_fixture(source_fixture["records"], status="design")
+    power = load("results/exp002/preexecution/power-calibration.json")
+    validate_schema("schemas/exp002-power-calibration.schema.json", power)
+    validate_calibration(power)
     analysis_contract = load("experiments/exp002-qwen3-followup/analysis-contract.json")
     validate_schema("schemas/exp002-analysis-contract.schema.json", analysis_contract)
     source_plan = load("experiments/exp002-qwen3-followup/source-familiarity-plan.json")

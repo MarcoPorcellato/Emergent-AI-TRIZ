@@ -26,6 +26,8 @@
   fail-closed packet validator; no reviewer packet is present yet;
 - empty locator-only source-familiarity fixture with a fail-closed provenance
   validator; no canonical excerpt is stored;
+- deterministic EXP-002C power calibration receipt selecting eight domains
+  before model access; the transfer corpus itself remains pending;
 - separate unapproved `EXP-002B` and `EXP-002C` dossiers with exact model
   identities, fixed limits, and a fresh-CCP stage gate;
 - injected direct-question scoring boundary and stage-aware runner dispatch;

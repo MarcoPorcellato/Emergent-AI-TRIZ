@@ -64,6 +64,14 @@ SHA-256, a source identifier, and an allowed exposure mode; source excerpts,
 answer fields, and model outputs are rejected. The tracked fixture is empty by
 design until independently authored pairs and rights/proximity review exist.
 
+EXP-002C domain count is bound by a separate deterministic power receipt. The
+no-model calibration selects the smallest candidate count at or above the
+fixed minimum under a predeclared all-domain-positive power assumption; it
+does not inspect outputs or choose domains after results. The current receipt
+selects eight domains with target power `0.80` and expected positive-direction
+probability `0.98`. This assumption is an explicit limitation, not empirical
+evidence.
+
 The response-surface module now emits a deterministic schedule for the original,
 cyclic, all-24, numeric, neutral-symbol, label-free, and answer-boundary
 conditions, and classifies only `measurement_robust`,

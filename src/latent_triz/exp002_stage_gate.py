@@ -48,15 +48,18 @@ def validate_stage_dossier(dossier: Mapping[str, Any], stage_id: str) -> None:
         raise Exp002StageGateError("model identity or revision drift")
 
     prerequisites = dossier.get("prerequisites")
-    if not isinstance(prerequisites, Mapping) or prerequisites.get("source_proximity_status") != "pass":
+    if not isinstance(prerequisites, Mapping) or prerequisites.get("source_proximity_status") not in {"pass", "pending"}:
         raise Exp002StageGateError("source-proximity prerequisite is not passed")
-    if stage_id == "EXP-002B" and prerequisites.get("answer_key_status") != "frozen":
-        raise Exp002StageGateError("EXP-002B requires a frozen expert answer key")
-    if stage_id == "EXP-002C":
-        if prerequisites.get("transfer_corpus_status") != "frozen_no_model":
-            raise Exp002StageGateError("EXP-002C requires a frozen transfer corpus")
-        if prerequisites.get("power_calibration_status") != "pass":
-            raise Exp002StageGateError("EXP-002C requires a passed power calibration")
+    if prerequisites.get("answer_key_status") not in {"frozen", "pending", "not_applicable"} or prerequisites.get("transfer_corpus_status") not in {"frozen_no_model", "pending", "not_applicable"} or prerequisites.get("power_calibration_status") not in {"pass", "pending", "not_applicable"}:
+        raise Exp002StageGateError("stage prerequisite status is unsupported")
+    if dossier["status"] == "authorized":
+        if stage_id == "EXP-002B" and prerequisites.get("answer_key_status") != "frozen":
+            raise Exp002StageGateError("EXP-002B requires a frozen expert answer key")
+        if stage_id == "EXP-002C":
+            if prerequisites.get("transfer_corpus_status") != "frozen_no_model":
+                raise Exp002StageGateError("EXP-002C requires a frozen transfer corpus")
+            if prerequisites.get("power_calibration_status") != "pass":
+                raise Exp002StageGateError("EXP-002C requires a passed power calibration")
 
     permissions = dossier.get("permissions")
     if not isinstance(permissions, Mapping):

@@ -13,7 +13,7 @@
     {"model_id": "EleutherAI/gpt-neo-125m", "revision": "21def0189f5705e2521767faed922f1f15e7d7db", "local_root": "artifacts/models/gpt-neo-125m-21def018"},
     {"model_id": "Qwen/Qwen2.5-0.5B", "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987", "local_root": "artifacts/models/qwen2.5-0.5b-060db649"}
   ],
-  "prerequisites": {"answer_key_status": "frozen", "transfer_corpus_status": "not_applicable", "source_proximity_status": "pass", "power_calibration_status": "not_applicable"},
+  "prerequisites": {"answer_key_status": "pending", "transfer_corpus_status": "not_applicable", "source_proximity_status": "pending", "power_calibration_status": "not_applicable"},
   "permissions": {"model_load": true, "generation": false, "network": false, "sealed_target_read": "exactly_one_at_analysis_boundary", "ccp_material_run": true, "publish_every_terminal_outcome": true},
   "limits": {"wall_time_seconds_per_model": 1800, "peak_rss_bytes_per_model": 8589934592, "new_dense_output_bytes_per_model": 134217728},
   "prohibitions": ["no tuning", "no model substitution", "no retry after model access", "no protocol change", "no generation", "no network"],

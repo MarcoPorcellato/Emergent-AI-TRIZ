@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-power-calibration.schema.json",
+  "title": "EXP-002C deterministic no-model power calibration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "calibration_id", "status", "method", "minimum_domains", "target_power", "expected_positive_probability", "candidates", "selected_domain_count", "selected_power", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-power-calibration"},
+    "calibration_id": {"const": "exp002c-power-v1.0.0"},
+    "status": {"const": "pass"},
+    "method": {"const": "all_domain_positive_binomial_power"},
+    "minimum_domains": {"const": 8},
+    "target_power": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+    "expected_positive_probability": {"type": "number", "exclusiveMinimum": 0.5, "maximum": 1},
+    "candidates": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["domain_count", "positive_direction_probability", "power", "meets_target"], "properties": {"domain_count": {"type": "integer", "minimum": 8}, "positive_direction_probability": {"type": "number"}, "power": {"type": "number", "minimum": 0, "maximum": 1}, "meets_target": {"type": "boolean"}}}},
+    "selected_domain_count": {"type": "integer", "minimum": 8},
+    "selected_power": {"type": "number", "minimum": 0, "maximum": 1},
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}
