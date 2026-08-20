@@ -52,7 +52,7 @@ an unknown CCP state. Actual B/C adapters, expert answer keys, and the new
 corpus remain intentionally unpopulated until their respective gates close.
 
 The independent-review collection is now an explicit tracked no-model gate
-(implementation checkpoint `797627f`):
+(implementation checkpoint `e47937c`):
 `experiments/exp002-qwen3-followup/expert-review-collection.json` is
 `ready_for_collection` with exactly three required pseudonymous reviewers and
 an immutable question-bank hash. Its schema and validator require full question-bank
