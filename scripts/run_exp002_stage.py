@@ -86,10 +86,18 @@ def verify_runtime(model_id: str) -> dict[str, Any]:
     receipt_path = MODEL_RECEIPTS[model_id]
     root = MODEL_ROOTS[model_id]
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-    observed_model = receipt.get("model_id") or (receipt.get("model") or {}).get("id")
+    model_field = receipt.get("model")
+    if isinstance(model_field, Mapping):
+        model_from_receipt = model_field.get("id")
+    elif isinstance(model_field, str):
+        model_from_receipt = model_field
+    else:
+        model_from_receipt = None
+    observed_model = receipt.get("model_id") or model_from_receipt
     if observed_model and observed_model != model_id:
         raise RuntimeError("runtime receipt model identity mismatch")
-    observed_revision = receipt.get("revision") or (receipt.get("model") or {}).get("revision")
+    revision_from_receipt = model_field.get("revision") if isinstance(model_field, Mapping) else None
+    observed_revision = receipt.get("revision") or revision_from_receipt
     if observed_revision != EXPECTED_MODELS[model_id]:
         raise RuntimeError("runtime receipt revision mismatch")
     if receipt.get("status") not in {None, "pass", "integrity_verified"}:
