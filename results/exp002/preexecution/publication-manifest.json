@@ -4,6 +4,12 @@
   "status": "published",
   "packages": [
     {
+      "model_id": "EleutherAI/gpt-neo-125m",
+      "revision": "21def0189f5705e2521767faed922f1f15e7d7db",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/eleutherai-gpt-neo-125m/exp002-gpt-neo-125m-exp002a-20260820-01"
+    },
+    {
       "model_id": "HuggingFaceTB/SmolLM2-135M",
       "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
       "terminal_status": "null",
@@ -35,6 +41,10 @@
     }
   ],
   "external_dense_assets": [
+    {
+      "locator": "artifacts/exp002/eleutherai-gpt-neo-125m/exp002-gpt-neo-125m-exp002a-20260820-01/response-scores.json",
+      "sha256": "f835ce4f6377001cfdd45face21f0c757140d6c72d7f58df6b3c1bd63d2855d8"
+    },
     {
       "locator": "artifacts/exp002/huggingfacetb-smollm2-135m/exp002-smollm2-135m-exp002a-20260820-01/response-scores.json",
       "sha256": "f2f5aaade9750b89e097a00718c79f841c54de127b65245397e4268c58d6ede2"
