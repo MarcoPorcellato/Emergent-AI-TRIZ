@@ -38,6 +38,20 @@ class Exp002PublicationVerifyTests(unittest.TestCase):
             with self.assertRaises(PublicationVerificationError):
                 verify_publication_manifest(path, root=root)
 
+    def test_missing_or_mutated_package_binding_fails_closed(self):
+        manifest_path = ROOT / "results/exp002/preexecution/publication-manifest.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        package = manifest["packages"][0]
+        package_path = ROOT / package["package_locator"]
+        artifact = package_path / "report.md"
+        original = artifact.read_bytes()
+        try:
+            artifact.write_bytes(original + b"\nmutation")
+            with self.assertRaises(PublicationVerificationError):
+                verify_publication_manifest(manifest_path, root=ROOT)
+        finally:
+            artifact.write_bytes(original)
+
 
 if __name__ == "__main__":
     unittest.main()

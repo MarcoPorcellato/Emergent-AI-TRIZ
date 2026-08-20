@@ -48,6 +48,38 @@ def _relative_asset(root: Path, locator: Any) -> Path:
     return root / candidate
 
 
+_PACKAGE_FILES = (
+    "execution-receipt.json", "statistical-result.json", "response-index.json",
+    "sealed-key-access.json", "recovery-observation.json", "report.md",
+)
+
+
+def _verify_package(repo: Path, package_entry: dict[str, Any]) -> None:
+    package_path = _relative_asset(repo, package_entry["package_locator"])
+    if not package_path.is_dir():
+        raise PublicationVerificationError(f"publication package is missing: {package_path}")
+    nested_path = package_path / "publication-manifest.json"
+    nested = _load(nested_path)
+    if nested.get("artifact_class") != "exp002-publication-manifest" or nested.get("status") != "published":
+        raise PublicationVerificationError(f"nested package manifest is not published: {package_entry['package_locator']}")
+    nested_packages = nested.get("packages")
+    if not isinstance(nested_packages, list) or len(nested_packages) != 1:
+        raise PublicationVerificationError("nested package manifest must contain exactly one package")
+    nested_entry = nested_packages[0]
+    if nested_entry.get("model_id") != package_entry.get("model_id") or nested_entry.get("revision") != package_entry.get("revision") or nested_entry.get("package_locator") != package_entry.get("package_locator"):
+        raise PublicationVerificationError("aggregate and nested package identity drift")
+    bindings = nested.get("bindings")
+    if not isinstance(bindings, dict) or set(bindings) != set(_PACKAGE_FILES):
+        raise PublicationVerificationError("nested package bindings are incomplete")
+    for name in _PACKAGE_FILES:
+        path = package_path / name
+        if not path.is_file():
+            raise PublicationVerificationError(f"package artifact is missing: {name}")
+        binding = bindings[name]
+        if not isinstance(binding, dict) or binding.get("path") != path.relative_to(repo).as_posix() or binding.get("sha256") != _sha256(path):
+            raise PublicationVerificationError(f"package artifact binding mismatch: {name}")
+
+
 def verify_publication_manifest(manifest_path: str | Path, *, root: str | Path = ROOT) -> dict[str, Any]:
     """Verify tracked manifest and every declared external dense asset."""
     repo = Path(root).resolve()
@@ -61,9 +93,7 @@ def verify_publication_manifest(manifest_path: str | Path, *, root: str | Path =
     if errors:
         raise PublicationVerificationError(errors[0].message)
     for package in manifest["packages"]:
-        package_path = _relative_asset(repo, package["package_locator"])
-        if not package_path.is_dir():
-            raise PublicationVerificationError(f"publication package is missing: {package_path}")
+        _verify_package(repo, package)
     verified_assets = []
     for asset in manifest["external_dense_assets"]:
         asset_path = _relative_asset(repo, asset["locator"])
@@ -73,7 +103,7 @@ def verify_publication_manifest(manifest_path: str | Path, *, root: str | Path =
         if observed != asset["sha256"]:
             raise PublicationVerificationError(f"external dense asset hash mismatch: {asset['locator']}")
         verified_assets.append(asset["locator"])
-    return {"status": "pass", "packages": len(manifest["packages"]), "verified_external_assets": verified_assets, "model_access": False, "sealed_target_access": False}
+    return {"status": "pass", "packages": len(manifest["packages"]), "verified_package_bindings": len(manifest["packages"]), "verified_external_assets": verified_assets, "model_access": False, "sealed_target_access": False}
 
 
 def main(argv: list[str]) -> int:
