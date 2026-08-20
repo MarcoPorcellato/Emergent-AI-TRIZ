@@ -56,6 +56,10 @@ conditions, and classifies only `measurement_robust`,
 `measurement_artifact_supported`, or `non_interpretable`. This classifier is a
 diagnostic gate; it cannot replace the frozen primary endpoint.
 
+The cross-study interpretation matrix is also tracked as a no-model artifact;
+it prevents direct knowledge, source familiarity, and blinded transfer from
+being collapsed into an undefined aggregate score.
+
 ### EXP-002A baseline result (2026-08-20)
 
 All seven exact models produced an exploratory `null` terminal result under the

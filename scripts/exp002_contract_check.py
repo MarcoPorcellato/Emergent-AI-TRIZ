@@ -91,6 +91,8 @@ def main() -> int:
         validate_stage_dossier(dossier, stage_id)
         if dossier["status"] != "approval_requested" or dossier["operator_approval"]["granted"]:
             raise AssertionError(f"{stage_id} dossier must remain unapproved")
+    interpretation_matrix = load("results/exp002/preexecution/interpretation-matrix.json")
+    validate_schema("schemas/exp002-interpretation-matrix.schema.json", interpretation_matrix)
     analysis_contract = load("experiments/exp002-qwen3-followup/analysis-contract.json")
     validate_schema("schemas/exp002-analysis-contract.schema.json", analysis_contract)
     source_plan = load("experiments/exp002-qwen3-followup/source-familiarity-plan.json")

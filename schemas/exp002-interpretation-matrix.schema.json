@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-interpretation-matrix.schema.json",
+  "title": "EXP-002 cross-study interpretation matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "matrix_id", "status", "cells", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-interpretation-matrix"},
+    "matrix_id": {"const": "exp002-interpretation-matrix-v1.0.0"},
+    "status": {"const": "ready_no_model"},
+    "cells": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"type": "object", "additionalProperties": false, "required": ["direct_knowledge", "source_fingerprint", "blinded_transfer", "interpretation"], "properties": {"direct_knowledge": {"enum": ["low", "high"]}, "source_fingerprint": {"enum": ["low", "high", "uncertain"]}, "blinded_transfer": {"enum": ["low", "high"]}, "interpretation": {"type": "string", "minLength": 1}}}},
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}
