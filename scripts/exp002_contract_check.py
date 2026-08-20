@@ -95,8 +95,15 @@ def main() -> int:
         validate_terminal_result(result)
     approval = load("experiments/exp002-qwen3-followup/approval-dossier.json")
     validate_schema("schemas/exp002-approval-dossier.schema.json", approval)
-    if approval["status"] != "approval_requested" or approval["operator_approval"]["granted"] is not False:
-        raise AssertionError("EXP-002 approval dossier must remain unapproved")
+    approval_state = approval.get("operator_approval", {}).get("granted")
+    if approval["status"] == "approval_requested":
+        if approval_state is not False:
+            raise AssertionError("approval_requested dossier must remain unapproved")
+    elif approval["status"] == "authorized":
+        if approval_state is not True:
+            raise AssertionError("authorized dossier must carry operator approval")
+    else:
+        raise AssertionError("EXP-002 approval dossier has unsupported execution state")
     publication = load("results/exp002/preexecution/publication-manifest.json")
     validate_schema("schemas/exp002-publication-manifest.schema.json", publication)
     if publication["status"] != "not_ready" or publication["packages"]:

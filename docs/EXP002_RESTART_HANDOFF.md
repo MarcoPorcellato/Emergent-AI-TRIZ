@@ -3,7 +3,7 @@
 ## Current checkpoint
 
 - Branch: `exp002-qwen3-followup`
-- Last implementation checkpoint: `7b06136`
+- Last implementation checkpoint: `c6ff282`
 - Scientific state: exploratory, no claim IDs, no evidence promotion
 - Model/tokenizer access: not performed by the EXP-002 tranche
 - Generation/network/CCP material run: not performed
@@ -18,7 +18,8 @@
 - response-surface permutations and label-prior utilities;
 - transfer-corpus and statistical contracts;
 - fail-closed terminal-result and execution/CCP gates;
-- approval dossier in `approval_requested` state;
+- approval dossier in `authorized` state, bound to operator approval hash
+  `0c5943ad5a7bf2c598511b8c3ecc29bd566f33140af59c8c6d788f2423483d67`;
 - empty preexecution publication manifest;
 - deterministic contract target: `make exp002-question-bank-audit`.
 
@@ -33,15 +34,15 @@ PYTHONPATH=src .venv/bin/python -m unittest \
   tests.test_exp002_execution
 ```
 
-These commands must remain model-free. Do not run a tokenizer, load a model,
-generate, invoke CCP, or open a sealed key until a new operator approval is
-recorded in `experiments/exp002-qwen3-followup/approval-dossier.json` with an
-exact dossier hash and the current CCP resource/admission gate.
+These commands remain model-free. The dossier is now approved, but do not run
+a tokenizer, load a model, generate, or open a sealed key until the live CCP
+resource/admission gate is rechecked and reports Admit with an inactive empty
+queue. A coordinator-layout error is a hard stop; do not bypass it.
 
 ## Next material gate
 
-The operator must explicitly authorize the exact seven-model dossier, CPU
-float32/local-only limits, one run per model, one sealed-target read at the
-analysis boundary, publication of every terminal state, and no retry or
-substitution. If approval is not granted, continue only with synthetic tests,
-schema/hash audits, and documentation.
+The operator approval is recorded. The remaining external gate is the live CCP
+coordinator: `resource status --json` must be Admit and `admission status --json`
+must be inactive with an empty queue. After that gate, execute each exact model
+once, publish every terminal state, and stop permanently after any model or
+target access failure.
