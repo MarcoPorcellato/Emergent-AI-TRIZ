@@ -24,6 +24,7 @@
   disagreement policy;
 - separate unapproved `EXP-002B` and `EXP-002C` dossiers with exact model
   identities, fixed limits, and a fresh-CCP stage gate;
+- injected direct-question scoring boundary and stage-aware runner dispatch;
 - fail-closed terminal-result and execution/CCP gates;
 - approval dossier in `authorized` state, bound to operator approval hash
   `0c5943ad5a7bf2c598511b8c3ecc29bd566f33140af59c8c6d788f2423483d67`;

@@ -20,6 +20,7 @@ from typing import Any
 
 from .exp002_execution import Exp002ExecutionError, authorize_material_run, score_injected_surface
 from .exp002_followup import EXPECTED_MODELS
+from .exp002_stage_gate import Exp002StageGateError, authorize_stage
 
 
 class Exp002RunnerError(RuntimeError):
@@ -125,8 +126,11 @@ def run_exp002_stage(
         raise Exp002RunnerError("run_id must use the exp002 namespace")
     _validate_identity(model_id, revision)
     try:
-        authorize_material_run(dossier, ccp_gate, model_id)
-    except Exp002ExecutionError as exc:
+        if dossier.get("artifact_class") == "exp002-study-approval-dossier":
+            authorize_stage(dossier, study_id, ccp_gate)
+        else:
+            authorize_material_run(dossier, ccp_gate, model_id)
+    except (Exp002ExecutionError, Exp002StageGateError) as exc:
         raise Exp002RunnerError(str(exc)) from exc
     if not isinstance(public_rows, Sequence) or isinstance(public_rows, (str, bytes, bytearray)) or not public_rows:
         raise Exp002RunnerError("public rows must be a non-empty sequence")

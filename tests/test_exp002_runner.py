@@ -19,6 +19,13 @@ def _dossier():
     return json.loads((ROOT / "experiments/exp002-qwen3-followup/approval-dossier.json").read_text(encoding="utf-8"))
 
 
+def _stage_dossier():
+    dossier = json.loads((ROOT / "experiments/exp002-qwen3-followup/exp002b-approval-dossier.json").read_text(encoding="utf-8"))
+    dossier["status"] = "authorized"
+    dossier["operator_approval"] = {"granted": True, "operator_id": "MarcoPorcellato", "approved_at": "2026-08-20", "approval_text_sha256": "a" * 64}
+    return dossier
+
+
 class Exp002RunnerTests(unittest.TestCase):
     def test_authorization_and_gate_fail_before_scorer(self):
         calls = []
@@ -88,6 +95,24 @@ class Exp002RunnerTests(unittest.TestCase):
                     analysis=lambda rows, reader: {"status": "null"},
                     adapter=_FakeAdapter(),
                 )
+
+    def test_stage_dossier_authorizes_future_stage_runner(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = run_exp002_stage(
+                root=directory,
+                run_id="exp002-qwen3-b",
+                study_id="EXP-002B",
+                model_id="Qwen/Qwen3-0.6B-Base",
+                revision="da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+                dossier=_stage_dossier(),
+                ccp_gate={"decision": "admit", "active": False, "queue_count": 0},
+                public_rows=[{"record_id": "r1", "prompt": "x"}],
+                scorer=lambda prompt: {"A": 1, "B": 0, "C": -1, "D": -2},
+                target_reader=lambda rows: [{"record_id": "r1", "expected": "A"}],
+                analysis=lambda rows, reader: {"status": "null", "target_count": len(reader())},
+                adapter=_FakeAdapter(),
+            )
+            self.assertEqual(result["status"], "null")
 
 
 if __name__ == "__main__":
