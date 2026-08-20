@@ -88,6 +88,12 @@ The cross-study interpretation matrix is also tracked as a no-model artifact;
 it prevents direct knowledge, source familiarity, and blinded transfer from
 being collapsed into an undefined aggregate score.
 
+The response-surface module now includes a pure evaluator that checks per-record
+coverage for the four cyclic and 24-permutation arms, computes label-free
+agreement and semantic-invariance rates, and feeds the preregistered robust
+versus artifact classifier. It reports measurement status only; it never
+compares a choice with the sealed answer key.
+
 ### EXP-002A baseline result (2026-08-20)
 
 All seven exact models produced an exploratory `null` terminal result under the
