@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-transfer-corpus-plan.schema.json",
+  "title": "EXP-002 blinded transfer corpus plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "plan_id", "status", "minimum_domains", "preferred_domains", "independence_rules", "controls", "primary_surface", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-transfer-corpus-plan"},
+    "plan_id": {"const": "exp002-transfer-corpus-v1.0.0"},
+    "status": {"const": "design_ready_no_model"},
+    "minimum_domains": {"type": "integer", "const": 8},
+    "preferred_domains": {"type": "integer", "minimum": 8},
+    "independence_rules": {"type": "array", "minItems": 5, "items": {"type": "string", "minLength": 1}},
+    "controls": {"type": "array", "minItems": 7, "items": {"type": "string", "minLength": 1}},
+    "primary_surface": {"const": "label_free_candidate_description_scoring"},
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}

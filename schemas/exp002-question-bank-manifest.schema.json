@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-question-bank-manifest.schema.json",
+  "title": "EXP-002 direct question bank manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "manifest_id", "status", "generator", "source_principles", "source_matrix", "source_tool_edges", "expected_counts", "expected_answer_fields_in_public_bank", "sealed_answer_locator_prefix", "source_exposure", "automatic_ground_truth", "scientific_status", "expert_validated", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-direct-question-bank-manifest"},
+    "manifest_id": {"const": "exp002-direct-question-bank-v1.0.0"},
+    "status": {"enum": ["draft", "ready_no_model", "frozen"]},
+    "generator": {"const": "src/latent_triz/exp002_question_bank.py"},
+    "source_principles": {"const": "data/triz-reference/principles.jsonl"},
+    "source_matrix": {"const": "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl"},
+    "source_tool_edges": {"const": "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl"},
+    "expected_counts": {"$ref": "#/$defs/counts"},
+    "expected_answer_fields_in_public_bank": {"const": false},
+    "sealed_answer_locator_prefix": {"const": "sealed://exp002/direct-question/"},
+    "source_exposure": {"const": "direct_query_only"},
+    "automatic_ground_truth": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "expert_validated": {"const": false},
+    "claim_ids": {"maxItems": 0, "type": "array"}
+  },
+  "$defs": {"counts": {"type": "object", "additionalProperties": false, "required": ["principle_recognition", "self_report_metadata", "foundational_concepts", "matrix", "tool_relationship", "false_concept_canary", "total"], "properties": {"principle_recognition": {"const": 40}, "self_report_metadata": {"const": 4}, "foundational_concepts": {"const": 9}, "matrix": {"const": 6}, "tool_relationship": {"const": 4}, "false_concept_canary": {"const": 8}, "total": {"const": 71}}}}
+}

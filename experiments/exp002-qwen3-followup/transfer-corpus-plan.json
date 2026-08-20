@@ -1,0 +1,29 @@
+{
+  "artifact_class": "exp002-transfer-corpus-plan",
+  "plan_id": "exp002-transfer-corpus-v1.0.0",
+  "status": "design_ready_no_model",
+  "minimum_domains": 8,
+  "preferred_domains": 12,
+  "independence_rules": [
+    "no_exp001_prompt_or_option_reuse",
+    "no_triz_names_or_principle_numbers_in_primary",
+    "independent_authors_and_domain_holdouts",
+    "expert_labels_separate_from_generator_intent",
+    "power_calibration_freezes_domain_count_before_model_access"
+  ],
+  "controls": [
+    "lexical_and_length_matched_non_triz",
+    "generic_transformation_heuristics",
+    "adjacent_principle_confusions",
+    "random_labels_and_shuffled_solutions",
+    "option_order_permutations",
+    "common_sense_non_inventive_solutions",
+    "near_duplicate_and_source_proximity_audit",
+    "out_of_distribution_vocabulary_domain"
+  ],
+  "primary_surface": "label_free_candidate_description_scoring",
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}

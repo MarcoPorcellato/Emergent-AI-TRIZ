@@ -1,0 +1,27 @@
+{
+  "artifact_class": "exp002-response-surface-plan",
+  "plan_id": "exp002-response-surface-v1.0.0",
+  "status": "ready_no_model",
+  "conditions": [
+    "original_abcd",
+    "balanced_cyclic_label_permutations",
+    "all_24_label_permutations_diagnostic",
+    "numeric_labels",
+    "matched_neutral_symbols",
+    "label_free_candidate_description_scoring",
+    "answer_boundary_variants"
+  ],
+  "metrics": [
+    "top_label_frequency_and_entropy",
+    "permutation_invariance",
+    "accuracy_range_across_permutations",
+    "label_prior_adjusted_margin",
+    "raw_vs_adjusted_choice_divergence",
+    "label_only_vs_description_score_agreement",
+    "transfer_minus_control_delta"
+  ],
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}
