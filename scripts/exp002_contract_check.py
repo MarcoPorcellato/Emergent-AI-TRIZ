@@ -86,6 +86,13 @@ def main() -> int:
     validate_schema("schemas/exp002-execution-receipt.schema.json", execution_receipt)
     if execution_receipt["status"] != "not_started" or execution_receipt["access"]["model_loaded"]:
         raise AssertionError("execution receipt template crossed its boundary")
+    synthetic_results = jsonl("results/exp002/preexecution/synthetic-terminal-results.jsonl")
+    observed_statuses = {result["status"] for result in synthetic_results}
+    if observed_statuses != set(TERMINAL_STATUSES):
+        raise AssertionError("synthetic terminal-state fixture is incomplete")
+    for result in synthetic_results:
+        validate_schema("schemas/exp002-followup-result.schema.json", result)
+        validate_terminal_result(result)
     approval = load("experiments/exp002-qwen3-followup/approval-dossier.json")
     validate_schema("schemas/exp002-approval-dossier.schema.json", approval)
     if approval["status"] != "approval_requested" or approval["operator_approval"]["granted"] is not False:

@@ -151,6 +151,7 @@ VALIDATION_PAIRS = (
     ("schemas/exp002-source-familiarity-plan.schema.json", "experiments/exp002-qwen3-followup/source-familiarity-plan.json"),
     ("schemas/exp002-source-proximity-manifest.schema.json", "experiments/exp002-qwen3-followup/source-proximity-manifest.json"),
     ("schemas/exp002-execution-receipt.schema.json", "results/exp002/preexecution/execution-receipt-template.json"),
+    ("schemas/exp002-followup-result.schema.json", "results/exp002/preexecution/synthetic-terminal-results.jsonl"),
 )
 
 
