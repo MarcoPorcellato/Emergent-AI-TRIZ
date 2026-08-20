@@ -11,7 +11,7 @@ import math
 from typing import Any, Callable
 
 from .exp002_followup import EXPECTED_MODELS, Exp002ContractError
-from .exp002_surface import validate_score_mapping
+from .exp002_surface import score_candidate_descriptions, validate_score_mapping
 
 
 class Exp002ExecutionError(RuntimeError):
@@ -119,4 +119,42 @@ def score_injected_direct_questions(
     return output
 
 
-__all__ = ["Exp002ExecutionError", "authorize_material_run", "score_injected_direct_questions", "score_injected_surface", "validate_authorized_dossier", "validate_ccp_gate"]
+def score_injected_candidate_descriptions(
+    rows: Sequence[Mapping[str, Any]], scorer: Callable[[str], float],
+) -> list[dict[str, Any]]:
+    """Score complete candidate descriptions for the EXP-002C primary surface.
+
+    The scorer is injected after authorization and receives only public
+    candidate text. The helper never opens targets, answer keys, or source
+    locators and emits no label-token scores.
+    """
+    if isinstance(rows, (str, bytes, bytearray)) or not isinstance(rows, Sequence) or not rows:
+        raise Exp002ExecutionError("candidate-description rows must be non-empty")
+    output: list[dict[str, Any]] = []
+    for row in rows:
+        if not isinstance(row, Mapping):
+            raise Exp002ExecutionError("candidate-description row is malformed")
+        record_id = row.get("record_id", row.get("case_id"))
+        if not isinstance(record_id, str) or not record_id.strip():
+            raise Exp002ExecutionError("candidate-description record identity is missing")
+        candidates = row.get("candidate_descriptions")
+        if isinstance(candidates, (str, bytes, bytearray)) or not isinstance(candidates, Sequence) or len(candidates) != 4:
+            raise Exp002ExecutionError("candidate-description row must contain four candidates")
+        if any(field in row for field in ("expected_answer", "correct_choice", "target", "sealed_target", "expert_label", "model_output")):
+            raise Exp002ExecutionError("candidate-description input contains answer material")
+        condition = row.get("condition", "label_free_candidate_description_scoring")
+        if condition != "label_free_candidate_description_scoring":
+            raise Exp002ExecutionError("candidate-description primary condition drift")
+        try:
+            scores = score_candidate_descriptions(scorer, candidates)
+        except Exception as exc:
+            raise Exp002ExecutionError("candidate-description scorer failed") from exc
+        output.append({
+            "record_id": record_id,
+            "condition": condition,
+            "candidate_scores": list(scores),
+        })
+    return output
+
+
+__all__ = ["Exp002ExecutionError", "authorize_material_run", "score_injected_candidate_descriptions", "score_injected_direct_questions", "score_injected_surface", "validate_authorized_dossier", "validate_ccp_gate"]

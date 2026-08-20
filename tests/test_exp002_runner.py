@@ -144,6 +144,37 @@ class Exp002RunnerTests(unittest.TestCase):
             self.assertEqual(result["status"], "failed")
             self.assertEqual(target_reads, [])
 
+    def test_stage_c_uses_label_free_candidate_scores(self):
+        dossier = _stage_dossier()
+        dossier["stage_id"] = "EXP-002C"
+        dossier["dossier_id"] = "exp002-exp-002c-approval-v1"
+        dossier["prerequisites"] = {
+            "answer_key_status": "not_applicable",
+            "transfer_corpus_status": "frozen_no_model",
+            "source_proximity_status": "pass",
+            "power_calibration_status": "pass",
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            result = run_exp002_stage(
+                root=directory,
+                run_id="exp002-qwen3-c-label-free",
+                study_id="EXP-002C",
+                model_id="Qwen/Qwen3-0.6B-Base",
+                revision="da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+                dossier=dossier,
+                ccp_gate={"decision": "admit", "active": False, "queue_count": 0},
+                public_rows=[{"case_id": "exp002c-case-1", "candidate_descriptions": ["a", "bb", "ccc", "dddd"]}],
+                scorer=len,
+                target_reader=lambda rows: [{"case_id": "exp002c-case-1", "label": 0}],
+                analysis=lambda rows, reader: {"status": "null", "target_count": len(reader())},
+                adapter=_FakeAdapter(),
+            )
+            self.assertEqual(result["status"], "null")
+            package = Path(directory) / result["package"]
+            response_schema = json.loads((ROOT / "schemas/exp002-response-index.schema.json").read_text())
+            response_index = json.loads((package / "response-index.json").read_text())
+            self.assertEqual(list(Draft202012Validator(response_schema).iter_errors(response_index)), [])
+
 
 if __name__ == "__main__":
     unittest.main()

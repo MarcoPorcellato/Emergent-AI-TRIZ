@@ -16,7 +16,8 @@
   },
   "allOf": [
     {"if": {"properties": {"study_id": {"const": "EXP-002B"}}}, "then": {"properties": {"records": {"items": {"$ref": "#/$defs/direct_record"}}}}},
-    {"if": {"properties": {"study_id": {"enum": ["EXP-002A", "EXP-002C", "EXP-002D"]}}}, "then": {"properties": {"records": {"items": {"$ref": "#/$defs/surface_record"}}}}}
+    {"if": {"properties": {"study_id": {"const": "EXP-002C"}}}, "then": {"properties": {"records": {"items": {"$ref": "#/$defs/candidate_record"}}}}},
+    {"if": {"properties": {"study_id": {"enum": ["EXP-002A", "EXP-002D"]}}}, "then": {"properties": {"records": {"items": {"$ref": "#/$defs/surface_record"}}}}}
   ],
   "$defs": {
     "record": {
@@ -26,6 +27,7 @@
         "record_id": {"type": "string", "minLength": 1},
         "condition": {"type": "string", "minLength": 1},
         "scores": {"type": "object", "additionalProperties": false, "required": ["A", "B", "C", "D"], "properties": {"A": {"type": "number"}, "B": {"type": "number"}, "C": {"type": "number"}, "D": {"type": "number"}}},
+        "candidate_scores": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number"}},
         "question_id": {"type": "string", "pattern": "^exp002-"},
         "module": {"type": "string", "minLength": 1},
         "scientific_role": {"type": "string", "minLength": 1},
@@ -53,6 +55,16 @@
         "scientific_role": {"type": "string", "minLength": 1},
         "prediction": {"type": ["string", "number", "boolean", "object", "array"]},
         "abstained": {"type": "boolean"}
+      }
+    },
+    "candidate_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_id", "condition", "candidate_scores"],
+      "properties": {
+        "record_id": {"type": "string", "minLength": 1},
+        "condition": {"const": "label_free_candidate_description_scoring"},
+        "candidate_scores": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number"}}
       }
     }
   }
