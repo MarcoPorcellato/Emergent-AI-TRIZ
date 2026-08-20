@@ -55,6 +55,11 @@ class Exp002StageGateTests(unittest.TestCase):
         with self.assertRaises(Exp002StageGateError):
             validate_stage_dossier(dossier, "EXP-002C")
 
+        authorized = _dossier(stage="EXP-002C", status="authorized")
+        authorized["prerequisites"]["source_proximity_status"] = "pending"
+        with self.assertRaises(Exp002StageGateError):
+            validate_stage_dossier(authorized, "EXP-002C")
+
     def test_model_identity_and_permissions_are_exact(self):
         dossier = _dossier()
         dossier["exact_models"][0]["revision"] = "0" * 40
