@@ -78,6 +78,12 @@ selects eight domains with target power `0.80` and expected positive-direction
 probability `0.98`. This assumption is an explicit limitation, not empirical
 evidence.
 
+The knowledge module also exposes a paired, descriptive source-familiarity
+metric evaluator covering canonical/paraphrase contrast, normalized
+paraphrase stability, nonce-edit rejection, attribution accuracy, exact phrase
+completion, and unsupported-claim rate. These outputs remain behavioural
+metadata and cannot establish training-data membership.
+
 The response-surface module now emits a deterministic schedule for the original,
 cyclic, all-24, numeric, neutral-symbol, label-free, and answer-boundary
 conditions, and classifies only `measurement_robust`,
