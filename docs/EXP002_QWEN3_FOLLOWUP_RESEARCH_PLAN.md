@@ -12,7 +12,8 @@ last_verified: 2026-08-20
 ## Current implementation checkpoint
 
 The no-model tranche and the guarded EXP-002A baseline runner are implemented
-on branch `exp002-qwen3-followup`. The operator-approved seven-model dossier
+on branch `exp002-qwen3-followup` at exact implementation head
+`e47937c05ba286018c4d9071ce00a23c9a8afc02`. The operator-approved seven-model dossier
 was executed once per exact snapshot under the current CCP `origin/main`
 binary. Every baseline package is terminal `null`, claim-free, and published
 with one analysis-boundary target read. EXP-002A's label-permutation,
@@ -102,6 +103,14 @@ coverage for the four cyclic and 24-permutation arms, computes label-free
 agreement and semantic-invariance rates, and feeds the preregistered robust
 versus artifact classifier. It reports measurement status only; it never
 compares a choice with the sealed answer key.
+
+The injected runner dispatches EXP-002B through the direct-question scorer and
+EXP-002C through the label-free candidate-description scorer. The latter emits
+four finite candidate scores without label-token scores and rejects any
+non-primary condition. The response-index schema has stage-specific records.
+The separate EXP-002C transfer-target-key schema/template is tracked as
+`not_ready`; it contains no sealed answers or target-content hash until the
+independent corpus and expert labels are frozen.
 
 ### EXP-002A baseline result (2026-08-20)
 

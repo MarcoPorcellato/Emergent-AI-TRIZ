@@ -64,7 +64,7 @@ base. Delivery uses an isolated worktree created from an exact verified commit.
 
 The new branch `exp002-qwen3-followup` publishes the implementation of
 [`EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md`](./EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md)
-through exact head `60b205b`. Its frozen seven-model dossier was executed once
+through exact head `e47937c`. Its frozen seven-model dossier was executed once
 per exact snapshot under the current CCP `origin/main` binary. The EXP-002A
 baseline packages are all terminal `null`, exploratory, non-pooled, and claim
 free; each records CPU float32, no network/generation, and one target read at
@@ -77,7 +77,8 @@ baseline.
 The no-model tranche also freezes the EXP-002B answer-key gate (three
 pseudonymous reviewers plus an explicit disagreement policy), the locator-only
 source-familiarity boundary, deterministic EXP-002C power calibration, and the
-target-free corpus schema/validator. The public corpus template remains empty
+target-free corpus schema/validator, label-free candidate runner, and the
+`not_ready` sealed transfer target-key contract. The public corpus template remains empty
 until independent authoring, source-proximity review, and held-out/sealed-novel
 splits are complete; these gates do not authorize model or sealed-target
 access. Separate `approval_requested` dossiers for EXP-002B and EXP-002C bind
