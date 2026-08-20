@@ -1,9 +1,10 @@
 EXP-002 checkpoint (2026-08-20): branch `exp002-qwen3-followup` is the active
-implementation branch at exact head `dd1354b`. The no-model protocol,
+implementation branch at exact head `9fb40e2`. The no-model protocol,
 seven-model identity registry, target-free 351-question TRIZ bank,
 tokenizer-audit gate, public label-surface diagnostic, injected material
 runner, immutable publication contracts, guarded EXP-002A CLI, direct-answer
-review gate, and EXP-002C target-free corpus validator are frozen;
+review gate, locator-only source-familiarity boundary, deterministic EXP-002C
+power calibration, and target-free corpus validator are frozen;
 the seven-model EXP-002A baseline is published with terminal `null` packages.
 The exact seven-model material dossier is operator-authorized at approval hash
 `0c5943ad5a7bf2c598511b8c3ecc29bd566f33140af59c8c6d788f2423483d67`.

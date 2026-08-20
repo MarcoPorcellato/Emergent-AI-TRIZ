@@ -56,7 +56,7 @@ latent rediscovery, and the strata are not pooled.
 ### EXP-002 Qwen3 follow-up — EXP-002A baseline published
 
 Branch [`exp002-qwen3-followup`](https://github.com/MarcoPorcellato/Latent-TRIZ/tree/exp002-qwen3-followup)
-is published through exact head `dd1354b` with the frozen no-model tranche and
+is published through exact head `9fb40e2` with the frozen no-model tranche and
 the guarded EXP-002A baseline. The seven exact snapshots were each loaded once
 under the exact `commit-ci-preflight` `origin/main` binary, CPU float32,
 local-only, no generation, and one sealed-target read at analysis. Every
@@ -65,9 +65,11 @@ terminal outcome is `null`; no claim is promoted. The aggregate manifest is
 tokenizer diagnostics, direct TRIZ knowledge/source-familiarity scoring, and
 the independently authored EXP-002C corpus remain separate pending stages. The
 no-model tranche now includes the three-reviewer answer-key gate and a
-fail-closed EXP-002C corpus validator/template; neither authorizes a model load
+fail-closed EXP-002C corpus validator/template, locator-only source-familiarity
+fixture, and deterministic power calibration; neither authorizes a model load
 or sealed-target read. Separate EXP-002B and EXP-002C approval-requested
-dossiers are present but intentionally unapproved.
+dossiers are present but intentionally unapproved, with incomplete
+prerequisites represented as pending.
 
 ## Published model-backed record
 
