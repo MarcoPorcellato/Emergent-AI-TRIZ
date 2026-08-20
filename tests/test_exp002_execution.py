@@ -11,6 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class Exp002ExecutionTests(unittest.TestCase):
     def test_unapproved_dossier_fails_before_adapter(self):
         dossier = json.loads((ROOT / "experiments/exp002-qwen3-followup/approval-dossier.json").read_text(encoding="utf-8"))
+        dossier["status"] = "approval_requested"
+        dossier["operator_approval"] = {"granted": False, "operator_id": "MarcoPorcellato", "approved_at": None, "approval_text_sha256": None}
         gate = {"resource_decision": "admit", "admission_active": False, "queue_count": 0}
         with self.assertRaises(Exp002ExecutionError):
             authorize_material_run(dossier, gate, "Qwen/Qwen3-0.6B-Base")
