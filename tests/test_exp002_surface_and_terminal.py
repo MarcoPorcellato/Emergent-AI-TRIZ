@@ -1,6 +1,7 @@
 import unittest
 
 from latent_triz.exp002_surface import (
+    CONDITIONS,
     Exp002SurfaceError,
     LABELS,
     adjust_label_prior,
@@ -8,6 +9,8 @@ from latent_triz.exp002_surface import (
     cyclic_permutations,
     remap_scores,
     score_candidate_descriptions,
+    build_surface_schedule,
+    classify_measurement_surface,
     summarize_surface,
 )
 from latent_triz.exp002_terminal import build_terminal_result, validate_terminal_result
@@ -34,6 +37,21 @@ class Exp002SurfaceTests(unittest.TestCase):
         self.assertEqual(score_candidate_descriptions(lambda text: len(text), ("alpha", "beta")), (5.0, 4.0))
         with self.assertRaises(Exp002SurfaceError):
             score_candidate_descriptions(lambda _: float("nan"), ("alpha",))
+
+    def test_surface_schedule_is_balanced_and_deterministic(self):
+        schedule = build_surface_schedule(["r1"])
+        self.assertEqual(len(schedule), 1 + 4 + 24 + 1 + 1 + 1 + 1)
+        self.assertEqual(schedule[0]["condition"], "original_abcd")
+        self.assertEqual({row["condition"] for row in schedule}, set(CONDITIONS))
+        self.assertEqual(len({tuple(row["mapping"].items()) for row in schedule if row["condition"] == "all_24_label_permutations"}), 24)
+
+    def test_measurement_surface_classifier_requires_label_free_agreement(self):
+        robust = classify_measurement_surface({"balanced_complete": True, "all_permutations_complete": True, "label_free_agreement": True, "semantic_invariance": True})
+        self.assertEqual(robust["status"], "measurement_robust")
+        artifact = classify_measurement_surface({"balanced_complete": True, "all_permutations_complete": True, "label_free_agreement": False, "semantic_invariance": False})
+        self.assertEqual(artifact["status"], "measurement_artifact_supported")
+        with self.assertRaises(Exp002SurfaceError):
+            classify_measurement_surface({"balanced_complete": True})
 
 
 class Exp002TerminalTests(unittest.TestCase):

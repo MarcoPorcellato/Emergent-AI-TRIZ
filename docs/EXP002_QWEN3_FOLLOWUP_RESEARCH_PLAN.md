@@ -50,6 +50,12 @@ prediction, and abstention metadata. It still refuses an unapproved dossier or
 an unknown CCP state. Actual B/C adapters, expert answer keys, and the new
 corpus remain intentionally unpopulated until their respective gates close.
 
+The response-surface module now emits a deterministic schedule for the original,
+cyclic, all-24, numeric, neutral-symbol, label-free, and answer-boundary
+conditions, and classifies only `measurement_robust`,
+`measurement_artifact_supported`, or `non_interpretable`. This classifier is a
+diagnostic gate; it cannot replace the frozen primary endpoint.
+
 ### EXP-002A baseline result (2026-08-20)
 
 All seven exact models produced an exploratory `null` terminal result under the

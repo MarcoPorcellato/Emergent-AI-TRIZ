@@ -121,8 +121,44 @@ def summarize_surface(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     }
 
 
+def build_surface_schedule(record_ids: Sequence[str]) -> list[dict[str, Any]]:
+    """Build the deterministic response-surface schedule without scores."""
+    if isinstance(record_ids, (str, bytes, bytearray)) or not isinstance(record_ids, Sequence) or not record_ids:
+        raise Exp002SurfaceError("record_ids must be a non-empty sequence")
+    if any(not isinstance(record_id, str) or not record_id.strip() for record_id in record_ids):
+        raise Exp002SurfaceError("record IDs must be non-empty text")
+    identity = {label: label for label in LABELS}
+    numeric = {str(index + 1): label for index, label in enumerate(LABELS)}
+    neutral = {symbol: label for symbol, label in zip(("x", "y", "z", "w"), LABELS)}
+    mappings: list[tuple[str, Mapping[str, str]]] = [("original_abcd", identity)]
+    mappings.extend(("balanced_cyclic_label_permutations", mapping) for mapping in cyclic_permutations())
+    mappings.extend(("all_24_label_permutations", mapping) for mapping in all_label_permutations())
+    mappings.extend([("numeric_labels", numeric), ("matched_neutral_symbols", neutral)])
+    mappings.extend((("label_free_candidate_description_scoring", {}), ("answer_boundary_variants", {})))
+    schedule: list[dict[str, Any]] = []
+    for record_id in record_ids:
+        for condition, mapping in mappings:
+            schedule.append({"record_id": record_id, "condition": condition, "mapping": dict(mapping)})
+    return schedule
+
+
+def classify_measurement_surface(observation: Mapping[str, Any]) -> dict[str, Any]:
+    """Apply the preregistered robust/artifact decision without model access."""
+    required = ("balanced_complete", "all_permutations_complete", "label_free_agreement", "semantic_invariance")
+    if not isinstance(observation, Mapping) or any(not isinstance(observation.get(field), bool) for field in required):
+        raise Exp002SurfaceError("measurement-surface observation is incomplete")
+    if not observation["balanced_complete"]:
+        return {"status": "non_interpretable", "reason": "balanced_screen_incomplete", "claim_ids": []}
+    if not observation["all_permutations_complete"]:
+        return {"status": "non_interpretable", "reason": "permutation_screen_incomplete", "claim_ids": []}
+    if not observation["label_free_agreement"] or not observation["semantic_invariance"]:
+        return {"status": "measurement_artifact_supported", "reason": "surface_invariance_failed", "claim_ids": []}
+    return {"status": "measurement_robust", "reason": "balanced_permutations_and_label_free_agree", "claim_ids": []}
+
+
 __all__ = [
     "CONDITIONS", "Exp002SurfaceError", "LABELS", "adjust_label_prior", "all_label_permutations",
+    "build_surface_schedule", "classify_measurement_surface",
     "cyclic_permutations", "label_entropy", "remap_scores", "score_candidate_descriptions",
     "summarize_surface", "top_label", "validate_score_mapping",
 ]
