@@ -3,7 +3,7 @@
 ## Current checkpoint
 
 - Branch: `exp002-qwen3-followup`
-- Last implementation checkpoint: `21917e3` (EXP-002 no-model gates, source-familiarity boundary, power calibration, and review handoff published)
+- Last implementation checkpoint: `5efd867` (EXP-002 no-model gates, source-familiarity boundary, power calibration, review handoff, and package-binding verifier published)
 - Scientific state: exploratory, no claim IDs, no evidence promotion
 - Model access: one local CPU float32 pass per exact model, all terminal `null`
 - Generation/network: disabled for every pass
