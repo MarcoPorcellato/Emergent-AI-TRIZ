@@ -117,4 +117,39 @@ def source_familiarity_contrast(condition_scores: Mapping[str, Sequence[float]])
     }
 
 
-__all__ = ["Exp002KnowledgeError", "evaluate_direct_questions", "source_familiarity_contrast"]
+def evaluate_source_familiarity(
+    condition_scores: Mapping[str, Sequence[float]], *, attribution_correct: Sequence[bool],
+    exact_phrase_completed: Sequence[bool], unsupported_claims: Sequence[bool],
+) -> dict[str, Any]:
+    """Return descriptive source-familiarity metrics from injected observations.
+
+    These metrics are behavioural contrasts only. They do not infer training
+    membership and never open source files, models, or targets.
+    """
+    contrast = source_familiarity_contrast(condition_scores)
+    required_count = len(tuple(condition_scores["canonical_short_phrase"]))
+    sequences = {
+        "attribution_correct": attribution_correct,
+        "exact_phrase_completed": exact_phrase_completed,
+        "unsupported_claims": unsupported_claims,
+    }
+    for name, values in sequences.items():
+        if isinstance(values, (str, bytes, bytearray)) or not isinstance(values, Sequence) or len(values) != required_count or any(not isinstance(value, bool) for value in values):
+            raise Exp002KnowledgeError(f"{name} must be a boolean sequence paired to the scores")
+    canonical = tuple(float(value) for value in condition_scores["canonical_short_phrase"])
+    paraphrase = tuple(float(value) for value in condition_scores["independent_paraphrase"])
+    stability = sum(1.0 - abs(left - right) / (1.0 + abs(left) + abs(right)) for left, right in zip(canonical, paraphrase)) / required_count
+    nonce = tuple(float(value) for value in condition_scores["nonce_relation_edit"])
+    return {
+        **contrast,
+        "paraphrase_stability": stability,
+        "nonce_rejection_rate": sum(left > right for left, right in zip(canonical, nonce)) / required_count,
+        "attribution_accuracy": sum(attribution_correct) / required_count,
+        "exact_phrase_completion_rate": sum(exact_phrase_completed) / required_count,
+        "unsupported_claim_rate": sum(unsupported_claims) / required_count,
+        "interpretation_boundary": "behavioural_source_familiarity_is_not_training_membership",
+        "claim_ids": [],
+    }
+
+
+__all__ = ["Exp002KnowledgeError", "evaluate_direct_questions", "evaluate_source_familiarity", "source_familiarity_contrast"]

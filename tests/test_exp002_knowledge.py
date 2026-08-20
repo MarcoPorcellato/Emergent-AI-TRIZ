@@ -1,6 +1,6 @@
 import unittest
 
-from latent_triz.exp002_knowledge import Exp002KnowledgeError, evaluate_direct_questions, source_familiarity_contrast
+from latent_triz.exp002_knowledge import Exp002KnowledgeError, evaluate_direct_questions, evaluate_source_familiarity, source_familiarity_contrast
 
 
 class Exp002KnowledgeTests(unittest.TestCase):
@@ -34,6 +34,16 @@ class Exp002KnowledgeTests(unittest.TestCase):
         )
         self.assertEqual(result["modules"]["false_concept_canary"]["unsupported_claim_count"], 1)
         self.assertEqual(result["modules"]["false_concept_canary"]["unsupported_false_accept_rate"], 0.5)
+
+    def test_source_familiarity_metrics_are_descriptive_and_paired(self):
+        scores = {"canonical_short_phrase": [3.0, 4.0], "independent_paraphrase": [2.5, 3.5], "matched_non_triz_lexical_control": [1.0, 2.0], "nonce_relation_edit": [0.0, 1.0]}
+        result = evaluate_source_familiarity(scores, attribution_correct=[True, False], exact_phrase_completed=[True, True], unsupported_claims=[False, True])
+        self.assertEqual(result["attribution_accuracy"], 0.5)
+        self.assertEqual(result["exact_phrase_completion_rate"], 1.0)
+        self.assertEqual(result["nonce_rejection_rate"], 1.0)
+        self.assertEqual(result["interpretation_boundary"], "behavioural_source_familiarity_is_not_training_membership")
+        with self.assertRaises(Exp002KnowledgeError):
+            evaluate_source_familiarity(scores, attribution_correct=[True], exact_phrase_completed=[True, True], unsupported_claims=[False, True])
 
 
 if __name__ == "__main__":
