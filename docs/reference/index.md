@@ -7,6 +7,8 @@
 - [GitNexus code-intelligence policy](gitnexus-policy.md)
 - [Fail-closed schema validation](schema-validation.md)
 - [SmolLM2 runtime contract](smollm2-runtime-contract.md)
+- [Official model documentation audit](../EXP001_MODEL_OFFICIAL_DOC_AUDIT.md)
+- [EXP-001 comparative reference study](../EXP001_COMPARATIVE_REFERENCE_STUDY.md)
 - [TRIZ expert reference corpus](triz-reference-corpus.md)
 - [Lab architecture](../LAB_ARCHITECTURE.md)
 - [Laboratory master plan](../LABORATORY_MASTER_PLAN.md)

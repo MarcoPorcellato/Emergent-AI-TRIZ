@@ -4,7 +4,7 @@ title: Weak and Strong Latent TRIZ Hypotheses
 description: Falsification contract and evidence profile for operator-level latent TRIZ research.
 status: draft_preregistration
 version: 0.1.0
-last_verified: 2026-08-18
+last_verified: 2026-08-19
 ---
 
 # Weak and Strong Latent TRIZ Hypotheses
@@ -39,9 +39,9 @@ exposed retrieval, and post-hoc model prompting cannot establish it.
 ## 2. Epistemic boundaries
 
 - A0/R1 positive packages are exploratory automated-proxy observations (E0).
-- The comparative Pythia/SmolLM2/Qwen3 null packages are published negative
-  evidence for that frozen reference-task protocol; they do not falsify WLT as
-  a construct because expert labels and causal tests are still absent.
+- The seven-model comparative null packages are published negative evidence for
+  that frozen reference-task protocol; they do not falsify WLT as a construct
+  because expert labels and causal tests are still absent.
 - Source-exposed competence is never pooled with blinded transfer.
 - A decodable direction is not evidence of causal use.
 - No claim may be promoted until the corresponding human, causal, replication,
@@ -52,7 +52,7 @@ exposed retrieval, and post-hoc model prompting cannot establish it.
 | Record | What it supports | What it cannot support |
 |---|---|---|
 | A0/R1 positive packages | exploratory decodability of frozen procedural proxies | expert-validated TRIZ, causal use, or Strong Latent TRIZ |
-| Pythia/SmolLM2/Qwen3 comparative nulls | no robust transfer signal for that frozen reference-task primary across the tested families | falsification of WLT as a construct, because the human label and causal gates are open |
+| Seven-model comparative nulls | no robust transfer signal for that frozen reference-task primary across the tested families | falsification of WLT as a construct, because the human label and causal gates are open |
 | R3 reference-integrated package | a bounded exploratory test of blinded versus source-exposed reference tasks | rediscovery: source exposure is competence/retrieval and is never pooled with blinded transfer |
 
 This table is a guard against two symmetrical errors: promoting an automated

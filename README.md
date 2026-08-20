@@ -4,11 +4,15 @@
 
 Latent TRIZ is an open laboratory for testing whether language models learn internal, cross-domain, and causally active transformations that resemble TRIZ Inventive Principles. The project combines reproducible experiments, mechanistic interpretability, blinded evaluation, and explicit falsification criteria.
 
-> **Current evidence boundary:** the repository now contains one positive,
-> exact-revision A0 automated-proxy exploration. It found a cross-domain
-> decodable signal for frozen procedural proxies, not expert-validated TRIZ
-> constructs. The result is exploratory, not claim-eligible, and every
-> registered scientific claim remains at E0: hypothesis.
+> **Current evidence boundary:** the repository contains immutable positive
+> A0/R1 automated-proxy packages and published `null` packages from the
+> reference-integrated and seven-model comparative studies. These results are
+> exploratory automated proxies, not expert-validated TRIZ constructs, causal
+> evidence, or evidence for the Strong Latent TRIZ Hypothesis. Every registered
+> claim remains at E0.
+
+The current public checkpoint, model-by-model results, integrity boundaries, and
+next evidence gate are summarized in [Current Laboratory Status](docs/CURRENT_STATUS.md).
 
 ## Run the laboratory
 
@@ -85,6 +89,24 @@ A probe score, attractive cluster, or behavioral anecdote is insufficient. Stron
 
 Promotion is evidence-bound: a claim may advance only when its preregistration, immutable dataset snapshot, run records, results, and replication links satisfy the level's proof obligations. See the [Evidence Ladder](docs/EVIDENCE_LADDER.md) and machine-readable [claim registry](data/claims.jsonl). The initial claims are all E0 and untested.
 
+## Results so far
+
+The public record now contains both positive exploratory proxy observations and
+carefully published null controls. They are not pooled, and none is expert-
+validated TRIZ evidence.
+
+| Study | Result | What it means |
+| --- | --- | --- |
+| A0 automated proxy | positive, `p=0.005`, 24/24 paired-family successes | A frozen procedural proxy produced a cross-domain signal; it is E0 exploratory evidence, not a TRIZ construct validation. |
+| A0-R1 independent replication | positive, `p=0.002`, 23/24 family successes | The same proxy persisted on an independent procedural corpus; it remains exploratory and claim-free. |
+| EXP-001 reference-integrated SmolLM2 | `null` | The source-blinded/source-exposed reference-task design did not meet its frozen primary endpoint. |
+| EXP-001 comparative models | seven independent terminal `null` packages | Pythia, SmolLM2-360M, Qwen3, GPT-2, SmolLM2-135M, GPT-Neo, and Qwen2.5 produced no robust pooled signal. Qwen3 was a descriptive near-threshold case (`p=0.0625`) but correctly remained `null`. |
+
+The [current status page](docs/CURRENT_STATUS.md) contains the per-model p-values,
+effect estimates, resource receipts, package links, and fresh-clone integrity
+results. The [hypothesis contract](docs/HYPOTHESES_AND_FALSIFICATION.md) explains
+why these observations neither prove nor falsify the construct-level hypothesis.
+
 ## From visible behavior to mechanism
 
 The planned experimental route deliberately grows in complexity:
@@ -114,6 +136,7 @@ Exploratory work may happen earlier, but it remains visibly separate from confir
 
 ## Start here
 
+- [Current laboratory status](docs/CURRENT_STATUS.md) — public checkpoint, seven-model result table, and next gate
 - [Documentation portal](docs/index.md) — maintained documentation map
 - [Evidence Ladder](docs/EVIDENCE_LADDER.md) — claim promotion rules E0–E6
 - [Local visual laboratory suite](docs/LAB_SUITE.md) — one-command Lab 00–05 dashboard and scientific boundary
@@ -152,7 +175,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - Matryca-Knowledge-style maintained documentation bundle: implemented
 - CI cost boundary: docs-only pull requests use lightweight documentation checks; code and scientific changes follow the stable merge-policy/gate with Python 3.11 and 3.12 compatibility checks plus exact-head CCP where required
 - Stage 1 deterministic blinded-pilot smoke: implemented, synthetic, non-empirical
-- Annotation ontology v1.1: current on `main`; the v1.2 amendment is in delivery with separate operator scores and a real three-expert cognitive-pilot gate still pending
+- Annotation ontology v1.1: current on `main`; the v1.2 packet is ready for collection, with a real three-expert cognitive-pilot gate still pending
 - Lab 00 public visual surface: implemented, infrastructure-only, not claim-attached
 - Lab 01 model anatomy: implemented on an exact-revision didactic model; empirical instrumentation only, not claim-eligible
 - Model-backed representation bridge: implemented for exact-revision Pythia smoke runs; real activations remain exploratory and not claim-eligible
@@ -163,6 +186,11 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a claim-level change.
 - A0 automated proxy exploration: published positive exploratory result with
   frozen controls and immutable receipts; not expert-validated and not
   claim-eligible
+- EXP-001 reference-integrated study: published `null` SmolLM2 package with
+  separate `TRIZ-blinded-transfer` and `source-exposed-competence` strata
+- EXP-001 comparative study: seven independent, non-pooled, terminal `null`
+  model packages with exact model/runtime receipts, one-shot CCP gates, and
+  fresh-clone asset-integrity verification
 - Empirical support for registered Latent TRIZ claims: none claimed; all remain E0
 
 ## License and attribution

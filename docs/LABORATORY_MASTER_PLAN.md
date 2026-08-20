@@ -19,6 +19,9 @@ Hypothesis.
 Long-running Codex work should use [the persistent execution goal](./PERSISTENT_GOAL.txt)
 as a short pointer to this plan rather than duplicating its milestones.
 
+For the compact public snapshot of the verified checkpoint, see
+[Current Laboratory Status](./CURRENT_STATUS.md).
+
 The construct-validity and falsification contract is maintained separately in
 [Weak and Strong Latent TRIZ Hypotheses](./HYPOTHESES_AND_FALSIFICATION.md).
 It is normative for new WLT/SLT work and does not rewrite historical packages.
@@ -40,21 +43,19 @@ It is normative for new WLT/SLT work and does not rewrite historical packages.
 | Item | Verified state | Authoritative anchor |
 |---|---|---|
 | Public repository | `MarcoPorcellato/Latent-TRIZ` | GitHub repository and tracked `LICENSE` / `NOTICE` |
-| Protected `main` | `8ce557fdfb0333db08867b0da7a0319fec891553` | live GitHub base for PR 77; verify again before the next mutation |
+| Protected `main` | `0123ce467408becbf127b66da1fcd4166bbbd431` | public exact head after PR #98; verify again before the next mutation |
 | Required merge context | strict `merge-policy/gate` | active GitHub ruleset and `.github/expected-main-ruleset.json` |
 | Completed automated milestone | A0-R Tier R1 same-model replication | PR 41, run `a0r1-v1.0.0-e93a9faa-r1` |
 | Current authentic-TRIZ milestone | H1 v1.2 collection packet | public packet is `ready_for_collection`; closure is blocked by three independent human TRIZ experts |
 | Claim state | all registered claims remain E0 | `data/claims.jsonl` |
 | First dataset attempt | rejected for scientific freeze | retained Wave 1 surface-audit artifacts |
-| Comparative reference tranche | three terminal `null` packages | PR 77 public head `c3d747c`; local two-model selection extension `809d874` is pending exact-head qualification and publication; exploratory and claim-free |
+| Comparative reference tranche | seven terminal `null` packages | PRs #77, #96, and #97; public main `0123ce4`; exploratory and claim-free |
 
-The implementation checkpoint for this planning tranche is branch
-`agent/exp001-comparative-reference` at `809d874` (full local commit
-`809d874bc6045deb55f056591af08d3342c5dbf0`). Subsequent documentation-only
-checkpoint commits may follow it; verify the actual branch head before
-publication.
-It is not a protected-main claim: the remote base, ruleset, PR state, and
-receipt branch must be verified again immediately before publication.
+The implementation checkpoint for the latest comparative tranche is now the
+public `main` head above. The exact-head receipt branches and merged pull
+requests are recorded in the chronology and the comparative study. It is not a
+protected-main scientific claim: every result remains exploratory and must be
+read together with its protocol, receipt, and external-asset verifier.
 
 The checkout used for unrelated local work is not an authoritative integration
 base. Delivery uses an isolated worktree created from an exact verified commit.
@@ -132,7 +133,7 @@ recorded in `docs/EXP001_ADDITIONAL_MODEL_RUNTIME.md`. One local CPU float32
 run per model completed under CCP: GPT-2 `null` (316.68 s, 2,121,891,840 B
 peak RSS, p=0.3125) and SmolLM2-135M `null` (341.66 s, 2,520,023,040 B peak
 RSS, p=0.5). Each opened sealed targets exactly once. Scores remain separate,
-all claim IDs are empty, and the existing three-model packages remain
+all claim IDs are empty, and the existing comparative packages remain
 immutable.
 
 This ordering prevents the repository from confusing a positive automated
@@ -693,8 +694,8 @@ Latent TRIZ Hypothesis. Null results are published without reinterpretation.
 
 The next scientific tranche follows the formal contract in
 [HYPOTHESES_AND_FALSIFICATION.md](./HYPOTHESES_AND_FALSIFICATION.md). The
-comparative Pythia/SmolLM2/Qwen3 null packages are retained as a robustness
-constraint; they do not authorize a rerun or a post-hoc threshold change.
+the seven comparative null packages are retained as a robustness constraint;
+they do not authorize a rerun or a post-hoc threshold change.
 
 The execution order is intentionally front-loaded toward evidence quality:
 `H1 -> strengthened controls -> held-out recognition -> one-principle
@@ -870,7 +871,7 @@ inspection, or a receipt for another commit are not a pass.
 
 ## Improvement-tranche checklist
 
-- [x] Preserve A0/R1 positives, three-model comparative nulls, and the R3
+- [x] Preserve A0/R1 positives, seven-model comparative nulls, and the R3
   reference-integrated package as immutable E0 exploratory records.
 - [x] Publish explicit Weak/Strong definitions, falsification rules, evidence
   axes, and the no-claim boundary.

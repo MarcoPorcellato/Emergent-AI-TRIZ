@@ -1,0 +1,114 @@
+---
+type: status-report
+title: Current Laboratory Status
+description: Public, receipt-backed snapshot of the Latent-TRIZ laboratory and its evidence boundary.
+status: canonical
+last_verified: 2026-08-19
+---
+
+# Current laboratory status
+
+This page is the short, public status snapshot for the Latent-TRIZ laboratory.
+The long-form history remains in the [Laboratory Master Plan](./LABORATORY_MASTER_PLAN.md)
+and the event-by-event chronology remains in [`docs/log.md`](./log.md).
+
+## Public checkpoint
+
+- **Public main:** `0123ce467408becbf127b66da1fcd4166bbbd431`
+- **Repository:** [MarcoPorcellato/Latent-TRIZ](https://github.com/MarcoPorcellato/Latent-TRIZ)
+- **Scientific posture:** exploratory, reproducible, and claim-free
+- **Registered claims:** all remain `E0`; `data/claims.jsonl` is unchanged
+- **Model execution policy:** exact revision, offline/local-only, one-shot, receipt-backed, and CCP-gated
+
+The repository contains immutable positive automated-proxy packages from A0/R1
+and immutable null packages from the reference-integrated and comparative
+studies. None is expert-validated TRIZ evidence, causal evidence, or evidence
+for the Strong Latent TRIZ Hypothesis.
+
+## What is delivered
+
+### Laboratory and governance
+
+- Apache-2.0 repository with attribution in [`NOTICE`](../NOTICE).
+- Maintained documentation bundle, decision records, evidence ladder, claim
+  registry, and fail-closed JSON-schema validation.
+- Local visual Lab Suite for Lab 00–05; it renders and verifies tracked reports
+  without downloading or rerunning models.
+- CCP exact-head receipts for material execution and lightweight documentation
+  qualification for docs-only changes.
+- Public dense response assets remain external to Git where the manifest says so;
+  every package records a locator and SHA-256.
+
+### TRIZ reference corpus
+
+The public corpus contains provenance and bounded, independently authored
+derivatives for:
+
+- all 40 Inventive Principles;
+- a sparse, double-checked Matrix 2003 fixture with direction-aware cells; and
+- a rights-aware fixture of the Panitz TRIZ-tool relationships.
+
+The original public PDFs and bulk tables are not redistributed. The corpus is
+used in two explicitly separate strata: `TRIZ-blinded-transfer` and
+`source-exposed-competence`. The exposed arm measures reference use, never
+latent rediscovery, and the strata are not pooled.
+
+## Published model-backed record
+
+The following seven model runs used the same frozen comparative reference-task
+contract. Each was authorized separately, executed once under CCP on local CPU
+float32, used no network or generation, read sealed targets once at the analysis
+boundary, and published its terminal state. Results are independent and are not
+pooled into a new statistic.
+
+| Model | Terminal | Primary p | Mean domain delta | Wall time | Peak RSS | Package |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| EleutherAI/pythia-70m-deduped | `null` | 0.6875 | +0.0545 | 312.4 s | 1.92 GiB | [`results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01`](../results/exp001-comparative/pythia-70m-e93a9faa-pythia-20260818-01/) |
+| HuggingFaceTB/SmolLM2-360M | `null` | 0.65625 | -0.0247 | 365.4 s | 2.90 GiB | [`results/exp001-comparative/smollm2-360m-f8027fd0-smollm2-20260818-01`](../results/exp001-comparative/smollm2-360m-f8027fd0-smollm2-20260818-01/) |
+| Qwen/Qwen3-0.6B-Base | `null` | 0.0625 | +0.9323 | 948.8 s | 4.66 GiB | [`results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01`](../results/exp001-comparative/qwen3-0.6b-da87bfb-qwen3-20260818-01/) |
+| openai-community/gpt2 | `null` | 0.3125 | +0.0264 | 316.7 s | 1.98 GiB | [`results/exp001-comparative/gpt2-607a30d7-gpt2-20260819-01`](../results/exp001-comparative/gpt2-607a30d7-gpt2-20260819-01/) |
+| HuggingFaceTB/SmolLM2-135M | `null` | 0.5000 | +0.0420 | 341.7 s | 2.35 GiB | [`results/exp001-comparative/smollm2-135m-93efa2f0-smollm2-135m-20260819-01`](../results/exp001-comparative/smollm2-135m-93efa2f0-smollm2-135m-20260819-01/) |
+| EleutherAI/gpt-neo-125m | `null` | 0.6875 | +0.0155 | 323.9 s | 1.73 GiB | [`results/exp001-comparative/gpt-neo-125m-21def018-gpt-neo-125m-20260819-01`](../results/exp001-comparative/gpt-neo-125m-21def018-gpt-neo-125m-20260819-01/) |
+| Qwen/Qwen2.5-0.5B | `null` | 0.96875 | -0.0059 | 935.3 s | 4.54 GiB | [`results/exp001-comparative/qwen2.5-0.5b-060db649-qwen2.5-0.5b-20260819-01`](../results/exp001-comparative/qwen2.5-0.5b-060db649-qwen2.5-0.5b-20260819-01/) |
+
+The separately registered SmolLM2 R3 reference-integrated package is also
+terminal `null`; it is a distinct source-aware study and is not pooled with the
+seven-model comparative record.
+
+### Interpretation
+
+The record does **not** show a robust, frozen-protocol signal across the tested
+model families. Qwen3 is a descriptive near-threshold case (`p=0.0625`), but it
+is correctly classified `null` because the preregistered threshold and
+held-out-domain rule were not both satisfied. These outcomes do not falsify the
+construct-level hypothesis: expert validation, stronger controls, and causal
+tests remain open gates.
+
+## Reproducibility and integrity
+
+Start with the no-model path:
+
+```bash
+make check
+make lab-render
+```
+
+To inspect published experiments, use the [EXP-001 comparative study](./EXP001_COMPARATIVE_REFERENCE_STUDY.md),
+the [official model documentation audit](./EXP001_MODEL_OFFICIAL_DOC_AUDIT.md),
+and the [results contract](../results/README.md). A fresh clone must reject a
+missing or mutated external dense asset; it must never silently substitute an
+asset or recompute a scientific result.
+
+## Next evidence gate
+
+The next scientific priority is human construct validation: three independent
+TRIZ experts, blinded cases, agreement and abstention receipts, and an explicit
+keep/amend decision. After that gate, the priority is one preregistered causal
+pilot with lexical, source, Matrix-direction, unsupported-edge, random-label,
+and capability-preservation controls. Additional model scaling is deferred
+until those gates are stable.
+
+See the [Roadmap](./ROADMAP.md) for the short sequence, the [Laboratory Master
+Plan](./LABORATORY_MASTER_PLAN.md) for dependencies and exit evidence, and the
+[Hypotheses and Falsification](./HYPOTHESES_AND_FALSIFICATION.md) contract for
+the normative interpretation rules.

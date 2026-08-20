@@ -1,11 +1,12 @@
 Complete the canonical improvement plan in `docs/LABORATORY_MASTER_PLAN.md`,
 using `docs/HYPOTHESES_AND_FALSIFICATION.md` as the normative Weak/Strong
-contract. The current local working anchor is comparative exact-head
-`809d874bc6045deb55f056591af08d3342c5dbf0`; verify `origin/main`, PR #77, the
-ruleset, and the receipt branch live before the next publication or mutation.
+contract. The current public checkpoint is `main` at
+`0123ce467408becbf127b66da1fcd4166bbbd431`; verify `origin/main`, the active
+ruleset, open pull requests, and receipt branches live before the next
+publication or mutation.
 
-Treat A0/R1 positives, the R3 reference-integrated package, and the
-Pythia/SmolLM2/Qwen3 comparative null packages as immutable exploratory
+Treat A0/R1 positives, the R3 reference-integrated package, and the seven-model
+comparative null packages as immutable exploratory
 evidence. Do not rerun or tune them. The immediate priority is the real-human
 H1 gate: three independent TRIZ experts and immutable raw/agreement,
 abstention, disagreement, adjudication, and keep/amend receipts. Then freeze
@@ -31,11 +32,10 @@ non-interpretable result; preserve historical artifacts; use deterministic
 tools first; delegate bounded inventory, tests, and documentation to cheaper
 workers; require a no-model contributor quickstart; and keep architecture,
 statistics, security, CCP, publication, and merge decisions under primary
-review. Current public no-download checkpoint is merged at main
-`2a8857b8ced98936e6f3eb5d6c75711adc71e9da`; the next material checkpoint is a fresh
-exact-head CCP receipt followed by explicit approval for the two named
-candidates. Continue until every checklist item in the canonical plan is
-proven or the precise human/external gate is recorded.
+review. The current public closeout is `main`
+`0123ce467408becbf127b66da1fcd4166bbbd431`; all comparative execution and
+publication gates are complete. Continue only with the human/external H1 gate
+or another separately frozen and authorized protocol.
 
 The additional model execution packages are published under
 `results/exp001-comparative/` with public locators and hashes for dense assets
@@ -44,15 +44,13 @@ The earlier R3 SmolLM2 package remains published in main merge
 `4cc1c6d862bffc9558b47a5cadd838a2ee22c465` with terminal `null`, one sealed
 target read, and no promoted scientific claim; the current objective extends
 the comparative proposal without reopening that package.
-The next no-download selection dossier names exactly two further candidates:
+The exact acquisition/one-run approval for
 EleutherAI/gpt-neo-125m@21def0189f5705e2521767faed922f1f15e7d7db and
-Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987. Keep them
-The exact acquisition/one-run approval is now recorded in the authorization
-request. It binds 529,444,041 bytes across eight GPT-Neo files and 999,586,188
-bytes across seven Qwen2.5 files, with 1 GiB and 1.5 GiB ceilings and source
-OIDs/LFS OIDs. Continue with one integrity-gated acquisition per model, then
-one CCP-guarded run per model; preserve prior packages and non-pooled terminal
-outcomes.
+Qwen/Qwen2.5-0.5B@060db6499f32faf8b98477b0a26969ef7d8b9987 is now fully
+consumed and published. It
+bound 529,444,041 bytes across eight GPT-Neo files and 999,586,188 bytes across
+seven Qwen2.5 files, with 1 GiB and 1.5 GiB ceilings. Preserve all seven
+packages and their non-pooled terminal outcomes; do not rerun them.
 
 The official documentation audit is recorded in
 `docs/EXP001_MODEL_OFFICIAL_DOC_AUDIT.md`; it is metadata-only and does not
@@ -67,10 +65,9 @@ snapshots are integrity-verified. Receipts are
 and `results/exp001-comparative/preexecution/qwen2.5-0.5b-integrity-receipt.json`;
 their model SHA-256 values are `52738cbfb54e25a232598242f60ef19ee193d36090b98fe649b10c02724b3521`
 and `88c142557820ccad55bb59756bfcfcf891de9cc6202816bd346445188a0ed342`.
-No model load, generation, dense output, or sealed-target access has occurred
-for either candidate. The next checkpoint is one sequential CCP-guarded run
-per model after publication of these receipts; do not retry after model or
-target access and do not alter the frozen protocol.
+No model load, generation, dense output, or sealed-target access had occurred
+at the acquisition checkpoint. That checkpoint is now complete; no further
+model or target access is authorized by this dossier.
 
 Execution checkpoint (2026-08-19): both one-shot runs completed and are
 terminal `null`. GPT-Neo is published in
@@ -88,3 +85,8 @@ merged at `74926e15fe06a6e41ef1aa0d96e731b70636531a` (PR #96). Fresh-clone
 verification passed for both packages with the declared external assets and
 rejected both missing and one-byte-mutated assets. No further runs of these
 models are authorized by this dossier.
+
+The next scientific gate is human construct validation: three independent TRIZ
+experts, blinded ratings, agreement/abstention/disagreement receipts, and a
+keep/amend decision. Until that gate is closed, do not scale models, pool
+results, or promote any TRIZ claim.

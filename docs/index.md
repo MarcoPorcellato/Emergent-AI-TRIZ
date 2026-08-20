@@ -3,7 +3,7 @@ type: documentation-index
 title: Documentation Index
 description: Maintained documentation portal for the Latent TRIZ open laboratory.
 status: canonical
-last_verified: 2026-08-17
+last_verified: 2026-08-19
 okf_version: "0.2"
 ---
 
@@ -12,6 +12,7 @@ okf_version: "0.2"
 This is the **maintained** documentation bundle.
 
 - [Human portal](./README.md)
+- [Current laboratory status](./CURRENT_STATUS.md)
 - [Laboratory master plan](./LABORATORY_MASTER_PLAN.md)
 - [Persistent Codex execution goal](./PERSISTENT_GOAL.txt)
 - [A0 automated weak-hypothesis exploration](./A0_AUTOMATED_WEAK_HYPOTHESIS.md)
@@ -38,6 +39,8 @@ This is the **maintained** documentation bundle.
 - [OKF project index](./OKF_PROJECT.md)
 - [Decision log](./DECISION_LOG.md)
 - [Article status](./ARTICLE_STATUS.md)
+- [EXP-001 comparative reference study](./EXP001_COMPARATIVE_REFERENCE_STUDY.md)
+- [Official model documentation audit](./EXP001_MODEL_OFFICIAL_DOC_AUDIT.md)
 
 ## Policy and status anchors
 
