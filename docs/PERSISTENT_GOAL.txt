@@ -4,10 +4,11 @@ target-free 71-question TRIZ bank, tokenizer-audit gate, and public
 label-surface diagnostic are frozen and being validated. Exact checkpoint
 commit before this implementation tranche: `5fec8fd`. No model load,
 generation, network, CCP material run, or sealed-target read is authorized.
-Implementation checkpoint exact head: `513cf5b` (response surfaces, terminal
+Implementation checkpoint exact head: `bbc08a4` (response surfaces, terminal
 gates, statistical contract, execution guards, approval dossier, restart
 handoff, 351-question TRIZ task inventory, source-familiarity and rights
-controls, and canonical plan/status/chronology updates included).
+controls, execution-receipt template, and canonical plan/status/chronology
+updates included).
 Next resume step: push this exact head, then request a new explicit operator
 dossier before any model or target access.
 
