@@ -65,6 +65,30 @@ class Exp002StageCliTests(unittest.TestCase):
                 MODULE.MODEL_RECEIPTS[model_id] = old_receipt
                 MODULE.MODEL_ROOTS[model_id] = old_root
 
+    def test_runtime_receipt_accepts_legacy_string_model_field(self) -> None:
+        model_id = "EleutherAI/pythia-70m-deduped"
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            model_root = root / "model"
+            model_root.mkdir()
+            payload = b"legacy-runtime-fixture"
+            (model_root / "config.json").write_bytes(payload)
+            receipt = root / "receipt.json"
+            receipt.write_text(json.dumps({
+                "model": model_id,
+                "revision": MODULE.EXPECTED_MODELS[model_id],
+                "runtime_files": [{"name": "config.json", "sha256": hashlib.sha256(payload).hexdigest()}],
+            }), encoding="utf-8")
+            old_receipt = MODULE.MODEL_RECEIPTS[model_id]
+            old_root = MODULE.MODEL_ROOTS[model_id]
+            MODULE.MODEL_RECEIPTS[model_id] = receipt
+            MODULE.MODEL_ROOTS[model_id] = model_root
+            try:
+                self.assertEqual(MODULE.verify_runtime(model_id)["runtime_files_checked"], 1)
+            finally:
+                MODULE.MODEL_RECEIPTS[model_id] = old_receipt
+                MODULE.MODEL_ROOTS[model_id] = old_root
+
 
 if __name__ == "__main__":
     unittest.main()
