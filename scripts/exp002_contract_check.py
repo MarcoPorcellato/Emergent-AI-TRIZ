@@ -24,6 +24,7 @@ from latent_triz.exp002_question_bank import build_question_bank, validate_quest
 from latent_triz.exp002_terminal import TERMINAL_STATUSES, build_terminal_result, validate_terminal_result  # noqa: E402
 from latent_triz.exp002_analysis import evaluate_transfer, validate_analysis_result  # noqa: E402
 from latent_triz.exp002_transfer_corpus import validate_transfer_fixture  # noqa: E402
+from latent_triz.exp002_stage_gate import validate_stage_dossier  # noqa: E402
 
 
 def load(relative: str) -> Any:
@@ -81,6 +82,15 @@ def main() -> int:
     validate_schema("schemas/exp002-transfer-corpus.schema.json", transfer_corpus)
     if transfer_corpus["status"] != "design_ready_no_model" or transfer_corpus["records"]:
         raise AssertionError("EXP-002C public template must remain design-only and empty")
+    for stage_id, dossier_path in (
+        ("EXP-002B", "experiments/exp002-qwen3-followup/exp002b-approval-dossier.json"),
+        ("EXP-002C", "experiments/exp002-qwen3-followup/exp002c-approval-dossier.json"),
+    ):
+        dossier = load(dossier_path)
+        validate_schema("schemas/exp002-study-approval-dossier.schema.json", dossier)
+        validate_stage_dossier(dossier, stage_id)
+        if dossier["status"] != "approval_requested" or dossier["operator_approval"]["granted"]:
+            raise AssertionError(f"{stage_id} dossier must remain unapproved")
     analysis_contract = load("experiments/exp002-qwen3-followup/analysis-contract.json")
     validate_schema("schemas/exp002-analysis-contract.schema.json", analysis_contract)
     source_plan = load("experiments/exp002-qwen3-followup/source-familiarity-plan.json")

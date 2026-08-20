@@ -11,6 +11,9 @@
 - Refreshed the CCP coordination reference to current `origin/main`
   `5f2ef665be4dc47fd354befcba53251a4e51744f`; the runbook forbids manual lock
   or lease quarantine and requires fresh host-wide admission checks.
+- Added separate unapproved EXP-002B and EXP-002C dossiers and a stage gate
+  that requires their frozen prerequisites plus a fresh Admit/inactive/queue-0
+  snapshot before material execution.
 
 - Completed the authorised EXP-002A baseline on all seven exact snapshots under
   CCP `origin/main` `104d48d`: Pythia, SmolLM2-360M, Qwen3, GPT-2,

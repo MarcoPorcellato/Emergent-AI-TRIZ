@@ -151,6 +151,8 @@ VALIDATION_PAIRS = (
     ("schemas/exp002-source-familiarity-plan.schema.json", "experiments/exp002-qwen3-followup/source-familiarity-plan.json"),
     ("schemas/exp002-source-proximity-manifest.schema.json", "experiments/exp002-qwen3-followup/source-proximity-manifest.json"),
     ("schemas/exp002-transfer-corpus.schema.json", "experiments/exp002-qwen3-followup/transfer-corpus-template.json"),
+    ("schemas/exp002-study-approval-dossier.schema.json", "experiments/exp002-qwen3-followup/exp002b-approval-dossier.json"),
+    ("schemas/exp002-study-approval-dossier.schema.json", "experiments/exp002-qwen3-followup/exp002c-approval-dossier.json"),
     ("schemas/exp002-direct-answer-key.schema.json", "results/exp002/preexecution/direct-answer-key-template.json"),
     ("schemas/exp002-execution-receipt.schema.json", "results/exp002/preexecution/execution-receipt-template.json"),
     ("schemas/exp002-statistical-result.schema.json", "results/exp002/preexecution/statistical-result-template.json"),

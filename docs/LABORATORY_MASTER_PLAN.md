@@ -79,7 +79,9 @@ pseudonymous reviewers plus an explicit disagreement policy) and the EXP-002C
 target-free corpus schema/validator. The public corpus template remains empty
 until independent authoring, source-proximity review, held-out/sealed-novel
 splits, and power calibration are complete; these gates do not authorize model
-or sealed-target access.
+or sealed-target access. Separate `approval_requested` dossiers for EXP-002B
+and EXP-002C bind the seven exact models and fixed resource envelope while
+remaining unapproved.
 
 ## Evidence boundary
 
