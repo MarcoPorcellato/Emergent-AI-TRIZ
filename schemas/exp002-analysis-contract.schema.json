@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-analysis-contract.schema.json",
+  "title": "EXP-002 analysis contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "contract_id", "status", "primary", "permutation", "terminal_states", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-analysis-contract"},
+    "contract_id": {"const": "exp002-analysis-v1.0.0"},
+    "status": {"const": "frozen_no_model"},
+    "primary": {"type": "object", "additionalProperties": false, "required": ["surface", "minimum_domains", "margin", "all_domains_positive"], "properties": {"surface": {"const": "label_free_candidate_description_scoring"}, "minimum_domains": {"const": 8}, "margin": {"const": 0.1}, "all_domains_positive": {"const": true}}},
+    "permutation": {"type": "object", "additionalProperties": false, "required": ["method", "alpha", "seed", "multiplicity"], "properties": {"method": {"const": "exact_domain_sign_flip"}, "alpha": {"const": 0.05}, "seed": {"const": 20260815}, "multiplicity": {"const": 1}}},
+    "terminal_states": {"type": "array", "minItems": 5, "items": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]}},
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}
