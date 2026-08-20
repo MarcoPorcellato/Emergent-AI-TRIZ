@@ -58,6 +58,12 @@ coverage, distinct reviewers, rationale hashes, and explicit attestations that
 neither models nor sealed targets were accessed. Empty packets are intentional;
 no expert decisions have been fabricated or inferred.
 
+The answer-key module now exposes a deterministic freeze function that accepts
+only three validated packets. Exact agreement is copied into the frozen key;
+disagreement is retained as `rubric_required`, and missing exact answers fail
+closed. No majority vote, model output, or sealed target can resolve a
+disagreement implicitly.
+
 The source-familiarity arm now has a separate locator-only fixture and
 validator. Its public records can carry only a logical prompt locator, a
 SHA-256, a source identifier, and an allowed exposure mode; source excerpts,
