@@ -2,6 +2,14 @@
 
 ## 2026-08-20
 
+- Completed the authorised EXP-002A baseline on all seven exact snapshots under
+  CCP `origin/main` `104d48d`: Pythia, SmolLM2-360M, Qwen3, GPT-2,
+  SmolLM2-135M, GPT-Neo, and Qwen2.5. All seven terminal outcomes are `null`,
+  with one analysis-boundary target read per model and no promoted claim.
+  Immutable packages and external response-score hashes are published in
+  `results/exp002/preexecution/publication-manifest.json` on branch
+  `exp002-qwen3-followup` through exact head `d3020b5`.
+
 - Created and published branch `exp002-qwen3-followup` for the Qwen3 outlier
   follow-up research plan. The no-model implementation is current through
   exact head `7b06136` (implementation commits are preserved in the branch
