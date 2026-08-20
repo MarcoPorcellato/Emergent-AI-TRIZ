@@ -36,17 +36,17 @@ class Exp002AnswerKeyTests(unittest.TestCase):
                     {"question_id": "q2", "key_type": "exact", "decision": "reviewed", "answer": second_answer, "rationale_sha256": "c" * 64},
                 ],
             }
-        agreed = freeze_answer_key_from_packets([packet("r1"), packet("r2"), packet("r3")], ["q1", "q2"], question_bank="public://question-bank", question_bank_sha256="a" * 64)
+        agreed = freeze_answer_key_from_packets([packet("r1"), packet("r2"), packet("r3")], ["q1", "q2"], question_bank="experiments/exp002-qwen3-followup/question-bank-manifest.json", question_bank_sha256="a" * 64)
         self.assertEqual(agreed["status"], "frozen")
         self.assertEqual(agreed["records"][0]["expected"], "Segmentation")
-        disagreed = freeze_answer_key_from_packets([packet("r1"), packet("r2", "Trimming"), packet("r3")], ["q1", "q2"], question_bank="public://question-bank", question_bank_sha256="a" * 64)
+        disagreed = freeze_answer_key_from_packets([packet("r1"), packet("r2", "Trimming"), packet("r3")], ["q1", "q2"], question_bank="experiments/exp002-qwen3-followup/question-bank-manifest.json", question_bank_sha256="a" * 64)
         self.assertEqual(disagreed["records"][1]["key_type"], "rubric_required")
 
     def test_freeze_rejects_missing_exact_answer(self):
         packet = {"artifact_class": "exp002-expert-review-packet", "reviewer_id": "r1", "question_bank_sha256": "a" * 64, "status": "submitted", "independence_attestation": True, "model_access": False, "sealed_target_access": False, "decisions": [{"question_id": "q1", "key_type": "exact", "decision": "reviewed", "rationale_sha256": "b" * 64}]}
         packets = [dict(packet, reviewer_id=reviewer) for reviewer in ("r1", "r2", "r3")]
         with self.assertRaises(Exp002AnswerKeyError):
-            freeze_answer_key_from_packets(packets, ["q1"], question_bank="public://question-bank", question_bank_sha256="a" * 64)
+            freeze_answer_key_from_packets(packets, ["q1"], question_bank="experiments/exp002-qwen3-followup/question-bank-manifest.json", question_bank_sha256="a" * 64)
 
 
 if __name__ == "__main__":

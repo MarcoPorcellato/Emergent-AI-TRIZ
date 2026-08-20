@@ -84,6 +84,10 @@ def freeze_answer_key_from_packets(
     A disagreement is preserved as ``rubric_required`` under the preregistered
     policy; it is never resolved by majority vote or by inspecting model data.
     """
+    if question_bank != "experiments/exp002-qwen3-followup/question-bank-manifest.json":
+        raise Exp002AnswerKeyError("answer key question-bank locator drift")
+    if len(set(question_ids)) != len(question_ids) or not question_ids:
+        raise Exp002AnswerKeyError("question IDs must be unique and non-empty")
     try:
         summary = validate_review_packets(packets, question_ids, question_bank_sha256=question_bank_sha256)
     except Exception as exc:
