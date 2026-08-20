@@ -2,7 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
-from latent_triz.exp002_execution import Exp002ExecutionError, authorize_material_run, score_injected_direct_questions, score_injected_surface
+from latent_triz.exp002_execution import Exp002ExecutionError, authorize_material_run, score_injected_candidate_descriptions, score_injected_direct_questions, score_injected_surface
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,6 +44,22 @@ class Exp002ExecutionTests(unittest.TestCase):
         rows = [{"question_id": "exp002-q1", "module": "foundational_concepts", "prompt": "What is a resource?"}]
         with self.assertRaises(Exp002ExecutionError):
             score_injected_direct_questions(rows, lambda row: {"prediction": "resource"})
+
+    def test_candidate_description_primary_is_label_free(self):
+        rows = [{"case_id": "exp002c-case-1", "candidate_descriptions": ["a", "bb", "ccc", "dddd"]}]
+        output = score_injected_candidate_descriptions(rows, len)
+        self.assertEqual(output[0]["candidate_scores"], [1.0, 2.0, 3.0, 4.0])
+        self.assertEqual(output[0]["condition"], "label_free_candidate_description_scoring")
+
+    def test_candidate_description_rejects_answer_material(self):
+        rows = [{"case_id": "exp002c-case-1", "candidate_descriptions": ["a", "b", "c", "d"], "target": "x"}]
+        with self.assertRaises(Exp002ExecutionError):
+            score_injected_candidate_descriptions(rows, len)
+
+    def test_candidate_description_rejects_non_primary_condition(self):
+        rows = [{"case_id": "exp002c-case-1", "condition": "original_abcd", "candidate_descriptions": ["a", "b", "c", "d"]}]
+        with self.assertRaises(Exp002ExecutionError):
+            score_injected_candidate_descriptions(rows, len)
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ import tempfile
 import time
 from typing import Any
 
-from .exp002_execution import Exp002ExecutionError, authorize_material_run, score_injected_direct_questions, score_injected_surface
+from .exp002_execution import Exp002ExecutionError, authorize_material_run, score_injected_candidate_descriptions, score_injected_direct_questions, score_injected_surface
 from .exp002_followup import EXPECTED_MODELS
 from .exp002_stage_gate import Exp002StageGateError, authorize_stage
 
@@ -156,6 +156,8 @@ def run_exp002_stage(
             permissions = dossier.get("permissions", dossier.get("permissions_requested", {}))
             allow_generation = isinstance(permissions, Mapping) and permissions.get("generation") is True
             scored = score_injected_direct_questions(public_rows, scorer, allow_generation=allow_generation)
+        elif study_id == "EXP-002C":
+            scored = score_injected_candidate_descriptions(public_rows, scorer)
         else:
             scored = score_injected_surface(public_rows, scorer)
         access["model_output_accessed"] = True
