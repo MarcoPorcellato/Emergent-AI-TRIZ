@@ -112,6 +112,12 @@ The separate EXP-002C transfer-target-key schema/template is tracked as
 `not_ready`; it contains no sealed answers or target-content hash until the
 independent corpus and expert labels are frozen.
 
+The no-model entry point `make exp002-stage-preflight` evaluates both material
+stage dossiers and exits before CCP, model construction, tokenizer access, or
+sealed-target access. Its current result is `approval_required` for both
+stages, which is an intentional terminal readiness state while the external
+review and corpus gates remain open.
+
 ### EXP-002A baseline result (2026-08-20)
 
 All seven exact models produced an exploratory `null` terminal result under the

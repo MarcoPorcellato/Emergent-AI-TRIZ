@@ -21,6 +21,9 @@
   Fresh EXP-002B/C preflight returns `approval_required` without model or
   sealed-target access because independent expert packets and the EXP-002C
   corpus/target key are still absent.
+- Added the `make exp002-stage-preflight` convenience target so both material
+  dossiers can be checked together before any CCP or model capability is
+  consulted.
 
 ---
 

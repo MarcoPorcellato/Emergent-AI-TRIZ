@@ -48,6 +48,7 @@
 
 ```sh
 make exp002-question-bank-audit
+make exp002-stage-preflight
 PYTHONPATH=src .venv/bin/python -m unittest tests.test_exp002_stage_cli
 PYTHONPATH=src .venv/bin/python -m unittest \
   tests.test_exp002_followup \
