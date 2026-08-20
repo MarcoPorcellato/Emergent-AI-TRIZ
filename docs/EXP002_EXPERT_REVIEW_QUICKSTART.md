@@ -57,7 +57,7 @@ public packet.
 4. For each item, write a private rationale, hash it with SHA-256, and record
    only the digest in the packet. Keep the private rationale outside the public
    repository unless the operator separately approves its disclosure.
-5. Run the packet validator locally before handoff. A packet with missing,
+5. Run the single-packet validator locally before handoff. A packet with missing,
    duplicate, or extra IDs must be corrected rather than silently repaired.
 6. Send the packet to the operator without sharing it with the other reviewers.
 
@@ -65,6 +65,7 @@ Useful no-model checks from the repository root:
 
 ```sh
 shasum -a 256 experiments/exp002-qwen3-followup/question-bank-manifest.json
+make exp002-review-packet-verify PACKET=/path/to/my-reviewer-packet.json
 PYTHONPATH=src .venv/bin/python scripts/exp002_freeze_answer_key.py \
   --packets /path/to/three-independent-packets.json \
   --output results/exp002/preexecution/direct-answer-key.json
