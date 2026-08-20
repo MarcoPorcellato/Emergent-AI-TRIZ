@@ -8,6 +8,19 @@
     "protocol_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "schedule_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "input_manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "material_bindings": {
+      "type": "object",
+      "required": ["runner_sha256", "adapter_sha256", "analysis_sha256", "sealed_key_schema_sha256", "model_registry_sha256", "public_key_template_sha256"],
+      "properties": {
+        "runner_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "adapter_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "analysis_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "sealed_key_schema_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "model_registry_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "public_key_template_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
     "status": {"enum": ["approval_requested", "authorized"]},
     "operator_approval": {"type": "object", "required": ["granted", "operator_id", "approval_text_sha256"], "properties": {"granted": {"type": "boolean"}, "operator_id": {"const": "MarcoPorcellato"}, "approval_text_sha256": {"type": ["null", "string"], "pattern": "^[a-f0-9]{64}$"}}, "additionalProperties": false},
     "exact_models": {"type": "array", "minItems": 7, "maxItems": 7},

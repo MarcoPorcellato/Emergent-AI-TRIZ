@@ -27,6 +27,7 @@ class Exp002AutoMaterialTests(unittest.TestCase):
             "protocol_sha256": self.protocol_sha, "schedule_sha256": self.schedule_sha,
             "input_manifest_sha256": self.manifest_sha, "status": "authorized", "claim_ids": [],
             "exact_models": models,
+            "material_bindings": {key: "e" * 64 for key in ("runner_sha256", "adapter_sha256", "analysis_sha256", "sealed_key_schema_sha256", "model_registry_sha256", "public_key_template_sha256")},
             "permissions": {"model_load": True, "network": False, "generation": False, "sealed_target_read": "exactly_one_at_analysis_boundary"},
             "limits": {"wall_time_seconds_per_shard": 1800, "peak_rss_bytes_per_shard": 8589934592, "new_score_output_bytes_per_model": 134217728},
             "operator_approval": {"granted": True, "operator_id": "MarcoPorcellato", "approval_text_sha256": "d" * 64},
