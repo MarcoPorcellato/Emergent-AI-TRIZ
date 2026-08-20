@@ -113,8 +113,16 @@ def main() -> int:
         raise AssertionError("EXP-002 approval dossier has unsupported execution state")
     publication = load("results/exp002/preexecution/publication-manifest.json")
     validate_schema("schemas/exp002-publication-manifest.schema.json", publication)
-    if publication["status"] != "not_ready" or publication["packages"]:
-        raise AssertionError("preexecution publication manifest crossed its boundary")
+    if publication["status"] == "not_ready":
+        if publication["packages"] or publication["external_dense_assets"]:
+            raise AssertionError("not_ready publication manifest contains packages or assets")
+    elif publication["status"] == "published":
+        if not publication["packages"] or not publication["external_dense_assets"]:
+            raise AssertionError("published publication manifest is empty")
+        if any(package.get("terminal_status") not in TERMINAL_STATUSES for package in publication["packages"]):
+            raise AssertionError("published package has an invalid terminal status")
+    else:
+        raise AssertionError("publication manifest has an unsupported status")
     receipt = load("results/exp002/preexecution/tokenizer-audit.json")
     validate_schema("schemas/exp002-tokenizer-audit-receipt.schema.json", receipt)
     if receipt["status"] != "not_started" or receipt["observations"]:
