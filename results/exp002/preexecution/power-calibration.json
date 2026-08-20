@@ -1,0 +1,20 @@
+{
+  "artifact_class": "exp002-power-calibration",
+  "calibration_id": "exp002c-power-v1.0.0",
+  "status": "pass",
+  "method": "all_domain_positive_binomial_power",
+  "minimum_domains": 8,
+  "target_power": 0.8,
+  "expected_positive_probability": 0.98,
+  "candidates": [
+    {"domain_count": 8, "positive_direction_probability": 0.98, "power": 0.8507630224896001, "meets_target": true},
+    {"domain_count": 10, "positive_direction_probability": 0.98, "power": 0.8170728068875467, "meets_target": true},
+    {"domain_count": 12, "positive_direction_probability": 0.98, "power": 0.7847167238868717, "meets_target": false}
+  ],
+  "selected_domain_count": 8,
+  "selected_power": 0.8507630224896001,
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}
