@@ -3,7 +3,7 @@
 ## Current checkpoint
 
 - Branch: `exp002-qwen3-followup`
-- Last implementation checkpoint: `d3020b5` (seven-model EXP-002A baseline published)
+- Last implementation checkpoint: `9cbe6f5` (seven-model EXP-002A baseline published)
 - Scientific state: exploratory, no claim IDs, no evidence promotion
 - Model access: one local CPU float32 pass per exact model, all terminal `null`
 - Generation/network: disabled for every pass
