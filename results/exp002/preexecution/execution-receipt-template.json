@@ -1,0 +1,14 @@
+{
+  "artifact_class": "exp002-execution-receipt",
+  "protocol_id": "exp002-qwen3-followup-v1.0.0",
+  "run_id": "exp002-preexecution-template",
+  "model_id": "Qwen/Qwen3-0.6B-Base",
+  "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "status": "not_started",
+  "execution": {"device": "cpu", "dtype": "float32", "network": false, "generation": false, "run_count": 0, "wall_seconds": 0, "peak_rss_bytes": 0, "new_dense_output_bytes": 0},
+  "access": {"model_loaded": false, "model_output_accessed": false, "sealed_target_accessed": false, "target_reads": 0},
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": []
+}
