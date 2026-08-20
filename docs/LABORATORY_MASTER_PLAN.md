@@ -64,15 +64,18 @@ base. Delivery uses an isolated worktree created from an exact verified commit.
 
 The new branch `exp002-qwen3-followup` publishes the no-model implementation
 of [`EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md`](./EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md)
-through exact head `7b06136`. The tranche contains a frozen seven-model
+through exact head `5a5c9ad`. The tranche contains a frozen seven-model
 protocol, tokenizer-audit gate, balanced and full label-permutation utilities,
 label-free scoring interface, source-familiarity and rights/proximity plans,
 an eight-task-per-principle direct TRIZ bank (351 target-free questions), exact
 sign-flip statistics, terminal-state and CCP authorization guards, restart
 handoff, and a preexecution publication manifest. All artifacts are exploratory
 and claim-free. No model/tokenizer, generation, network, CCP material run, or
-sealed target was accessed. Material EXP-002A/B/C execution remains pending a
-new operator approval bound to the exact dossier.
+sealed target was accessed. The exact seven-model dossier is now operator
+authorized (approval hash `0c5943ad5a7bf2c598511b8c3ecc29bd566f33140af59c8c6d788f2423483d67`).
+Material EXP-002A/B/C execution remains blocked by the live CCP coordinator,
+which currently reports an unsafe `quarantine` layout; no model or target may
+be accessed until a fresh Admit/inactive/empty gate is observed.
 
 ## Evidence boundary
 
