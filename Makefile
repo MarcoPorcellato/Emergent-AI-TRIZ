@@ -65,13 +65,13 @@ validate:
 	for path in schemas/case.schema.json schemas/study.schema.json schemas/run.schema.json schemas/dataset-registry.schema.json schemas/claim.schema.json schemas/triz-reference-registry.schema.json schemas/triz-principle-reference.schema.json schemas/triz-web-corpus.schema.json schemas/a0r2-sealed-execution-approval-dossier.schema.json schemas/a0r2-sealed-execution-authorization.schema.json data/registry.json data/triz-reference-sources.json data/triz-consulting-web-corpus.json experiments/a0r2-independent-model/sealed-execution-approval-dossier.json results/a0r2/preexecution/smollm2-360m-f8027fd0/sealed-execution-authorization.json experiments/000-template/manifest.json experiments/000-template/run.json; do python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "$$path" || (echo "latent-triz: $$path:0:0: invalid JSON"; exit 1); done
 
 docs-audit:
-	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) -m latent_triz.cli docs-audit --profile docs/okf-profile.toml --root . --as-of-date "$$( $(LAB01_PYTHON) -c 'from datetime import date; print(date.today().isoformat())')"
+	PYTHONPATH=$(PYTHONPATH) python3 -m latent_triz.cli docs-audit --profile docs/okf-profile.toml --root . --as-of-date "$$(python3 -c 'from datetime import date; print(date.today().isoformat())')"
 
 check:
-	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/repository_check.py
+	PYTHONPATH=$(PYTHONPATH) python3 scripts/repository_check.py
 
 schema-cross-validate:
-	PYTHONPATH=$(PYTHONPATH) $(LAB01_PYTHON) scripts/schema_cross_validate.py
+	PYTHONPATH=$(PYTHONPATH) python3 scripts/schema_cross_validate.py
 
 no-model-quickstart:
 	@echo "Latent-TRIZ no-model quickstart: synthetic dashboard, schemas, H1 packet, CV2, and Lab06 readiness"
