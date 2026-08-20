@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-sealed-key-access.schema.json",
+  "title": "EXP-002 sealed-key access receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "target_reads", "sealed_target_accessed"],
+  "properties": {"artifact_class": {"const": "exp002-sealed-key-access"}, "target_reads": {"type": "integer", "minimum": 0, "maximum": 1}, "sealed_target_accessed": {"type": "boolean"}},
+  "allOf": [{"if": {"properties": {"sealed_target_accessed": {"const": false}}}, "then": {"properties": {"target_reads": {"const": 0}}}}, {"if": {"properties": {"sealed_target_accessed": {"const": true}}}, "then": {"properties": {"target_reads": {"const": 1}}}}]
+}
