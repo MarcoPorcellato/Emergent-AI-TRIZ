@@ -22,6 +22,12 @@ def _dossier():
 def _stage_dossier():
     dossier = json.loads((ROOT / "experiments/exp002-qwen3-followup/exp002b-approval-dossier.json").read_text(encoding="utf-8"))
     dossier["status"] = "authorized"
+    dossier["prerequisites"] = {
+        "answer_key_status": "frozen",
+        "transfer_corpus_status": "not_applicable",
+        "source_proximity_status": "pass",
+        "power_calibration_status": "not_applicable",
+    }
     dossier["operator_approval"] = {"granted": True, "operator_id": "MarcoPorcellato", "approved_at": "2026-08-20", "approval_text_sha256": "a" * 64}
     return dossier
 
