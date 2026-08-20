@@ -18,6 +18,12 @@
     "scientific_status": {"const": "exploratory"},
     "claim_ids": {"type": "array", "maxItems": 0}
   },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"enum": ["submitted", "complete"]}}},
+      "then": {"properties": {"packets": {"minItems": 3}}}
+    }
+  ],
   "$defs": {
     "packet": {
       "type": "object",
@@ -45,7 +51,13 @@
         "answer": {},
         "unsupported": {"type": "boolean"},
         "rationale_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
-      }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"key_type": {"enum": ["exact", "abstention"]}}},
+          "then": {"required": ["answer"]}
+        }
+      ]
     }
   }
 }
