@@ -3,7 +3,7 @@
 ## Current checkpoint
 
 - Branch: `exp002-qwen3-followup`
-- Last implementation checkpoint: `8dd287f`
+- Last implementation checkpoint: `aade549` (runner and publication contracts)
 - Scientific state: exploratory, no claim IDs, no evidence promotion
 - Model/tokenizer access: not performed by the EXP-002 tranche
 - Generation/network/CCP material run: not performed
@@ -21,12 +21,16 @@
 - approval dossier in `authorized` state, bound to operator approval hash
   `0c5943ad5a7bf2c598511b8c3ecc29bd566f33140af59c8c6d788f2423483d67`;
 - empty preexecution publication manifest;
-- deterministic contract target: `make exp002-question-bank-audit`.
+- deterministic contract target: `make exp002-question-bank-audit`;
+- material entry point: `scripts/run_exp002_stage.py` (EXP-002A only); it
+  verifies the exact runtime receipt, sets the offline Transformers switches,
+  and delegates the one-shot target boundary to the injected runner.
 
 ## Safe resume commands
 
 ```sh
 make exp002-question-bank-audit
+PYTHONPATH=src .venv/bin/python -m unittest tests.test_exp002_stage_cli
 PYTHONPATH=src .venv/bin/python -m unittest \
   tests.test_exp002_followup \
   tests.test_exp002_surface_and_terminal \
@@ -38,6 +42,21 @@ These commands remain model-free. The dossier is now approved, but do not run
 a tokenizer, load a model, generate, or open a sealed key until the live CCP
 resource/admission gate is rechecked and reports Admit with an inactive empty
 queue. A coordinator-layout error is a hard stop; do not bypass it.
+
+After the live gate is available, provide a fresh JSON snapshot containing
+`decision: "admit"`, `active: false`, and `queue_count: 0` to the material
+entry point, for example:
+
+```sh
+PYTHONPATH=src .venv/bin/python scripts/run_exp002_stage.py \
+  --model-id 'Qwen/Qwen3-0.6B-Base' \
+  --run-id exp002-qwen3-0-6b-exp002a-1 \
+  --ccp-gate /path/to/fresh-ccp-gate.json
+```
+
+The command is one model per process and refuses to overwrite a package; the
+seven-model loop must invoke it once per exact identity only after the
+coordinator gate is independently rechecked.
 
 ## Next material gate
 
