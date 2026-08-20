@@ -14,8 +14,12 @@
     "permissions_requested": {"type": "object", "additionalProperties": false, "required": ["model_load", "generation", "network", "sealed_target_read", "ccp_material_run", "publish_every_terminal_outcome"], "properties": {"model_load": {"const": true}, "generation": {"const": false}, "network": {"const": false}, "sealed_target_read": {"const": "exactly_one_at_analysis_boundary"}, "ccp_material_run": {"const": true}, "publish_every_terminal_outcome": {"const": true}}},
     "limits": {"type": "object", "additionalProperties": false, "required": ["wall_time_seconds_per_model", "peak_rss_bytes_per_model", "new_dense_output_bytes_per_model"], "properties": {"wall_time_seconds_per_model": {"const": 1800}, "peak_rss_bytes_per_model": {"const": 8589934592}, "new_dense_output_bytes_per_model": {"const": 134217728}}},
     "prohibitions": {"type": "array", "minItems": 6, "items": {"type": "string", "minLength": 1}},
-    "operator_approval": {"type": "object", "additionalProperties": false, "required": ["granted", "operator_id", "approved_at", "approval_text_sha256"], "properties": {"granted": {"const": false}, "operator_id": {"const": "MarcoPorcellato"}, "approved_at": {"type": ["string", "null"]}, "approval_text_sha256": {"type": ["string", "null"]}}},
+    "operator_approval": {"type": "object", "additionalProperties": false, "required": ["granted", "operator_id", "approved_at", "approval_text_sha256"], "properties": {"granted": {"type": "boolean"}, "operator_id": {"const": "MarcoPorcellato"}, "approved_at": {"type": ["string", "null"]}, "approval_text_sha256": {"type": ["string", "null"]}}},
     "scientific_status": {"const": "exploratory"},
     "claim_ids": {"type": "array", "maxItems": 0}
-  }
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "authorized"}}}, "then": {"properties": {"operator_approval": {"properties": {"granted": {"const": true}, "approved_at": {"type": "string", "minLength": 1}, "approval_text_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}}}}},
+    {"if": {"properties": {"status": {"const": "approval_requested"}}}, "then": {"properties": {"operator_approval": {"properties": {"granted": {"const": false}}}}}}
+  ]
 }
