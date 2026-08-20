@@ -31,6 +31,7 @@
   ],
   "question_modules": {
     "principle_count": 40,
+    "principle_task_types": ["number_to_name", "name_to_operator", "operator_to_name", "real_vs_invented", "adjacent_discrimination", "example_to_principle", "short_example_generation", "insufficient_information"],
     "foundational_concepts": ["contradiction", "ideal_final_result", "resources", "separation_principles", "substance_field", "evolution_trends", "ariz", "nine_windows", "effects"],
     "matrix_direction_and_abstention": true,
     "panitz_supported_uncertain_and_abstention": true,

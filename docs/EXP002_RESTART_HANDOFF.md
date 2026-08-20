@@ -14,7 +14,7 @@
 - `docs/EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md`
 - frozen seven-model protocol and exact revisions;
 - tokenizer audit plan and `not_started` receipt;
-- 71-record direct TRIZ question bank with sealed answer locators;
+- 351-record direct TRIZ question bank with eight balanced task types per principle and sealed answer locators;
 - response-surface permutations and label-prior utilities;
 - transfer-corpus and statistical contracts;
 - fail-closed terminal-result and execution/CCP gates;

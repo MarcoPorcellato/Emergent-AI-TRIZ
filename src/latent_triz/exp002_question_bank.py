@@ -16,13 +16,24 @@ class Exp002QuestionBankError(ValueError):
 
 
 _MODULE_COUNTS = {
-    "principle_recognition": 40,
+    "principle_recognition": 320,
     "self_report_metadata": 4,
     "foundational_concepts": 9,
     "matrix": 6,
     "tool_relationship": 4,
     "false_concept_canary": 8,
 }
+
+_PRINCIPLE_TASK_TYPES = (
+    "number_to_name",
+    "name_to_operator",
+    "operator_to_name",
+    "real_vs_invented",
+    "adjacent_discrimination",
+    "example_to_principle",
+    "short_example_generation",
+    "insufficient_information",
+)
 
 
 def _text(value: Any, field: str) -> str:
@@ -39,6 +50,7 @@ def _record(
     role: str,
     mode: str = "structured_completion",
     exposure: str = "direct_query_only",
+    task_type: str = "generic",
 ) -> dict[str, Any]:
     if module not in _MODULE_COUNTS:
         raise Exp002QuestionBankError(f"unknown module: {module}")
@@ -46,6 +58,8 @@ def _record(
         raise Exp002QuestionBankError("question_id must use the exp002 namespace")
     if not source_ids or any(not isinstance(value, str) or not value for value in source_ids):
         raise Exp002QuestionBankError("source_ids must be non-empty strings")
+    if not isinstance(task_type, str) or not task_type:
+        raise Exp002QuestionBankError("task_type must be non-empty")
     return {
         "question_id": question_id,
         "module": module,
@@ -56,6 +70,7 @@ def _record(
         "answer_key_locator": f"sealed://exp002/direct-question/{question_id}",
         "expected_answer_present": False,
         "scientific_role": role,
+        "task_type": task_type,
     }
 
 
@@ -64,7 +79,7 @@ def build_question_bank(
     matrix_cells: Sequence[Mapping[str, Any]],
     tool_edges: Sequence[Mapping[str, Any]],
 ) -> list[dict[str, Any]]:
-    """Build the complete 71-record target-free direct-question inventory."""
+    """Build the complete target-free direct-question inventory."""
     if len(principles) != 40:
         raise Exp002QuestionBankError("exactly 40 principle records are required")
     numbers: list[int] = []
@@ -93,7 +108,7 @@ def build_question_bank(
         "Do you recognize the TRIZ tool relationship map used by this study? Answer yes, no, or uncertain.",
     )
     for index, prompt in enumerate(self_report, start=1):
-        records.append(_record(f"exp002-self-report-{index}", "self_report_metadata", prompt, ["triz-followup-self-report"], "familiarity_diagnostic", mode="bounded_completion"))
+        records.append(_record(f"exp002-self-report-{index}", "self_report_metadata", prompt, ["triz-followup-self-report"], "familiarity_diagnostic", mode="bounded_completion", task_type="self_report"))
 
     concept_prompts = (
         "What is a technical contradiction in TRIZ? Give a short source-backed definition.",
@@ -107,18 +122,36 @@ def build_question_bank(
         "What is the nine-windows/system-operator view?",
     )
     for index, prompt in enumerate(concept_prompts, start=1):
-        records.append(_record(f"exp002-foundation-{index}", "foundational_concepts", prompt, ["triz-reference-corpus"], "knowledge_endpoint", mode="bounded_completion"))
+        records.append(_record(f"exp002-foundation-{index}", "foundational_concepts", prompt, ["triz-reference-corpus"], "knowledge_endpoint", mode="bounded_completion", task_type="foundational_concept"))
 
-    for principle in principles:
+    for index, principle in enumerate(principles):
         number = int(principle["principle_number"])
-        records.append(_record(
-            f"exp002-principle-{number:02d}-recognition",
-            "principle_recognition",
-            f"Which established TRIZ Inventive Principle is identified by number {number}? Answer with its established English name and one short abstract operator, without quoting a source example.",
-            [str(principle["source_id"])],
-            "knowledge_endpoint",
-            mode="bounded_completion",
-        ))
+        name = _text(principle["canonical_name"], f"principle {number}/canonical_name")
+        operator = _text(principle["abstract_operator"], f"principle {number}/abstract_operator")
+        source = str(principle["source_id"])
+        next_principle = principles[(index + 1) % len(principles)]
+        next_number = int(next_principle["principle_number"])
+        next_name = _text(next_principle["canonical_name"], f"principle {next_number}/canonical_name")
+        prompts = (
+            ("number_to_name", f"Which established TRIZ Inventive Principle is identified by number {number}? Give its established English name and one short abstract operator, without quoting a source example.", "bounded_completion", "knowledge_endpoint"),
+            ("name_to_operator", f"For the established TRIZ Inventive Principle named {name}, state its abstract operator in one short sentence without quoting a source example.", "bounded_completion", "knowledge_endpoint"),
+            ("operator_to_name", f"Which established TRIZ Inventive Principle best matches this abstract operator: {operator} Give the established English name only.", "bounded_completion", "knowledge_endpoint"),
+            ("real_vs_invented", f"Which entry is established in the registered 40-principle inventory: {name}, or Invented Principle {number}: Recursive Equalization? Choose the established entry, or abstain if the evidence is insufficient.", "abstention", "calibration_control"),
+            ("adjacent_discrimination", f"Distinguish the established principles {number} ({name}) and {next_number} ({next_name}). State one abstract difference without quoting a source example.", "bounded_completion", "knowledge_endpoint"),
+            ("example_to_principle", f"A generic engineered design is changed so that it follows this independently authored transformation: {operator} Which established principle is the closest match? Do not use a canonical source example.", "bounded_completion", "knowledge_endpoint"),
+            ("short_example_generation", f"Give one short, independently authored engineering example of the abstract operator for {name}. Do not quote or paraphrase a canonical source example.", "bounded_completion", "knowledge_endpoint"),
+            ("insufficient_information", "An unspecified system has an unspecified problem and no observable transformation. Is there enough information to select one Inventive Principle? Abstain when it is insufficient.", "abstention", "calibration_control"),
+        )
+        for task_type, prompt, mode, role in prompts:
+            records.append(_record(
+                f"exp002-principle-{number:02d}-{task_type.replace('_', '-')}",
+                "principle_recognition",
+                prompt,
+                [source],
+                role,
+                mode=mode,
+                task_type=task_type,
+            ))
 
     for index, cell in enumerate(matrix_cells, start=1):
         cell_id = _text(cell.get("cell_id"), f"matrix {index}/cell_id")
@@ -133,6 +166,7 @@ def build_question_bank(
             f"For the ordered Matrix trade-off improve parameter {improving} while avoiding deterioration of parameter {worsening}, what is the verified recommendation set or correct abstention?",
             [source, cell_id],
             "knowledge_endpoint",
+            task_type="matrix_forward",
         ))
         records.append(_record(
             f"exp002-matrix-{index}-reverse",
@@ -140,6 +174,7 @@ def build_question_bank(
             f"Reverse the ordered Matrix trade-off: improve parameter {worsening} while avoiding deterioration of parameter {improving}. State whether the original recommendation set remains established, or abstain.",
             [source, cell_id],
             "knowledge_endpoint",
+            task_type="matrix_reverse",
         ))
 
     for index, edge in enumerate(tool_edges, start=1):
@@ -154,6 +189,7 @@ def build_question_bank(
             [source, edge_id],
             "source_familiarity_diagnostic",
             mode="abstention",
+            task_type="tool_edge_abstention",
         ))
 
     canaries = (
@@ -167,7 +203,7 @@ def build_question_bank(
         "Is every plausible combination of two Inventive Principles itself an official principle? Abstain if unsupported.",
     )
     for index, prompt in enumerate(canaries, start=1):
-        records.append(_record(f"exp002-canary-{index}", "false_concept_canary", prompt, ["triz-followup-canary-controls"], "calibration_control", mode="abstention", exposure="source_blinded_control"))
+        records.append(_record(f"exp002-canary-{index}", "false_concept_canary", prompt, ["triz-followup-canary-controls"], "calibration_control", mode="abstention", exposure="source_blinded_control", task_type="false_concept_canary"))
 
     validate_question_bank(records)
     return records
@@ -176,7 +212,7 @@ def build_question_bank(
 def validate_question_bank(records: Sequence[Mapping[str, Any]]) -> None:
     """Fail closed on missing modules, duplicate IDs, or leaked answer keys."""
     if len(records) != sum(_MODULE_COUNTS.values()):
-        raise Exp002QuestionBankError("question bank must contain exactly 71 records")
+        raise Exp002QuestionBankError(f"question bank must contain exactly {sum(_MODULE_COUNTS.values())} records")
     seen: set[str] = set()
     counts = {module: 0 for module in _MODULE_COUNTS}
     for record in records:
@@ -196,6 +232,8 @@ def validate_question_bank(records: Sequence[Mapping[str, Any]]) -> None:
             raise Exp002QuestionBankError(f"answer key locator is not sealed: {question_id}")
         if "expected_answer" in record or "correct_choice" in record:
             raise Exp002QuestionBankError(f"answer field leaked in public question: {question_id}")
+        if not isinstance(record.get("task_type"), str) or not record["task_type"]:
+            raise Exp002QuestionBankError(f"task type missing: {question_id}")
     if counts != _MODULE_COUNTS:
         raise Exp002QuestionBankError(f"question module counts drift: {counts}")
 

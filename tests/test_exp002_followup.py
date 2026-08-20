@@ -37,9 +37,10 @@ class Exp002FollowupTests(unittest.TestCase):
             [json.loads(line) for line in (ROOT / "experiments/exp001-reference-integrated/fixtures/matrix-cells.jsonl").read_text(encoding="utf-8").splitlines() if line],
             [json.loads(line) for line in (ROOT / "experiments/exp001-reference-integrated/fixtures/tool-edges.jsonl").read_text(encoding="utf-8").splitlines() if line],
         )
-        self.assertEqual(len(records), 71)
+        self.assertEqual(len(records), 351)
         validate_question_bank(records)
         self.assertTrue(all(record["expected_answer_present"] is False for record in records))
+        self.assertEqual({record["task_type"] for record in records if record["module"] == "principle_recognition"}, {"number_to_name", "name_to_operator", "operator_to_name", "real_vs_invented", "adjacent_discrimination", "example_to_principle", "short_example_generation", "insufficient_information"})
 
         leaked = json.loads(json.dumps(records))
         leaked[0]["expected_answer"] = "Segmentation"
