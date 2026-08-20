@@ -1,5 +1,25 @@
 ---
 
+## 2026-08-20
+
+- Created and published branch `exp002-qwen3-followup` for the Qwen3 outlier
+  follow-up research plan. The no-model implementation is current through
+  exact head `006e3c8` (implementation commits are preserved in the branch
+  history).
+- Added the frozen seven-model protocol, tokenizer-audit receipt in
+  `not_started` state, response-surface permutations and label-prior
+  diagnostics, source-familiarity and rights/proximity plans, transfer-corpus
+  and exact sign-flip analysis contracts, fail-closed terminal and CCP guards,
+  restart handoff, and preexecution publication manifest.
+- Expanded the direct TRIZ bank to 351 target-free questions: eight balanced
+  task types for each of the 40 principles plus self-report, foundational,
+  Matrix-direction, Panitz-edge, and false-concept controls. Public records
+  contain no answer keys; locators remain sealed.
+- Contract audit and 16 focused synthetic tests passed. No model/tokenizer,
+  network, generation, CCP material run, or sealed target was accessed. The
+  next material step remains a fresh operator approval bound to the exact
+  dossier; no result or TRIZ claim is promoted.
+
 ## 2026-08-19
 
 - Merged the final two-model publication checkpoints: GPT-Neo PR #96 at

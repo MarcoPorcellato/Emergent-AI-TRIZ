@@ -3,7 +3,7 @@ type: master-plan
 title: Laboratory Master Plan
 description: Canonical evolution ledger and gated route from the verified laboratory foundation to falsifiable, reproducible Latent TRIZ experiments.
 status: canonical
-last_verified: 2026-08-19
+last_verified: 2026-08-20
 ---
 
 # Laboratory Master Plan
@@ -59,6 +59,20 @@ read together with its protocol, receipt, and external-asset verifier.
 
 The checkout used for unrelated local work is not an authoritative integration
 base. Delivery uses an isolated worktree created from an exact verified commit.
+
+### EXP-002 Qwen3 follow-up implementation checkpoint (2026-08-20)
+
+The new branch `exp002-qwen3-followup` publishes the no-model implementation
+of [`EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md`](./EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md)
+through exact head `006e3c8`. The tranche contains a frozen seven-model
+protocol, tokenizer-audit gate, balanced and full label-permutation utilities,
+label-free scoring interface, source-familiarity and rights/proximity plans,
+an eight-task-per-principle direct TRIZ bank (351 target-free questions), exact
+sign-flip statistics, terminal-state and CCP authorization guards, restart
+handoff, and a preexecution publication manifest. All artifacts are exploratory
+and claim-free. No model/tokenizer, generation, network, CCP material run, or
+sealed target was accessed. Material EXP-002A/B/C execution remains pending a
+new operator approval bound to the exact dossier.
 
 ## Evidence boundary
 
