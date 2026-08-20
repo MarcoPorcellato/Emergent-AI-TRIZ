@@ -1,0 +1,19 @@
+{
+  "artifact_class": "exp002-transfer-corpus",
+  "corpus_id": "exp002-transfer-corpus-v1.0.0",
+  "status": "design_ready_no_model",
+  "minimum_domains": 8,
+  "preferred_domains": 12,
+  "records": [],
+  "freeze_requirements": {
+    "no_exp001_reuse": true,
+    "no_primary_triz_cues": true,
+    "separate_expert_and_generator": true,
+    "source_proximity_pass": true,
+    "power_calibration_before_model": true
+  },
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}

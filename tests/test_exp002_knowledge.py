@@ -13,6 +13,8 @@ class Exp002KnowledgeTests(unittest.TestCase):
         result = evaluate_direct_questions(outcomes, {"q1": "Segmentation", "q2": "yes", "q3": "unsupported"})
         self.assertEqual(result["modules"]["self_report_metadata"]["scored_count"], 0)
         self.assertEqual(result["modules"]["principle_recognition"]["accuracy"], 1.0)
+        self.assertEqual(result["modules"]["principle_recognition"]["exact_precision"], 1.0)
+        self.assertEqual(result["modules"]["false_concept_canary"]["abstention_recall"], 1.0)
         self.assertTrue(result["self_report_is_non_evidential"])
 
     def test_source_contrast_requires_paired_conditions(self):
@@ -31,6 +33,7 @@ class Exp002KnowledgeTests(unittest.TestCase):
             {"q1": {"answer": "unsupported", "unsupported": True}, "q2": {"answer": "unsupported", "unsupported": True}},
         )
         self.assertEqual(result["modules"]["false_concept_canary"]["unsupported_claim_count"], 1)
+        self.assertEqual(result["modules"]["false_concept_canary"]["unsupported_false_accept_rate"], 0.5)
 
 
 if __name__ == "__main__":
