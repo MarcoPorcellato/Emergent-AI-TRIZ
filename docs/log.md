@@ -33,6 +33,9 @@ last_verified: 2026-08-20
 - Added `make exp002-review-packet-verify PACKET=...`, a single-packet audit
   that checks all 351 IDs, rationale hashes, answer presence, and the
   no-model/no-target boundary before a reviewer submits their packet.
+- Added the EXP-002C transfer-corpus author quickstart, documenting the
+  eight-domain minimum, independent source/proximity audit, required controls,
+  and the rule that the sealed target key stays `not_ready` until review.
 
 ---
 
