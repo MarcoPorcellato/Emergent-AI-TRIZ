@@ -94,3 +94,20 @@ files, counters, ownership markers, or the admission root. The installed
 CCP/runtime gate, not evidence that the slot is idle. Preserve the state and
 do not start a material model run until an exact current CCP installation or
 maintainer-approved repair yields a readable Admit/inactive/queue-0 snapshot.
+
+## Independent review handoff
+
+The next human contribution is three independent packets for
+`experiments/exp002-qwen3-followup/expert-review-collection.json`. Each packet
+must use a distinct pseudonymous reviewer identifier, bind the exact
+question-bank SHA-256, cover all `351` question IDs exactly once, and provide a
+SHA-256 for each rationale. Reviewers may classify a question as `exact`,
+`abstention`, `rubric_required`, or `non_evidential`, but must not see model
+outputs or sealed targets. Each packet must attest
+`model_access=false`, `sealed_target_access=false`, and independent review.
+
+Do not fill the empty collection with guessed answers, synthetic reviewer
+names, or copied source text. Once all three real packets are supplied, run
+the expert-review validator, resolve disagreements under the frozen policy,
+then replace the answer-key dossier status with a separately hashed frozen
+artifact. Only that reviewed artifact can advance EXP-002B authorization.
