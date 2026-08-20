@@ -12,10 +12,11 @@ from exp002_publication_verify import PublicationVerificationError, verify_publi
 
 
 class Exp002PublicationVerifyTests(unittest.TestCase):
-    def test_preexecution_manifest_passes(self):
+    def test_published_manifest_passes(self):
         result = verify_publication_manifest("results/exp002/preexecution/publication-manifest.json", root=ROOT)
         self.assertEqual(result["status"], "pass")
-        self.assertEqual(result["packages"], 0)
+        self.assertEqual(result["packages"], 7)
+        self.assertEqual(len(result["verified_external_assets"]), 7)
 
     def test_missing_and_mutated_external_assets_fail_closed(self):
         with tempfile.TemporaryDirectory() as directory:
