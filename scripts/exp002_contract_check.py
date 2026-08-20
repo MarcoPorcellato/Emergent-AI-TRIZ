@@ -85,6 +85,10 @@ def main() -> int:
     validate_schema("schemas/exp002-transfer-corpus.schema.json", transfer_corpus)
     if transfer_corpus["status"] != "design_ready_no_model" or transfer_corpus["records"]:
         raise AssertionError("EXP-002C public template must remain design-only and empty")
+    target_key = load("experiments/exp002-qwen3-followup/transfer-target-key-template.json")
+    validate_schema("schemas/exp002-transfer-target-key.schema.json", target_key)
+    if target_key["status"] != "not_ready" or target_key["records"] or target_key["target_content_sha256"] is not None:
+        raise AssertionError("EXP-002C transfer target-key template must remain empty and no-model")
     for stage_id, dossier_path in (
         ("EXP-002B", "experiments/exp002-qwen3-followup/exp002b-approval-dossier.json"),
         ("EXP-002C", "experiments/exp002-qwen3-followup/exp002c-approval-dossier.json"),
