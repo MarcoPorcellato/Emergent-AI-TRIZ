@@ -78,6 +78,10 @@ def main() -> int:
     validate_schema("schemas/exp002-transfer-corpus-plan.schema.json", transfer_plan)
     analysis_contract = load("experiments/exp002-qwen3-followup/analysis-contract.json")
     validate_schema("schemas/exp002-analysis-contract.schema.json", analysis_contract)
+    source_plan = load("experiments/exp002-qwen3-followup/source-familiarity-plan.json")
+    validate_schema("schemas/exp002-source-familiarity-plan.schema.json", source_plan)
+    source_manifest = load("experiments/exp002-qwen3-followup/source-proximity-manifest.json")
+    validate_schema("schemas/exp002-source-proximity-manifest.schema.json", source_manifest)
     approval = load("experiments/exp002-qwen3-followup/approval-dossier.json")
     validate_schema("schemas/exp002-approval-dossier.schema.json", approval)
     if approval["status"] != "approval_requested" or approval["operator_approval"]["granted"] is not False:

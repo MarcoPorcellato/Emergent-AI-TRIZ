@@ -1,0 +1,12 @@
+{
+  "artifact_class": "exp002-source-familiarity-plan",
+  "plan_id": "exp002-source-familiarity-v1.0.0",
+  "status": "ready_no_model",
+  "conditions": ["canonical_short_phrase", "independent_paraphrase", "matched_non_triz_lexical_control", "nonce_relation_edit", "source_attribution_with_unknown"],
+  "metrics": ["normalized_continuation_likelihood", "attribution_accuracy", "exact_phrase_completion", "paraphrase_stability", "nonce_edit_rejection", "unsupported_claim_rate"],
+  "interpretation_boundary": "behavioural_source_familiarity_is_not_training_membership",
+  "model_access": false,
+  "sealed_target_access": false,
+  "scientific_status": "exploratory",
+  "claim_ids": []
+}

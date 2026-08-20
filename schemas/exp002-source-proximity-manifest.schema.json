@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-source-proximity-manifest.schema.json",
+  "title": "EXP-002 source and rights proximity manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "manifest_id", "status", "sources", "canonical_excerpts_in_blinded_primary", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-source-proximity-manifest"},
+    "manifest_id": {"const": "exp002-source-proximity-v1.0.0"},
+    "status": {"const": "ready_no_model"},
+    "sources": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "object", "additionalProperties": false, "required": ["source_id", "registry_path", "rights_status", "allowed_exposure_modes", "public_bank_uses"], "properties": {"source_id": {"type": "string", "pattern": "^triz-ref-"}, "registry_path": {"const": "data/triz-reference-sources.json"}, "rights_status": {"type": "string", "minLength": 1}, "allowed_exposure_modes": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "public_bank_uses": {"type": "array", "items": {"type": "string"}}}}},
+    "canonical_excerpts_in_blinded_primary": {"const": false},
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}

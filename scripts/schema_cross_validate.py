@@ -148,6 +148,8 @@ VALIDATION_PAIRS = (
     ("schemas/exp002-approval-dossier.schema.json", "experiments/exp002-qwen3-followup/approval-dossier.json"),
     ("schemas/exp002-publication-manifest.schema.json", "results/exp002/preexecution/publication-manifest.json"),
     ("schemas/exp002-analysis-contract.schema.json", "experiments/exp002-qwen3-followup/analysis-contract.json"),
+    ("schemas/exp002-source-familiarity-plan.schema.json", "experiments/exp002-qwen3-followup/source-familiarity-plan.json"),
+    ("schemas/exp002-source-proximity-manifest.schema.json", "experiments/exp002-qwen3-followup/source-proximity-manifest.json"),
 )
 
 
