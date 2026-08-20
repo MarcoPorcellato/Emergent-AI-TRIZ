@@ -4,6 +4,12 @@
   "status": "published",
   "packages": [
     {
+      "model_id": "EleutherAI/pythia-70m-deduped",
+      "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+      "terminal_status": "null",
+      "package_locator": "results/exp002/eleutherai-pythia-70m-deduped/exp002-pythia-70m-exp002a-20260820-01"
+    },
+    {
       "model_id": "Qwen/Qwen3-0.6B-Base",
       "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
       "terminal_status": "null",
@@ -11,6 +17,10 @@
     }
   ],
   "external_dense_assets": [
+    {
+      "locator": "artifacts/exp002/eleutherai-pythia-70m-deduped/exp002-pythia-70m-exp002a-20260820-01/response-scores.json",
+      "sha256": "faabce06464a904dddeea74089d2e45d717e889f892eda113ef3918b1030ec47"
+    },
     {
       "locator": "artifacts/exp002/qwen-qwen3-0-6b-base/exp002-qwen3-0-6b-exp002a-20260820-01/response-scores.json",
       "sha256": "1a519c36ef749140a5710c41908b46f3bac4a612efc9cee7e67aeef9a121592b"
