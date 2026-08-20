@@ -1,4 +1,10 @@
 ---
+type: chronology
+title: Laboratory chronology
+description: Event-by-event record of the Latent-TRIZ laboratory.
+status: canonical
+last_verified: 2026-08-20
+---
 
 ## 2026-08-20 — EXP-002 no-model checkpoint
 

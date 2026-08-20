@@ -60,6 +60,9 @@ coverage, distinct reviewers, rationale hashes, conditional exact-answer fields,
 and explicit attestations that
 neither models nor sealed targets were accessed. Empty packets are intentional;
 no expert decisions have been fabricated or inferred.
+Reviewers can follow the no-model handoff in
+[`EXP002_EXPERT_REVIEW_QUICKSTART.md`](./EXP002_EXPERT_REVIEW_QUICKSTART.md);
+the guide contains no answer key, target content, or model output.
 
 The answer-key module now exposes a deterministic freeze function that accepts
 only three validated packets. Exact agreement is copied into the frozen key;

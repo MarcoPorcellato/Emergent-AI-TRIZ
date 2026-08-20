@@ -110,6 +110,8 @@ SHA-256 for each rationale. Reviewers may classify a question as `exact`,
 `abstention`, `rubric_required`, or `non_evidential`, but must not see model
 outputs or sealed targets. Each packet must attest
 `model_access=false`, `sealed_target_access=false`, and independent review.
+The detailed no-model handoff is documented in
+[`EXP002_EXPERT_REVIEW_QUICKSTART.md`](./EXP002_EXPERT_REVIEW_QUICKSTART.md).
 
 Do not fill the empty collection with guessed answers, synthetic reviewer
 names, or copied source text. Once all three real packets are supplied, run
