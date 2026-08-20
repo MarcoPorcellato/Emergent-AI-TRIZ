@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-expert-review-collection.schema.json",
+  "title": "EXP-002 independent expert review collection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "collection_id", "status", "question_bank", "question_bank_sha256", "required_reviewers", "packets", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-expert-review-collection"},
+    "collection_id": {"const": "exp002-expert-review-v1.0.0"},
+    "status": {"enum": ["ready_for_collection", "submitted", "complete"]},
+    "question_bank": {"const": "experiments/exp002-qwen3-followup/question-bank-manifest.json"},
+    "question_bank_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "required_reviewers": {"const": 3},
+    "packets": {"type": "array", "items": {"type": "object"}},
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  }
+}
