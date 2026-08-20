@@ -8,7 +8,7 @@
   with one analysis-boundary target read per model and no promoted claim.
   Immutable packages and external response-score hashes are published in
   `results/exp002/preexecution/publication-manifest.json` on branch
-  `exp002-qwen3-followup` through exact head `d3020b5`.
+  `exp002-qwen3-followup` through exact head `9cbe6f5`.
 
 - Created and published branch `exp002-qwen3-followup` for the Qwen3 outlier
   follow-up research plan. The no-model implementation is current through
