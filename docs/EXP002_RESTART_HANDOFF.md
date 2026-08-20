@@ -111,3 +111,5 @@ names, or copied source text. Once all three real packets are supplied, run
 the expert-review validator, resolve disagreements under the frozen policy,
 then replace the answer-key dossier status with a separately hashed frozen
 artifact. Only that reviewed artifact can advance EXP-002B authorization.
+The repository now provides `freeze_answer_key_from_packets` for this step;
+its output remains exploratory and claim-free.
