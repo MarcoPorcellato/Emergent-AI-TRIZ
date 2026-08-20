@@ -2,7 +2,7 @@
 type: research-specification
 title: EXP-002-AUTO pre-expert automated evidence campaign
 description: Independent, fully automated exploratory campaign for seven frozen models; it measures response-surface robustness and explicit procedural proxies without substituting for TRIZ expert validation.
-status: no_model_contract_and_material_boundary_implemented
+status: final_dossier_approval_pending
 version: 0.1.0
 last_verified: 2026-08-20
 ---
