@@ -1,5 +1,6 @@
 import hashlib
 import json
+import shutil
 import tempfile
 import unittest
 from pathlib import Path
@@ -39,18 +40,23 @@ class Exp002PublicationVerifyTests(unittest.TestCase):
                 verify_publication_manifest(path, root=root)
 
     def test_missing_or_mutated_package_binding_fails_closed(self):
-        manifest_path = ROOT / "results/exp002/preexecution/publication-manifest.json"
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        package = manifest["packages"][0]
-        package_path = ROOT / package["package_locator"]
-        artifact = package_path / "report.md"
-        original = artifact.read_bytes()
-        try:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "schemas").mkdir()
+            (root / "results/exp002/preexecution").mkdir(parents=True)
+            shutil.copy2(ROOT / "schemas/exp002-publication-manifest.schema.json", root / "schemas/exp002-publication-manifest.schema.json")
+            manifest_path = root / "results/exp002/preexecution/publication-manifest.json"
+            shutil.copy2(ROOT / "results/exp002/preexecution/publication-manifest.json", manifest_path)
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            package = manifest["packages"][0]
+            source_package = ROOT / package["package_locator"]
+            package_path = root / package["package_locator"]
+            shutil.copytree(source_package, package_path)
+            artifact = package_path / "report.md"
+            original = artifact.read_bytes()
             artifact.write_bytes(original + b"\nmutation")
             with self.assertRaises(PublicationVerificationError):
-                verify_publication_manifest(manifest_path, root=ROOT)
-        finally:
-            artifact.write_bytes(original)
+                verify_publication_manifest(manifest_path, root=root)
 
 
 if __name__ == "__main__":
