@@ -140,3 +140,14 @@ per-record cyclic/permutation coverage and reports agreement/invariance rates
 before assigning `measurement_robust` or `measurement_artifact_supported`.
 Source-familiarity metrics use the same injected-observation boundary and are
 descriptive only; they never become a provenance claim.
+
+Before requesting a material run, execute the stage preflight:
+
+```sh
+PYTHONPATH=src .venv/bin/python scripts/exp002_stage_preflight.py --stage EXP-002B
+PYTHONPATH=src .venv/bin/python scripts/exp002_stage_preflight.py --stage EXP-002C
+```
+
+The current dossiers intentionally return `approval_required`; no CCP or
+model capability is consulted until the relevant answer key/corpus and
+operator authorization exist.
