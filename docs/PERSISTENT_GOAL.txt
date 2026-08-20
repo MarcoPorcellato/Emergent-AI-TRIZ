@@ -7,7 +7,8 @@ the seven-model EXP-002A baseline is published with terminal `null` packages.
 The exact seven-model material dossier is operator-authorized at approval hash
 `0c5943ad5a7bf2c598511b8c3ecc29bd566f33140af59c8c6d788f2423483d67`.
 The CCP `origin/main` runbook
-`104d48d014c0546440090cf54c15a703cbc6b84e` was used with an isolated exact
+`5f2ef665be4dc47fd354befcba53251a4e51744f` is the current coordination
+contract; the prior baseline used an isolated exact
 binary; all seven runs had Admit/inactive/queue-0 preflights and clean
 post-run handoffs. The installed older binary remains stale and must not be
 used for future material work. The next objective is to freeze and execute the

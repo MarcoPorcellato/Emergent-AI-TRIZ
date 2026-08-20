@@ -125,7 +125,7 @@ Plan](./LABORATORY_MASTER_PLAN.md) for dependencies and exit evidence, and the
 [Hypotheses and Falsification](./HYPOTHESES_AND_FALSIFICATION.md) contract for
 the normative interpretation rules.
 The current CCP coordination runbook is `commit-ci-preflight` `origin/main`
-`104d48d`: admission is host-wide and manual lock/lease quarantine is
+`5f2ef66`: admission is host-wide and manual lock/lease quarantine is
 unsupported. The installed CCP preflight is currently fail-closed with an
 unsafe `.../quarantine` layout and an unreadable OrbStack Docker API; no
 material EXP-002 execution is permitted until the CCP owner restores a

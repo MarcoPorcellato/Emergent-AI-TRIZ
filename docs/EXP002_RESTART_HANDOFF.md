@@ -67,7 +67,7 @@ inactive with an empty queue. No baseline model may be rerun.
 
 ## CCP coordination diagnosis (2026-08-20)
 
-The current CCP `origin/main` runbook is pinned to commit `104d48d` in the
+The current CCP `origin/main` runbook is pinned to commit `5f2ef66` in the
 separate `commit-ci-preflight` repository. It makes the admission root and OS
 locks host-wide, requires a fresh resource/admission/runtime preflight, and
 explicitly forbids manual quarantine or deletion of locks, leases, ticket

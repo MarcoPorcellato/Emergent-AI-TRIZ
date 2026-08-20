@@ -21,7 +21,7 @@ corpus arms remain pending; this baseline does not retroactively satisfy those
 arms.
 
 The CCP `origin/main` coordination runbook is pinned to
-`104d48d014c0546440090cf54c15a703cbc6b84e`. Its exact binary was built in an
+`5f2ef665be4dc47fd354befcba53251a4e51744f`. Its exact binary was built in an
 isolated temporary checkout because the installed binary was stale. Each run
 was admitted with inactive/empty admission and a responsive empty runtime;
 post-run handoffs returned the slot to `free`. Manual lock or quarantine
