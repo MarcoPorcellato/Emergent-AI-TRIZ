@@ -63,7 +63,10 @@ local-only, no generation, and one sealed-target read at analysis. Every
 terminal outcome is `null`; no claim is promoted. The aggregate manifest is
 `results/exp002/preexecution/publication-manifest.json`. Label-permutation and
 tokenizer diagnostics, direct TRIZ knowledge/source-familiarity scoring, and
-the independently authored EXP-002C corpus remain separate pending stages.
+the independently authored EXP-002C corpus remain separate pending stages. The
+no-model tranche now includes the three-reviewer answer-key gate and a
+fail-closed EXP-002C corpus validator/template; neither authorizes a model load
+or sealed-target read.
 
 ## Published model-backed record
 

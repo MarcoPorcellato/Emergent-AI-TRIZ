@@ -3,7 +3,7 @@
 ## Current checkpoint
 
 - Branch: `exp002-qwen3-followup`
-- Last implementation checkpoint: `9cbe6f5` (seven-model EXP-002A baseline published)
+- Last implementation checkpoint: `278dcf2` (EXP-002B/C no-model gates published)
 - Scientific state: exploratory, no claim IDs, no evidence promotion
 - Model access: one local CPU float32 pass per exact model, all terminal `null`
 - Generation/network: disabled for every pass
@@ -17,6 +17,11 @@
 - 351-record direct TRIZ question bank with eight balanced task types per principle and sealed answer locators;
 - response-surface permutations and label-prior utilities;
 - transfer-corpus and statistical contracts;
+- EXP-002C target-free corpus template plus validator that rejects source/TRIZ
+  leakage, EXP-001 reuse, duplicate fingerprints, and merged expert/generator
+  locators;
+- direct-answer key gate requiring three pseudonymous reviewers and a frozen
+  disagreement policy;
 - fail-closed terminal-result and execution/CCP gates;
 - approval dossier in `authorized` state, bound to operator approval hash
   `0c5943ad5a7bf2c598511b8c3ecc29bd566f33140af59c8c6d788f2423483d67`;
@@ -40,7 +45,8 @@ PYTHONPATH=src .venv/bin/python -m unittest \
 
 These commands remain model-free. The EXP-002A baseline is complete, but do not
 rerun any model or reopen the target key. The next work is the separately
-frozen response-surface/tokenizer diagnostics and EXP-002B answer-key gate.
+frozen response-surface/tokenizer diagnostics, expert answer-key review, and
+independent EXP-002C authoring.
 
 After the live gate is available, provide a fresh JSON snapshot containing
 `decision: "admit"`, `active: false`, and `queue_count: 0` to the material
