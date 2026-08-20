@@ -2,7 +2,7 @@
 type: research-plan
 title: Qwen3 Outlier Follow-up Research and Test Plan
 description: Staged preregistration plan for separating label bias, declarative TRIZ knowledge, source familiarity, and blinded transfer.
-status: implementation_no_model_complete_operator_approved_ccp_blocked
+status: exp002a_baseline_complete_exp002bcd_pending
 version: 0.1.0
 last_verified: 2026-08-20
 ---
@@ -11,22 +11,42 @@ last_verified: 2026-08-20
 
 ## Current implementation checkpoint
 
-The no-model tranche is implemented on branch `exp002-qwen3-followup` and is
-verified by `make exp002-question-bank-audit`. The operator has now approved
-the exact seven-model dossier, CPU float32/local-only limits, one run per
-model, one sealed-target read at the analysis boundary, and publication of
-every terminal state. Material execution remains blocked until the live CCP
-gate reports `decision=admit`, `admission_active=false`, and `queue_count=0`.
-No model, tokenizer, generation, network, CCP material run, or sealed target
-has been accessed by this tranche.
+The no-model tranche and the guarded EXP-002A baseline runner are implemented
+on branch `exp002-qwen3-followup`. The operator-approved seven-model dossier
+was executed once per exact snapshot under the current CCP `origin/main`
+binary. Every baseline package is terminal `null`, claim-free, and published
+with one analysis-boundary target read. EXP-002A's label-permutation,
+label-free, tokenizer-audit, direct-knowledge, source-familiarity, and new
+corpus arms remain pending; this baseline does not retroactively satisfy those
+arms.
 
-The CCP `origin/main` coordination runbook is pinned to `104d48d` and is
-normative for this gate. It treats admission as host-wide, requires a fresh
-runtime check, and forbids manual deletion or quarantine of locks, leases,
-tickets, counters, ownership markers, or the admission root. The installed
-CCP currently fails closed with an unsafe `.../quarantine` layout and the
-OrbStack Docker API is not readable from this activity; this must be resolved
-by the CCP/runtime owner before any model or target access.
+The CCP `origin/main` coordination runbook is pinned to
+`104d48d014c0546440090cf54c15a703cbc6b84e`. Its exact binary was built in an
+isolated temporary checkout because the installed binary was stale. Each run
+was admitted with inactive/empty admission and a responsive empty runtime;
+post-run handoffs returned the slot to `free`. Manual lock or quarantine
+mutation was never used.
+
+### EXP-002A baseline result (2026-08-20)
+
+All seven exact models produced an exploratory `null` terminal result under the
+original 85-record A/B/C/D surface. The packages and dense-asset hashes are
+bound by `results/exp002/preexecution/publication-manifest.json`.
+
+| Model | Wall s | Peak RSS | Dense bytes | Terminal |
+| --- | ---: | ---: | ---: | --- |
+| Pythia-70M | 312.35 | 1,823,506,432 | 15,798 | null |
+| SmolLM2-360M | 367.48 | 3,011,559,424 | 15,803 | null |
+| Qwen3-0.6B | 950.23 | 5,742,231,552 | 15,915 | null |
+| GPT-2 | 322.30 | 1,996,898,304 | 15,805 | null |
+| SmolLM2-135M | 342.61 | 2,291,466,240 | 15,775 | null |
+| GPT-Neo-125M | 326.16 | 2,068,135,936 | 15,771 | null |
+| Qwen2.5-0.5B | 926.15 | 4,766,613,504 | 15,871 | null |
+
+Every receipt records CPU float32, network/generation disabled, one model run,
+one sealed-target read, empty claim IDs, and `evidence_eligible=false`. These
+results are baseline observations only; they do not test the remaining
+response surfaces or direct TRIZ knowledge questions.
 
 ## 1. Purpose
 

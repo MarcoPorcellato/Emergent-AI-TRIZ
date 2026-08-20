@@ -3,11 +3,11 @@
 ## Current checkpoint
 
 - Branch: `exp002-qwen3-followup`
-- Last implementation checkpoint: `aade549` (runner and publication contracts)
+- Last implementation checkpoint: `d3020b5` (seven-model EXP-002A baseline published)
 - Scientific state: exploratory, no claim IDs, no evidence promotion
-- Model/tokenizer access: not performed by the EXP-002 tranche
-- Generation/network/CCP material run: not performed
-- Sealed-target access: zero
+- Model access: one local CPU float32 pass per exact model, all terminal `null`
+- Generation/network: disabled for every pass
+- Sealed-target access: exactly one analysis-boundary read per model
 
 ## Implemented no-model surface
 
@@ -20,7 +20,7 @@
 - fail-closed terminal-result and execution/CCP gates;
 - approval dossier in `authorized` state, bound to operator approval hash
   `0c5943ad5a7bf2c598511b8c3ecc29bd566f33140af59c8c6d788f2423483d67`;
-- empty preexecution publication manifest;
+- seven immutable EXP-002A baseline packages and aggregate publication manifest;
 - deterministic contract target: `make exp002-question-bank-audit`;
 - material entry point: `scripts/run_exp002_stage.py` (EXP-002A only); it
   verifies the exact runtime receipt, sets the offline Transformers switches,
@@ -38,10 +38,9 @@ PYTHONPATH=src .venv/bin/python -m unittest \
   tests.test_exp002_execution
 ```
 
-These commands remain model-free. The dossier is now approved, but do not run
-a tokenizer, load a model, generate, or open a sealed key until the live CCP
-resource/admission gate is rechecked and reports Admit with an inactive empty
-queue. A coordinator-layout error is a hard stop; do not bypass it.
+These commands remain model-free. The EXP-002A baseline is complete, but do not
+rerun any model or reopen the target key. The next work is the separately
+frozen response-surface/tokenizer diagnostics and EXP-002B answer-key gate.
 
 After the live gate is available, provide a fresh JSON snapshot containing
 `decision: "admit"`, `active: false`, and `queue_count: 0` to the material
@@ -60,11 +59,11 @@ coordinator gate is independently rechecked.
 
 ## Next material gate
 
-The operator approval is recorded. The remaining external gate is the live CCP
-coordinator: `resource status --json` must be Admit and `admission status --json`
-must be inactive with an empty queue. After that gate, execute each exact model
-once, publish every terminal state, and stop permanently after any model or
-target access failure.
+The seven-model baseline is published. Before any additional material work,
+freeze the label-permutation/tokenizer and direct-knowledge contracts, obtain
+any required new approval, then independently recheck the live CCP coordinator:
+`resource status --json` must be Admit and `admission status --json` must be
+inactive with an empty queue. No baseline model may be rerun.
 
 ## CCP coordination diagnosis (2026-08-20)
 

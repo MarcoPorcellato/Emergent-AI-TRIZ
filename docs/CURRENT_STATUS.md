@@ -53,18 +53,17 @@ used in two explicitly separate strata: `TRIZ-blinded-transfer` and
 `source-exposed-competence`. The exposed arm measures reference use, never
 latent rediscovery, and the strata are not pooled.
 
-### EXP-002 Qwen3 follow-up — no-model implementation
+### EXP-002 Qwen3 follow-up — EXP-002A baseline published
 
 Branch [`exp002-qwen3-followup`](https://github.com/MarcoPorcellato/Latent-TRIZ/tree/exp002-qwen3-followup)
-is published through exact head `5a5c9ad` with the no-model tranche of the
-follow-up plan: tokenizer and label-surface audits, source-familiarity and
-rights controls, a 351-record direct TRIZ bank (eight task types for each of
-the 40 principles), transfer-corpus/statistical contracts, terminal receipts,
-and an operator-authorized seven-model dossier. This branch has not loaded a
-model, generated text, run CCP materially, or read sealed targets. The current
-CCP coordinator gate is `unknown` because its `quarantine` layout is unsafe;
-material execution remains fail-closed until a fresh Admit/inactive/empty
-snapshot is available.
+is published through exact head `d3020b5` with the frozen no-model tranche and
+the guarded EXP-002A baseline. The seven exact snapshots were each loaded once
+under the exact `commit-ci-preflight` `origin/main` binary, CPU float32,
+local-only, no generation, and one sealed-target read at analysis. Every
+terminal outcome is `null`; no claim is promoted. The aggregate manifest is
+`results/exp002/preexecution/publication-manifest.json`. Label-permutation and
+tokenizer diagnostics, direct TRIZ knowledge/source-familiarity scoring, and
+the independently authored EXP-002C corpus remain separate pending stages.
 
 ## Published model-backed record
 
