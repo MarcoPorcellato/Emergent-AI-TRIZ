@@ -1,0 +1,15 @@
+{
+  "artifact_class": "exp002-statistical-result",
+  "protocol_id": "exp002-qwen3-followup-v1.0.0",
+  "study_id": "EXP-002A",
+  "model_id": "Qwen/Qwen3-0.6B-Base",
+  "revision": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+  "status": "non_interpretable",
+  "analysis": {"status": "not_started"},
+  "failure": null,
+  "scientific_status": "exploratory",
+  "evidence_eligible": false,
+  "expert_validated": false,
+  "claim_ids": [],
+  "pooling": "forbidden_across_models_and_studies"
+}

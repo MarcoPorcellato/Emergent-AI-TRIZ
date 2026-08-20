@@ -151,6 +151,10 @@ VALIDATION_PAIRS = (
     ("schemas/exp002-source-familiarity-plan.schema.json", "experiments/exp002-qwen3-followup/source-familiarity-plan.json"),
     ("schemas/exp002-source-proximity-manifest.schema.json", "experiments/exp002-qwen3-followup/source-proximity-manifest.json"),
     ("schemas/exp002-execution-receipt.schema.json", "results/exp002/preexecution/execution-receipt-template.json"),
+    ("schemas/exp002-statistical-result.schema.json", "results/exp002/preexecution/statistical-result-template.json"),
+    ("schemas/exp002-response-index.schema.json", "results/exp002/preexecution/response-index-template.json"),
+    ("schemas/exp002-sealed-key-access.schema.json", "results/exp002/preexecution/sealed-key-access-template.json"),
+    ("schemas/exp002-recovery-observation.schema.json", "results/exp002/preexecution/recovery-observation-template.json"),
     ("schemas/exp002-followup-result.schema.json", "results/exp002/preexecution/synthetic-terminal-results.jsonl"),
 )
 

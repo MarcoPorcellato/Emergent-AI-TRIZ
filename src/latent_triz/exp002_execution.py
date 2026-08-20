@@ -22,9 +22,11 @@ def validate_ccp_gate(gate: Mapping[str, Any]) -> None:
     """Require the exact local admission state before a heavy run."""
     if not isinstance(gate, Mapping):
         raise Exp002ExecutionError("CCP gate must be a mapping")
-    if gate.get("resource_decision") != "admit":
+    decision = gate.get("resource_decision", gate.get("decision"))
+    if decision != "admit":
         raise Exp002ExecutionError("CCP resource decision is not Admit")
-    if gate.get("admission_active") is not False or gate.get("queue_count") != 0:
+    active = gate.get("admission_active", gate.get("active"))
+    if active is not False or gate.get("queue_count") != 0:
         raise Exp002ExecutionError("CCP admission is active or queue is non-empty")
 
 

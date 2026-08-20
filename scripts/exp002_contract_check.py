@@ -86,6 +86,13 @@ def main() -> int:
     validate_schema("schemas/exp002-execution-receipt.schema.json", execution_receipt)
     if execution_receipt["status"] != "not_started" or execution_receipt["access"]["model_loaded"]:
         raise AssertionError("execution receipt template crossed its boundary")
+    for schema_name, instance_name in (
+        ("schemas/exp002-statistical-result.schema.json", "results/exp002/preexecution/statistical-result-template.json"),
+        ("schemas/exp002-response-index.schema.json", "results/exp002/preexecution/response-index-template.json"),
+        ("schemas/exp002-sealed-key-access.schema.json", "results/exp002/preexecution/sealed-key-access-template.json"),
+        ("schemas/exp002-recovery-observation.schema.json", "results/exp002/preexecution/recovery-observation-template.json"),
+    ):
+        validate_schema(schema_name, load(instance_name))
     synthetic_results = jsonl("results/exp002/preexecution/synthetic-terminal-results.jsonl")
     observed_statuses = {result["status"] for result in synthetic_results}
     if observed_statuses != set(TERMINAL_STATUSES):

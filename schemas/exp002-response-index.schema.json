@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-response-index.schema.json",
+  "title": "EXP-002 response index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "protocol_id", "study_id", "model_id", "revision", "record_count", "records"],
+  "properties": {
+    "artifact_class": {"const": "exp002-response-index"},
+    "protocol_id": {"const": "exp002-qwen3-followup-v1.0.0"},
+    "study_id": {"enum": ["EXP-002A", "EXP-002B", "EXP-002C", "EXP-002D"]},
+    "model_id": {"type": "string", "minLength": 1},
+    "revision": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+    "record_count": {"type": "integer", "minimum": 1},
+    "records": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["record_id", "condition", "scores"], "properties": {"record_id": {"type": "string", "minLength": 1}, "condition": {"type": "string", "minLength": 1}, "scores": {"type": "object", "additionalProperties": false, "required": ["A", "B", "C", "D"], "properties": {"A": {"type": "number"}, "B": {"type": "number"}, "C": {"type": "number"}, "D": {"type": "number"}}}}}}
+  }
+}

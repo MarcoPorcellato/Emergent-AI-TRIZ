@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-recovery-observation.schema.json",
+  "title": "EXP-002 recovery observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "terminal_status", "retry_performed", "cleanup_status"],
+  "properties": {"artifact_class": {"const": "exp002-recovery-observation"}, "terminal_status": {"enum": ["positive", "null", "failed", "non_interpretable", "incompatible"]}, "retry_performed": {"const": false}, "cleanup_status": {"type": "string", "minLength": 1}}
+}

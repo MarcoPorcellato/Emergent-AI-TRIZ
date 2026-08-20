@@ -13,6 +13,7 @@
     "external_dense_assets": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["locator", "sha256"], "properties": {"locator": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}}},
     "claim_ids": {"type": "array", "maxItems": 0},
     "evidence_eligible": {"const": false},
-    "expert_validated": {"const": false}
+    "expert_validated": {"const": false},
+    "bindings": {"type": "object", "additionalProperties": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": {"path": {"type": "string", "pattern": "^results/exp002/"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}}}
   }
 }
