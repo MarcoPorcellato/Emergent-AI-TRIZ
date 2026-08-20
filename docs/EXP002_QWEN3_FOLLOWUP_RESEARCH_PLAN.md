@@ -50,10 +50,11 @@ prediction, and abstention metadata. It still refuses an unapproved dossier or
 an unknown CCP state. Actual B/C adapters, expert answer keys, and the new
 corpus remain intentionally unpopulated until their respective gates close.
 
-The independent-review collection is now an explicit tracked no-model gate:
+The independent-review collection is now an explicit tracked no-model gate
+(implementation checkpoint `797627f`):
 `experiments/exp002-qwen3-followup/expert-review-collection.json` is
 `ready_for_collection` with exactly three required pseudonymous reviewers and
-an immutable question-bank hash. Its validator requires full question-bank
+an immutable question-bank hash. Its schema and validator require full question-bank
 coverage, distinct reviewers, rationale hashes, and explicit attestations that
 neither models nor sealed targets were accessed. Empty packets are intentional;
 no expert decisions have been fabricated or inferred.
