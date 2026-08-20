@@ -64,7 +64,7 @@ base. Delivery uses an isolated worktree created from an exact verified commit.
 
 The new branch `exp002-qwen3-followup` publishes the implementation of
 [`EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md`](./EXP002_QWEN3_FOLLOWUP_RESEARCH_PLAN.md)
-through exact head `9fb40e2`. Its frozen seven-model dossier was executed once
+through exact head `ede29f6`. Its frozen seven-model dossier was executed once
 per exact snapshot under the current CCP `origin/main` binary. The EXP-002A
 baseline packages are all terminal `null`, exploratory, non-pooled, and claim
 free; each records CPU float32, no network/generation, and one target read at
