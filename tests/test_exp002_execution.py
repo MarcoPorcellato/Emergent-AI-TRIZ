@@ -28,10 +28,17 @@ class Exp002ExecutionTests(unittest.TestCase):
         self.assertEqual(output[0]["scores"]["A"], 1.0)
 
     def test_injected_direct_questions_preserve_only_public_identity(self):
-        rows = [{"question_id": "exp002-q1", "module": "foundational_concepts", "prompt": "What is a resource?", "scientific_role": "knowledge_endpoint", "response_mode": "bounded_completion"}]
+        rows = [{"question_id": "exp002-q1", "module": "foundational_concepts", "prompt": "What is a resource?", "scientific_role": "knowledge_endpoint", "response_mode": "structured_completion"}]
         output = score_injected_direct_questions(rows, lambda row: {"prediction": "resource", "abstained": False})
         self.assertEqual(output[0]["prediction"], "resource")
         self.assertNotIn("expected_answer", output[0])
+
+    def test_bounded_completion_requires_separate_generation_authorization(self):
+        rows = [{"question_id": "exp002-q1", "module": "foundational_concepts", "prompt": "What is a resource?", "response_mode": "bounded_completion"}]
+        with self.assertRaises(Exp002ExecutionError):
+            score_injected_direct_questions(rows, lambda row: {"prediction": "resource", "abstained": False})
+        output = score_injected_direct_questions(rows, lambda row: {"prediction": "resource", "abstained": False}, allow_generation=True)
+        self.assertEqual(output[0]["prediction"], "resource")
 
     def test_injected_direct_questions_reject_malformed_outcome(self):
         rows = [{"question_id": "exp002-q1", "module": "foundational_concepts", "prompt": "What is a resource?"}]

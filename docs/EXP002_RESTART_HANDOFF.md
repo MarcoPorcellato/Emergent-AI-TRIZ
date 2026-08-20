@@ -143,6 +143,9 @@ the corpus schema also rejects an empty `frozen_no_model` record set.
 The response-surface evaluator is likewise target-free: it requires complete
 per-record cyclic/permutation coverage and reports agreement/invariance rates
 before assigning `measurement_robust` or `measurement_artifact_supported`.
+The direct-question scorer treats `bounded_completion` as a separate generation
+capability and rejects it unless an explicit generation authorization is passed;
+structured/abstention probes remain the no-generation path.
 Source-familiarity metrics use the same injected-observation boundary and are
 descriptive only; they never become a provenance claim.
 
