@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://latent-triz.org/schemas/exp002-transfer-target-key.schema.json",
+  "title": "EXP-002C sealed transfer target key",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_class", "key_id", "corpus_id", "status", "corpus_sha256", "target_content_locator", "target_content_sha256", "records", "model_access", "sealed_target_access", "scientific_status", "claim_ids"],
+  "properties": {
+    "artifact_class": {"const": "exp002-transfer-target-key"},
+    "key_id": {"const": "exp002-transfer-target-key-v1.0.0"},
+    "corpus_id": {"const": "exp002-transfer-corpus-v1.0.0"},
+    "status": {"enum": ["not_ready", "frozen_no_model"]},
+    "corpus_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "target_content_locator": {"const": "sealed://exp002c/targets"},
+    "target_content_sha256": {"type": ["string", "null"]},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/record"}},
+    "model_access": {"const": false},
+    "sealed_target_access": {"const": false},
+    "scientific_status": {"const": "exploratory"},
+    "claim_ids": {"type": "array", "maxItems": 0}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "not_ready"}}}, "then": {"properties": {"records": {"maxItems": 0}, "target_content_sha256": {"type": "null"}}}},
+    {"if": {"properties": {"status": {"const": "frozen_no_model"}}}, "then": {"properties": {"records": {"minItems": 1}, "target_content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}}}
+  ],
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "domain", "expected_candidate_index"],
+      "properties": {
+        "case_id": {"type": "string", "pattern": "^exp002c-[a-z0-9-]+$"},
+        "domain": {"type": "string", "minLength": 1},
+        "expected_candidate_index": {"type": "integer", "minimum": 0, "maximum": 3}
+      }
+    }
+  }
+}

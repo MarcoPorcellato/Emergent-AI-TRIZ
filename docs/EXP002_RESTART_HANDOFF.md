@@ -139,6 +139,9 @@ PYTHONPATH=src .venv/bin/python scripts/exp002_validate_transfer_corpus.py \
 An empty design template is reported as pending; a frozen corpus must meet the
 domain, split, independence, source-proximity, and power-calibration gates;
 the corpus schema also rejects an empty `frozen_no_model` record set.
+The separate transfer-target-key template is likewise `not_ready`: it carries
+no answer records or sealed-file hash until the independently authored corpus
+and expert labels are frozen.
 
 The response-surface evaluator is likewise target-free: it requires complete
 per-record cyclic/permutation coverage and reports agreement/invariance rates

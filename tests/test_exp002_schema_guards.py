@@ -17,6 +17,8 @@ class Exp002SchemaGuardTests(unittest.TestCase):
         self.collection_template = json.loads((ROOT / "experiments/exp002-qwen3-followup/expert-review-collection.json").read_text(encoding="utf-8"))
         self.transfer_schema = json.loads((ROOT / "schemas/exp002-transfer-corpus.schema.json").read_text(encoding="utf-8"))
         self.transfer_template = json.loads((ROOT / "experiments/exp002-qwen3-followup/transfer-corpus-template.json").read_text(encoding="utf-8"))
+        self.target_schema = json.loads((ROOT / "schemas/exp002-transfer-target-key.schema.json").read_text(encoding="utf-8"))
+        self.target_template = json.loads((ROOT / "experiments/exp002-qwen3-followup/transfer-target-key-template.json").read_text(encoding="utf-8"))
         self.dossier_schema = json.loads((ROOT / "schemas/exp002-study-approval-dossier.schema.json").read_text(encoding="utf-8"))
         self.dossier = json.loads((ROOT / "experiments/exp002-qwen3-followup/exp002b-approval-dossier.json").read_text(encoding="utf-8"))
 
@@ -24,6 +26,7 @@ class Exp002SchemaGuardTests(unittest.TestCase):
         self.assertFalse(list(Draft202012Validator(self.answer_schema).iter_errors(self.answer_template)))
         self.assertFalse(list(Draft202012Validator(self.collection_schema).iter_errors(self.collection_template)))
         self.assertFalse(list(Draft202012Validator(self.transfer_schema).iter_errors(self.transfer_template)))
+        self.assertFalse(list(Draft202012Validator(self.target_schema).iter_errors(self.target_template)))
         self.assertFalse(list(Draft202012Validator(self.dossier_schema).iter_errors(self.dossier)))
 
     def test_exact_answer_and_frozen_review_requirements_are_schema_bound(self):
@@ -49,6 +52,17 @@ class Exp002SchemaGuardTests(unittest.TestCase):
         invalid = copy.deepcopy(self.transfer_template)
         invalid["status"] = "frozen_no_model"
         self.assertTrue(list(Draft202012Validator(self.transfer_schema).iter_errors(invalid)))
+
+    def test_frozen_target_key_requires_sealed_hash_and_records(self):
+        valid = copy.deepcopy(self.target_template)
+        valid["status"] = "frozen_no_model"
+        valid["records"] = [{"case_id": "exp002c-case-1", "domain": "manufacturing", "expected_candidate_index": 0}]
+        valid["target_content_sha256"] = "b" * 64
+        self.assertFalse(list(Draft202012Validator(self.target_schema).iter_errors(valid)))
+
+        invalid = copy.deepcopy(valid)
+        invalid["target_content_sha256"] = None
+        self.assertTrue(list(Draft202012Validator(self.target_schema).iter_errors(invalid)))
 
     def test_authorized_dossier_requires_source_proximity_pass(self):
         invalid = copy.deepcopy(self.dossier)
