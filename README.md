@@ -1,6 +1,9 @@
 # Latent TRIZ
 
+**Does invention have a geometry?**
 **Do language models rediscover general operators of invention?**
+
+Latent-TRIZ investigates whether TRIZ-style inventive transformations emerge as reusable geometric structures inside language models.
 
 Latent TRIZ is an open laboratory for testing whether language models learn internal, cross-domain, and causally active transformations that resemble TRIZ Inventive Principles. The project combines reproducible experiments, mechanistic interpretability, blinded evaluation, and explicit falsification criteria.
 
